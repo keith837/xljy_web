@@ -305,3 +305,647 @@
 [2016-01-31 16:01:58.205] [INFO] /Users/pz/Documents/nodejs/express/child/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
 [2016-01-31 16:01:59.882] [INFO] /Users/pz/Documents/nodejs/express/child/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
 [2016-01-31 16:02:02.725] [INFO] /Users/pz/Documents/nodejs/express/child/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:33:37.013] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 16:33:37.022] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 16:33:37.023] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 16:33:37.027] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:448 ms
+[2016-01-31 16:33:37.028] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 16:33:37.061] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 16:33:37.061] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 16:33:37.062] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 16:33:37.079] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 16:33:37.079] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 16:33:37.080] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 16:33:37.081] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:33:37.287] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:33:37.633] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:33:38.217] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:33:39.205] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:33:40.881] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:33:43.727] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:33:48.559] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:33:56.773] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:34:10.737] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:34:14.652] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-01-31 16:34:14.666] [INFO] normal - GET /cm/list
+[2016-01-31 16:34:14.741] [INFO] normal - GET /favicon.ico
+[2016-01-31 16:34:27.614] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-01-31 16:34:27.619] [INFO] normal - GET /cm/list?abc=1&bbc=2
+[2016-01-31 16:34:27.639] [INFO] normal - GET /favicon.ico
+[2016-01-31 16:34:34.472] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:34:54.623] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 16:34:54.630] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 16:34:54.630] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 16:34:54.635] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:188 ms
+[2016-01-31 16:34:54.635] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 16:34:54.646] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 16:34:54.646] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 16:34:54.646] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 16:34:54.651] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 16:34:54.651] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 16:34:54.652] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 16:34:54.653] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:34:54.859] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:34:55.206] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:34:55.789] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:34:56.740] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-01-31 16:34:56.754] [INFO] normal - GET /cm/list?abc=1&bbc=2
+[2016-01-31 16:34:56.782] [INFO] normal - GET /favicon.ico
+[2016-01-31 16:34:56.785] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:34:58.460] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:35:01.303] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:35:06.138] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:35:14.354] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:35:28.316] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:35:52.048] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:36:32.395] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:37:40.978] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:39:37.568] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:42:55.768] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:48:32.712] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:58:05.236] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 16:58:05.248] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 16:58:05.249] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 16:58:05.254] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:467 ms
+[2016-01-31 16:58:05.254] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 16:58:05.285] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 16:58:05.285] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 16:58:05.300] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun1
+[2016-01-31 16:58:05.301] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 16:58:05.304] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 16:58:05.304] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 16:58:05.305] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 16:58:05.306] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:58:05.509] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:58:05.854] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:58:06.437] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:58:07.424] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:58:09.101] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:58:11.729] [INFO] normal - GET /test/fun1
+[2016-01-31 16:58:11.759] [INFO] normal - GET /favicon.ico
+[2016-01-31 16:58:11.948] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:58:16.783] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:58:24.997] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:58:38.957] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:59:02.690] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 16:59:43.033] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:00:51.616] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:02:48.208] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:06:06.409] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:11:43.355] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:13:05.969] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:13:05.982] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:13:05.983] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:13:05.988] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:475 ms
+[2016-01-31 17:13:05.988] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:13:06.026] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:13:06.026] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:13:06.047] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun1
+[2016-01-31 17:13:06.047] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:13:06.050] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:13:06.050] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:13:06.050] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:13:06.052] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:13:06.260] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:13:06.605] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:13:07.186] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:13:08.172] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:13:09.847] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:13:11.387] [INFO] normal - GET /test/fun1
+[2016-01-31 17:13:11.416] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:13:12.692] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:13:17.525] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:13:23.219] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:13:23.229] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:13:23.230] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:13:23.235] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:470 ms
+[2016-01-31 17:13:23.236] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:13:23.268] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:13:23.268] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:13:23.283] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun1
+[2016-01-31 17:13:23.283] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:13:23.287] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:13:23.288] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:13:23.288] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:13:23.290] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:13:23.494] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:13:23.841] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:13:24.425] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:13:25.111] [INFO] normal - GET /test/fun1
+[2016-01-31 17:13:25.199] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:13:25.412] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:13:27.088] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:13:29.935] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:13:34.770] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:13:42.986] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:13:56.951] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:14:20.685] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:15:01.034] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:16:09.620] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:18:06.216] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:20:37.782] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:20:37.793] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:20:37.793] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:20:37.798] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:475 ms
+[2016-01-31 17:20:37.798] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:20:37.836] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:20:37.836] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:20:37.853] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun1
+[2016-01-31 17:20:37.853] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:20:37.855] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:20:37.855] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:20:37.856] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:20:37.858] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:20:38.065] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:20:38.407] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:20:38.992] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:20:39.981] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:20:41.654] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:20:44.497] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:20:49.331] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:20:57.547] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:21:11.512] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:21:35.245] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:22:15.593] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:23:03.104] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:23:03.112] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:23:03.112] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:23:03.117] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:197 ms
+[2016-01-31 17:23:03.117] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:23:03.129] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:23:03.129] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:23:03.134] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun1
+[2016-01-31 17:23:03.134] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:23:03.135] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:23:03.136] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:23:03.136] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:23:03.137] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:23:03.345] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:23:03.688] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:23:04.268] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:23:05.254] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:23:06.078] [INFO] normal - GET /test/fun1
+[2016-01-31 17:23:06.164] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:23:06.926] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:23:07.158] [INFO] normal - POST /test/fun1
+[2016-01-31 17:23:07.180] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:23:09.774] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:23:14.607] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:23:22.821] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:23:36.785] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:24:00.521] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:24:32.566] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:24:32.573] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:24:32.574] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:24:32.578] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:192 ms
+[2016-01-31 17:24:32.579] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:24:32.589] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:24:32.589] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:24:32.593] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-01-31 17:24:32.594] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun1
+[2016-01-31 17:24:32.594] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:24:32.595] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:24:32.596] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:24:32.596] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:24:32.597] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:24:32.802] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:24:33.145] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:24:33.726] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:24:34.714] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:24:36.387] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:24:36.650] [INFO] normal - GET /test/fun2
+[2016-01-31 17:24:36.676] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:24:39.232] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:24:43.564] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:24:43.571] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:24:43.571] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:24:43.576] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:192 ms
+[2016-01-31 17:24:43.576] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:24:43.587] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:24:43.587] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:24:43.591] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-01-31 17:24:43.592] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-01-31 17:24:43.592] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:24:43.593] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:24:43.594] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:24:43.594] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:24:43.595] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:24:43.800] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:24:44.143] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:24:44.723] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:24:45.710] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:24:46.607] [INFO] normal - GET /test/fun2
+[2016-01-31 17:24:46.634] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:24:47.385] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:24:50.230] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:24:55.066] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:24:56.688] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:24:57.339] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:25:17.381] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:25:17.388] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:25:17.389] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:25:17.393] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:189 ms
+[2016-01-31 17:25:17.394] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:25:17.404] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:25:17.404] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:25:17.408] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-01-31 17:25:17.408] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-01-31 17:25:17.409] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:25:17.410] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:25:17.410] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:25:17.411] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:25:17.412] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:25:17.617] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:25:17.962] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:25:18.541] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:25:18.653] [INFO] normal - GET /test/fun1
+[2016-01-31 17:25:18.679] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:25:19.529] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:25:21.202] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:25:22.436] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:25:23.678] [INFO] normal - POST /test/fun1
+[2016-01-31 17:25:24.044] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:25:28.878] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:25:37.092] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:25:40.488] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:25:40.539] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:25:41.830] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:25:44.349] [INFO] normal - GET /test/fun2
+[2016-01-31 17:25:44.373] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:25:47.926] [INFO] normal - POST /test/fun1
+[2016-01-31 17:25:51.056] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:26:05.309] [INFO] normal - GET /test/fun2
+[2016-01-31 17:26:05.310] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:26:05.346] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:26:07.140] [INFO] normal - POST /test/fun1
+[2016-01-31 17:26:11.325] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:26:11.335] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:26:11.336] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:26:11.340] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:469 ms
+[2016-01-31 17:26:11.341] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:26:11.372] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:26:11.372] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:26:11.390] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-01-31 17:26:11.391] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-01-31 17:26:11.391] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:26:11.395] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:26:11.395] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:26:11.396] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:26:11.398] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:26:11.602] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:26:11.945] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:26:12.526] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:26:13.515] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:26:14.100] [INFO] normal - POST /test/fun1
+[2016-01-31 17:26:15.192] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:26:15.540] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:26:15.611] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:26:16.151] [INFO] normal - GET /test/fun2
+[2016-01-31 17:26:16.194] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:26:18.037] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:26:20.457] [INFO] normal - POST /test/fun1
+[2016-01-31 17:26:20.544] [INFO] normal - POST /test/fun1
+[2016-01-31 17:26:20.547] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:26:22.870] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:26:30.979] [INFO] normal - POST /test/fun1
+[2016-01-31 17:26:30.985] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:26:31.070] [INFO] normal - POST /test/fun1
+[2016-01-31 17:26:31.072] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:26:31.084] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:26:45.047] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:26:51.276] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:26:51.291] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:26:51.292] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:26:51.298] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:475 ms
+[2016-01-31 17:26:51.299] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:26:51.340] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:26:51.340] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:26:51.356] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-01-31 17:26:51.356] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-01-31 17:26:51.356] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:26:51.359] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:26:51.359] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:26:51.360] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:26:51.361] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:26:51.565] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:26:51.911] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:26:52.493] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:26:53.399] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:26:53.480] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:26:53.954] [INFO] normal - GET /test/fun2
+[2016-01-31 17:26:54.009] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:26:54.890] [INFO] normal - POST /test/fun1
+[2016-01-31 17:26:55.156] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:26:58.002] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:27:02.835] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:27:11.051] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:27:24.856] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:27:24.867] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:27:24.867] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:27:24.872] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:467 ms
+[2016-01-31 17:27:24.873] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:27:24.911] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:27:24.911] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:27:24.925] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-01-31 17:27:24.926] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-01-31 17:27:24.926] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:27:24.929] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:27:24.929] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:27:24.930] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:27:24.934] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:27:25.141] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:27:25.488] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:27:26.071] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:27:27.055] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:27:27.656] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:27:28.730] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:27:29.246] [INFO] normal - GET /test/fun2
+[2016-01-31 17:27:29.290] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:27:31.576] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:27:36.408] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:27:40.974] [INFO] normal - POST /test/fun1
+[2016-01-31 17:27:41.045] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:27:44.623] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:27:58.584] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:28:22.321] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:28:45.721] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:28:45.733] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:28:45.734] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:28:45.738] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:460 ms
+[2016-01-31 17:28:45.739] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:28:45.776] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:28:45.776] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:28:45.794] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-01-31 17:28:45.794] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-01-31 17:28:45.795] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:28:45.797] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:28:45.798] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:28:45.798] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:28:45.801] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:28:46.009] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:28:46.355] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:28:46.938] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:28:47.873] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:28:47.924] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:28:48.881] [INFO] normal - POST /test/fun1
+[2016-01-31 17:28:48.936] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:28:49.600] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:28:52.445] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:28:57.279] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:29:05.494] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:29:07.867] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:29:07.874] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:29:07.875] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:29:07.879] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:203 ms
+[2016-01-31 17:29:07.880] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:29:07.890] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:29:07.890] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:29:07.895] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-01-31 17:29:07.895] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-01-31 17:29:07.895] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:29:07.897] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:29:07.897] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:29:07.898] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:29:07.899] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:29:08.104] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:29:08.448] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:29:09.029] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:29:09.932] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:29:10.019] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:29:11.093] [INFO] normal - POST /test/fun1
+[2016-01-31 17:29:11.161] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:29:11.694] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:29:14.536] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:29:19.372] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:29:27.540] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:29:27.589] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:29:28.714] [INFO] normal - POST /test/fun1
+[2016-01-31 17:29:28.770] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:29:36.277] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:29:36.286] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:29:36.286] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:29:36.290] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:197 ms
+[2016-01-31 17:29:36.291] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:29:36.302] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:29:36.302] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:29:36.307] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-01-31 17:29:36.307] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-01-31 17:29:36.307] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:29:36.309] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:29:36.309] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:29:36.309] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:29:36.311] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:29:36.515] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:29:36.861] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:29:37.443] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:29:37.570] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:29:38.433] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:29:38.942] [INFO] normal - POST /test/fun1
+[2016-01-31 17:29:38.986] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:29:40.109] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:29:42.956] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:29:47.789] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:29:56.005] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:30:09.966] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:30:33.703] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:31:14.050] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:32:22.638] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:34:34.834] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:34:34.915] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:34:34.916] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:34:34.923] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:562 ms
+[2016-01-31 17:34:34.924] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:34:34.965] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:34:34.965] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:34:34.982] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-01-31 17:34:34.983] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-01-31 17:34:34.983] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:34:34.987] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:34:34.988] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:34:34.989] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:34:34.990] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:34:35.195] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:34:35.542] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:34:36.123] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:34:36.353] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:34:37.112] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:34:37.820] [INFO] normal - POST /test/fun1
+[2016-01-31 17:34:37.870] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:34:38.788] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:34:41.636] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:34:46.473] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:34:51.715] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:34:51.779] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:34:51.780] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:34:51.786] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:531 ms
+[2016-01-31 17:34:51.787] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:34:51.824] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:34:51.824] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:34:51.838] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-01-31 17:34:51.839] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-01-31 17:34:51.839] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:34:51.843] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:34:51.844] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:34:51.845] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:34:51.847] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:34:52.052] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:34:52.395] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:34:52.978] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:34:53.964] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:34:54.415] [INFO] normal - POST /test/fun1
+[2016-01-31 17:34:54.473] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:34:54.986] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:34:55.638] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:34:56.122] [INFO] normal - POST /test/fun1
+[2016-01-31 17:34:56.182] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:34:58.484] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:35:00.139] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:35:00.702] [INFO] normal - GET /test/fun2
+[2016-01-31 17:35:00.759] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:35:02.564] [INFO] normal - POST /test/fun1
+[2016-01-31 17:35:02.599] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:35:03.320] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:35:11.533] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:35:25.499] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:35:49.236] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:36:15.283] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:36:15.375] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:36:15.376] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:36:15.381] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:570 ms
+[2016-01-31 17:36:15.381] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:36:15.415] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:36:15.416] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:36:15.433] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-01-31 17:36:15.433] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-01-31 17:36:15.434] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:36:15.437] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:36:15.438] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:36:15.439] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:36:15.440] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:36:15.645] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:36:15.989] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:36:16.573] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:36:17.558] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:36:18.842] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:36:19.233] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:36:19.703] [INFO] normal - POST /test/fun1
+[2016-01-31 17:36:19.745] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:36:22.077] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:36:26.909] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:36:35.127] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:36:49.093] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:37:04.237] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:37:04.264] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:37:04.265] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:37:04.269] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:221 ms
+[2016-01-31 17:37:04.270] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:37:04.282] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:37:04.283] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:37:04.290] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-01-31 17:37:04.291] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-01-31 17:37:04.291] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:37:04.292] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:37:04.293] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:37:04.294] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:37:04.296] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:37:04.504] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:37:04.851] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:37:05.435] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:37:06.420] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:37:08.096] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:37:08.889] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:37:09.785] [INFO] normal - POST /test/fun1
+[2016-01-31 17:37:09.832] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:37:10.942] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:37:15.776] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:37:17.064] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:37:18.597] [INFO] normal - POST /test/fun1
+[2016-01-31 17:37:18.634] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:37:23.993] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:37:37.955] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:37:49.270] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:37:49.300] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:37:49.301] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:37:49.305] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:218 ms
+[2016-01-31 17:37:49.306] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:37:49.318] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:37:49.318] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:37:49.325] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-01-31 17:37:49.325] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-01-31 17:37:49.325] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:37:49.327] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:37:49.327] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:37:49.327] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:37:49.329] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:37:49.537] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:37:49.882] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:37:50.462] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:37:51.448] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:37:52.072] [INFO] normal - POST /test/fun1
+[2016-01-31 17:37:52.118] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:37:52.798] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:37:53.125] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:37:53.743] [INFO] normal - POST /test/fun1
+[2016-01-31 17:37:53.783] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:37:55.972] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:38:00.807] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:38:08.409] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:38:08.435] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:38:08.435] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:38:08.440] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:216 ms
+[2016-01-31 17:38:08.440] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:38:08.452] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:38:08.452] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:38:08.458] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-01-31 17:38:08.458] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-01-31 17:38:08.459] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:38:08.461] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:38:08.461] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:38:08.462] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:38:08.463] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:38:08.670] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:38:09.015] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:38:09.597] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:38:10.586] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:38:11.545] [INFO] normal - POST /test/fun1
+[2016-01-31 17:38:11.607] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:38:12.262] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:38:12.322] [INFO] normal - POST /test/fun1
+[2016-01-31 17:38:12.383] [INFO] normal - GET /favicon.ico
+[2016-01-31 17:38:15.106] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:38:19.938] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:38:28.155] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:38:42.118] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:39:05.850] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:39:46.197] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:40:54.781] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - redis client Error Error: Redis connection to 127.0.0.1:6379 failed - connect ECONNREFUSED 127.0.0.1:6379
+[2016-01-31 17:41:16.065] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:41:16.148] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:41:16.148] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:41:16.153] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:559 ms
+[2016-01-31 17:41:16.154] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:41:16.188] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:41:16.188] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:41:16.206] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-01-31 17:41:16.207] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-01-31 17:41:16.207] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:41:16.210] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:41:16.211] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:41:16.211] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:41:16.220] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-01-31 17:43:04.749] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-01-31 17:43:04.837] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-01-31 17:43:04.838] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-01-31 17:43:04.846] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:557 ms
+[2016-01-31 17:43:04.847] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : cmController.js 绑定完成  
+[2016-01-31 17:43:04.881] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-01-31 17:43:04.881] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : testController.js 绑定完成  
+[2016-01-31 17:43:04.901] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-01-31 17:43:04.901] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-01-31 17:43:04.901] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - Controller : userController.js 绑定完成  
+[2016-01-31 17:43:04.904] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-01-31 17:43:04.905] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-01-31 17:43:04.906] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-01-31 17:43:04.916] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-01-31 17:43:04.918] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-01-31 17:43:04.925] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功

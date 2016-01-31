@@ -1,6 +1,7 @@
 var startTime = new Date().getTime();
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser')
 //var routerConfig = require("./core/config/routerConfig");
 var webConfig = require("./core/config/webConfig");
 var log4js = require('log4js');
@@ -16,7 +17,10 @@ logger.info("载入入口依赖库完成..");
 
 app.engine(".html",require('ejs').__express);
 app.set("view engine",'html');
-app.set("views",'app/views');
+app.set("views",webConfig.VIEWSPATH);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 webConfig.PRINT_ACCESS_LOG && app.use(log4js.connectLogger(loggerCall('normal'), {
     level: log4js.levels.INFO,
@@ -44,6 +48,15 @@ var server = app.listen(3001, function () {
 
     logger.info('Web 服务器启动监听  端口%s 启动时间:%s ms', port, Math.ceil(new Date().getTime() - startTime));
 });
+
+
+mysqlPool.query("show tables", {}, function (err, res) {
+    if(err){
+        logger.warn("MYSQL 连接异常");
+    }else{
+        logger.info("MYSQL 连接成功");
+    }
+})
 /*
  测试.
  */

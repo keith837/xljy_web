@@ -17,7 +17,6 @@ function bootController(app, file) {
     var name = file.replace('.js', '');
     var actions = require('../../../app/controllers/' + name);
     var mapping = actions["mapping"];
-
     Object.keys(actions).map(function(action){
         var fn = actions[action];
         if(typeof(fn) === "function") {

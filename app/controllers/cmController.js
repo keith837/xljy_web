@@ -13,7 +13,7 @@ module.exports = new basicController(__filename).init({
         }
     },
     showlist: function (request, response) {
-        console.log("Hello world！！");
+        console.log(request.query);
         //response.render('index/a', { title: '玄魂的测试代码' });
 
         this.db.query("SELECT * FROM content ORDER BY id DESC",[],function(err,res){

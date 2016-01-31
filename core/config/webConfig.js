@@ -3,6 +3,7 @@
  */
 var webConfig = {
     STATICPATH :[{webpath:"/static",filepath:"static/htmls",option:{}}],
-    PRINT_ACCESS_LOG:true
+    PRINT_ACCESS_LOG:true,
+    VIEWSPATH:'app/views'
 }
 module.exports = webConfig ;
