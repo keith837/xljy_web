@@ -1,0 +1,9 @@
+<% include ../global/head %>
+{
+    "abc":<%-JSON.stringify(data)%>,
+    "ab1":<%-: data.contents |str%>,
+    "bbb":<%-: data.fu("bbb") |str%>,
+    "fuzha":{"abc":1,
+    }
+}
+<% include ../global/footer %>

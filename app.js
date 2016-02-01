@@ -1,6 +1,8 @@
 var startTime = new Date().getTime();
 var express = require('express');
 var app = express();
+var ejs = require('ejs');
+var tplFilter = require("./app/filter/tplFilter")
 var bodyParser = require('body-parser')
 //var routerConfig = require("./core/config/routerConfig");
 var webConfig = require("./core/config/webConfig");
@@ -15,9 +17,13 @@ var redisPool = require("./core/utils/pool/redis/redisPool");
 
 logger.info("载入入口依赖库完成..");
 
-app.engine(".html",require('ejs').__express);
-app.set("view engine",'html');
+//设置模板引擎
+app.engine(".ejs",ejs.__express);
+app.set("view engine",'ejs');
 app.set("views",webConfig.VIEWSPATH);
+//注册过滤器
+new tplFilter(ejs.filters);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -33,10 +39,7 @@ for (var x in webConfig.STATICPATH) {
 }
 logger.info("配置中静态目录信息载入完毕..");
 
-//for (var x in routerConfig) {
-//    var tempRouter = require(routerConfig[x].jsurl);
-//    app.use(routerConfig[x].routerpath, tempRouter);
-//}
+//控制器挂载
 controllerEnter.bootControllers(app);
 logger.info("载入/controllers 下控制器 完成..");
 

@@ -3,8 +3,16 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+    <script src="jquery.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.ajax({url:'http://localhost:3001/cm/list',dataType:"json",success:function(data){
+                console.log((data));
+            },error:function(err){console.log(err)}})
+        })
+    </script>
 </head>
-<body>123123213
+<body>
 
 </body>
 </html>

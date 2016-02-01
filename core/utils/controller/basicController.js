@@ -18,5 +18,15 @@ basicController.prototype.init = function(dy){
     }
     return this;
 }
-
+basicController.prototype.fillTpl =function (data,err,msg){
+    var response={state:1,msg:"0",data:{}};
+    if(err){
+        response.state = 0;response.msg = err.toString();
+    }
+    if(msg) {
+        response.msg = msg;
+    }
+    response.data = data;
+    return response;
+}
 module.exports = basicController;
