@@ -4,7 +4,7 @@ var app = express();
 var ejs = require('ejs');
 var tplFilter = require("./app/filter/tplFilter")
 var bodyParser = require('body-parser')
-//var routerConfig = require("./core/config/routerConfig");
+
 var webConfig = require("./core/config/webConfig");
 var log4js = require('log4js');
 var loggerCall = require('./core/utils/logger/logger');
@@ -43,7 +43,15 @@ logger.info("配置中静态目录信息载入完毕..");
 controllerEnter.bootControllers(app);
 logger.info("载入/controllers 下控制器 完成..");
 
-
+//错误处理中间件
+app.use(function (err, req, res, next) {
+    // 业务逻辑
+    if (res.headersSent) {
+        return next(err);
+    }
+    res.status(500);
+    res.json({state: 0, error: err, msg: err.toString()});
+});
 
 var server = app.listen(3001, function () {
     var host = server.address().address;

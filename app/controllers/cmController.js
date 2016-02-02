@@ -4,17 +4,20 @@
 
 var basicController = require("../../core/utils/controller/basicController");
 module.exports = new basicController(__filename).init({
-    showlist: function (request, response) {
-        var self = this;
-        console.log(request.query);
-        //response.render('index/a', { title: '玄魂的测试代码' });
+    showlist: function (request, response, next) {
 
-        this.db.query("SELECT * FROM content ORDER BY id DESC",[],function(err,res){
-            console.log(res);
+
+        ;
+        var self = this;
+        this.model["student"].listByUserId("1", function (err, res) {
+            if (err) {
+                next(err);
+                return
+            }
             response.render('index/a', self.fillTpl({ title: '玄魂的测试代码',contents:res,fu:function(in1){
                 return in1+"1aaa1";
             }}));
-        });
+        })
 
     }
 });

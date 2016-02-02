@@ -8,7 +8,7 @@ var webConfig = {
             filepath: "static/htmls",
             option: {}
         }],
-    PRINT_ACCESS_LOG: true,
+    PRINT_ACCESS_LOG: false,
     VIEWSPATH: 'app/views'
 }
 module.exports = webConfig;

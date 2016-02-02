@@ -1,6 +1,6 @@
 <% include ../global/head %>
 {
-    "abc":<%-JSON.stringify(data)%>,
+"abc":<%- :data | jsonstr %>,
     "ab1":<%-: data.contents |str%>,
     "bbb":<%-: data.fu("bbb") |str%>,
     "fuzha":{"abc":1,

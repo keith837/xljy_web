@@ -53,11 +53,23 @@ function bootController(app,name,map) {
             } else {
                 console.log("WARNING: no mapping for " + x + " defined");
             }
+        } else if (x == "usedModel") {
+            //载入自定义模型
+            for (var i in map[x]) {
+                actions.model[modelNameParse(map[x][i])] = require("../../../app/dao/" + map[x][i]);
+            }
         }
     }
     add_to_mapping_footer();
 }
-
+function modelNameParse(url) {
+    if (url.indexOf("/") == -1) {
+        return url;
+    } else {
+        var tempSplit = url.split("/");
+        return tempSplit[tempSplit.length - 1];
+    }
+}
 module.exports = {
     bootControllers : function(app) {
 
@@ -71,9 +83,10 @@ module.exports = {
         });
         //404页面
         app.get('*', function(req, res) {
-            console.log('404 handler..') ;
-            console.log(req.url);
-            res.send('Page Not Found!(404)');
+            //console.log('404 handler..') ;
+            //console.log(req.url);
+            //res.send('Page Not Found!(404)');
+            res.render("global/404", {});
         });
 
     }

@@ -300,3 +300,1053 @@
 [2016-02-01 21:49:19.955] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
 [2016-02-01 21:49:19.960] [INFO] normal - GET /cm/list
 [2016-02-01 21:49:19.965] [INFO] normal - GET /favicon.ico
+[2016-02-01 22:17:09.535] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-01 22:17:09.612] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-01 22:17:09.667] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-01 22:17:09.668] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-01 22:17:09.668] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-01 22:17:09.671] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-01 22:17:09.673] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-01 22:17:09.673] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-01 22:17:09.674] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-01 22:17:09.686] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:651 ms
+[2016-02-01 22:17:09.698] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-01 22:17:09.700] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-01 22:17:09.706] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 09:13:57.234] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 09:13:57.676] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 09:13:57.878] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 09:13:57.878] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 09:13:57.878] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 09:13:57.884] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 09:13:57.892] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 09:13:57.892] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 09:13:57.892] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 09:13:57.902] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:2295 ms
+[2016-02-02 09:13:57.909] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 09:13:57.972] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 09:13:57.986] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 09:14:08.446] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 09:14:08.456] [INFO] normal - GET /cm/list
+[2016-02-02 09:14:08.604] [INFO] normal - GET /favicon.ico
+[2016-02-02 09:14:09.535] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 09:14:09.537] [INFO] normal - GET /cm/list
+[2016-02-02 09:14:09.557] [INFO] normal - GET /favicon.ico
+[2016-02-02 09:16:15.598] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 09:16:15.662] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 09:16:15.675] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 09:16:15.675] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 09:16:15.675] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 09:16:15.676] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 09:16:15.677] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 09:16:15.677] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 09:16:15.677] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 09:16:15.681] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:427 ms
+[2016-02-02 09:16:15.687] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 09:16:15.688] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 09:16:15.691] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 09:16:18.670] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 09:16:18.705] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 09:16:18.720] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 09:16:18.720] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 09:16:18.720] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 09:16:18.721] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 09:16:18.722] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 09:16:18.722] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 09:16:18.722] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 09:16:18.727] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:305 ms
+[2016-02-02 09:16:18.733] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 09:16:18.734] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 09:16:18.737] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 09:16:21.943] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 09:16:21.954] [INFO] normal - GET /cm/list
+[2016-02-02 09:16:21.968] [INFO] normal - GET /favicon.ico
+[2016-02-02 09:16:22.693] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 09:16:22.697] [INFO] normal - GET /cm/list
+[2016-02-02 09:16:22.712] [INFO] normal - GET /favicon.ico
+[2016-02-02 09:16:22.957] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 09:16:22.961] [INFO] normal - GET /cm/list
+[2016-02-02 09:16:22.989] [INFO] normal - GET /favicon.ico
+[2016-02-02 09:19:03.358] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 09:19:03.360] [INFO] normal - GET /cm/list
+[2016-02-02 09:19:03.377] [INFO] normal - GET /favicon.ico
+[2016-02-02 09:23:10.770] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 09:23:10.809] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 09:23:10.827] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 09:23:10.828] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 09:23:10.828] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 09:23:10.829] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 09:23:10.830] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 09:23:10.830] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 09:23:10.831] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 09:23:10.841] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:379 ms
+[2016-02-02 09:23:10.847] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 09:23:10.894] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 09:23:10.899] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 09:23:15.373] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 09:23:15.382] [INFO] normal - GET /cm/list
+[2016-02-02 09:23:15.406] [INFO] normal - GET /favicon.ico
+[2016-02-02 09:23:21.926] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 09:23:21.932] [INFO] normal - GET /cm/list
+[2016-02-02 09:23:21.951] [INFO] normal - GET /favicon.ico
+[2016-02-02 09:25:59.523] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 09:25:59.526] [INFO] normal - GET /cm/list
+[2016-02-02 09:25:59.690] [INFO] normal - GET /favicon.ico
+[2016-02-02 09:26:07.558] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 09:26:07.561] [INFO] normal - GET /cm/list
+[2016-02-02 09:26:07.679] [INFO] normal - GET /favicon.ico
+[2016-02-02 09:26:13.209] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 09:26:13.248] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 09:26:13.264] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 09:26:13.264] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 09:26:13.265] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 09:26:13.265] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 09:26:13.266] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 09:26:13.266] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 09:26:13.267] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 09:26:13.271] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:362 ms
+[2016-02-02 09:26:13.280] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 09:26:13.281] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 09:26:13.283] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 09:26:14.725] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 09:26:14.745] [INFO] normal - GET /cm/list
+[2016-02-02 09:26:14.842] [INFO] normal - GET /favicon.ico
+[2016-02-02 09:31:56.662] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 09:31:56.719] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 09:31:56.739] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 09:31:56.739] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 09:31:56.740] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 09:31:56.741] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 09:31:56.743] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 09:31:56.743] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 09:31:56.744] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 09:31:56.752] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:342 ms
+[2016-02-02 09:31:56.760] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 09:31:56.762] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 09:31:56.768] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 09:34:15.577] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 09:34:15.619] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 09:34:15.632] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 09:34:15.632] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 09:34:15.632] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 09:34:15.633] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 09:34:15.634] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 09:34:15.634] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 09:34:15.635] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 09:34:15.639] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:362 ms
+[2016-02-02 09:34:15.645] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 09:34:15.647] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 09:34:15.651] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 09:34:32.485] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 09:34:32.540] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 09:34:32.559] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 09:34:32.560] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 09:34:32.560] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 09:34:32.560] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 09:34:32.561] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 09:34:32.562] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 09:34:32.562] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 09:34:32.569] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:419 ms
+[2016-02-02 09:34:32.578] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 09:34:32.579] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 09:34:32.583] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 09:35:25.582] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 09:35:25.609] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 09:35:25.624] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 09:35:25.624] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 09:35:25.625] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 09:35:25.626] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 09:35:25.627] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 09:35:25.627] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 09:35:25.628] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 09:35:25.637] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:260 ms
+[2016-02-02 09:35:25.650] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 09:35:25.652] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 09:35:25.656] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 09:36:07.171] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 09:36:07.196] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 09:36:07.211] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 09:36:07.211] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 09:36:07.212] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 09:36:07.213] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 09:36:07.214] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 09:36:07.214] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 09:36:07.214] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 09:36:07.225] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:235 ms
+[2016-02-02 09:36:07.237] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 09:36:07.240] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 09:36:07.244] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 09:37:15.814] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 09:37:15.839] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 09:37:15.850] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 09:37:15.853] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 09:37:15.854] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 09:37:15.855] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 09:37:15.856] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 09:37:15.856] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 09:37:15.857] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 09:37:15.867] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:233 ms
+[2016-02-02 09:37:15.878] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 09:37:15.880] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 09:37:15.885] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 09:37:17.900] [INFO] normal - GET /cm/list
+[2016-02-02 09:37:17.941] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:08:08.088] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:08:08.117] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:08:08.134] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:08:08.134] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:08:08.134] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:08:08.135] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:08:08.136] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:08:08.136] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:08:08.136] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:08:08.148] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:245 ms
+[2016-02-02 10:08:08.161] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:08:08.163] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:08:08.167] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:08:11.180] [INFO] normal - GET /cm/list
+[2016-02-02 10:08:11.203] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:08:51.190] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:08:51.215] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:08:51.226] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:08:51.229] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:08:51.229] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:08:51.231] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:08:51.232] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:08:51.232] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:08:51.232] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:08:51.244] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:235 ms
+[2016-02-02 10:08:51.256] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:08:51.258] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:08:51.264] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:08:53.053] [INFO] normal - GET /cm/list
+[2016-02-02 10:08:53.077] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:09:17.763] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:09:17.789] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:09:17.805] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:09:17.806] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:09:17.806] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:09:17.807] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:09:17.808] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:09:17.808] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:09:17.809] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:09:17.819] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:247 ms
+[2016-02-02 10:09:17.830] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:09:17.834] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:09:17.838] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:09:19.480] [INFO] normal - GET /cm/list
+[2016-02-02 10:09:19.504] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:09:38.779] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:09:38.804] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:09:38.815] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:09:38.818] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:09:38.819] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:09:38.820] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:09:38.821] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:09:38.821] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:09:38.821] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:09:38.832] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:237 ms
+[2016-02-02 10:09:38.843] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:09:38.847] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:09:38.852] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:09:41.531] [INFO] normal - GET /cm/list
+[2016-02-02 10:09:41.552] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:10:01.991] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:10:02.017] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:10:02.030] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:10:02.031] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:10:02.031] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:10:02.032] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:10:02.033] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:10:02.034] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:10:02.034] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:10:02.044] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:235 ms
+[2016-02-02 10:10:02.054] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:10:02.056] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:10:02.059] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:10:03.236] [INFO] normal - GET /cm/list
+[2016-02-02 10:10:03.258] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:10:28.571] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:10:28.596] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:10:28.611] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:10:28.620] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:246 ms
+[2016-02-02 10:10:28.630] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:10:28.632] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:10:28.635] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:10:30.415] [INFO] normal - GET /cm/list
+[2016-02-02 10:10:30.434] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:12:29.026] [INFO] normal - GET /cm/list
+[2016-02-02 10:12:29.057] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:12:35.805] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:12:35.829] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:12:35.841] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:12:35.852] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:232 ms
+[2016-02-02 10:12:35.863] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:12:35.864] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:12:35.869] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:12:37.355] [INFO] normal - GET /cm/list
+[2016-02-02 10:12:37.377] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:13:17.763] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:13:17.788] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:13:17.800] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:13:17.811] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:226 ms
+[2016-02-02 10:13:17.821] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:13:17.823] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:13:17.826] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:13:19.543] [INFO] normal - GET /cm/list
+[2016-02-02 10:13:19.569] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:13:58.516] [INFO] normal - GET /user/show
+[2016-02-02 10:13:58.541] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:13:59.995] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:14:26.335] [INFO] normal - GET /showinterfaces
+[2016-02-02 10:14:26.395] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:14:43.256] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:14:43.283] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:14:43.301] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:14:43.311] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:242 ms
+[2016-02-02 10:14:43.324] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:14:43.326] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:14:43.331] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:16:04.488] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:16:04.513] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:16:04.529] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:16:04.541] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:236 ms
+[2016-02-02 10:16:04.551] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:16:04.552] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:16:04.556] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:16:16.797] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:16:16.822] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:16:16.836] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:16:16.847] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:234 ms
+[2016-02-02 10:16:16.858] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:16:16.860] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:16:16.866] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:16:24.107] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:16:24.135] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:16:24.168] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:16:24.177] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:304 ms
+[2016-02-02 10:16:24.189] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:16:24.191] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:16:24.194] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:18:08.427] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:18:08.453] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:18:08.472] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:18:08.476] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:18:08.481] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:18:08.483] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:18:08.485] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:18:08.486] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:18:08.487] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:18:08.494] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:255 ms
+[2016-02-02 10:18:08.507] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:18:08.509] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:18:08.513] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:18:10.163] [INFO] normal - GET /showinterfaces
+[2016-02-02 10:18:10.217] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:18:50.662] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:18:50.688] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:18:50.707] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:18:50.712] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:18:50.716] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:18:50.719] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:18:50.721] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:18:50.723] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:18:50.723] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:18:50.730] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:249 ms
+[2016-02-02 10:18:50.745] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:18:50.747] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:18:50.753] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:19:00.579] [INFO] normal - GET /showinterfaces
+[2016-02-02 10:19:00.654] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:20:25.002] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:20:25.027] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:20:25.038] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:20:25.041] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:20:25.041] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:20:25.042] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:20:25.043] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:20:25.043] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:20:25.043] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:20:25.053] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:234 ms
+[2016-02-02 10:20:25.063] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:20:25.065] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:20:25.069] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:20:29.187] [INFO] normal - GET /showinterfaces
+[2016-02-02 10:20:29.218] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:20:31.072] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:20:31.837] [INFO] normal - GET /cm/list
+[2016-02-02 10:20:31.860] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:20:45.628] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:20:45.654] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:20:45.665] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:20:45.667] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:20:45.667] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:20:45.669] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:20:45.669] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:20:45.670] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:20:45.670] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:20:45.679] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:229 ms
+[2016-02-02 10:20:45.690] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:20:45.691] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:20:45.695] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:20:47.028] [INFO] normal - GET /cm/list
+[2016-02-02 10:20:47.050] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:21:32.495] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:21:32.523] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:21:32.540] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:21:32.541] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:21:32.541] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:21:32.542] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:21:32.543] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:21:32.543] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:21:32.544] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:21:32.554] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:251 ms
+[2016-02-02 10:21:32.568] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:21:32.570] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:21:32.574] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:21:34.271] [INFO] normal - GET /cm/list
+[2016-02-02 10:21:34.298] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:24:05.099] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:24:05.126] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:24:05.141] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:24:05.142] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:24:05.143] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:24:05.144] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:24:05.145] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:24:05.145] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:24:05.145] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:24:05.157] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:245 ms
+[2016-02-02 10:24:05.167] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:24:05.169] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:24:05.174] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:24:10.216] [INFO] normal - GET /cm/list
+[2016-02-02 10:24:10.241] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:32:10.475] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:32:10.500] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:32:10.520] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:32:10.520] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:32:10.521] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:32:10.522] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:32:10.523] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:32:10.523] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:32:10.523] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:32:10.536] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:249 ms
+[2016-02-02 10:32:10.555] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:32:10.557] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:32:10.560] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:32:11.358] [INFO] normal - GET /cm/list
+[2016-02-02 10:32:11.380] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:32:51.630] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:32:51.659] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:32:51.677] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:32:51.677] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:32:51.678] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:32:51.679] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:32:51.680] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:32:51.680] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:32:51.681] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:32:51.690] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:248 ms
+[2016-02-02 10:32:51.706] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:32:51.709] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:32:51.713] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:32:52.546] [INFO] normal - GET /cm/list
+[2016-02-02 10:32:52.567] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:33:23.072] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:33:23.097] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:33:23.117] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:33:23.118] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:33:23.118] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:33:23.119] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:33:23.120] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:33:23.121] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:33:23.121] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:33:23.133] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:255 ms
+[2016-02-02 10:33:23.144] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:33:23.149] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:33:23.160] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:33:24.357] [INFO] normal - GET /cm/list
+[2016-02-02 10:33:24.383] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:34:06.154] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:34:06.179] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:34:06.190] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:34:06.194] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:34:06.195] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:34:06.196] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:34:06.197] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:34:06.197] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:34:06.198] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:34:06.209] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:237 ms
+[2016-02-02 10:34:06.218] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:34:06.221] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:34:06.230] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:34:07.526] [INFO] normal - GET /cm/list
+[2016-02-02 10:34:07.548] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:35:11.059] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:35:11.084] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:35:11.095] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:35:11.096] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:35:11.097] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:35:11.099] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:35:11.101] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:35:11.101] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:35:11.102] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:35:11.111] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:231 ms
+[2016-02-02 10:35:11.122] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:35:11.124] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:35:11.130] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:35:12.126] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 10:35:12.137] [INFO] normal - GET /cm/list
+[2016-02-02 10:35:12.163] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:35:34.281] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:35:34.306] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:35:34.317] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:35:34.318] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:35:34.318] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:35:34.323] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:35:34.324] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:35:34.324] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:35:34.325] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:35:34.336] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:243 ms
+[2016-02-02 10:35:34.346] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:35:34.348] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:35:34.354] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:35:35.394] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC1
+[2016-02-02 10:35:35.407] [INFO] normal - GET /cm/list
+[2016-02-02 10:35:35.434] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:36:00.247] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:36:00.272] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:36:00.283] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:36:00.288] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:36:00.288] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:36:00.289] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:36:00.290] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:36:00.290] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:36:00.291] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:36:00.305] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:239 ms
+[2016-02-02 10:36:00.314] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:36:00.315] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:36:00.321] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:36:01.431] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC1
+[2016-02-02 10:36:01.445] [INFO] normal - GET /cm/list
+[2016-02-02 10:36:01.477] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:36:29.351] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:36:29.377] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:36:29.392] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:36:29.393] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:36:29.394] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:36:29.395] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:36:29.395] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:36:29.396] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:36:29.396] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:36:29.404] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:244 ms
+[2016-02-02 10:36:29.416] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:36:29.418] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:36:29.422] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:36:30.261] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC1
+[2016-02-02 10:36:30.276] [INFO] normal - GET /cm/list
+[2016-02-02 10:36:30.324] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:39:00.055] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:39:00.081] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:39:00.092] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:39:00.096] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:39:00.096] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:39:00.098] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:39:00.099] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:39:00.099] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:39:00.100] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:39:00.112] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:242 ms
+[2016-02-02 10:39:00.123] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:39:00.125] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:39:00.128] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:39:01.031] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC1
+[2016-02-02 10:39:01.046] [INFO] normal - GET /cm/list
+[2016-02-02 10:39:01.094] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:46:07.823] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:46:07.851] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:46:07.869] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:46:07.869] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:46:07.870] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:46:07.871] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:46:07.872] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:46:07.872] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:46:07.873] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:46:07.885] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:251 ms
+[2016-02-02 10:46:07.894] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:46:07.896] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:46:07.901] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:46:08.991] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC1
+[2016-02-02 10:46:09.004] [INFO] normal - GET /cm/list
+[2016-02-02 10:46:09.032] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:46:34.897] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC1
+[2016-02-02 10:46:34.899] [INFO] normal - GET /cm/list
+[2016-02-02 10:46:34.922] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:46:49.078] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 10:46:49.103] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 10:46:49.114] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 10:46:49.119] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 10:46:49.119] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 10:46:49.121] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 10:46:49.122] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 10:46:49.122] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 10:46:49.123] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 10:46:49.134] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:238 ms
+[2016-02-02 10:46:49.147] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 10:46:49.149] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 10:46:49.153] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 10:46:50.487] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 10:46:50.500] [INFO] normal - GET /cm/list
+[2016-02-02 10:46:50.544] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:52:29.030] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 10:52:29.033] [INFO] normal - GET /cm/list
+[2016-02-02 10:52:29.052] [INFO] normal - GET /favicon.ico
+[2016-02-02 10:52:39.913] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 10:52:39.917] [INFO] normal - GET /cm/list
+[2016-02-02 10:52:40.038] [INFO] normal - GET /favicon.ico
+[2016-02-02 11:02:04.309] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 11:02:04.382] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 11:02:04.441] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 11:02:04.441] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 11:02:04.441] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 11:02:04.442] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 11:02:04.444] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 11:02:04.445] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 11:02:04.445] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 11:02:04.455] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:623 ms
+[2016-02-02 11:02:04.471] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 11:02:04.473] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 11:02:04.481] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 11:02:06.726] [INFO] normal - GET /favicon.ico
+[2016-02-02 11:02:07.845] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 11:02:07.856] [INFO] normal - GET /cm/list
+[2016-02-02 11:02:07.873] [INFO] normal - GET /favicon.ico
+[2016-02-02 11:02:14.635] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 11:02:14.660] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 11:02:14.677] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 11:02:14.678] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 11:02:14.678] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 11:02:14.679] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 11:02:14.680] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 11:02:14.681] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 11:02:14.681] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 11:02:14.695] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:248 ms
+[2016-02-02 11:02:14.708] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 11:02:14.711] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 11:02:14.722] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 11:02:15.551] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC1
+[2016-02-02 11:02:31.420] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 11:02:31.446] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 11:02:31.461] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 11:02:31.462] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 11:02:31.463] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 11:02:31.464] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 11:02:31.465] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 11:02:31.465] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 11:02:31.466] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 11:02:31.478] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:244 ms
+[2016-02-02 11:02:31.495] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 11:02:31.497] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 11:02:31.504] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 11:02:32.377] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 11:02:32.391] [INFO] normal - GET /cm/list
+[2016-02-02 11:02:32.421] [INFO] normal - GET /favicon.ico
+[2016-02-02 11:02:39.880] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 11:02:39.907] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 11:02:39.924] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 11:02:39.924] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 11:02:39.925] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 11:02:39.926] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 11:02:39.927] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 11:02:39.927] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 11:02:39.928] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 11:02:39.940] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:253 ms
+[2016-02-02 11:02:39.950] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 11:02:39.951] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 11:02:39.956] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 11:02:40.680] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC1
+[2016-02-02 11:02:40.694] [INFO] normal - GET /cm/list
+[2016-02-02 11:02:40.737] [INFO] normal - GET /favicon.ico
+[2016-02-02 11:30:25.161] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 11:30:25.187] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 11:30:25.205] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 11:30:25.206] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 11:30:25.207] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 11:30:25.208] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 11:30:25.209] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 11:30:25.210] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 11:30:25.210] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 11:30:25.222] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:247 ms
+[2016-02-02 11:30:25.235] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 11:30:25.246] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 11:30:25.251] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 11:36:27.004] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 11:36:27.029] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 11:36:27.047] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 11:36:27.048] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 11:36:27.048] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 11:36:27.049] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 11:36:27.054] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 11:36:27.054] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 11:36:27.054] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 11:36:27.066] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:246 ms
+[2016-02-02 11:36:27.076] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 11:36:27.079] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 11:36:27.091] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 11:37:39.537] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 11:37:39.562] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 11:37:39.573] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 11:37:39.579] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 11:37:39.579] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 11:37:39.580] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 11:37:39.581] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 11:37:39.582] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 11:37:39.582] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 11:37:39.592] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:239 ms
+[2016-02-02 11:37:39.605] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 11:37:39.606] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 11:37:39.610] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 11:38:13.219] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 11:38:13.246] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 11:38:13.265] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 11:38:13.266] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 11:38:13.269] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 11:38:13.270] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 11:38:13.271] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 11:38:13.271] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 11:38:13.271] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 11:38:13.282] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:254 ms
+[2016-02-02 11:38:13.298] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 11:38:13.302] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 11:38:13.305] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 12:40:12.349] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 12:40:12.375] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 12:40:12.392] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 12:40:12.393] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 12:40:12.393] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 12:40:12.396] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 12:40:12.398] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 12:40:12.399] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 12:40:12.399] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 12:40:12.409] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:239 ms
+[2016-02-02 12:40:12.421] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 12:40:12.426] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 12:40:12.433] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 12:40:15.305] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 12:40:15.320] [INFO] normal - GET /cm/list
+[2016-02-02 12:40:15.468] [INFO] normal - GET /favicon.ico
+[2016-02-02 12:41:37.099] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 12:41:37.127] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 12:41:37.145] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 12:41:37.146] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 12:41:37.147] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 12:41:37.148] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 12:41:37.149] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 12:41:37.150] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 12:41:37.150] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 12:41:37.161] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:252 ms
+[2016-02-02 12:41:37.176] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 12:41:37.184] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 12:41:37.189] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 12:41:38.708] [INFO] normal - GET /cm/list
+[2016-02-02 12:41:38.724] [INFO] normal - GET /favicon.ico
+[2016-02-02 12:41:45.557] [INFO] normal - GET /favicon.ico
+[2016-02-02 12:46:55.478] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 12:46:55.568] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 12:46:55.620] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 12:46:55.620] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 12:46:55.621] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 12:46:55.623] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 12:46:55.625] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 12:46:55.626] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 12:46:55.627] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 12:46:55.643] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:637 ms
+[2016-02-02 12:46:55.654] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 12:46:55.656] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 12:46:55.664] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 12:46:56.533] [INFO] normal - GET /cm/list
+[2016-02-02 12:46:56.554] [INFO] normal - GET /favicon.ico
+[2016-02-02 12:47:32.348] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 12:47:32.373] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 12:47:32.390] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 12:47:32.391] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 12:47:32.391] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 12:47:32.393] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 12:47:32.394] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 12:47:32.394] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 12:47:32.394] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 12:47:32.403] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:239 ms
+[2016-02-02 12:47:32.414] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 12:47:32.416] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 12:47:32.420] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 12:47:38.767] [INFO] normal - GET /cm/list
+[2016-02-02 12:47:38.786] [INFO] normal - GET /favicon.ico
+[2016-02-02 12:48:58.969] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 12:48:58.995] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 12:48:59.021] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 12:48:59.021] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 12:48:59.022] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 12:48:59.023] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 12:48:59.024] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 12:48:59.024] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 12:48:59.025] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 12:48:59.034] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:250 ms
+[2016-02-02 12:48:59.046] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 12:48:59.050] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 12:48:59.057] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 12:49:23.516] [INFO] normal - GET /cm/list
+[2016-02-02 12:49:23.538] [INFO] normal - GET /favicon.ico
+[2016-02-02 12:50:33.592] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 12:50:33.628] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 12:50:33.670] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 12:50:33.670] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 12:50:33.670] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 12:50:33.672] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 12:50:33.675] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 12:50:33.676] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 12:50:33.680] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 12:50:33.698] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:300 ms
+[2016-02-02 12:50:33.711] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 12:50:33.713] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 12:50:33.717] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 12:50:45.706] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 12:50:45.732] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 12:50:45.760] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 12:50:45.761] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 12:50:45.761] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 12:50:45.763] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 12:50:45.766] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 12:50:45.766] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 12:50:45.767] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 12:50:45.774] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:261 ms
+[2016-02-02 12:50:45.792] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 12:50:45.793] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 12:50:45.797] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 12:50:46.740] [INFO] normal - GET /cm/list
+[2016-02-02 12:50:46.804] [INFO] normal - GET /favicon.ico
+[2016-02-02 12:51:38.682] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 12:51:38.777] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 12:51:38.834] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 12:51:38.835] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 12:51:38.835] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 12:51:38.837] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 12:51:38.839] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 12:51:38.839] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 12:51:38.839] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 12:51:38.852] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:656 ms
+[2016-02-02 12:51:38.865] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 12:51:38.867] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 12:51:38.874] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 12:51:39.853] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - select A.* from XL_STUDENT A, XL_USER_STUDENT_REL B WHERE A.studentId=B.studentId and B.userId='1'
+[2016-02-02 12:51:39.856] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 12:51:39.871] [INFO] normal - GET /cm/list
+[2016-02-02 12:51:39.949] [INFO] normal - GET /favicon.ico
+[2016-02-02 12:52:10.181] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 12:52:10.265] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 12:52:10.328] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 12:52:10.329] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 12:52:10.330] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 12:52:10.333] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 12:52:10.336] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 12:52:10.337] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 12:52:10.337] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 12:52:10.346] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:645 ms
+[2016-02-02 12:52:10.356] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 12:52:10.358] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 12:52:10.367] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 12:52:11.505] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - select A.* from XL_STUDENT A, XL_USER_STUDENT_REL B WHERE A.studentId=B.studentId and B.userId='1'
+[2016-02-02 12:52:11.513] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 12:52:11.527] [INFO] normal - GET /cm/list
+[2016-02-02 12:52:11.555] [INFO] normal - GET /favicon.ico
+[2016-02-02 12:55:18.308] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - select A.* from XL_STUDENT A, XL_USER_STUDENT_REL B WHERE A.studentId=B.studentId and B.userId='1'
+[2016-02-02 12:55:18.308] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 12:55:18.314] [INFO] normal - GET /cm/list
+[2016-02-02 12:55:18.335] [INFO] normal - GET /favicon.ico
+[2016-02-02 12:55:24.231] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 12:55:24.318] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 12:55:24.372] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 12:55:24.373] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 12:55:24.373] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 12:55:24.375] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 12:55:24.377] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 12:55:24.377] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 12:55:24.378] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 12:55:24.386] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:627 ms
+[2016-02-02 12:55:24.404] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 12:55:24.411] [WARN] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接异常
+[2016-02-02 12:55:33.491] [INFO] normal - GET /cm/list
+[2016-02-02 12:55:33.509] [INFO] normal - GET /favicon.ico
+[2016-02-02 12:55:51.280] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 12:55:51.305] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 12:55:51.317] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 12:55:51.319] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 12:55:51.322] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 12:55:51.324] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 12:55:51.325] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 12:55:51.325] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 12:55:51.326] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 12:55:51.334] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:242 ms
+[2016-02-02 12:55:51.345] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 12:55:52.525] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 12:55:52.876] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 12:55:55.482] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - select A.* from XL_STUDENT A, XL_USER_STUDENT_REL B WHERE A.studentId=B.studentId and B.userId='1'
+[2016-02-02 12:55:56.175] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - SELECT * FROM content ORDER BY id DESC
+[2016-02-02 12:55:56.526] [INFO] normal - GET /cm/list
+[2016-02-02 12:55:56.542] [INFO] normal - GET /favicon.ico
+[2016-02-02 12:56:42.716] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 12:56:42.743] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 12:56:42.762] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 12:56:42.763] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 12:56:42.763] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 12:56:42.765] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 12:56:42.766] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 12:56:42.766] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 12:56:42.767] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 12:56:42.778] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:247 ms
+[2016-02-02 12:56:42.784] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 12:56:43.999] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 12:56:44.539] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 12:56:46.753] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - select A.* from XL_STUDENT A, XL_USER_STUDENT_REL B WHERE A.studentId=B.studentId and B.userId='1'
+[2016-02-02 12:56:47.177] [INFO] normal - GET /cm/list
+[2016-02-02 12:56:47.267] [INFO] normal - GET /favicon.ico
+[2016-02-02 12:58:03.965] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 12:58:04.065] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 12:58:04.129] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 12:58:04.130] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 12:58:04.130] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 12:58:04.133] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 12:58:04.136] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 12:58:04.137] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 12:58:04.139] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 12:58:04.150] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:659 ms
+[2016-02-02 12:58:04.157] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 12:58:05.371] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 12:58:05.867] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 12:58:08.432] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - select A.* from XL_STUDENT A, XL_USER_STUDENT_REL B WHERE A.studentId=B.studentId and B.userId='1'
+[2016-02-02 12:58:59.864] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 12:58:59.961] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 12:59:00.019] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 12:59:00.020] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 12:59:00.020] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 12:59:00.023] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 12:59:00.027] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 12:59:00.028] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 12:59:00.029] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 12:59:00.040] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:657 ms
+[2016-02-02 12:59:00.047] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 12:59:01.225] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 12:59:01.631] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 12:59:01.924] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - select A.* from XL_STUDENT A, XL_USER_STUDENT_REL B WHERE A.studentId=B.studentId and B.userId='1'
+[2016-02-02 12:59:12.266] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 12:59:12.370] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 12:59:12.425] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 12:59:12.426] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 12:59:12.426] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 12:59:12.429] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 12:59:12.431] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 12:59:12.432] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 12:59:12.432] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 12:59:12.440] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:654 ms
+[2016-02-02 12:59:12.452] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 12:59:13.577] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 12:59:13.985] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 12:59:16.508] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - select A.* from XL_STUDENT A, XL_USER_STUDENT_REL B WHERE A.studentId=B.studentId and B.userId='1'
+[2016-02-02 14:49:02.067] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 14:49:02.154] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 14:49:02.213] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 14:49:02.214] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 14:49:02.214] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 14:49:02.217] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 14:49:02.220] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 14:49:02.221] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 14:49:02.222] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 14:49:02.232] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:657 ms
+[2016-02-02 14:49:02.238] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 14:49:02.466] [WARN] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接异常
+[2016-02-02 14:49:11.605] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 14:49:11.630] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 14:49:11.646] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 14:49:11.647] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 14:49:11.647] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 14:49:11.649] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 14:49:11.650] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 14:49:11.650] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 14:49:11.651] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 14:49:11.660] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:258 ms
+[2016-02-02 14:49:11.670] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 14:49:14.790] [WARN] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接异常
+[2016-02-02 14:50:05.805] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 14:50:05.830] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 14:50:05.842] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 14:50:05.845] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 14:50:05.847] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 14:50:05.850] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 14:50:05.851] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 14:50:05.851] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 14:50:05.852] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 14:50:05.863] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:239 ms
+[2016-02-02 14:50:05.869] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 14:50:05.996] [WARN] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接异常
+[2016-02-02 14:50:51.002] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 14:50:51.026] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 14:50:51.038] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 14:50:51.041] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 14:50:51.043] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 14:50:51.045] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 14:50:51.046] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 14:50:51.047] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 14:50:51.047] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 14:50:51.058] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:241 ms
+[2016-02-02 14:50:51.067] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 14:51:14.663] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 14:51:14.688] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 14:51:14.700] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 14:51:14.701] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 14:51:14.705] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 14:51:14.707] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 14:51:14.708] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 14:51:14.708] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 14:51:14.709] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 14:51:14.717] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:237 ms
+[2016-02-02 14:51:14.727] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 14:51:15.529] [WARN] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接异常
+[2016-02-02 14:52:06.670] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 14:52:06.755] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 14:52:06.812] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 14:52:06.812] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 14:52:06.812] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 14:52:06.815] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 14:52:06.817] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 14:52:06.817] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 14:52:06.817] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 14:52:06.829] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:638 ms
+[2016-02-02 14:52:06.840] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 14:52:07.522] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 14:52:07.678] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 14:52:52.288] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 14:52:52.313] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 14:52:52.330] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 14:52:52.331] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 14:52:52.331] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 14:52:52.335] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 14:52:52.338] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 14:52:52.338] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 14:52:52.339] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 14:52:52.353] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:267 ms
+[2016-02-02 14:52:52.371] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 14:52:52.602] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 14:52:52.686] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 14:52:54.863] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - select A.* from XL_STUDENT A, XL_USER_STUDENT_REL B WHERE A.studentId=B.studentId and B.userId='1'
+[2016-02-02 14:54:59.932] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入入口依赖库完成..
+[2016-02-02 14:54:59.958] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 配置中静态目录信息载入完毕..
+[2016-02-02 14:54:59.975] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/user/show
+[2016-02-02 14:54:59.975] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/show
+[2016-02-02 14:54:59.976] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/uploads
+[2016-02-02 14:54:59.978] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/cm/list
+[2016-02-02 14:54:59.980] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:post 路径:/test/fun1
+[2016-02-02 14:54:59.980] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/controller/controllerEnter.js - 方法:get 路径:/test/fun2
+[2016-02-02 14:54:59.981] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - 载入/controllers 下控制器 完成..
+[2016-02-02 14:54:59.991] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - Web 服务器启动监听  端口3001 启动时间:242 ms
+[2016-02-02 14:54:59.997] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/redis/redisPool.js - 连接Redis 数据库 0 成功 ,配置 {"SERVER":"127.0.0.1","PORT":"6379","PASSWORD":"","POOLSIZE":10,"DB":0,"TTL":11}
+[2016-02-02 14:55:00.246] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - show tables
+[2016-02-02 14:55:00.345] [INFO] /Users/pz/Documents/nodejs/express/c2/app.js - MYSQL 连接成功
+[2016-02-02 14:55:12.306] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - select A.* from XL_STUDENT A, XL_USER_STUDENT_REL B WHERE A.studentId=B.studentId and B.userId='1'
+[2016-02-02 14:55:13.244] [INFO] /Users/pz/Documents/nodejs/express/c2/core/utils/pool/mysql/mysqlPool.js - select A.* from XL_STUDENT A, XL_USER_STUDENT_REL B WHERE A.studentId=B.studentId and B.userId='1'
