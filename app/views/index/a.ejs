@@ -1,9 +1,8 @@
 <% include ../global/head %>
 {
 "abc":<%- :data | jsonstr %>,
-    "ab1":<%-: data.contents |str%>,
-    "bbb":<%-: data.fu("bbb") |str%>,
-    "fuzha":{"abc":1,
-    }
+"ab1":<%- : data.contents | str %>,
+"bbb":<%- : data.fu("bbb") | str %>,
+"fuzha":{"abc":1}
 }
 <% include ../global/footer %>

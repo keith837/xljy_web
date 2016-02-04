@@ -1,3 +1,4 @@
+
 var startTime = new Date().getTime();
 var express = require('express');
 var app = express();
@@ -9,11 +10,14 @@ var webConfig = require("./core/config/webConfig");
 var log4js = require('log4js');
 var loggerCall = require('./core/utils/logger/logger');
 var logger = loggerCall(__filename);
-
+//process.on('uncaughtException', function (err) {
+//    //app.send("t error,process end");
+//    logger.error('Caught exception: ', err);
+//});
 var controllerEnter = require("./core/utils/controller/controllerEnter");
 
 var mysqlPool = require("./core/utils/pool/mysql/mysqlPool");
-var redisPool = require("./core/utils/pool/redis/redisPool");
+//var redisPool = require("./core/utils/pool/redis/redisPool");
 
 logger.info("载入入口依赖库完成..");
 

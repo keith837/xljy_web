@@ -7,6 +7,7 @@ var redisPool = require("../pool/redis/redisPool");
 var basicController = function(filename){
     this.db = mysqlPool;
     this.uploadPath=__dirname+"/../../../app/cache/upload/";
+    this.uploadJsonPath = __dirname + "/../../../app/cache/upload/";
     this.logger = require("../logger/logger")(filename);
     this.fileUtils = require('../common/fileUtils');
     this.redis = redisPool;
@@ -16,15 +17,15 @@ basicController.prototype.init = function(dy){
     var self = this;
     for(var x in dy){
         if (typeof dy[x] == "function") {
-            this[x] = function () {
-                var that = this;
+            (this[x] = function () {
+                //var temp = dy[x];
                 try {
-                    dy[x].apply(that, arguments);
+                    arguments.callee.cfn.apply(self, arguments);
                 } catch (err) {
                     console.log(err);
                     arguments[2](err);
                 }
-            }
+            }).cfn = dy[x];
         }
     }
     return this;

@@ -46,6 +46,24 @@ mysqlPool.prototype.query = function (SQL, args, callback) {
         });
     });
 }
+mysqlPool.prototype.queryByPage = function (SQL, args, pagesize, page, callback) {
+    this.pool.getConnection(function (err, connection) {
+        if (err && err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
+            throw new Error('too long to count table rows!');
+        }
+        if (!!err) {
+            callback(err, connection);
+            return;
+        }
+        var genSql = mysql.format(SQL, args);
+        mysqlConfig.PRINTSQL && logger.info(genSql);
+        connection.query({sql: genSql, timeout: mysqlConfig.QUERYTIMEOUT}, function (err, rows) {
+
+
+        });
+    });
+}
+
 
 mysqlPool.prototype.queryOne = function (SQL, args, callback) {
     this.pool.getConnection(function (err, connection) {

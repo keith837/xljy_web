@@ -27,15 +27,15 @@ var routerConfig = {
             }
         },
         test: {
-            "fun1": {
-                "url": "/test/fun1",    //路由地址
+            "doUploadXls": {
+                "url": "/test/doUploadXls",    //路由地址
                 "method": "post",        //请求方法
-                "description": "简单的hello world例子"  //简介
+                "description": "fun1"  //简介
             },
-            "fun2": {
-                "url": "/test/fun2",    //路由地址
+            "postXls": {
+                "url": "/test/postXls",    //路由地址
                 "method": "get",        //请求方法
-                "description": "简单的hello world例子"  //简介
+                "description": "上传xls 提交页"  //简介
             }
 
         }
