@@ -8,6 +8,7 @@ var basicController = require("../../core/utils/controller/basicController");
 module.exports = new basicController(__filename).init({
     userShow: function (request, response) {
         console.log("Hello world！！");
+        console.log(this.cacheManager);
         //this.db.queryOne("SELECT * FROM ?? WHERE ? = ?", ["user", "1", "1"], function (err, res) {
         //    console.log(request.query);
         //    response.json(res);

@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>响亮教育管理平台</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css"/>
+    <link rel="stylesheet" href="css/fullcalendar.css"/>
+    <link rel="stylesheet" href="css/unicorn.main.css"/>
+    <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
+</head>
+<body>
+
+
+<div id="content">
+    <div id="breadcrumb">
+        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 设备管理</a>
+        <a href="#" class="current">手环管理</a>
+    </div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-box">
+                    <div class="widget-title">
+								<span class="icon">
+									<i class="icon-th"></i>
+								</span>
+                        <h5>手环列表</h5>
+                    </div>
+                    <div class="widget-content nopadding">
+                        <table class="table table-bordered data-table">
+                            <thead>
+                            <tr>
+                                <th>设备ID</th>
+                                <th>学校</th>
+                                <th>班级</th>
+                                <th>学生姓名</th>
+                                <th width="25%">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <div id="footer" class="span12">
+                Copyright 浙江响亮教育科技股份有限公司 © 2015 <a href="https://wrapbootstrap.com/user/diablo9983">响亮教育</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery.ui.custom.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.uniform.js"></script>
+<script src="js/select2.min.js"></script>
+<script src="js/jquery.dataTables.js"></script>
+<script src="js/unicorn.js"></script>
+<!--<script src="js/unicorn.tables.js"></script>-->
+<script>
+    /**
+     * tables
+     **/
+    $(document).ready(function () {
+
+        $('.data-table').dataTable({
+            "oLanguage": {
+                "sLengthMenu": "每页显示 _MENU_ 条记录",
+                "sZeroRecords": "抱歉， 没有找到",
+                "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                "sInfoEmpty": "没有数据",
+                "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "前一页",
+                    "sNext": "后一页",
+                    "sLast": "尾页"
+                },
+                "sZeroRecords": "没有检索到数据",
+                "sProcessing": "<img src='./loading.gif' />"
+            },
+//            "bInfo": true,
+            "bJQueryUI": true,
+            "bLengthChange": false,
+//            "bPaginate":true,
+            "sPaginationType": "full_numbers",
+            "iDisplayLength": 3,
+            "bFilter": false,
+//            "sDom": '<""l>t<"F"fp>',
+
+//            "iTotalRecords":10,/*
+//             "bProcessing": true,
+            "bServerSide": true,
+            "sAjaxSource": "../device/list",
+            "sServerMethod": "POST",
+            "aoColumns": [
+                {"mDataProp": "deviceId"},
+                {"mDataProp": "deviceSign"},
+                {"mDataProp": "deviceName"},
+                {"mDataProp": "studentId"},
+                {"mDataProp": "state"}
+            ]
+            //"fnServerParams": function (aoData) {
+            //    aoData.push({ "name": "name1", "value": "value1" });
+            //    aoData.push({ "name": "name2", "value": "value2" });
+            //}
+        });
+
+        $('input[type=checkbox],input[type=radio],input[type=file]').uniform();
+
+        $('select').select2();
+
+        $("span.icon input:checkbox, th input:checkbox").click(function () {
+            var checkedStatus = this.checked;
+            var checkbox = $(this).parents('.widget-box').find('tr td:first-child input:checkbox');
+            checkbox.each(function () {
+                this.checked = checkedStatus;
+                if (checkedStatus == this.checked) {
+                    $(this).closest('.checker > span').removeClass('checked');
+                }
+                if (this.checked) {
+                    $(this).closest('.checker > span').addClass('checked');
+                }
+            });
+        });
+    });
+
+</script>
+</body>
+</html>

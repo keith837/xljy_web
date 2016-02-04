@@ -1,7 +1,7 @@
-
 var startTime = new Date().getTime();
 var express = require('express');
 var app = express();
+var async = require("async");
 var ejs = require('ejs');
 var tplFilter = require("./app/filter/tplFilter")
 var bodyParser = require('body-parser')
@@ -15,21 +15,19 @@ var logger = loggerCall(__filename);
 //    logger.error('Caught exception: ', err);
 //});
 var controllerEnter = require("./core/utils/controller/controllerEnter");
-
 var mysqlPool = require("./core/utils/pool/mysql/mysqlPool");
-//var redisPool = require("./core/utils/pool/redis/redisPool");
 
 logger.info("载入入口依赖库完成..");
 
 //设置模板引擎
-app.engine(".ejs",ejs.__express);
-app.set("view engine",'ejs');
-app.set("views",webConfig.VIEWSPATH);
+app.engine(".ejs", ejs.__express);
+app.set("view engine", 'ejs');
+app.set("views", webConfig.VIEWSPATH);
 //注册过滤器
 new tplFilter(ejs.filters);
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 
 
 webConfig.PRINT_ACCESS_LOG && app.use(log4js.connectLogger(loggerCall('normal'), {
@@ -43,10 +41,6 @@ for (var x in webConfig.STATICPATH) {
 }
 logger.info("配置中静态目录信息载入完毕..");
 
-//控制器挂载
-controllerEnter.bootControllers(app);
-logger.info("载入/controllers 下控制器 完成..");
-
 //错误处理中间件
 app.use(function (err, req, res, next) {
     // 业务逻辑
@@ -57,21 +51,36 @@ app.use(function (err, req, res, next) {
     res.json({state: 0, error: err, msg: err.toString()});
 });
 
-var server = app.listen(3001, function () {
-    var host = server.address().address;
-    var port = server.address().port;
+//控制器挂载
 
-    logger.info('Web 服务器启动监听  端口%s 启动时间:%s ms', port, Math.ceil(new Date().getTime() - startTime));
-});
+var server;
+async.waterfall([
+        function (cb) {
+            mysqlPool.checkconnected(cb);
+        },
+        function (cb) {
+            app.cacheManager = require("./core/utils/cache/cacheManager").init(cb);
+        },
+        function (cb) {
+            controllerEnter.bootControllers(app);
+            logger.info("载入/controllers 下控制器 完成..");
+            server = app.listen(3001, cb);
+        },
+        function (next) {
+            var host = server.address().address;
+            var port = server.address().port;
+            logger.info('Web 服务器启动监听  端口%s 启动时间:%s ms', port, Math.ceil(new Date().getTime() - startTime));
+            next();
+        }
+    ],
+    function (e, res) {
+        if (e) {
+            logger.error(e);
+        }
+        logger.info('启动流程结束');
+    })
 
 
-mysqlPool.query("show tables", {}, function (err, res) {
-    if(err){
-        logger.warn("MYSQL 连接异常");
-    }else{
-        logger.info("MYSQL 连接成功");
-    }
-})
 /*
  测试.
  */

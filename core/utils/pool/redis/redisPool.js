@@ -17,7 +17,7 @@ client.select(redisConfig.DB, function() {
 });
 
 client.on("error", function (err) {
-    logger.info("redis client Error " + err);
+    logger.error("redis client Error " + err);
 });
 module.exports =client;
 

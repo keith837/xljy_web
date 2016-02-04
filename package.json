@@ -12,6 +12,7 @@
   "author": "pzl",
   "license": "ISC",
   "dependencies": {
+    "async": "^1.5.2",
     "body-parser": "^1.14.2",
     "ejs": "^1.0.0",
     "express": "^4.13.4",

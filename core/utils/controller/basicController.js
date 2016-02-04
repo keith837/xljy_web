@@ -5,6 +5,7 @@ var mysqlPool = require("../pool/mysql/mysqlPool");
 var redisPool = require("../pool/redis/redisPool");
 
 var basicController = function(filename){
+    this.cacheManager = null;
     this.db = mysqlPool;
     this.uploadPath=__dirname+"/../../../app/cache/upload/";
     this.uploadJsonPath = __dirname + "/../../../app/cache/upload/";

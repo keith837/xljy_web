@@ -24,6 +24,7 @@ function add_to_mapping_footer(){
 function bootController(app,name,map) {
     var name = name;
     var actions = require('../../../app/controllers/' + name+"Controller");
+    actions.cacheManager = app.cacheManager;
     var mapping = map;
     add_to_mapping_header(name);
     for(var x in mapping){

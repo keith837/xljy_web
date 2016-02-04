@@ -38,6 +38,13 @@ var routerConfig = {
                 "description": "上传xls 提交页"  //简介
             }
 
+        },
+        device: {
+            "devicelist": {
+                "url": "/device/list",
+                "method": "post",
+                "description": "设备列表"
+            }
         }
     }
 }

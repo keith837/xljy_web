@@ -29,6 +29,16 @@ mysqlPool.prototype.init = function () {
         logger.error(err)
     })
 }
+mysqlPool.prototype.checkconnected = function (cb) {
+    this.query("show tables", {}, function (err, res) {
+        if (err) {
+            logger.warn("MYSQL 连接异常");
+        } else {
+            logger.info("MYSQL 连接成功");
+        }
+        cb();
+    })
+}
 mysqlPool.prototype.query = function (SQL, args, callback) {
     this.pool.getConnection(function (err, connection) {
         if (err && err.code === 'PROTOCOL_SEQUENCE_TIMEOUT') {
