@@ -9,15 +9,16 @@ module.exports = new basicController(__filename).init({
         var start = parseInt(request.body.iDisplayStart);
         var pagesize = parseInt(request.body.iDisplayLength);
 
-        this.db.queryOne("SELECT count(*) as co FROM XL_DEVICE ", {}, function (err, res) {
-            var allsize = res.co;
-            self.db.query("SELECT * FROM XL_DEVICE LIMIT ?,?", [start, pagesize], function (err, res) {
-                response.json({iTotalRecords: allsize, iTotalDisplayRecords: allsize, aaData: res});
-            })
-        })
+
+        this.model['device'].queryPage(start, pagesize, function (err, allsize, res) {
+            if (err) {
+                next(err);
+                return;
+            }
+            response.json(self.createPageData(allsize, res));
+        });
 
 
     }
-
 
 });

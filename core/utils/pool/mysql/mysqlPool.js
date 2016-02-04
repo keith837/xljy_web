@@ -88,6 +88,10 @@ mysqlPool.prototype.queryOne = function (SQL, args, callback) {
         mysqlConfig.PRINTSQL&&logger.info(genSql);
         connection.query({sql:genSql,timeout: mysqlConfig.QUERYTIMEOUT}, function (err, rows) {
             connection.release();
+            if (err) {
+                callback(err);
+                return;
+            }
             callback(err, rows[0]);
         });
     });

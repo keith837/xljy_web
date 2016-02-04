@@ -40,9 +40,15 @@ var routerConfig = {
 
         },
         device: {
+            "usedModel": ['device/device'],
             "devicelist": {
                 "url": "/device/list",
                 "method": "post",
+                "description": "设备列表"
+            },
+            "devicelist2": {
+                "url": "/device/list2",
+                "method": "get",
                 "description": "设备列表"
             }
         }

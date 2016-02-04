@@ -10,10 +10,11 @@ var webConfig = require("./core/config/webConfig");
 var log4js = require('log4js');
 var loggerCall = require('./core/utils/logger/logger');
 var logger = loggerCall(__filename);
-//process.on('uncaughtException', function (err) {
-//    //app.send("t error,process end");
-//    logger.error('Caught exception: ', err);
-//});
+process.on('uncaughtException', function (err) {
+    //app.send("t error,process end");
+    logger.error("未捕获的异常");
+    logger.error('Caught exception: ', err);
+});
 var controllerEnter = require("./core/utils/controller/controllerEnter");
 var mysqlPool = require("./core/utils/pool/mysql/mysqlPool");
 
@@ -41,15 +42,7 @@ for (var x in webConfig.STATICPATH) {
 }
 logger.info("配置中静态目录信息载入完毕..");
 
-//错误处理中间件
-app.use(function (err, req, res, next) {
-    // 业务逻辑
-    if (res.headersSent) {
-        return next(err);
-    }
-    res.status(500);
-    res.json({state: 0, error: err, msg: err.toString()});
-});
+
 
 //控制器挂载
 
@@ -64,6 +57,16 @@ async.waterfall([
         function (cb) {
             controllerEnter.bootControllers(app);
             logger.info("载入/controllers 下控制器 完成..");
+            //错误处理中间件
+            app.use(function (err, req, res, next) {
+                logger.error("======错误句柄next接受错误=======")
+                // 业务逻辑
+                if (res.headersSent) {
+                    return next(err);
+                }
+                res.status(500);
+                res.json({state: 0, error: err, msg: err.toString()});
+            });
             server = app.listen(3001, cb);
         },
         function (next) {
