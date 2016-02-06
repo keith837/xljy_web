@@ -7,7 +7,7 @@ var tplFilter = require("./app/filter/tplFilter");
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 
-var loginFilter = require("./core/filter/loginFilter.js");
+var loginFilter = require("./core/filter/loginFilter");
 var webConfig = require("./core/config/webConfig");
 var log4js = require('log4js');
 var loggerCall = require('./core/utils/logger/logger');
