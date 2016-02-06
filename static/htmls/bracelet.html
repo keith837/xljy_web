@@ -4,12 +4,16 @@
     <title>响亮教育管理平台</title>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css"/>
-    <link rel="stylesheet" href="css/fullcalendar.css"/>
-    <link rel="stylesheet" href="css/unicorn.main.css"/>
-    <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="css/fullcalendar.css" />
+    <link rel="stylesheet" href="css/colorpicker.css" />
+    <link rel="stylesheet" href="css/datepicker.css" />
+    <link rel="stylesheet" href="css/uniform.css" />
+    <link rel="stylesheet" href="css/select2.css" />
+    <link rel="stylesheet" href="css/unicorn.main.css" />
+    <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
 <body>
 
@@ -18,6 +22,48 @@
     <div id="breadcrumb">
         <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 设备管理</a>
         <a href="#" class="current">手环管理</a>
+    </div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-box">
+                    <div class="widget-title">
+								<span class="icon">
+									<i class="icon-th"></i>
+								</span>
+                        <h5>查询条件</h5>
+                    </div>
+                    <div class="widget-content nopadding">
+                        <form class="form-horizontal form-search">
+                            <div class="controls controls-row">
+                                <select class="span3">
+                                    <option value="1">东冠幼儿园</option>
+                                    <option value="2">萧山幼儿园</option>
+                                    <option value="3">响亮幼儿园</option>
+                                    <option value="4">滨文幼儿园</option>
+                                    <option value="5">东阳文博幼儿园</option>
+                                </select>
+                                <select class="span3">
+                                    <option value="1">托一班</option>
+                                    <option value="2">托二班</option>
+                                    <option value="3">小一班</option>
+                                    <option value="4">中一班</option>
+                                    <option value="5">大一班</option>
+                                </select>
+                            </div>
+                            <div class="controls controls-row">
+                                <div class="input-append">
+                                    <input type="text" class="span4 search-query">
+                                    <button type="submit" class="btn">搜索</button>
+                                </div>
+                                <a href="#" class="btn">新增设备</a>
+                                <a href="fileInput.html" class="btn" target="_self">批量导入</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="container-fluid">
         <div class="row-fluid">
@@ -37,7 +83,7 @@
                                 <th>学校</th>
                                 <th>班级</th>
                                 <th>学生姓名</th>
-                                <th width="25%">操作</th>
+                                <th width="23%">操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -59,10 +105,14 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.ui.custom.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-colorpicker.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
 <script src="js/jquery.uniform.js"></script>
 <script src="js/select2.min.js"></script>
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
+<script src="js/unicorn.form_common.js" charset="utf-8"></script>
+
 <!--<script src="js/unicorn.tables.js"></script>-->
 <script>
     /**
@@ -84,16 +134,17 @@
                     "sLast": "尾页"
                 },
                 "sZeroRecords": "没有检索到数据",
-                "sProcessing": "<img src='./loading.gif' />"
+                "sProcessing": "<img src='./img/loading.gif' />"
             },
 //            "bInfo": true,
             "bJQueryUI": true,
             "bLengthChange": false,
 //            "bPaginate":true,
+            "bProcessing" : true,
             "sPaginationType": "full_numbers",
             "iDisplayLength": 3,
             "bFilter": false,
-//            "sDom": '<""l>t<"F"fp>',
+            "sDom": '<""l>t<"F"fp>',
 
 //            "iTotalRecords":10,/*
 //             "bProcessing": true,
@@ -104,8 +155,15 @@
                 {"mDataProp": "deviceId"},
                 {"mDataProp": "deviceSign"},
                 {"mDataProp": "deviceName"},
-                {"mDataProp": "studentId"},
-                {"mDataProp": "state"}
+                {"mDataProp": "studentId"}
+            ],
+            "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
+                {
+                    "targets": [4],
+                    "data": null,
+                    "bSortable": false,
+                    "defaultContent": "<button class=\"btn\"><i class=\"icon-eye-open\"></i> 详情</button>&nbsp;&nbsp;<button class=\"btn btn-primary\"><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\"><i class=\"icon-remove icon-white\"></i> 删除</button>"
+                }
             ]
             //"fnServerParams": function (aoData) {
             //    aoData.push({ "name": "name1", "value": "value1" });
@@ -113,7 +171,7 @@
             //}
         });
 
-        $('input[type=checkbox],input[type=radio],input[type=file]').uniform();
+        /*$('input[type=checkbox],input[type=radio],input[type=file]').uniform();
 
         $('select').select2();
 
@@ -129,7 +187,7 @@
                     $(this).closest('.checker > span').addClass('checked');
                 }
             });
-        });
+        });*/
     });
 
 </script>
