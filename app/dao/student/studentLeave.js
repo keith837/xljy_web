@@ -1,4 +1,4 @@
-var mysqlUtil = require("../../../core/utils/pool/mysql/mysqlPool")
+var mysqlUtil = require("../../../core/utils/pool/mysql/mysqlPool");
 var StudentLeave = module.exports;
 
 StudentLeave.save = function (args, callback) {
