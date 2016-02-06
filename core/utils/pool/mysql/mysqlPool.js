@@ -97,6 +97,15 @@ mysqlPool.prototype.queryOne = function (SQL, args, callback) {
     });
 }
 
+<<<<<<< HEAD
+mysqlPool.prototype.getConnection = function(callback){
+    this.pool.getConnection(function(err, conn){
+        callback.apply(null, [err, conn]);
+    });
+}
+
+=======
+>>>>>>> remotes/origin/master
 mysqlPool.prototype.transaction = function(callback){
     this.pool.getConnection(function (err, connection) {
         if(!!err){
