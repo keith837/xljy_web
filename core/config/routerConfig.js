@@ -105,14 +105,40 @@ var routerConfig = {
         device: {
             "usedModel": ['device/device'],
             "devicelist": {
-                "url": "/device/list",
+                "url": "/api/device/list",
                 "method": "post",
                 "description": "设备列表"
             },
             "devicelist2": {
-                "url": "/device/list2",
+                "url": "/api/device/list2",
                 "method": "get",
                 "description": "设备列表"
+            }
+        },
+        app: {
+            "usedModel": [],
+            "info": {
+                "url": "/api/soft/info",
+                "method": "get",
+                "description": "软件介绍，技术支持"
+            }
+        },
+        point: {
+            "usedModel": ["point/point"],
+            "show": {
+                "url": "/api/point/show/:userId",
+                "method": "get",
+                "description": "获取用户积分变更记录"
+            },
+            "update": {
+                "url": "/api/point/update",
+                "method": "post",
+                "description": "积分变更"
+            },
+            "list": {
+                "url": "/api/point/list",
+                "method": "get",
+                "description": "积分列表"
             }
         }
     }
