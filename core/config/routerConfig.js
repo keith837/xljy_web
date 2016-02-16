@@ -102,17 +102,121 @@ var routerConfig = {
                 "description": "动态置顶及下移"
             }
         },
+        station: {
+            "usedModel": ['station/station'],
+            "list": {
+                "url": "/api/stations",
+                "method": "get",
+                "description": "基站列表"
+            },
+            "detail": {
+                "url": "/api/stations/:id",
+                "method": "get",
+                "description": "查询基站详情"
+            },
+            "addStation": {
+                "url": "/api/stations",
+                "method": "post",
+                "description": "添加基站"
+            },
+            "delStation": {
+                "url": "/api/stations/:id",
+                "method": "delete",
+                "description": "删除基站"
+            },
+            "updateStation": {
+                "url": "/api/stations/:id",
+                "method": "put",
+                "description": "更新基站"
+            }
+        },
         device: {
             "usedModel": ['device/device'],
-            "devicelist": {
-                "url": "/api/device/list",
-                "method": "post",
-                "description": "设备列表"
-            },
-            "devicelist2": {
-                "url": "/api/device/list2",
+            "list": {
+                "url": "/api/devices",
                 "method": "get",
-                "description": "设备列表"
+                "description": "手环设备列表"
+            },
+            "detail": {
+                "url": "/api/devices/:id",
+                "method": "get",
+                "description": "查询手环详情"
+            },
+            "addDevice": {
+                "url": "/api/devices",
+                "method": "post",
+                "description": "添加手环"
+            },
+            "delDevice": {
+                "url": "/api/devices/:id",
+                "method": "delete",
+                "description": "删除手环"
+            },
+            "updateDevice": {
+                "url": "/api/devices/:id",
+                "method": "put",
+                "description": "更新手环"
+            }
+        },
+        notice: {
+            "usedModel": ['notice/notice'],
+            "list": {
+                "url": "/api/notices",
+                "method": "get",
+                "description": "查询通知列表"
+            },
+            "publish": {
+                "url": "/api/notices",
+                "method": "post",
+                "description": "发布通知"
+            },
+            "del": {
+                "url": "/api/notices/:id",
+                "method": "delete",
+                "description": "删除通知"
+            },
+            "details": {
+                "url": "/api/notices/:id",
+                "method": "get",
+                "description": "查看通知详情"
+            },
+            "edit": {
+                "url": "/api/notices/:id",
+                "method": "put",
+                "description": "编辑通知"
+            }
+        },
+        photos: {
+            "usedModel": ["photos/photos"],
+            "publish": {
+                "url": "/api/photos",
+                "method": "post",
+                "description": "发布相册"
+            },
+            "delete": {
+                "url": "/api/photos/:id",
+                "method": "delete",
+                "description": "删除相册"
+            },
+            "like": {
+                "url": "/api/photos/like/:id",
+                "method": "put",
+                "description": "相册点赞"
+            },
+            "comment": {
+                "url": "/api/photos/comment/:id",
+                "method": "put",
+                "description": "相册评论"
+            },
+            "list": {
+                "url": "/api/photos",
+                "method": "get",
+                "description": "查看相册"
+            },
+            "edit": {
+                "url": "/api/photos/:id",
+                "method": "put",
+                "description": "编辑相册"
             }
         },
         app: {
