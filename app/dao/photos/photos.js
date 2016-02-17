@@ -133,7 +133,7 @@ Photos.findHandle = function (albumId, handleType, userId, callback) {
     mysqlUtil.query("select * from XL_CLASS_ALBUM_HANDLE where albumId=? and handleType=? and oUserId=? and state=1", [albumId, handleType, userId], callback);
 }
 
-Photos.addAlbumLike = function (albumId, userId, nickName, cb) {
+Photos.addAlbumLike = function (albumId, userId, nickName, studentId, studentName, cb) {
     mysqlUtil.getConnection(function (err, conn) {
         if (err) {
             return callback.apply(null, [err, null]);
@@ -160,9 +160,9 @@ Photos.addAlbumLike = function (albumId, userId, nickName, cb) {
                 callback(err, upd);
             });
         }, function (res, callback) {
-            var likeSQL = "insert into XL_CLASS_ALBUM_HANDLE(albumId,handleType,nickName,state,createDate,doneDate,oUserId)";
-            likeSQL += "values(?,1,?,1,now(),now(),?)";
-            conn.query(likeSQL, [albumId, nickName, userId], function (err, res) {
+            var likeSQL = "insert into XL_CLASS_ALBUM_HANDLE(albumId,handleType,nickName,state,createDate,doneDate,oUserId,studentId,studentName)";
+            likeSQL += "values(?,1,?,1,now(),now(),?,?,?)";
+            conn.query(likeSQL, [albumId, nickName, userId, studentId, studentName], function (err, res) {
                 callback(err, res);
             });
         }, function (res, callback) {
@@ -183,7 +183,7 @@ Photos.addAlbumLike = function (albumId, userId, nickName, cb) {
     });
 }
 
-Photos.addAlbumComment = function (albumId, userId, nickName, parentHandleId, content, callback) {
+Photos.addAlbumComment = function (albumId, userId, nickName, parentHandleId, content, studentId, studentName, callback) {
     mysqlUtil.getConnection(function (err, conn) {
         if (err) {
             return callback.apply(null, [err, null]);
@@ -210,9 +210,9 @@ Photos.addAlbumComment = function (albumId, userId, nickName, parentHandleId, co
                 callback(err, upd);
             });
         }, function (res, callback) {
-            var likeSQL = "insert into XL_CLASS_ALBUM_HANDLE(albumId,handleType,parentHandleId,content,nickName,state,createDate,doneDate,oUserId)";
-            likeSQL += "values(?,2,?,?,?,1,now(),now(),?)";
-            conn.query(likeSQL, [albumId, parentHandleId, content, nickName, userId], function (err, res) {
+            var likeSQL = "insert into XL_CLASS_ALBUM_HANDLE(albumId,handleType,parentHandleId,content,nickName,state,createDate,doneDate,oUserId,studentId,studentName)";
+            likeSQL += "values(?,2,?,?,?,1,now(),now(),?,?,?)";
+            conn.query(likeSQL, [albumId, parentHandleId, content, nickName, userId, studentId, studentName], function (err, res) {
                 callback(err, res);
             });
         }, function (res, callback) {
@@ -266,8 +266,10 @@ Photos.queryByAlbumType = function (start, pageSize, albumType, groupId, schoolI
         });
     }, function (album, callback) {
         findAlbumPicByArray(album[0], album[1], 0, callback);
+    }, function (album, callback) {
+        findAlbumCommentByArray(album[0], album[1], 0, callback);
     }, function (res, callback) {
-        findAlbumHandleByArray(res[0], res[1], 0, callback);
+        findAlbumLikeByArray(res[0], res[1], 0, callback);
     }];
 
     async.waterfall(tasks, function (err, results) {
@@ -283,28 +285,51 @@ Photos.findPicById = function (albumId, callback) {
     mysqlUtil.query("select * from XL_CLASS_ALBUM_PIC where albumId=? and state=1 order by albumId", [albumId], callback);
 }
 
-Photos.findHandleById = function (albumId, callback) {
-    mysqlUtil.query("select * from XL_CLASS_ALBUM_HANDLE where albumId=? and state=1 order by albumId", [albumId], callback);
+Photos.findHandleById = function (albumId, handleType, callback) {
+    mysqlUtil.query("select * from XL_CLASS_ALBUM_HANDLE where albumId=? and handleType=? and state=1 order by albumId", [albumId, handleType], callback);
 }
 
-function findAlbumHandleByArray(totalNum, album, i, callback) {
+function findAlbumLikeByArray(totalNum, album, i, callback) {
     if (i < album.length - 1) {
-        Photos.findHandleById(album[i].albumId, function (err, res) {
+        Photos.findHandleById(album[i].albumId, 1, function (err, res) {
             if (err) {
                 return callback(err);
             }
-            album[i].handle = new Object();
-            album[i].handle = res;
+            album[i].likes = new Object();
+            album[i].likes = res;
             i++;
-            findAlbumHandleByArray(totalNum, album, i, callback);
+            findAlbumLikeByArray(totalNum, album, i, callback);
         });
     } else {
-        Photos.findHandleById(album[i].albumId, function (err, res) {
+        Photos.findHandleById(album[i].albumId, 1, function (err, res) {
             if (err) {
                 return callback(err);
             }
-            album[i].handle = new Object();
-            album[i].handle = res;
+            album[i].likes = new Object();
+            album[i].likes = res;
+            callback(err, [totalNum, album]);
+        });
+    }
+}
+
+function findAlbumCommentByArray(totalNum, album, i, callback) {
+    if (i < album.length - 1) {
+        Photos.findHandleById(album[i].albumId, 2, function (err, res) {
+            if (err) {
+                return callback(err);
+            }
+            album[i].comments = new Object();
+            album[i].comments = res;
+            i++;
+            findAlbumCommentByArray(totalNum, album, i, callback);
+        });
+    } else {
+        Photos.findHandleById(album[i].albumId, 2, function (err, res) {
+            if (err) {
+                return callback(err);
+            }
+            album[i].comments = new Object();
+            album[i].comments = res;
             callback(err, [totalNum, album]);
         });
     }

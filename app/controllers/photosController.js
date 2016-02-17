@@ -10,14 +10,12 @@ module.exports = new basicController(__filename).init({
 
     publish: function (req, res, next) {
         var self = this;
-        //var userId = req.user.userId;
-        //var groupId = req.user.groupId;
-        //var nickName = req.user.nickName;
-        var userId = req.query.userId;
-        var groupId = req.query.groupId;
-        var nickName = req.query.nickName;
+        var userId = req.user.userId;
+        var groupId = req.user.groupId;
+        var nickName = req.user.nickName;
 
         var albumType = parseInt(req.query.albumType);
+        //1:班级相册;2:成长点滴
         if (!albumType || isNaN(albumType)) {
             return next(new Error("没有输入相册类型."));
         }
@@ -25,17 +23,22 @@ module.exports = new basicController(__filename).init({
         var schoolId = 0;
         var studentId = 0;
         var studentName = '';
-        if (groupId == 10) {
-            classId == req.user.student.classId;
+        if (groupId === 10) {
+            classId = req.user.student.classId;
             schoolId = req.user.student.schoolId;
             studentId = req.user.student.studentId;
             studentName = req.user.student.studentName;
-        } else if (groupId == 20) {
-            // classId = req.user.classInfo.classId;
-            // schoolId = req.user.classInfo.schoolId;
-            schoolId = req.query.schoolId;
-            classId = req.query.classId;
-        } else if (groupId == 30 || groupId == 40) {
+            nickName = studentName + nickName;
+            if (albumType !== 2) {
+                return next(new Error("家长只能发布成长点滴"));
+            }
+        } else if (groupId === 20) {
+            classId = req.user.classInfo.classId;
+            schoolId = req.user.classInfo.schoolId;
+            if (albumType === 2) {
+                return next(new Error("教师不能发布成长点滴"));
+            }
+        } else if (groupId === 30 || groupId === 40) {
             return next(new Error("园长不能发布班级相册"));
         }
 
@@ -71,7 +74,7 @@ module.exports = new basicController(__filename).init({
     },
 
     delete: function (req, res, next) {
-        var userId = req.query.userId;
+        var userId = req.user.userId;
         var albumId = parseInt(req.params.id);
         this.model['photos'].delete(albumId, userId, function (err, data) {
             if (err) {
@@ -86,12 +89,16 @@ module.exports = new basicController(__filename).init({
     like: function (req, res, next) {
         var self = this;
 
-        //var userId = req.user.userId;
-        //var groupId = req.user.groupId;
-        //var nickName = req.user.nickName;
-        var userId = req.query.userId;
-        var groupId = req.query.groupId;
-        var nickName = req.query.nickName;
+        var userId = req.user.userId;
+        var groupId = req.user.groupId;
+        var nickName = req.user.nickName;
+        var studentId = 0;
+        var studentName = '';
+        if (groupId === 10) {
+            studentId = req.user.student.studentId;
+            studentName = req.user.student.studentName;
+            nickName = studentName + nickName;
+        }
 
         var albumId = parseInt(req.params.id);
         //handleType:1:点赞,2:评论
@@ -102,7 +109,7 @@ module.exports = new basicController(__filename).init({
             if (data && data.length > 0) {
                 return next(new Error("用户已点赞"));
             }
-            self.model['photos'].addAlbumLike(albumId, userId, nickName, function (err, data) {
+            self.model['photos'].addAlbumLike(albumId, userId, nickName, studentId, studentName, function (err, data) {
                 if (err) {
                     return next(err);
                 }
@@ -112,13 +119,16 @@ module.exports = new basicController(__filename).init({
     },
 
     comment: function (req, res, next) {
-        //var userId = req.user.userId;
-        //var groupId = req.user.groupId;
-        //var nickName = req.user.nickName;
-        var userId = req.query.userId;
-        var groupId = req.query.groupId;
-        var nickName = req.query.nickName;
-
+        var userId = req.user.userId;
+        var groupId = req.user.groupId;
+        var nickName = req.user.nickName;
+        var studentId = 0;
+        var studentName = '';
+        if (groupId === 10) {
+            studentId = req.user.student.studentId;
+            studentName = req.user.student.studentName;
+            nickName = studentName + nickName;
+        }
         var albumId = parseInt(req.params.id);
         var content = req.body.content;
         var parentHandleId = req.body.parentHandleId;
@@ -126,7 +136,7 @@ module.exports = new basicController(__filename).init({
             parentHandleId = null;
         }
         //handleType:1:点赞,2:评论
-        this.model['photos'].addAlbumComment(albumId, userId, nickName, parentHandleId, content, function (err, data) {
+        this.model['photos'].addAlbumComment(albumId, userId, nickName, parentHandleId, content, studentId, studentName, function (err, data) {
                 if (err) {
                     return next(err);
                 }
@@ -139,21 +149,19 @@ module.exports = new basicController(__filename).init({
         var self = this;
         var start = parseInt(req.query.iDisplayStart || 0);
         var pageSize = parseInt(req.query.iDisplayLength || 10);
-
-        //var userId = req.user.userId;
-        //var groupId = req.user.groupId;
-        var userId = parseInt(req.query.userId);
-        var groupId = parseInt(req.query.groupId);
+        var userId = req.user.userId;
+        var groupId = req.user.groupId;
 
         var classId = 0;
         var schoolId = 0;
-        if (groupId === 10 || groupId === 20) {
-            classId = parseInt(req.query.classId);
-            schoolId = parseInt(req.query.schoolId);
-            // classId == req.user.student.classId;
-            //schoolId = req.user.student.schoolId;
-        } else if (groupId === 30 || groupId === 40) {
+        if (groupId === 10) {
+            classId = req.user.student.classId;
             schoolId = req.user.student.schoolId;
+        } else if (groupId === 20) {
+            classId = req.user.classInfo.classId;
+            schoolId = req.user.classInfo.schoolId;
+        } else if (groupId === 30 || groupId === 40) {
+            schoolId = req.user.school.schoolId;
         }
         var albumType = parseInt(req.query.albumType);
         if (!albumType || isNaN(albumType)) {
@@ -170,12 +178,9 @@ module.exports = new basicController(__filename).init({
 
     edit: function (req, res, next) {
         var self = this;
-        //var userId = req.user.userId;
-        //var groupId = req.user.groupId;
-        //var nickName = req.user.nickName;
-        var userId = req.query.userId;
-        var groupId = req.query.groupId;
-        var nickName = req.query.nickName;
+        var userId = req.user.userId;
+        var groupId = req.user.groupId;
+        var nickName = req.user.nickName;
 
         var albumId = parseInt(req.params.id);
 
@@ -183,18 +188,17 @@ module.exports = new basicController(__filename).init({
         var schoolId = 0;
         var studentId = 0;
         var studentName = '';
-        if (groupId == 10) {
-            classId == req.user.student.classId;
+        if (groupId === 10) {
+            classId = req.user.student.classId;
             schoolId = req.user.student.schoolId;
             studentId = req.user.student.studentId;
             studentName = req.user.student.studentName;
-        } else if (groupId == 20) {
-            // classId = req.user.classInfo.classId;
-            // schoolId = req.user.classInfo.schoolId;
-            schoolId = req.query.schoolId;
-            classId = req.query.classId;
-        } else if (groupId == 30 || groupId == 40) {
-            return next(new Error("园长不能发布班级相册"));
+            nickName = studentName + nickName;
+        } else if (groupId === 20) {
+            classId = req.user.classInfo.classId;
+            schoolId = req.user.classInfo.schoolId;
+        } else if (groupId === 30 || groupId === 40) {
+            schoolId = req.user.school.schoolId;
         }
 
         var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "PHOTOS");
