@@ -205,7 +205,6 @@ function findPicByArray(totalNum, notice, i, callback) {
             if (err) {
                 return callback(err);
             }
-            console.log(notice[i]);
             notice[i].picPaths = new Object();
             notice[i].picPaths = res;
             i++;

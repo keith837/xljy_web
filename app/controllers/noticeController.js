@@ -11,20 +11,19 @@ module.exports = new basicController(__filename).init({
         var start = parseInt(request.query.iDisplayStart || 0);
         var pageSize = parseInt(request.query.iDisplayLength || 10);
 
-        //var userId = request.user.userId;
-        //var groupId = request.user.groupId;
-        var userId = parseInt(request.query.userId);
-        var groupId = parseInt(request.query.groupId);
+        var userId = request.user.userId;
+        var groupId = request.user.groupId;
 
         var classId = 0;
         var schoolId = 0;
-        if (groupId === 10 || groupId === 20) {
-            classId = parseInt(request.query.classId);
-            schoolId = parseInt(request.query.schoolId);
-            // classId == request.user.student.classId;
-            //schoolId = request.user.student.schoolId;
-        } else if (groupId === 30 || groupId === 40) {
+        if (groupId === 10) {
+            classId = request.user.student.classId;
             schoolId = request.user.student.schoolId;
+        } else if (groupId === 20) {
+            classId = request.user.classInfo.classId;
+            schoolId = request.user.classInfo.schoolId;
+        } else if (groupId === 30 || groupId === 40) {
+            schoolId = request.user.school.schoolId;
         }
         var noticeTypeId = parseInt(request.query.noticeTypeId);
         if (!noticeTypeId || isNaN(noticeTypeId)) {
@@ -42,11 +41,8 @@ module.exports = new basicController(__filename).init({
 
     publish: function (request, response, next) {
         var self = this;
-        //var userId = request.user.userId;
-        //var groupId = parseInt(request.user.groupId);
-
-        var userId = parseInt(request.query.userId);
-        var groupId = parseInt(request.query.groupId);
+        var userId = request.user.userId;
+        var groupId = request.user.groupId;
 
         var noticeTypeId = parseInt(request.query.noticeTypeId);
         if (!noticeTypeId || isNaN(noticeTypeId)) {
@@ -72,10 +68,8 @@ module.exports = new basicController(__filename).init({
             classId == request.user.student.classId;
             schoolId = request.user.student.schoolId;
         } else if (groupId == 20) {
-            //classId = request.user.classInfo.classId;
-            //schoolId = request.user.classInfo.schoolId;
-            classId = parseInt(request.query.classId);
-            schoolId = parseInt(request.query.schoolId);
+            classId = request.user.classInfo.classId;
+            schoolId = request.user.classInfo.schoolId;
         } else if (groupId == 30 || groupId == 40) {
             schoolId = request.user.school.schoolId;
         }
@@ -100,7 +94,7 @@ module.exports = new basicController(__filename).init({
     },
 
     del: function (request, response, next) {
-        var userId = request.query.userId;
+        var userId = request.user.userId;
         var noticeId = parseInt(request.params.id);
         this.model['notice'].delete(noticeId, userId, function (err, data) {
             if (err) {
@@ -127,8 +121,7 @@ module.exports = new basicController(__filename).init({
     edit: function (request, response, next) {
         var self = this;
         var noticeId = parseInt(request.params.id);
-        //var userId = request.user.userId;
-        var userId = parseInt(request.query.userId);
+        var userId = request.user.userId;
 
         var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "PHOTOS");
         uploadDir += "user" + userId + "/";
