@@ -2,7 +2,7 @@
  * Created by pz on 16/1/25.
  */
 var redisConfig  = {
-    SERVER : '127.0.0.1',
+    SERVER : '120.25.102.158',
     PORT : "6379",
     PASSWORD : "" ,
     POOLSIZE : 10 ,

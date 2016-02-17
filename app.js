@@ -3,13 +3,17 @@ var express = require('express');
 var app = express();
 var async = require("async");
 var ejs = require('ejs');
-var tplFilter = require("./app/filter/tplFilter")
-var bodyParser = require('body-parser')
+var tplFilter = require("./app/filter/tplFilter");
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 
+var loginFilter = require("./core/filter/loginFilter");
 var webConfig = require("./core/config/webConfig");
 var log4js = require('log4js');
 var loggerCall = require('./core/utils/logger/logger');
 var logger = loggerCall(__filename);
+var cacheManager = require('./core/utils/cache/cacheManager')
+
 process.on('uncaughtException', function (err) {
     //app.send("t error,process end");
     logger.error("未捕获的异常");
@@ -29,7 +33,7 @@ new tplFilter(ejs.filters);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-
+app.use(cookieParser());
 
 webConfig.PRINT_ACCESS_LOG && app.use(log4js.connectLogger(loggerCall('normal'), {
     level: log4js.levels.INFO,
@@ -42,7 +46,8 @@ for (var x in webConfig.STATICPATH) {
 }
 logger.info("配置中静态目录信息载入完毕..");
 
-
+//登录校验
+app.use(loginFilter);
 
 //控制器挂载
 
@@ -59,13 +64,16 @@ async.waterfall([
             logger.info("载入/controllers 下控制器 完成..");
             //错误处理中间件
             app.use(function (err, req, res, next) {
-                logger.error("======错误句柄next接受错误=======")
+                logger.error("======错误句柄next接受错误=======", err);
                 // 业务逻辑
                 if (res.headersSent) {
                     return next(err);
                 }
-                res.status(500);
-                res.json({state: 0, error: err, msg: err.toString()});
+                res.json({
+                    code: "99",
+                    msg : err.message,
+                    error: err
+                });
             });
             server = app.listen(3001, cb);
         },

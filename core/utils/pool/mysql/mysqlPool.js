@@ -97,6 +97,12 @@ mysqlPool.prototype.queryOne = function (SQL, args, callback) {
     });
 }
 
+mysqlPool.prototype.getConnection = function(callback){
+    this.pool.getConnection(function(err, conn){
+        callback.apply(null, [err, conn]);
+    });
+}
+
 mysqlPool.prototype.transaction = function(callback){
     this.pool.getConnection(function (err, connection) {
         if(!!err){

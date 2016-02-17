@@ -8,8 +8,6 @@ var logger;
 var basicController = function(filename){
     this.cacheManager = null;
     this.db = mysqlPool;
-    this.uploadPath=__dirname+"/../../../app/cache/upload/";
-    this.uploadJsonPath = __dirname + "/../../../app/cache/upload/";
     this.logger = logger = require("../logger/logger")(filename);
     this.fileUtils = require('../common/fileUtils');
     this.redis = redisPool;
