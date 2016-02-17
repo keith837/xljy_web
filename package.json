@@ -4,8 +4,8 @@
   "description": "kindergarten api project",
   "main": "app.js",
   "scripts": {
-  "test": "echo \"Error: no test specified\" && exit 1"
-},
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "keywords": [
     "kindergarten"
   ],
@@ -21,9 +21,10 @@
     "log4js": "^0.6.29",
     "mysql": "^2.10.2",
     "node-mysql": "^0.4.2",
+    "node-xlsx": "^0.6.0",
     "redis": "^2.4.2",
+    "node-xlsx": "^0.6.0",
     "utility": "^1.6.0",
-    "xls-to-json": "^0.3.2",
     "jwt-simple": "~0.4.1",
     "https": "~1.0.0"
   }
