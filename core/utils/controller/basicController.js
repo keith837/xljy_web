@@ -55,7 +55,7 @@ basicController.prototype.fillTpl =function (data,err,msg){
     response.data = data;
     return response;
 }
-basicController.prototype.createPageData = function (allsize, res) {
-    return {iTotalRecords: allsize, iTotalDisplayRecords: allsize, aaData: res}
+basicController.prototype.createPageData = function (code,allsize, res) {
+    return {code: code,iTotalRecords: allsize, iTotalDisplayRecords: allsize, data: res}
 }
 module.exports = basicController;

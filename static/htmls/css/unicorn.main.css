@@ -363,7 +363,7 @@ a:hover {
 .stat-boxes, .quick-actions, .quick-actions-horizontal, .stats-plain {
     display: inline-block;
     list-style: none outside none;
-    margin: 20px 0 10px;
+    margin: 0 0 0 10px;
     text-align: center;
 }
 
@@ -384,7 +384,7 @@ a:hover {
     box-shadow: 0 1px 0 0 #FFFFFF inset, 0 1px 0 rgba(255, 255, 255, 0.4);
     display: inline-block;
     line-height: 18px;
-    margin: 0 10px 10px;
+    margin: 0 10px 1px;
     padding: 0 10px;
 }
 
@@ -1521,7 +1521,7 @@ form {
 }
 
 .form-horizontal input[type=text], .form-horizontal input[type=password], .form-horizontal textarea {
-    width: 80%;
+   /* width: 80%;*/
 }
 
 .form-horizontal .form-actions {

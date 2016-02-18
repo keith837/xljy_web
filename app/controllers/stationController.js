@@ -21,7 +21,7 @@ module.exports = new basicController(__filename).init({
             if (totalCount === 0) {
                 return next(new Error("沒有查询到基站信息."));
             } else {
-                response.json({code: "00", data: self.createPageData(totalCount, res)});
+                response.json(self.createPageData("00",totalCount, res));
             }
         });
     },

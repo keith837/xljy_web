@@ -11,7 +11,6 @@ Point.queryUserPoint = function(userId, callback){
 Point.listAll=function(schoolId,classId,userId,callback){
     var querySql = "select * from XL_USER_POINT where 1=1 ";
     var pointArgs = new Array();
-    console.log(schoolId);
     if(schoolId!=null){
         querySql += " and userId in (select userId from XL_CLASS_TEACHER_REL where schoolId = ? )";
         pointArgs.push(schoolId);

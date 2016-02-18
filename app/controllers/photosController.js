@@ -172,7 +172,7 @@ module.exports = new basicController(__filename).init({
             if (err) {
                 return next(err);
             }
-            res.json({code: "00", data: self.createPageData(totalCount, results)});
+            res.json(self.createPageData("00",totalCount, results));
         });
     },
 

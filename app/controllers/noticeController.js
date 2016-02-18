@@ -34,7 +34,7 @@ module.exports = new basicController(__filename).init({
             if (err) {
                 return next(err);
             }
-            response.json({code: "00", data: self.createPageData(totalCount, res)});
+            response.json(self.createPageData("00",totalCount, res));
         });
 
     },

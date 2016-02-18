@@ -22,6 +22,72 @@
     <div class="container-fluid">
         <div class="row-fluid">
             <div class="span12">
+                <div class="widget-box" style="margin-bottom:0;">
+                    <div class="widget-title">
+								<span class="icon">
+									<i class="icon-th"></i>
+								</span>
+                        <h5>查询条件</h5>
+                    </div>
+                    <div class="widget-content nopadding">
+                        <div class="container-fluid">
+                            <div class="row-fluid">
+                                <form action="#" method="post" class="form-horizontal" />
+
+                                <table width="100%" >
+                                    <tr>
+                                        <td align="center" width="15%">
+                                            选择学校
+                                        </td>
+                                        <td align="left" width="20%">
+                                            <div style="margin-top:5px; margin-bottom:5px">
+                                                <select>
+                                                    <option>托一班</option>
+                                                    <option>小一班</option>
+                                                    <option>中一班</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td align="center" width="10%">
+                                            选择用户组
+                                        </td>
+                                        <td align="left">
+                                            <select class="span4">
+                                                <option>老师</option>
+                                                <option>学生</option>
+                                                <option>园长</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">
+                                            选择时间
+                                        </td>
+                                        <td align="left">
+                                            <div style="margin-top:5px; margin-bottom:5px">
+                                                <input size="40" type="text" placeholder="请输入开始时间">
+                                            </div>
+                                        </td>
+                                        <td colspan="2" align="left">
+                                            <div style=margin-left:40px;">
+                                                <button type="submit" class="btn btn-primary">搜索</button>
+                                                <button type="submit" class="btn btn-primary">导出</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
                 <div class="widget-box">
                     <div class="widget-title">
 								<span class="icon">
@@ -38,28 +104,28 @@
                                 <div class="left peity_bar_good"><span>2,4,9,7,12,10,12</span>+20%</div>
                                 <div class="right">
                                     <strong>36094</strong>
-                                    最大步数
+                                    缺勤人数
                                 </div>
                             </li>
                             <li>
                                 <div class="left peity_bar_neutral"><span>20,15,18,14,10,9,9,9</span>0%</div>
                                 <div class="right">
                                     <strong>1433</strong>
-                                    最小步数
+                                    实到人数
                                 </div>
                             </li>
                             <li>
                                 <div class="left peity_bar_bad"><span>3,5,9,7,12,20,10</span>-50%</div>
                                 <div class="right">
                                     <strong>8650</strong>
-                                    平均步数
+                                    应到人数
                                 </div>
                             </li>
                             <li>
                                 <div class="left peity_line_good"><span>12,6,9,23,14,10,17</span>+70%</div>
                                 <div class="right">
                                     <strong>87850</strong>
-                                    总步数
+                                    出勤率
                                 </div>
                             </li>
                         </ul>
@@ -85,6 +151,6 @@
 <script src="js/jquery.peity.min.js"></script>
 <script src="js/fullcalendar.min.js"></script>
 <script src="js/unicorn.js"></script>
-<script src="js/unicorn.dashboard.js"></script>
+<script src="js/unicorn.attendance.js"></script>
 </body>
 </html>

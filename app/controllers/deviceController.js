@@ -25,10 +25,10 @@ module.exports = new basicController(__filename).init({
             if (err) {
                 return next(err);
             }
-            if (totalCount === 0) {
+            if (totalCount == 0) {
                 return next(new Error("没有查询到手环信息."));
             } else {
-                response.json({code: "00", data: self.createPageData(totalCount, res)});
+                response.json(self.createPageData("00",totalCount, res));
             }
         });
     },
