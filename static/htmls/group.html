@@ -4,17 +4,16 @@
     <title>响亮教育管理平台</title>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <
-    <link rel="stylesheet" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css"/>
-    <link rel="stylesheet" href="css/fullcalendar.css"/>
-    <link rel="stylesheet" href="css/colorpicker.css"/>
-    <link rel="stylesheet" href="css/datepicker.css"/>
-    <link rel="stylesheet" href="css/uniform.css"/>
-    <link rel="stylesheet" href="css/select2.css"/>
-    <link rel="stylesheet" href="css/unicorn.main.css"/>
-    <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="css/fullcalendar.css" />
+    <link rel="stylesheet" href="css/colorpicker.css" />
+    <link rel="stylesheet" href="css/datepicker.css" />
+    <link rel="stylesheet" href="css/uniform.css" />
+    <link rel="stylesheet" href="css/select2.css" />
+    <link rel="stylesheet" href="css/unicorn.main.css" />
+    <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
 <body>
 
@@ -30,89 +29,54 @@
                 <div class="widget-box">
                     <div class="widget-title">
 								<span class="icon">
-									<input type="checkbox" id="title-checkbox" name="title-checkbox"/>
+									<i class="icon-th"></i>
 								</span>
+                        <h5>查询条件</h5>
+                    </div>
+                    <div class="widget-content nopadding">
+                        <div class="container-fluid">
+                            <div class="row-fluid">
+                                <form action="#" method="post" class="form-search" />
+
+                                <table width="100%" >
+                                    <tr>
+                                        <td align="center">
+                                            <div class="input-append span12" style="margin-top:5px; margin-bottom:5px">
+                                                <input type="text" class="span4 search-query" placeholder="请输入用户组名称">
+                                                <button type="submit" class="btn">搜索</button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a href="#" class="btn">新增用户组</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-box">
+                    <div class="widget-title">
                         <h5>用户组列表</h5>
                     </div>
                     <div class="widget-content nopadding">
-                        <table class="table table-bordered table-striped with-check">
+                        <table class="table table-bordered data-table">
                             <thead>
                             <tr>
-                                <th><i class="icon-resize-vertical"></i></th>
                                 <th>用户组</th>
                                 <th width="25%">创建时间</th>
                                 <th width="20%">创建人</th>
-                                <th width="25%">操作</th>
+                                <th width="10%">操作</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td><input type="checkbox"/></td>
-                                <td>超级管理员</td>
-                                <td>2016-01-27 00:58:31</td>
-                                <td>admin</td>
-                                <td>
-                                    <button class="btn"><i class="icon-eye-open"></i> 详情</button>
-                                    <button class="btn btn-primary"><i class="icon-pencil icon-white"></i> 编辑</button>
-                                    <button class="btn btn-danger"><i class="icon-remove icon-white"></i> 删除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"/></td>
-                                <td>家长</td>
-                                <td>2016-01-27 00:58:31</td>
-                                <td>admin</td>
-                                <td>
-                                    <button class="btn"><i class="icon-eye-open"></i> 详情</button>
-                                    <button class="btn btn-primary"><i class="icon-pencil icon-white"></i> 编辑</button>
-                                    <button class="btn btn-danger"><i class="icon-remove icon-white"></i> 删除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"/></td>
-                                <td>老师</td>
-                                <td>2016-01-27 00:58:31</td>
-                                <td>admin</td>
-                                <td>
-                                    <button class="btn"><i class="icon-eye-open"></i> 详情</button>
-                                    <button class="btn btn-primary"><i class="icon-pencil icon-white"></i> 编辑</button>
-                                    <button class="btn btn-danger"><i class="icon-remove icon-white"></i> 删除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"/></td>
-                                <td>园长</td>
-                                <td>2016-01-27 00:58:31</td>
-                                <td>admin</td>
-                                <td>
-                                    <button class="btn"><i class="icon-eye-open"></i> 详情</button>
-                                    <button class="btn btn-primary"><i class="icon-pencil icon-white"></i> 编辑</button>
-                                    <button class="btn btn-danger"><i class="icon-remove icon-white"></i> 删除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"/></td>
-                                <td>集团园长</td>
-                                <td>2016-01-27 00:58:31</td>
-                                <td>admin</td>
-                                <td>
-                                    <button class="btn"><i class="icon-eye-open"></i> 详情</button>
-                                    <button class="btn btn-primary"><i class="icon-pencil icon-white"></i> 编辑</button>
-                                    <button class="btn btn-danger"><i class="icon-remove icon-white"></i> 删除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"/></td>
-                                <td>超级园长</td>
-                                <td>2016-01-27 00:58:31</td>
-                                <td>admin</td>
-                                <td>
-                                    <button class="btn"><i class="icon-eye-open"></i> 详情</button>
-                                    <button class="btn btn-primary"><i class="icon-pencil icon-white"></i> 编辑</button>
-                                    <button class="btn btn-danger"><i class="icon-remove icon-white"></i> 删除</button>
-                                </td>
-                            </tr>
-
                             </tbody>
                         </table>
                     </div>
@@ -131,10 +95,73 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.ui.custom.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-colorpicker.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
 <script src="js/jquery.uniform.js"></script>
 <script src="js/select2.min.js"></script>
-<script src="js/jquery.dataTables.min.js"></script>
+<script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
-<script src="js/unicorn.tables.js"></script>
+<script src="js/unicorn.form_common.js" charset="utf-8"></script>
+
+<script>
+    /**
+     * tables
+     **/
+    $(document).ready(function () {
+
+        $('.data-table').dataTable({
+            "oLanguage": {
+                "sLengthMenu": "每页显示 _MENU_ 条记录",
+                "sZeroRecords": "抱歉， 没有找到",
+                "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                "sInfoEmpty": "没有数据",
+                "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "前一页",
+                    "sNext": "后一页",
+                    "sLast": "尾页"
+                },
+                "sZeroRecords": "没有检索到数据",
+                "sProcessing": "<img src='./img/loading.gif' />"
+            },
+//            "bInfo": true,
+            "bJQueryUI": true,
+            "bLengthChange": false,
+//            "bPaginate":true,
+            "bProcessing" : true,
+            "sPaginationType": "full_numbers",
+            "iDisplayLength": 3,
+            "bFilter": false,
+            "sDom": '<""l>t<"F"fp>',
+
+//            "iTotalRecords":"data.iTotalRecords",
+//             "bProcessing": true,
+            "bServerSide": true,
+            // "sAjaxDataProp":"data.aaData",
+            "sAjaxSource": "/api/group/list",
+            "sServerMethod": "GET",
+            "aoColumns": [
+                {"mDataProp": "groupName"},
+                {"mDataProp": "createDate"},
+                {"mDataProp": "oUserId"}
+            ],
+            "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
+                {
+                    "targets": [3],
+                    "data": null,
+                    "bSortable": false,
+                    "defaultContent": "<button class=\"btn btn-danger\"><i class=\"icon-remove icon-white\"></i> 删除</button>"
+                }
+            ]
+            //"fnServerParams": function (aoData) {
+            //    aoData.push({ "name": "name1", "value": "value1" });
+            //    aoData.push({ "name": "name2", "value": "value2" });
+            //}
+        });
+    });
+
+</script>
 </body>
 </html>
+

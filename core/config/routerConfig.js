@@ -38,6 +38,24 @@ var routerConfig = {
                 "description": "查询用户信息"
             }
         },
+        group : {
+            "usedModel": ["group/group"],
+            "remove": {
+                "url": "/api/group/remove/:groupId",
+                "method": "delete",
+                "description": "选择园所"
+            },
+            "list": {
+                "url": "/api/group/list",
+                "method": "get",
+                "description": "查询用户组"
+            },
+            "create": {
+                "url": "/api/group/create",
+                "method": "post",
+                "description": "编辑用户组"
+            }
+        },
         school : {
             "usedModel": ["school/school"],
             "select": {
