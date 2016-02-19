@@ -21,7 +21,7 @@
 <div id="content">
     <div id="breadcrumb">
         <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 设备管理</a>
-        <a href="#" class="current">新增手环</a>
+        <a href="#" class="current">新增基站</a>
     </div>
     <div class="container-fluid">
         <div class="row-fluid">
@@ -31,7 +31,7 @@
 								<span class="icon">
 									<i class="icon-th"></i>
 								</span>
-                        <h5>手环信息</h5>
+                        <h5>基站信息</h5>
                     </div>
                     <div class="widget-content nopadding">
 
@@ -39,26 +39,33 @@
                             <div class="row-fluid">
                                 <form class="form-horizontal">
                                     <div class="control-group">
-                                        <label class="control-label" for="deviceSign">手环设备号</label>
+                                        <label class="control-label" for="stationMac">基站MAC</label>
                                         <div class="controls">
-                                            <input type="text" id="deviceSign" placeholder="设备号" class="span3">
+                                            <input type="text" id="stationMac" placeholder="基站MAC" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="deviceName">手环名称</label>
+                                        <label class="control-label" for="schoolId">所属学校</label>
                                         <div class="controls">
-                                            <input type="text" id="deviceName" placeholder="手环名称" class="span3">
+                                            <select class="span3" id="schoolId">
+                                                <option>长岛幼儿园</option>
+                                                <option>萧山幼儿园</option>
+                                                <option>滨文高教园</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="studentId">学生姓名</label>
+                                        <label class="control-label" for="address">基站地址</label>
                                         <div class="controls">
-                                            <select class="span3" id="studentId">
-                                                <option value="1">李凡</option>
-                                                <option value="2">张佳</option>
-                                                <option value="3">陈赫</option>
-                                                <option value="4">凤姐</option>
-                                                <option value="5">其他</option>
+                                            <input type="text" id="address" placeholder="基站地址" class="span3">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="stationType">基站类型</label>
+                                        <div class="controls">
+                                            <select class="span3" id="stationType">
+                                                <option>主基站</option>
+                                                <option>子基站</option>
                                             </select>
                                         </div>
                                     </div>

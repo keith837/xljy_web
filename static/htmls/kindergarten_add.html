@@ -20,8 +20,8 @@
 
 <div id="content">
     <div id="breadcrumb">
-        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 设备管理</a>
-        <a href="#" class="current">新增手环</a>
+        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 园所管理</a>
+        <a href="#" class="current">新增院所</a>
     </div>
     <div class="container-fluid">
         <div class="row-fluid">
@@ -31,7 +31,7 @@
 								<span class="icon">
 									<i class="icon-th"></i>
 								</span>
-                        <h5>手环信息</h5>
+                        <h5>园所信息</h5>
                     </div>
                     <div class="widget-content nopadding">
 
@@ -39,27 +39,43 @@
                             <div class="row-fluid">
                                 <form class="form-horizontal">
                                     <div class="control-group">
-                                        <label class="control-label" for="deviceSign">手环设备号</label>
+                                        <label class="control-label" for="schoolName">名称</label>
                                         <div class="controls">
-                                            <input type="text" id="deviceSign" placeholder="设备号" class="span3">
+                                            <input type="text" id="schoolName" placeholder="学校名称" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="deviceName">手环名称</label>
+                                        <label class="control-label" for="address">地址</label>
                                         <div class="controls">
-                                            <input type="text" id="deviceName" placeholder="手环名称" class="span3">
+                                            <input type="text" id="address" placeholder="学校地址" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="studentId">学生姓名</label>
+                                        <label class="control-label" for="sUserId">负责人</label>
                                         <div class="controls">
-                                            <select class="span3" id="studentId">
-                                                <option value="1">李凡</option>
-                                                <option value="2">张佳</option>
-                                                <option value="3">陈赫</option>
-                                                <option value="4">凤姐</option>
-                                                <option value="5">其他</option>
+                                            <select class="span3" id="sUserId">
+                                                <option value="1">李刚</option>
+                                                <option value="2">王思聪</option>
+                                                <option value="3">陈园长</option>
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="billId">联系电话</label>
+                                        <div class="controls">
+                                            <input type="text" id="billId" placeholder="联系电话" class="span3">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="schoolUrl">平面图</label>
+                                        <div class="controls">
+                                            <input type="file" id="schoolUrl" class="span3"/>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="schoolDesc">学校简介</label>
+                                        <div class="controls">
+                                            <textarea rows="3" id="schoolDesc" class="span3"></textarea>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -77,13 +93,13 @@
         </div>
     </div>
 
-
         <div class="row-fluid">
             <div id="footer" class="span12">
                 Copyright 浙江响亮教育科技股份有限公司 © 2015 <a href="https://wrapbootstrap.com/user/diablo9983">响亮教育</a>
             </div>
         </div>
     </div>
+
 
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.ui.custom.js"></script>
@@ -95,7 +111,5 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
-
-
 </body>
 </html>

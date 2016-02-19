@@ -20,8 +20,8 @@
 
 <div id="content">
     <div id="breadcrumb">
-        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 设备管理</a>
-        <a href="#" class="current">新增手环</a>
+        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 推荐管理</a>
+        <a href="#" class="current">新增推广信息</a>
     </div>
     <div class="container-fluid">
         <div class="row-fluid">
@@ -31,7 +31,7 @@
 								<span class="icon">
 									<i class="icon-th"></i>
 								</span>
-                        <h5>手环信息</h5>
+                        <h5>推广信息</h5>
                     </div>
                     <div class="widget-content nopadding">
 
@@ -39,29 +39,24 @@
                             <div class="row-fluid">
                                 <form class="form-horizontal">
                                     <div class="control-group">
-                                        <label class="control-label" for="deviceSign">手环设备号</label>
+                                        <label class="control-label" for="consultTitle">标题</label>
                                         <div class="controls">
-                                            <input type="text" id="deviceSign" placeholder="设备号" class="span3">
+                                            <input type="text" id="consultTitle" placeholder="标题" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="deviceName">手环名称</label>
+                                        <label class="control-label" for="consultUrl">缩略图</label>
                                         <div class="controls">
-                                            <input type="text" id="deviceName" placeholder="手环名称" class="span3">
+                                            <input type="file" id="consultUrl" class="span3"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="studentId">学生姓名</label>
+                                        <label class="control-label" for="consultLink">链接</label>
                                         <div class="controls">
-                                            <select class="span3" id="studentId">
-                                                <option value="1">李凡</option>
-                                                <option value="2">张佳</option>
-                                                <option value="3">陈赫</option>
-                                                <option value="4">凤姐</option>
-                                                <option value="5">其他</option>
-                                            </select>
+                                            <input type="text" id="consultLink" placeholder="链接" class="span3">
                                         </div>
                                     </div>
+
                                     <div class="control-group">
                                         <div class="controls">
                                             <button type="submit" class="btn">提交</button>
