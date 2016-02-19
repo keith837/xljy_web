@@ -4,12 +4,16 @@
     <title>响亮教育管理平台</title>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css"/>
-    <link rel="stylesheet" href="css/fullcalendar.css"/>
-    <link rel="stylesheet" href="css/unicorn.main.css"/>
-    <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="css/fullcalendar.css" />
+    <link rel="stylesheet" href="css/colorpicker.css" />
+    <link rel="stylesheet" href="css/datepicker.css" />
+    <link rel="stylesheet" href="css/uniform.css" />
+    <link rel="stylesheet" href="css/select2.css" />
+    <link rel="stylesheet" href="css/unicorn.main.css" />
+    <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
 <body>
 
@@ -18,6 +22,68 @@
     <div id="breadcrumb">
         <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 积分管理</a>
         <a href="#" class="current">积分管理</a>
+    </div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-box">
+                    <div class="widget-title">
+								<span class="icon">
+									<i class="icon-th"></i>
+								</span>
+                        <h5>查询条件</h5>
+                    </div>
+                    <div class="widget-content nopadding">
+                        <div class="container-fluid">
+                            <div class="row-fluid">
+                                <form action="#" method="post" class="form-search" >
+
+                                <table width="100%" >
+                                    <tr>
+                                        <td align="center" width="8%">
+                                            选择学校
+                                        </td>
+                                        <td align="left" width="15%">
+                                            <div class="span12" style="margin-top:5px; margin-bottom:5px">
+                                                <select class="span11">
+                                                    <option>长岛幼儿园</option>
+                                                    <option>萧山幼儿园</option>
+                                                    <option>滨文高教园</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td align="center" width="8%">
+                                            选择班级
+                                        </td>
+                                        <td align="left" width="15%">
+                                            <div class="span12" style="margin-top:5px; margin-bottom:5px">
+                                                <select class="span11">
+                                                    <option value="1">托一班</option>
+                                                    <option value="2">托二班</option>
+                                                    <option value="3">小一班</option>
+                                                    <option value="4">中一班</option>
+                                                    <option value="5">大一班</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td align="center" width="8%">
+                                            老师名称
+                                        </td>
+                                        <td align="left" width="25%">
+                                            <div class="input-append span12" style="margin-top:5px; margin-bottom:5px">
+                                                <input type="text" class="span8 search-query" placeholder="请输入老师名称">
+                                                <button type="submit" class="btn">搜索</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="container-fluid">
         <div class="row-fluid">
@@ -92,10 +158,12 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.ui.custom.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-colorpicker.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
 <script src="js/jquery.uniform.js"></script>
 <script src="js/select2.min.js"></script>
-<script src="js/jquery.dataTables.min.js"></script>
+<script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
-<script src="js/unicorn.tables.js"></script>
+<script src="js/unicorn.form_common.js" charset="utf-8"></script>
 </body>
 </html>

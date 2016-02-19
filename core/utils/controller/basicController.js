@@ -13,6 +13,12 @@ var basicController = function(filename){
     this.redis = redisPool;
     this.model = {};
 }
+basicController.prototype.Error = function (msg) {
+    var tempNewError = new Error(msg);
+    tempNewError.isCustom = true;
+    return tempNewError;
+
+}
 basicController.prototype.init = function(dy){
     var self = this;
     for(var x in dy){
@@ -55,7 +61,7 @@ basicController.prototype.fillTpl =function (data,err,msg){
     response.data = data;
     return response;
 }
-basicController.prototype.createPageData = function (allsize, res) {
-    return {iTotalRecords: allsize, iTotalDisplayRecords: allsize, aaData: res}
+basicController.prototype.createPageData = function (code,allsize, res) {
+    return {code: code,iTotalRecords: allsize, iTotalDisplayRecords: allsize, data: res}
 }
 module.exports = basicController;

@@ -4,16 +4,16 @@
     <title>响亮教育管理平台</title>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css"/>
-    <link rel="stylesheet" href="css/fullcalendar.css"/>
-    <link rel="stylesheet" href="css/colorpicker.css"/>
-    <link rel="stylesheet" href="css/datepicker.css"/>
-    <link rel="stylesheet" href="css/uniform.css"/>
-    <link rel="stylesheet" href="css/select2.css"/>
-    <link rel="stylesheet" href="css/unicorn.main.css"/>
-    <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="css/fullcalendar.css" />
+    <link rel="stylesheet" href="css/colorpicker.css" />
+    <link rel="stylesheet" href="css/datepicker.css" />
+    <link rel="stylesheet" href="css/uniform.css" />
+    <link rel="stylesheet" href="css/select2.css" />
+    <link rel="stylesheet" href="css/unicorn.main.css" />
+    <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
 <body>
 
@@ -34,51 +34,42 @@
                         <h5>查询条件</h5>
                     </div>
                     <div class="widget-content nopadding">
-                        <!-- <form class="form-inline">
-                              <input type="text" class="input-small" placeholder="Email">
-                              <input type="password" class="input-small" placeholder="Password">
-                                    <div class="control-group">
-                                            <label class="control-label">File upload input</label>
-                                            <div class="controls">
-                                                <input type="file" />
+                        <div class="container-fluid">
+                            <div class="row-fluid">
+                                <form action="#" method="post" class="form-search" >
+
+                                <table width="100%" >
+                                    <tr>
+                                        <td align="center" width="15%">
+                                            选择学校
+                                        </td>
+                                        <td align="left" width="20%">
+                                            <div style="margin-top:5px; margin-bottom:5px">
+                                                <select>
+                                                    <option>长岛幼儿园</option>
+                                                    <option>萧山幼儿园</option>
+                                                    <option>滨文高教园</option>
+                                                </select>
                                             </div>
-                                        </div>
-                              <label class="checkbox">
-                              <input type="checkbox"> Remember me
-                              </label>
-                              <button type="submit" class="btn">Sign in</button>
-                        </form> -->
-                        <!-- <form action="#" method="post" class="form-horizontal" />
-                            <div class="control-group">
-                                <div class="btn-toolbar">
-                                    <div class="btn-group">
-                                        <button class="btn btn-small">选择学校</button>
-                                        <button data-toggle="dropdown" class="btn btn-small dropdown-toggle"><span class="caret"></span></button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">长岛幼儿园</a></li>
-                                            <li><a href="#">萧山幼儿园</a></li>
-                                            <li><a href="#">滨文高教园</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <label class="control-label">Normal text input</label>
-                                <div class="controls">
-                                    <input type="text" size="32" width="32"/>
-                                </div>
+                                        </td>
+                                        <td align="center" width="15%">
+                                            设备名称
+                                        </td>
+                                        <td align="left" width="25%">
+                                            <div class="input-append span12" style="margin-top:5px; margin-bottom:5px">
+                                                <input type="text" class="span8 search-query" placeholder="请输入设备名称">
+                                                <button type="submit" class="btn">搜索</button>
+                                            </div>
+                                        </td>
+                                        <td align="center">
+                                            <a href="device_add.html" class="btn">新增设备</a>
+                                            <a href="fileInput.html" class="btn" target="_self">批量导入</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                                </form>
                             </div>
-                            <div class="form-actions">
-                                <button type="submit" class="btn btn-primary">搜索</button>
-                                <button type="submit" class="btn btn-primary">新增基站</button>
-
-                            </div>
-                            <div class="control-group">
-                                <label class="control-label">File upload input</label>
-                                <div class="controls">
-                                    <input type="file" />
-                                </div>
-                            </div>
-
-                        </form>		 -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -104,90 +95,10 @@
                                 <th>基站分类</th>
                                 <th>基站状态</th>
                                 <th>反馈时间</th>
+                                <th width="23%">操作</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>FF:FF:FF:FF:FF:FF</td>
-                                <td>东风幼儿园</td>
-                                <td>1栋2楼</td>
-                                <td>主基站</td>
-                                <td>正常</td>
-                                <td>2016-01-27 00:58:31</td>
-                            </tr>
-                            <tr>
-                                <td>FF:FF:FF:FF:FF:FF</td>
-                                <td>东风幼儿园</td>
-                                <td>1栋2楼</td>
-                                <td>主基站</td>
-                                <td>正常</td>
-                                <td>2016-01-27 00:58:31</td>
-                            </tr>
-                            <tr>
-                                <td>FF:FF:FF:FF:FF:FF</td>
-                                <td>东风幼儿园</td>
-                                <td>1栋2楼</td>
-                                <td>主基站</td>
-                                <td>正常</td>
-                                <td>2016-01-27 00:58:31</td>
-                            </tr>
-                            <tr>
-                                <td>FF:FF:FF:FF:FF:FF</td>
-                                <td>东风幼儿园</td>
-                                <td>1栋2楼</td>
-                                <td>主基站</td>
-                                <td>正常</td>
-                                <td>2016-01-27 00:58:31</td>
-                            </tr>
-                            <tr>
-                                <td>FF:FF:FF:FF:FF:FF</td>
-                                <td>东风幼儿园</td>
-                                <td>1栋2楼</td>
-                                <td>主基站</td>
-                                <td>正常</td>
-                                <td>2016-01-27 00:58:31</td>
-                            </tr>
-                            <tr>
-                                <td>FF:FF:FF:FF:FF:FF</td>
-                                <td>东风幼儿园</td>
-                                <td>1栋2楼</td>
-                                <td>主基站</td>
-                                <td>正常</td>
-                                <td>2016-01-27 00:58:31</td>
-                            </tr>
-                            <tr>
-                                <td>FF:FF:FF:FF:FF:FF</td>
-                                <td>东风幼儿园</td>
-                                <td>1栋2楼</td>
-                                <td>主基站</td>
-                                <td>正常</td>
-                                <td>2016-01-27 00:58:31</td>
-                            </tr>
-                            <tr>
-                                <td>FF:FF:FF:FF:FF:FF</td>
-                                <td>东风幼儿园</td>
-                                <td>1栋2楼</td>
-                                <td>主基站</td>
-                                <td>正常</td>
-                                <td>2016-01-27 00:58:31</td>
-                            </tr>
-                            <tr>
-                                <td>FF:FF:FF:FF:FF:FF</td>
-                                <td>东风幼儿园</td>
-                                <td>1栋2楼</td>
-                                <td>主基站</td>
-                                <td>正常</td>
-                                <td>2016-01-27 00:58:31</td>
-                            </tr>
-                            <tr>
-                                <td>FF:FF:FF:FF:FF:FF</td>
-                                <td>东风幼儿园</td>
-                                <td>1栋2楼</td>
-                                <td>主基站</td>
-                                <td>正常</td>
-                                <td>2016-01-27 00:58:31</td>
-                            </tr>
-
                             </tbody>
                         </table>
                     </div>
@@ -210,9 +121,70 @@
 <script src="js/bootstrap-datepicker.js"></script>
 <script src="js/jquery.uniform.js"></script>
 <script src="js/select2.min.js"></script>
-<script src="js/jquery.dataTables.min.js"></script>
+<script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
-<script src="js/unicorn.tables.js"></script>
-<script src="js/unicorn.form_common.js"></script>
+<script src="js/unicorn.form_common.js" charset="utf-8"></script>
+
+<script>
+    /**
+     * tables
+     **/
+    $(document).ready(function () {
+
+        $('.data-table').dataTable({
+            "oLanguage": {
+                "sLengthMenu": "每页显示 _MENU_ 条记录",
+                "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                "sInfoEmpty": "没有数据",
+                "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "前一页",
+                    "sNext": "后一页",
+                    "sLast": "尾页"
+                },
+                "sZeroRecords": "没有检索到数据",
+                "sProcessing": "<img src='./img/loading.gif' />"
+            },
+//            "bInfo": true,
+            "bJQueryUI": true,
+            "bLengthChange": false,
+//            "bPaginate":true,
+            "bProcessing" : true,
+            "sPaginationType": "full_numbers",
+            "iDisplayLength": 3,
+            "bFilter": false,
+            "sDom": '<""l>t<"F"fp>',
+
+//            "iTotalRecords":"data.iTotalRecords",
+//             "bProcessing": true,
+            "bServerSide": true,
+           // "sAjaxDataProp":"data.aaData",
+            "sAjaxSource": "/api/stations",
+            "sServerMethod": "GET",
+            "aoColumns": [
+                {"mDataProp": "stationMac"},
+                {"mDataProp": "schoolName"},
+                {"mDataProp": "address"},
+                {"mDataProp": "stationType"},
+                {"mDataProp": "state"},
+                {"mDataProp": "doneDate"}
+            ],
+            "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
+                {
+                    "targets": [6],
+                    "data": null,
+                    "bSortable": false,
+                    "defaultContent": "<button class=\"btn\"><i class=\"icon-eye-open\"></i> 详情</button>&nbsp;&nbsp;<button class=\"btn btn-primary\"><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\"><i class=\"icon-remove icon-white\"></i> 删除</button>"
+                }
+            ]
+            //"fnServerParams": function (aoData) {
+            //    aoData.push({ "name": "name1", "value": "value1" });
+            //    aoData.push({ "name": "name2", "value": "value2" });
+            //}
+        });
+    });
+
+</script>
 </body>
 </html>

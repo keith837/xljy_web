@@ -7,6 +7,31 @@ $(document).ready(function () {
     var recover = $('#recoverform');
     var speed = 400;
 
+    $('#loginBtn').click(function () {
+        //console.info($("#loginform").serializeArray());
+        $.ajax({
+            url: "/api/user/login",
+            type: "POST",
+            data: $("#loginform").serialize()
+        }).done(function(data) {
+            if (data.code=="00") {
+                //console.info(data);
+                $.cookie('Set-Token', data.data.token);
+                swal({   title: "登陆成功!",   text: "登陆成功",   timer: 1000,   showConfirmButton: true },function(){
+                    setTimeout(function(){
+                       window.location.href="main.html";
+                    }, 2000);
+                });
+
+            }else{
+                swal("登陆失败!", data.msg, "error");
+            };
+        })
+        .fail(function() {
+            swal("登陆失败!", "登陆失败", "error");
+        });
+    });
+
     $('#to-recover').click(function () {
         login.fadeTo(speed, 0.01).css('z-index', '100');
         recover.fadeTo(speed, 1).css('z-index', '200');

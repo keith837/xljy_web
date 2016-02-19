@@ -9,6 +9,6 @@ $(document).ready(function () {
     });
 
     $('select').select2();
-    $('.colorpicker').colorpicker();
-    $('.datepicker').datepicker();
+    //$('.colorpicker').colorpicker();
+   // $('.datepicker').datepicker();
 });

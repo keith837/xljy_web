@@ -34,32 +34,53 @@
                         <h5>查询条件</h5>
                     </div>
                     <div class="widget-content nopadding">
-                        <form class="form-horizontal form-search">
-                            <div class="controls controls-row">
-                                <select class="span3">
-                                    <option value="1">东冠幼儿园</option>
-                                    <option value="2">萧山幼儿园</option>
-                                    <option value="3">响亮幼儿园</option>
-                                    <option value="4">滨文幼儿园</option>
-                                    <option value="5">东阳文博幼儿园</option>
-                                </select>
-                                <select class="span3">
-                                    <option value="1">托一班</option>
-                                    <option value="2">托二班</option>
-                                    <option value="3">小一班</option>
-                                    <option value="4">中一班</option>
-                                    <option value="5">大一班</option>
-                                </select>
+                        <!--<form class="form-horizontal form-search">-->
+                            <!--<div class="controls controls-row">-->
+                                <!--<select class="span3">-->
+                                    <!--<option value="1">东冠幼儿园</option>-->
+                                    <!--<option value="2">萧山幼儿园</option>-->
+                                    <!--<option value="3">响亮幼儿园</option>-->
+                                    <!--<option value="4">滨文幼儿园</option>-->
+                                    <!--<option value="5">东阳文博幼儿园</option>-->
+                                <!--</select>-->
+                                <!--<select class="span3">-->
+                                    <!--<option value="1">托一班</option>-->
+                                    <!--<option value="2">托二班</option>-->
+                                    <!--<option value="3">小一班</option>-->
+                                    <!--<option value="4">中一班</option>-->
+                                    <!--<option value="5">大一班</option>-->
+                                <!--</select>-->
+                            <!--</div>-->
+                            <!--<div class="controls controls-row">-->
+                                <!--<div class="input-append">-->
+                                    <!--<input type="text" class="span4 search-query">-->
+                                    <!--<button type="submit" class="btn">搜索</button>-->
+                                <!--</div>-->
+                                <!--<a href="#" class="btn">新增设备</a>-->
+                                <!--<a href="fileInput.html" class="btn" target="_self">批量导入</a>-->
+                            <!--</div>-->
+                        <!--</form>-->
+                        <div class="container-fluid">
+                            <div class="row-fluid">
+                                <form action="#" method="post" class="form-search" >
+
+                                <table width="100%" >
+                                    <tr>
+                                        <td align="center">
+                                            <div class="input-append span12" style="margin-top:5px; margin-bottom:5px">
+                                                <input type="text" class="span4 search-query" placeholder="请输入手环名称">
+                                                <button type="submit" class="btn">搜索</button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a href="bracelet_add.html" class="btn">新增手环</a>
+                                            <a href="fileInput.html" class="btn" target="_self">批量导入</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                                </form>
                             </div>
-                            <div class="controls controls-row">
-                                <div class="input-append">
-                                    <input type="text" class="span4 search-query">
-                                    <button type="submit" class="btn">搜索</button>
-                                </div>
-                                <a href="#" class="btn">新增设备</a>
-                                <a href="fileInput.html" class="btn" target="_self">批量导入</a>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -123,7 +144,6 @@
         $('.data-table').dataTable({
             "oLanguage": {
                 "sLengthMenu": "每页显示 _MENU_ 条记录",
-                "sZeroRecords": "抱歉， 没有找到",
                 "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
                 "sInfoEmpty": "没有数据",
                 "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
@@ -149,13 +169,14 @@
 //            "iTotalRecords":10,/*
 //             "bProcessing": true,
             "bServerSide": true,
-            "sAjaxSource": "../device/list",
-            "sServerMethod": "POST",
+            //"sAjaxDataProp":"data.aaData",
+            "sAjaxSource": "/api/devices",
+            "sServerMethod": "GET",
             "aoColumns": [
                 {"mDataProp": "deviceId"},
-                {"mDataProp": "deviceSign"},
-                {"mDataProp": "deviceName"},
-                {"mDataProp": "studentId"}
+                {"mDataProp": "schoolName"},
+                {"mDataProp": "className"},
+                {"mDataProp": "studentName"}
             ],
             "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
                 {

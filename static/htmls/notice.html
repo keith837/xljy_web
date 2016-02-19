@@ -4,12 +4,16 @@
     <title>响亮教育管理平台</title>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css"/>
-    <link rel="stylesheet" href="css/fullcalendar.css"/>
-    <link rel="stylesheet" href="css/unicorn.main.css"/>
-    <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="css/fullcalendar.css" />
+    <link rel="stylesheet" href="css/colorpicker.css" />
+    <link rel="stylesheet" href="css/datepicker.css" />
+    <link rel="stylesheet" href="css/uniform.css" />
+    <link rel="stylesheet" href="css/select2.css" />
+    <link rel="stylesheet" href="css/unicorn.main.css" />
+    <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
 <body>
 
@@ -27,6 +31,75 @@
 								<span class="icon">
 									<i class="icon-th"></i>
 								</span>
+                        <h5>查询条件</h5>
+                    </div>
+                    <div class="widget-content nopadding">
+                        <div class="container-fluid">
+                            <div class="row-fluid">
+                                <form action="#" method="post" class="form-search" >
+
+                                <table width="100%" >
+                                    <tr>
+                                        <td align="center" width="8%">
+                                            选择学校
+                                        </td>
+                                        <td align="left" width="15%">
+                                            <div class="span12" style="margin-top:5px; margin-bottom:5px">
+                                                <select class="span11">
+                                                    <option>长岛幼儿园</option>
+                                                    <option>萧山幼儿园</option>
+                                                    <option>滨文高教园</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td align="center" width="8%">
+                                            选择班级
+                                        </td>
+                                        <td align="left" width="15%">
+                                            <div class="span12" style="margin-top:5px; margin-bottom:5px">
+                                                <select class="span11">
+                                                    <option value="1">托一班</option>
+                                                    <option value="2">托二班</option>
+                                                    <option value="3">小一班</option>
+                                                    <option value="4">中一班</option>
+                                                    <option value="5">大一班</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td align="center" width="8%">
+                                            选择时间
+                                        </td>
+                                        <td align="left" width="30%">
+                                            <div class="span12" style="margin-top:5px; margin-bottom:5px">
+                                                <input class="span5" type="text" placeholder="开始时间">
+                                                &nbsp;
+                                                至
+                                                &nbsp;
+                                                <input class="span5" type="text" placeholder="结束时间">
+                                            </div>
+                                        </td>
+                                        <td align="center">
+                                            <a href="" class="btn">搜索</a>
+                                            <a href="notice_add.html" class="btn">发布通知</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-box">
+                    <div class="widget-title">
+								<span class="icon">
+									<i class="icon-th"></i>
+								</span>
                         <h5>通知列表</h5>
                     </div>
                     <div class="widget-content nopadding">
@@ -34,10 +107,10 @@
                             <thead>
                             <tr>
                                 <th>编号</th>
-                                <th>通知类型</th>
+                                <th width="10%">通知类型</th>
                                 <th>通知内容</th>
                                 <th>图片</th>
-                                <th>发布人</th>
+                                <th width="8%">发布人</th>
                                 <th>发布时间</th>
                                 <th>失效时间</th>
                                 <th>学校</th>
@@ -153,10 +226,12 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.ui.custom.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-colorpicker.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
 <script src="js/jquery.uniform.js"></script>
 <script src="js/select2.min.js"></script>
-<script src="js/jquery.dataTables.min.js"></script>
+<script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
-<script src="js/unicorn.tables.js"></script>
+<script src="js/unicorn.form_common.js" charset="utf-8"></script>
 </body>
 </html>
