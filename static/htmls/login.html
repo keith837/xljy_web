@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css"/>
+    <link rel="stylesheet" href="css/sweetalert.css" />
     <link rel="stylesheet" href="css/unicorn.login.css"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
@@ -20,41 +21,57 @@
     <div class="control-group">
         <div class="controls">
             <div class="input-prepend">
-                <span class="add-on"><i class="icon-user"></i></span><input type="text" placeholder="Username"/>
+                <span class="add-on"><i class="icon-user"></i></span><input type="text" placeholder="用户名" id="userName" name="userName"/>
             </div>
         </div>
     </div>
     <div class="control-group">
         <div class="controls">
             <div class="input-prepend">
-                <span class="add-on"><i class="icon-lock"></i></span><input type="password" placeholder="Password"/>
+                <span class="add-on"><i class="icon-lock"></i></span><input type="password" placeholder="密码" id="password" name="password"/>
+                <input type="hidden" value="1" id="source" name="source"/>
+                <input type="hidden" value="0" id="channel" name="channel"/>
+                <input type="hidden" value="30" id="groupId" name="groupId"/>
             </div>
         </div>
     </div>
     <div class="form-actions">
-        <span class="pull-left"><a href="#" class="flip-link" id="to-recover">Lost password?</a></span>
-        <span class="pull-right"><input type="submit" class="btn btn-inverse" value="Login"/></span>
+        <span class="pull-left"><a href="#" class="flip-link" id="to-recover">忘记密码?</a></span>
+        <span class="pull-right"><input type="button" id="loginBtn" class="btn btn-inverse" value="登陆"/></span>
     </div>
     </form>
     <form id="recoverform" action="#" class="form-vertical">
-    <p>Enter your e-mail address below and we will send you instructions how to recover a password.</p>
 
     <div class="control-group">
         <div class="controls">
             <div class="input-prepend">
-                <span class="add-on"><i class="icon-envelope"></i></span><input type="text"
-                                                                                placeholder="E-mail address"/>
+                <span class="add-on"><i class="icon-envelope"></i></span>
+                <input type="text" placeholder="登陆手机号"/>
+            </div>
+        </div>
+        <div class="controls">
+            <div class="input-prepend">
+                <span class="add-on"><i class="icon-envelope"></i></span>
+                <input type="text" placeholder="验证码"/>
+            </div>
+        </div>
+        <div class="controls">
+            <div class="input-prepend">
+                <span class="add-on"><i class="icon-envelope"></i></span>
+                <input type="password" placeholder="新密码"/>
             </div>
         </div>
     </div>
     <div class="form-actions">
-        <span class="pull-left"><a href="#" class="flip-link" id="to-login">&lt; Back to login</a></span>
-        <span class="pull-right"><input type="submit" class="btn btn-inverse" value="Recover"/></span>
+        <span class="pull-left"><a href="#" class="flip-link" id="to-login">&lt; 返回登陆</a></span>
+        <span><input type="button" class="btn btn-inverse" value="发送短信"/></span>
+        <span><input type="button" class="btn btn-inverse" value="找回"/></span>
     </div>
     </form>
 </div>
 
 <script src="js/jquery.min.js"></script>
-<script src="js/unicorn.login.js"></script>
+<script src="js/sweetalert.min.js" charset="utf-8"></script>
+<script src="js/unicorn.login.js"  charset="utf-8"></script>
 </body>
 </html>
