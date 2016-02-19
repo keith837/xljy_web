@@ -29,11 +29,11 @@ module.exports = new basicController(__filename).init({
             if(!user){
                 return next(new Error("用户信息不存在"));
             }
-            if(user.password != password){
-                return next(new Error("登录密码错误"));
-            }
             if(user.state != 1){
                 return next(new Error("用户未激活"));
+            }
+            if(user.password != password){
+                return next(new Error("登录密码错误"));
             }
             user.source = source;
             user.channel = channel;
@@ -41,7 +41,7 @@ module.exports = new basicController(__filename).init({
                 self.parentLogin(user, res, next);
             }else if(groupId == 20){
                 self.teacherLogin(user, res, next);
-            }else if(groupId == 30 || groupId == 40){
+            }else if(groupId == 30 || groupId == 40 || groupId == 50){
                 self.principalLogin(user, res, next);
             }else{
                 return next(new Error("用户组信息未定义"));
