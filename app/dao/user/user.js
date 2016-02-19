@@ -13,6 +13,10 @@ User.findOneByUserName = function(userName, callback){
     mysqlUtil.queryOne("select * from XL_USER where userName=?", [userName], callback);
 }
 
+User.save = function(args, callback){
+
+}
+
 User.active = function(userName, password, callback){
     mysqlUtil.query("update XL_USER set state = 1,doneDate = now(),password=? where userName = ?", [password, userName], callback);
 }

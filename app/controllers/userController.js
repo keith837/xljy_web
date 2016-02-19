@@ -31,7 +31,7 @@ module.exports = new basicController(__filename).init({
                 return next(new Error("用户信息不存在"));
             }
             if(user.state != 1){
-                return next(new Error("用户未激活"));
+                return next(new Error("该手机号码为白名单用户，未注册"));
             }
             if(user.password != password){
                 return next(new Error("登录密码错误"));
@@ -44,6 +44,8 @@ module.exports = new basicController(__filename).init({
                 self.teacherLogin(user, res, next);
             }else if(groupId == 30 || groupId == 40 || groupId == 50){
                 self.principalLogin(user, res, next);
+            }else if(groupId == 99){
+                self.adminLogin(user, res, next);
             }else{
                 return next(new Error("用户组信息未定义"));
             }
@@ -173,6 +175,26 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    adminLogin : function(user, res, next) {
+        var self = this;
+        var date = new Date();
+        date.setDate(date.getDate() + 7);
+        user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
+        self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
+        res.json({
+            code : "00",
+            data : {
+                userId : user.userId,
+                billId : user.billId,
+                nickName : user.nickName,
+                custName : user.custName,
+                groupId : user.groupId,
+                pointNum : user.pointNum,
+                token : user.token
+            }
+        });
+    },
+
     resetPwd : function(req, res, next){
         var self = this;
         var userName = req.body.userName;
@@ -271,6 +293,31 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    whiteCheck : function(req, res, next){
+        var self = this;
+        var billId = req.params.billId;
+        if(!billId){
+            return next(new Error("手机号码不能为空"));
+        }
+        self.model['user'].findOneByUserName(billId, function(err, user){
+            if(err){
+                return next(err);
+            }
+            if(!user){
+                return next(new Error("该手机号码非白名单用户"));
+            }
+            if(user.state == 1){
+                return next(new Error("该手机号码已注册"));
+            }
+            res.json({
+                code : "00",
+                msg : "该用户可以注册"
+            });
+        });
+    },
+
+
+
     register : function(req, res, next) {
         var self = this;
         var userName = req.body.userName;
@@ -282,28 +329,40 @@ module.exports = new basicController(__filename).init({
         if (!securityCode) {
             return next(new Error("短信验证码不能为空"));
         }
-        self.model['smsLog'].findOne(userName, securityCode, function (err, smsLog) {
-            if (err) {
+        self.model['user'].findOneByUserName(userName, function(err, user){
+            if(err){
                 return next(err);
             }
-            if (!smsLog) {
-                return next(new Error("短信验证码错误"));
+            if(!user){
+                return next(new Error("该手机号码非白名单用户"));
             }
-            var date = new Date();
-            date.setMinutes(date.getMinutes() - 5);
-            if (smsLog.sendDate < date) {
-                return next(new Error("短信验证码已过期"));
+            if(user.state == 1){
+                return next(new Error("该手机号码已注册"));
             }
-            self.model['user'].active(userName, password, function (err, data) {
+            self.model['smsLog'].findOne(userName, securityCode, function (err, smsLog) {
                 if (err) {
                     return next(err);
                 }
-                res.json({
-                    code: "00",
-                    msg: "注册成功"
+                if (!smsLog) {
+                    return next(new Error("短信验证码错误"));
+                }
+                var date = new Date();
+                date.setMinutes(date.getMinutes() - 5);
+                if (smsLog.sendDate < date) {
+                    return next(new Error("短信验证码已过期"));
+                }
+                self.model['user'].active(userName, password, function (err, data) {
+                    if (err) {
+                        return next(err);
+                    }
+                    res.json({
+                        code: "00",
+                        msg: "注册成功"
+                    });
                 });
             });
         });
+
     },
 
     list : function(req, res, next){
@@ -326,6 +385,53 @@ module.exports = new basicController(__filename).init({
                 data : users
             })
         });
+    },
+
+    add : function(req, res, next){
+        var userName = req.body.userName;
+        var password = req.body.password;
+        var groupId = req.body.groupId;
+        var custName = req.body.custName;
+        var billId = req.body.billId | userName;
+        var email = req.body.email;
+        var gender = req.body.gender;
+        var address = req.body.address;
+        var birthday = req.body.birthday;
+        var remark = req.body.remark;
+        if(!userName){
+            return next(new Error("登录名不能为空"));
+        }
+        if(!groupId){
+            return next(new Error("用户所属群组不能为空"));
+        }
+        if(!custName){
+            return next(new Error("用户姓名不能为空"));
+        }
+        self.model['user'].findOneByUserName(userName, function(err, user){
+            if(err){
+                return next(err);
+            }
+            if(user && user.userName == userName){
+                return nrxt("登录名已存在");
+            }
+            self.model['user'].save([userName,], function(err, data){
+                if(err){
+                    return next(err);
+                }
+                res.json({
+                    code : "00",
+                    msg : "用户添加成功"
+                });
+            });
+        });
+    },
+
+    modify : function(req, res, next){
+
+    },
+
+    del : function(req, res, next){
+
     },
 
     show : function(req, res, next){
