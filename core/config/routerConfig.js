@@ -146,6 +146,16 @@ var routerConfig = {
                 "url": "/api/stations/:id",
                 "method": "put",
                 "description": "更新基站"
+            },
+            "batchImport": {
+                "url": "/api/stationImport",
+                "method": "post",
+                "description": "批量导入基站"
+            },
+            "batchExport": {
+                "url": "/api/stationExport",
+                "method": "get",
+                "description": "批量导出基站"
             }
         },
         device: {

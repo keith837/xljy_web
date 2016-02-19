@@ -47,7 +47,7 @@ for (var x in webConfig.STATICPATH) {
 logger.info("配置中静态目录信息载入完毕..");
 
 //登录校验
-app.use(loginFilter);
+//app.use(loginFilter);
 
 //控制器挂载
 
@@ -64,7 +64,7 @@ async.waterfall([
             logger.info("载入/controllers 下控制器 完成..");
             //错误处理中间件
             app.use(function (err, req, res, next) {
-                logger.error("======错误句柄next接受错误=======", err);
+                err.isCustom ? "" : logger.error("======错误句柄next接受错误=======", err);
                 // 业务逻辑
                 if (res.headersSent) {
                     return next(err);
