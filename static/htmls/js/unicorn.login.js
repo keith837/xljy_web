@@ -8,15 +8,19 @@ $(document).ready(function () {
     var speed = 400;
 
     $('#loginBtn').click(function () {
-        console.info($("#loginform").serializeArray());
+        //console.info($("#loginform").serializeArray());
         $.ajax({
             url: "/api/user/login",
             type: "POST",
             data: $("#loginform").serialize()
         }).done(function(data) {
             if (data.code=="00") {
+                //console.info(data);
+                $.cookie('Set-Token', data.data.token);
                 swal({   title: "登陆成功!",   text: "登陆成功",   timer: 1000,   showConfirmButton: true },function(){
-                    setTimeout(function(){      window.location.href="main.html";   }, 2000);
+                    setTimeout(function(){
+                       window.location.href="main.html";
+                    }, 2000);
                 });
 
             }else{

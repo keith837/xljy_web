@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/uniform.css" />
     <link rel="stylesheet" href="css/select2.css" />
     <link rel="stylesheet" href="css/unicorn.main.css" />
+    <link rel="stylesheet" href="css/sweetalert.css" />
     <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
@@ -37,33 +38,33 @@
 
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form class="form-horizontal">
+                                <form class="form-horizontal" action="/api/group/create" method="post" id="groupForm">
                                     <div class="control-group">
                                         <label class="control-label" for="groupName">名称</label>
                                         <div class="controls">
-                                            <input type="text" id="groupName" placeholder="名称" class="span3">
+                                            <input type="text" id="groupName" placeholder="名称" class="span3" name="groupName">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="groupDesc">备注</label>
                                         <div class="controls">
-                                            <textarea rows="3" id="groupDesc" class="span3"></textarea>
+                                            <textarea rows="3" id="groupDesc" class="span3" name="groupDesc"></textarea>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="roleId">权限</label>
                                         <div class="controls">
-                                            <select class="span3" id="roleId">
-                                                <option>会员管理</option>
-                                                <option>用户组管理</option>
-                                                <option>基站管理</option>
+                                            <select class="span3" id="roleId" name="roleId">
+                                                <option value="60">会员管理</option>
+                                                <option value="60">用户组管理</option>
+                                                <option value="60">基站管理</option>
                                             </select>
                                         </div>
                                     </div>
 
                                     <div class="control-group">
                                         <div class="controls">
-                                            <button type="submit" class="btn">提交</button>
+                                            <button type="button" id="commitBtn" class="btn">提交</button>
                                             <button type="reset" class="btn">重置</button>
                                         </div>
                                     </div>
@@ -85,6 +86,7 @@
     </div>
 
 <script src="js/jquery.min.js"></script>
+<script src="js/jquery.cookie.js" charset="utf-8"></script>
 <script src="js/jquery.ui.custom.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-colorpicker.js"></script>
@@ -94,6 +96,41 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
+<script src="js/sweetalert.min.js" charset="utf-8"></script>
+<script>
+
+    $(document).ready(function () {
+
+        $('#commitBtn').click(function () {
+//            console.info($("#loginform").serializeArray());
+//            console.info($("#groupForm").serialize());
+            $.ajax({
+                url: "/api/group/create",
+                type: "POST",
+                data: $("#groupForm").serialize(),
+                headers: {
+                    "Set-Token":$.cookie('Set-Token')
+                }
+            }).done(function (data) {
+//                console.info($.cookie('Set-Token'));
+                if (data.code == "00") {
+                    swal({title: "保存成功!", text: "保存成功", timer: 1000, showConfirmButton: true}, function () {
+                        setTimeout(function () {
+                            window.location.href = "group.html";
+                        }, 2000);
+                    });
+
+                } else {
+                    swal("保存失败!", data.msg, "error");
+                }
+                ;
+            })
+                    .fail(function () {
+                        swal("保存失败!", "保存失败", "error");
+                    });
+        });
+    });
+</script>
 
 
 </body>

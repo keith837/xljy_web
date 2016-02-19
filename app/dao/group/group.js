@@ -59,9 +59,8 @@ Group.add = function (group, callback) {
         params.push(group.roleId);
         params.push(group.groupName);
         params.push(group.groupDesc);
-        params.push(device.sortId);
-        params.push(device.oUserId);
-        mysqlUtil.query("insert into XL_USER_GROUP(roleId,groupName,groupDesc,sortId,state,createDate,doneDate,oUserId) values(?,?,?,?,1,now(),now(),?)", params, function (err, res) {
+        params.push(group.oUserId);
+        mysqlUtil.query("insert into XL_USER_GROUP(roleId,groupName,groupDesc,sortId,state,createDate,doneDate,oUserId) values(?,?,?,50,1,now(),now(),?)", params, function (err, res) {
             if (err) {
                 return callback(err);
             }
