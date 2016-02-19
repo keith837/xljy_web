@@ -13,6 +13,12 @@ var basicController = function(filename){
     this.redis = redisPool;
     this.model = {};
 }
+basicController.prototype.Error = function (msg) {
+    var tempNewError = new Error(msg);
+    tempNewError.isCustom = true;
+    return tempNewError;
+
+}
 basicController.prototype.init = function(dy){
     var self = this;
     for(var x in dy){
