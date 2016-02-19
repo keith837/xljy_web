@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" href="css/fullcalendar.css" />
     <link rel="stylesheet" href="css/colorpicker.css" />
     <link rel="stylesheet" href="css/datepicker.css" />
@@ -43,9 +44,9 @@
                                         <td align="center" width="8%">
                                             选择学校
                                         </td>
-                                        <td align="left" width="20%">
-                                            <div class="span12" style="margin-top:5px; margin-bottom:5px">
-                                                <select class="span12">
+                                        <td align="left" width="40%">
+                                            <div class="span12">
+                                                <select class="span11">
                                                     <option>长岛幼儿园</option>
                                                     <option>萧山幼儿园</option>
                                                     <option>滨文高教园</option>
@@ -70,7 +71,7 @@
                                             考勤状态
                                         </td>
                                         <td>
-                                            <select class="span8">
+                                            <select class="span12">
                                                 <option>未佩戴设备</option>
                                                 <option>正常到校</option>
                                                 <option>非正常到校</option>
@@ -87,11 +88,11 @@
                                         </td>
                                         <td align="left">
                                             <div class="span12" style="margin-top:5px; margin-bottom:5px">
-                                                <input class="span5" type="text" placeholder="开始时间">
+                                                <input class="form_datetime span5" type="text" placeholder="开始时间">
                                                 &nbsp;
                                                 至
-                                                &nbsp;
-                                                <input class="span5" type="text" placeholder="结束时间">
+                                                &nbsp;&nbsp;
+                                                <input class="form_datetime span5" type="text" placeholder="结束时间">
                                             </div>
                                         </td>
                                         <td align="center">
@@ -192,11 +193,20 @@
 <script src="js/jquery.ui.custom.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-colorpicker.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/bootstrap-datetimepicker.min.js"></script>
 <script src="js/jquery.uniform.js"></script>
 <script src="js/select2.min.js"></script>
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
+<script>
+    /**
+     * tables
+     **/
+    $(document).ready(function () {
+        $(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
+    });
+
+</script>
 </body>
 </html>

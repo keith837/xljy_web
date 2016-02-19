@@ -12,13 +12,20 @@ Group.queryAllNum = function (condition, params, callback) {
 }
 
 Group.queryPage = function (start, pageSize, queryCondition, callback) {
-    var sqlCondition = "1=1 ";
+    var sqlCondition = " m.state=1 ";
     var sqlParams = [];
 
     if (queryCondition) {
         for (var key in queryCondition) {
-            sqlCondition += "and m." + key + "=? ";
-            sqlParams.push(queryCondition[key]);
+            if(key=="groupName"){
+                sqlCondition += "and m." + key + " like ? ";
+                sqlParams.push('%'+queryCondition[key]+'%');
+            }else{
+                sqlCondition += "and m." + key + "=? ";
+                sqlParams.push(queryCondition[key]);
+            }
+
+
         }
     }
 
@@ -34,7 +41,7 @@ Group.queryPage = function (start, pageSize, queryCondition, callback) {
         sqlParams.push(start);
         sqlParams.push(pageSize);
 
-        var sql = "select * from XL_USER_GROUP m where " + sqlCondition;
+        var sql = "select m.groupId,m.groupName,m.roleId,m.groupDesc,DATE_FORMAT(m.createDate,   '%Y-%m-%d %H:%i:%S') as createDate,A.custName from XL_USER_GROUP m,XL_USER A where m.oUserId=A.userId and " + sqlCondition;
         mysqlUtil.query(sql, sqlParams, function (err, res) {
             callback(err, totalCount, res);
         });
