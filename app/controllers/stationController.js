@@ -24,7 +24,7 @@ module.exports = new basicController(__filename).init({
                 return next(err);
             }
             if (totalCount === 0) {
-                return next(new Error("沒有查询到基站信息."));
+                return next(self.Error("沒有查询到基站信息."));
             } else {
                 response.json(self.createPageData("00", totalCount, res));
             }
@@ -32,29 +32,31 @@ module.exports = new basicController(__filename).init({
     },
 
     detail: function (request, response, next) {
+        var self = this;
         var stationId = request.params.id;
         this.model['station'].queryDetail(stationId, function (err, res) {
             if (err) {
                 return next(err);
             } else if (res.length === 0) {
-                return next(new Error("无法查询到基站详情[" + stationId + "]."));
+                return next(self.Error("无法查询到基站详情[" + stationId + "]."));
             }
             response.json({code: "00", data: res});
         });
     },
 
     addStation: function (request, response, next) {
+        var self = this;
         var param = {};
         param = parseStation(request);
         if (!param.schoolId || isNaN(param.schoolId)) {
-            return next(new Error("没有输入学校信息."));
+            return next(this.Error("没有输入学校信息."));
         }
 
         this.model['station'].add(param, function (err, insertId) {
             if (err) {
                 return next(err);
             } else if (!insertId) {
-                return next(new Error("添加基站失败."));
+                return next(self.Error("添加基站失败."));
             } else {
                 response.json({code: "00", msg: "添加基站成功."});
             }
@@ -62,12 +64,13 @@ module.exports = new basicController(__filename).init({
     },
 
     delStation: function (request, response, next) {
+        var self = this;
         var id = parseInt(request.params.id);
         this.model['station'].del(id, function (err, data) {
             if (err) {
                 return next(err);
             } else if (data.affectedRows !== 1) {
-                return next(new Error("删除基站失败."));
+                return next(self.Error("删除基站失败."));
             } else {
                 response.json({code: "00", msg: "删除基站成功."});
             }
@@ -75,20 +78,21 @@ module.exports = new basicController(__filename).init({
     },
 
     updateStation: function (request, response, next) {
+        var self = this;
         var param = {};
         param = parseStation(request);
         param.stationId = parseInt(request.params.id);
         if (!param.schoolId || isNaN(param.schoolId)) {
-            return next(new Error("没有输入学校信息."));
+            return next(this.Error("没有输入学校信息."));
         }
         if (!param.stationId || isNaN(param.stationId)) {
-            return next(new Error("没有输入基站ID"));
+            return next(this.Error("没有输入基站ID"));
         }
         this.model['station'].update(param, function (err, data) {
             if (err) {
                 return next(err);
             } else if (data.affectedRows !== 1) {
-                return next(new Error("更新基站失败."));
+                return next(self.Error("更新基站失败."));
             } else {
                 response.json({code: "00", msg: "更新基站成功."});
             }
