@@ -47,7 +47,7 @@ function bootController(app,name,map) {
                         logger.info("方法:put 路径:" + a.url);
                         break;
                     case 'delete':
-                        app.del(a.url, fn);
+                        app.delete(a.url, fn);
                         logger.info("方法:delete 路径:" + a.url);
                         break;
                 }
