@@ -4,6 +4,6 @@
 
 $.ajaxSetup({
     headers: {
-        "Set-Token": $.cookie('Set-Token')
+        "Set-Token": $.cookie('token')
     }
 });

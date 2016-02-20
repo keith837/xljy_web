@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>响亮教育管理平台</title>
@@ -16,57 +16,57 @@
 </div>
 <div id="loginbox" style="margin-top:150px;">
     <form id="loginform" class="form-vertical" action="main.html">
-    <p>响亮教育管理平台</p>
+        <p>响亮教育管理平台</p>
 
-    <div class="control-group">
-        <div class="controls">
-            <div class="input-prepend">
-                <span class="add-on"><i class="icon-user"></i></span><input type="text" placeholder="用户名" id="userName" name="userName"/>
+        <div class="control-group">
+            <div class="controls">
+                <div class="input-prepend">
+                    <span class="add-on"><i class="icon-user"></i></span><input type="text" placeholder="用户名" id="userName" name="userName"/>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="control-group">
-        <div class="controls">
-            <div class="input-prepend">
-                <span class="add-on"><i class="icon-lock"></i></span><input type="password" placeholder="密码" id="password" name="password"/>
-                <input type="hidden" value="1" id="source" name="source"/>
-                <input type="hidden" value="0" id="channel" name="channel"/>
-                <input type="hidden" value="30" id="groupId" name="groupId"/>
+        <div class="control-group">
+            <div class="controls">
+                <div class="input-prepend">
+                    <span class="add-on"><i class="icon-lock"></i></span><input type="password" placeholder="密码" id="password" name="password"/>
+                    <input type="hidden" value="1" id="source" name="source"/>
+                    <input type="hidden" value="0" id="channel" name="channel"/>
+                    <input type="hidden" value="30" id="groupId" name="groupId"/>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="form-actions">
-        <span class="pull-left"><a href="#" class="flip-link" id="to-recover">忘记密码?</a></span>
-        <span class="pull-right"><input type="button" id="loginBtn" class="btn btn-inverse" value="登陆"/></span>
-    </div>
+        <div class="form-actions">
+            <span class="pull-left"><a href="#" class="flip-link" id="to-recover">忘记密码?</a></span>
+            <span class="pull-right"><input type="button" id="loginBtn" class="btn btn-inverse" value="登陆"/></span>
+        </div>
     </form>
     <form id="recoverform" action="#" class="form-vertical">
 
-    <div class="control-group">
-        <div class="controls">
-            <div class="input-prepend">
-                <span class="add-on"><i class="icon-envelope"></i></span>
-                <input type="text" placeholder="登陆手机号"/>
+        <div class="control-group">
+            <div class="controls">
+                <div class="input-prepend">
+                    <span class="add-on"><i class="icon-envelope"></i></span>
+                    <input type="text" placeholder="登陆手机号"/>
+                </div>
+            </div>
+            <div class="controls">
+                <div class="input-prepend">
+                    <span class="add-on"><i class="icon-envelope"></i></span>
+                    <input type="text" placeholder="验证码"/>
+                </div>
+            </div>
+            <div class="controls">
+                <div class="input-prepend">
+                    <span class="add-on"><i class="icon-envelope"></i></span>
+                    <input type="password" placeholder="新密码"/>
+                </div>
             </div>
         </div>
-        <div class="controls">
-            <div class="input-prepend">
-                <span class="add-on"><i class="icon-envelope"></i></span>
-                <input type="text" placeholder="验证码"/>
-            </div>
+        <div class="form-actions">
+            <span class="pull-left"><a href="#" class="flip-link" id="to-login">&lt; 返回登陆</a></span>
+            <span><input type="button" class="btn btn-inverse" value="发送短信"/></span>
+            <span><input type="button" class="btn btn-inverse" value="找回"/></span>
         </div>
-        <div class="controls">
-            <div class="input-prepend">
-                <span class="add-on"><i class="icon-envelope"></i></span>
-                <input type="password" placeholder="新密码"/>
-            </div>
-        </div>
-    </div>
-    <div class="form-actions">
-        <span class="pull-left"><a href="#" class="flip-link" id="to-login">&lt; 返回登陆</a></span>
-        <span><input type="button" class="btn btn-inverse" value="发送短信"/></span>
-        <span><input type="button" class="btn btn-inverse" value="找回"/></span>
-    </div>
     </form>
 </div>
 

@@ -5,10 +5,11 @@ var cacheManager = require("../utils/cache/cacheManager");
 function checkLogin(req, res, next){
     var reqPath = req.path;
     var filterUrls = cacheManager.getCache("FILTER_URLS");
-
-    if (reqPath == "/static/login.html" || reqPath.indexOf(".html") == -1) {
-        return next();
-    }
+    //console.info(reqPath);
+    //console.info(reqPath.indexOf(".html"));
+    //if (reqPath == "/static/login.html" || reqPath.indexOf(".html") == -1) {
+    //    return next();
+    //}
     for(var i = 0; i < filterUrls.length; i ++){
         var d=reqPath.length-filterUrls[i].codeValue.length;
         if(reqPath.indexOf(filterUrls[i].codeValue) == 0 || (d>=0&&reqPath.lastIndexOf(filterUrls[i].codeValue)==d)){
