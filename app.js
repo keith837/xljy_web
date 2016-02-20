@@ -70,7 +70,7 @@ async.waterfall([
                     return next(err);
                 }
                 res.json({
-                    code: "99",
+                    code: err.code || "99",
                     msg : err.message,
                     error: err
                 });

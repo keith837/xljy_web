@@ -13,9 +13,11 @@ var basicController = function(filename){
     this.redis = redisPool;
     this.model = {};
 }
-basicController.prototype.Error = function (msg) {
+basicController.prototype.Error = function (msg, code) {
     var tempNewError = new Error(msg);
     tempNewError.isCustom = true;
+    code && (tempNewError.code = code);
+    ;
     return tempNewError;
 
 }
