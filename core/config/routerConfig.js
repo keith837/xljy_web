@@ -7,6 +7,12 @@ var routerConfig = {
                 "method": "post",
                 "description": "用户登录"
             },
+            "whiteCheck" : {
+                "url": "/api/user/whiteCheck/:billId",
+                "method": "get",
+                "description": "白名单校验"
+            },
+
             "resetPwd": {
                 "url": "/api/user/resetPwd",
                 "method": "post",
@@ -146,6 +152,16 @@ var routerConfig = {
                 "url": "/api/stations/:id",
                 "method": "put",
                 "description": "更新基站"
+            },
+            "batchImport": {
+                "url": "/api/stationImport",
+                "method": "post",
+                "description": "批量导入基站"
+            },
+            "batchExport": {
+                "url": "/api/stationExport",
+                "method": "get",
+                "description": "批量导出基站"
             }
         },
         device: {

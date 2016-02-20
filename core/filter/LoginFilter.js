@@ -5,8 +5,10 @@ var cacheManager = require("../utils/cache/cacheManager");
 function checkLogin(req, res, next){
     var reqPath = req.path;
     var filterUrls = cacheManager.getCache("FILTER_URLS");
+
     for(var i = 0; i < filterUrls.length; i ++){
-        if(reqPath.indexOf(filterUrls[i].codeValue) == 0){
+        var d=reqPath.length-filterUrls[i].codeValue.length;
+        if(reqPath.indexOf(filterUrls[i].codeValue) == 0 || (d>=0&&reqPath.lastIndexOf(filterUrls[i].codeValue)==d)){
             logger.debug("当前请求URL【" + reqPath + "】无需登录");
             return next();
         }
@@ -14,6 +16,7 @@ function checkLogin(req, res, next){
     var token = getToken(req);
     logger.debug("从请求中获取token：" + token);
     if(!token){
+        //return res.redirect('/static/login.html');
         return next(new Error("用户未登录！"));
     }
     redisPool.get(token, function(err, data){

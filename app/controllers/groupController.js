@@ -26,7 +26,20 @@ module.exports = new basicController(__filename).init({
     },
 
     create: function (request, response, next) {
-
+        var param = {};
+        param = parseGroup(request);
+        if (!param.groupName) {
+            return next(new Error("没有输入用户组信息."));
+        }
+        this.model['group'].add(param, function (err, insertId) {
+            if (err) {
+                return next(err);
+            } else if (!insertId) {
+                return next(new Error("添加用户组失败."));
+            } else {
+                response.json({code: "00", msg: "添加用户组成功."});
+            }
+        });
     },
 
     remove: function (request, response, next) {
@@ -41,4 +54,12 @@ module.exports = new basicController(__filename).init({
         });
     }
 });
-
+function parseGroup(request) {
+    var group = {};
+    group.groupName = request.body.groupName;
+    group.groupDesc = request.body.groupDesc;
+    group.roleId = parseInt(request.body.roleId);
+    var userId = request.user.userId;
+    group.oUserId = userId;
+    return group;
+}
