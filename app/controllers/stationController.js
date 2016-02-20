@@ -1,9 +1,4 @@
 var basicController = require("../../core/utils/controller/basicController");
-var xlsx = require('node-xlsx');
-var formidable = require("formidable");
-var xlsUtils = require("../../core/utils/common/xlsUtils");
-var exportUtils = require("../../core/utils/common/exportUtils");
-var async = require("async");
 
 module.exports = new basicController(__filename).init({
     list: function (request, response, next) {
@@ -96,69 +91,6 @@ module.exports = new basicController(__filename).init({
             } else {
                 response.json({code: "00", msg: "更新基站成功."});
             }
-        });
-    },
-
-    batchImport: function (request, response, next) {
-        var self = this;
-        var tasks = [function upload(callback) {
-            var form = new formidable.IncomingForm();
-            var savePath = self.cacheManager.getCacheValue("FILE_DIR", "EXPORT");
-            form.uploadDir = savePath;
-            form.keepExtensions = true;
-            form.parse(request, function (error, fields, files) {
-                if (error) {
-                    return callback(error);
-                }
-                var info;
-                try {
-                    info = self.fileUtils.saveFormUploadsWithAutoName([files.xls], savePath);
-                    info = info[0];
-                    var data = (xlsx.parse(savePath + "/" + info)[0].data);
-                    callback(error, data);
-                } catch (e) {
-                    callback(e);
-                }
-            });
-        }, function getConfig(data, callback) {
-            exportUtils.getConfig("station", "import", function (err, configData) {
-                if (err) {
-                    return callback(err);
-                }
-                callback(err, [data, configData]);
-            });
-        }, function importFile(data, callback) {
-            xlsUtils.input(data[1].filter, data[0], data[1].table, function (err, res) {
-                if (err) {
-                    return callback(err);
-                }
-                callback(err, null);
-            });
-        }];
-
-        async.waterfall(tasks, function (err, results) {
-            if (err) {
-                return next(err);
-            }
-            response.json({code: "00", msg: "上传成功."});
-        });
-
-
-    },
-
-    batchExport: function (request, response, next) {
-        exportUtils.getConfig("station", "export", function (err, data) {
-            if (err) {
-                return next(new Error(err));
-            }
-            xlsUtils.output(data.filter, data.exportSQL, {}, function (err, filepath) {
-                if (err) {
-                    next(new Error(err));
-                    return;
-                }
-                //流下载 或者移动到你所需要的静态目录
-                response.download(filepath, "download.xlsx");
-            }, true);
         });
     }
 

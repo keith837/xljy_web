@@ -146,16 +146,6 @@ var routerConfig = {
                 "url": "/api/stations/:id",
                 "method": "put",
                 "description": "更新基站"
-            },
-            "batchImport": {
-                "url": "/api/stationImport",
-                "method": "post",
-                "description": "批量导入基站"
-            },
-            "batchExport": {
-                "url": "/api/stationExport",
-                "method": "get",
-                "description": "批量导出基站"
             }
         },
         device: {
@@ -271,6 +261,18 @@ var routerConfig = {
                 "url": "/api/point/list",
                 "method": "get",
                 "description": "积分列表"
+            }
+        },
+        batch: {
+            "exportXls": {
+                "url": "/api/batch/export/:bizType",
+                "method": "post",
+                "description": "批量导出"
+            },
+            "uploadXls": {
+                "url": "/api/batch/import/:bizType",
+                "method": "post",
+                "description": "批量导入"
             }
         }
     }
