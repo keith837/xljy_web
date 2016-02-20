@@ -27,14 +27,14 @@ module.exports = new basicController(__filename).init({
         }
         var noticeTypeId = parseInt(request.query.noticeTypeId);
         if (!noticeTypeId || isNaN(noticeTypeId)) {
-            return next(new Error("没有输入通知类型."));
+            return next(this.Error("没有输入通知类型."));
         }
 
         this.model['notice'].queryByNoticeType(start, pageSize, noticeTypeId, groupId, schoolId, classId, function (err, totalCount, res) {
             if (err) {
                 return next(err);
             }
-            response.json(self.createPageData("00",totalCount, res));
+            response.json(self.createPageData("00", totalCount, res));
         });
 
     },
@@ -46,10 +46,10 @@ module.exports = new basicController(__filename).init({
 
         var noticeTypeId = parseInt(request.query.noticeTypeId);
         if (!noticeTypeId || isNaN(noticeTypeId)) {
-            return next(new Error("没有输入通知类型."));
+            return next(this.Error("没有输入通知类型."));
         }
         if (!checkPermission(groupId, noticeTypeId)) {
-            return next(new Error("用户组[" + groupId + "]没有相应的权限发布此通知类型[" + noticeTypeId + "]."));
+            return next(this.Error("用户组[" + groupId + "]没有相应的权限发布此通知类型[" + noticeTypeId + "]."));
         }
         var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "PHOTOS");
         uploadDir += "user" + userId + "/";
@@ -94,25 +94,27 @@ module.exports = new basicController(__filename).init({
     },
 
     del: function (request, response, next) {
+        var self = this;
         var userId = request.user.userId;
         var noticeId = parseInt(request.params.id);
         this.model['notice'].delete(noticeId, userId, function (err, data) {
             if (err) {
                 return next(err);
             } else if (data.affectedRows !== 1) {
-                return next(new Error("删除通知记录失败."));
+                return next(self.Error("删除通知记录失败."));
             }
             response.json({code: "00", msg: "通知删除成功"});
         });
     },
 
     details: function (request, response, next) {
+        var self = this;
         var noticeId = parseInt(request.params.id);
         this.model['notice'].queryDetail(noticeId, function (err, res) {
             if (err) {
                 return next(err);
             } else if (res.length === 0) {
-                return next(new Error("无法查询到通知详情[" + noticeId + "]."));
+                return next(self.Error("无法查询到通知详情[" + noticeId + "]."));
             }
             response.json({code: "00", data: res});
         });

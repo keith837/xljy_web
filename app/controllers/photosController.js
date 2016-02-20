@@ -17,7 +17,7 @@ module.exports = new basicController(__filename).init({
         var albumType = parseInt(req.query.albumType);
         //1:班级相册;2:成长点滴
         if (!albumType || isNaN(albumType)) {
-            return next(new Error("没有输入相册类型."));
+            return next(this.Error("没有输入相册类型."));
         }
         var classId = 0;
         var schoolId = 0;
@@ -30,16 +30,16 @@ module.exports = new basicController(__filename).init({
             studentName = req.user.student.studentName;
             nickName = studentName + nickName;
             if (albumType !== 2) {
-                return next(new Error("家长只能发布成长点滴"));
+                return next(this.Error("家长只能发布成长点滴"));
             }
         } else if (groupId === 20) {
             classId = req.user.classInfo.classId;
             schoolId = req.user.classInfo.schoolId;
             if (albumType === 2) {
-                return next(new Error("教师不能发布成长点滴"));
+                return next(this.Error("教师不能发布成长点滴"));
             }
         } else if (groupId === 30 || groupId === 40) {
-            return next(new Error("园长不能发布班级相册"));
+            return next(this.Error("园长不能发布班级相册"));
         }
 
         var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "PHOTOS");
@@ -62,7 +62,7 @@ module.exports = new basicController(__filename).init({
                 albumPics.push([files[photos].path, userId]);
             }
             if (albumPics.length === 0) {
-                return next(new Error("没有上传照片."));
+                return next(self.Error("没有上传照片."));
             }
             self.model['photos'].publish(albumParam, albumPics, function (err, data) {
                 if (err) {
@@ -74,13 +74,14 @@ module.exports = new basicController(__filename).init({
     },
 
     delete: function (req, res, next) {
+        var self = this;
         var userId = req.user.userId;
         var albumId = parseInt(req.params.id);
         this.model['photos'].delete(albumId, userId, function (err, data) {
             if (err) {
                 return next(err);
             } else if (data.affectedRows !== 1) {
-                return next(new Error("删除相册记录失败."));
+                return next(self.Error("删除相册记录失败."));
             }
             res.json({code: "00", msg: "相册删除成功"});
         });
@@ -107,7 +108,7 @@ module.exports = new basicController(__filename).init({
                 return next(err);
             }
             if (data && data.length > 0) {
-                return next(new Error("用户已点赞"));
+                return next(self.Error("用户已点赞"));
             }
             self.model['photos'].addAlbumLike(albumId, userId, nickName, studentId, studentName, function (err, data) {
                 if (err) {
@@ -165,14 +166,14 @@ module.exports = new basicController(__filename).init({
         }
         var albumType = parseInt(req.query.albumType);
         if (!albumType || isNaN(albumType)) {
-            return next(new Error("没有输入相册类型."));
+            return next(this.Error("没有输入相册类型."));
         }
 
         this.model['photos'].queryByAlbumType(start, pageSize, albumType, groupId, schoolId, classId, function (err, totalCount, results) {
             if (err) {
                 return next(err);
             }
-            res.json(self.createPageData("00",totalCount, results));
+            res.json(self.createPageData("00", totalCount, results));
         });
     },
 
@@ -221,7 +222,7 @@ module.exports = new basicController(__filename).init({
                 albumPics.push([files[photos].path, userId]);
             }
             if (albumPics.length === 0) {
-                return next(new Error("没有上传照片."));
+                return next(self.Error("没有上传照片."));
             }
             self.model['photos'].edit(albumParam, albumPics, function (err, data) {
                 if (err) {
