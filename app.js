@@ -39,6 +39,9 @@ webConfig.PRINT_ACCESS_LOG && app.use(log4js.connectLogger(loggerCall('normal'),
     level: log4js.levels.INFO,
     format: ':method :url'
 }));
+//登录校验
+app.use(loginFilter);
+
 //挂载静态目录
 
 for (var x in webConfig.STATICPATH) {
@@ -46,8 +49,6 @@ for (var x in webConfig.STATICPATH) {
 }
 logger.info("配置中静态目录信息载入完毕..");
 
-//登录校验
-app.use(loginFilter);
 
 //控制器挂载
 

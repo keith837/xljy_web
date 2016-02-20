@@ -6,6 +6,9 @@ function checkLogin(req, res, next){
     var reqPath = req.path;
     var filterUrls = cacheManager.getCache("FILTER_URLS");
 
+    if (reqPath == "/static/login.html" || reqPath.indexOf(".html") == -1) {
+        return next();
+    }
     for(var i = 0; i < filterUrls.length; i ++){
         var d=reqPath.length-filterUrls[i].codeValue.length;
         if(reqPath.indexOf(filterUrls[i].codeValue) == 0 || (d>=0&&reqPath.lastIndexOf(filterUrls[i].codeValue)==d)){
@@ -14,10 +17,15 @@ function checkLogin(req, res, next){
         }
     }
     var token = getToken(req);
+
     logger.debug("从请求中获取token：" + token);
     if(!token){
-        //return res.redirect('/static/login.html');
-        return next(new Error("用户未登录！"));
+        if (reqPath.indexOf("/static/") == 0) {
+            return res.redirect('/static/login.html');
+        } else {
+            return next(new Error("用户未登录！"));
+        }
+
     }
     redisPool.get(token, function(err, data){
         if(err){

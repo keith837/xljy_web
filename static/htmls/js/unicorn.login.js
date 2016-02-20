@@ -16,11 +16,11 @@ $(document).ready(function () {
         }).done(function(data) {
             if (data.code=="00") {
                 //console.info(data);
-                $.cookie('Set-Token', data.data.token);
+                $.cookie('token', data.data.token);
                 swal({   title: "登陆成功!",   text: "登陆成功",   timer: 1000,   showConfirmButton: true },function(){
                     setTimeout(function(){
                        window.location.href="main.html";
-                    }, 2000);
+                    }, 500);
                 });
 
             }else{
