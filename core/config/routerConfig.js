@@ -7,6 +7,12 @@ var routerConfig = {
                 "method": "post",
                 "description": "用户登录"
             },
+            "whiteCheck" : {
+                "url": "/api/user/whiteCheck/:billId",
+                "method": "get",
+                "description": "白名单校验"
+            },
+
             "resetPwd": {
                 "url": "/api/user/resetPwd",
                 "method": "post",

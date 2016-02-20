@@ -6,11 +6,15 @@ User.findOne = function(groupId, userName, callback){
 }
 
 User.findOneByUserId = function(userId, callback){
-    mysqlUtil.queryOne("select A.*,B.groupName from XL_USER A,XL_USER_GROUP B WHERE A.userId=?", [userId], callback);
+    mysqlUtil.queryOne("select A.*,B.groupName from XL_USER A,XL_USER_GROUP B WHERE A.groupId = B.groupId A.userId=?", [userId], callback);
 }
 
 User.findOneByUserName = function(userName, callback){
     mysqlUtil.queryOne("select * from XL_USER where userName=?", [userName], callback);
+}
+
+User.save = function(args, callback){
+
 }
 
 User.active = function(userName, password, callback){

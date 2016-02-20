@@ -12,7 +12,7 @@ var webConfig = require("./core/config/webConfig");
 var log4js = require('log4js');
 var loggerCall = require('./core/utils/logger/logger');
 var logger = loggerCall(__filename);
-var cacheManager = require('./core/utils/cache/cacheManager')
+var cacheManager = require('./core/utils/cache/cacheManager');
 
 process.on('uncaughtException', function (err) {
     //app.send("t error,process end");
@@ -47,7 +47,7 @@ for (var x in webConfig.STATICPATH) {
 logger.info("配置中静态目录信息载入完毕..");
 
 //登录校验
-//app.use(loginFilter);
+app.use(loginFilter);
 
 //控制器挂载
 
@@ -70,7 +70,7 @@ async.waterfall([
                     return next(err);
                 }
                 res.json({
-                    code: "99",
+                    code: err.code || "99",
                     msg : err.message,
                     error: err
                 });
