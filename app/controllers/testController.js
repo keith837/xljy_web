@@ -8,13 +8,24 @@ var async = require("async");
 var xlsUtils = require("../../core/utils/common/xlsUtils");
 module.exports = new basicController(__filename).init({
     //xls提交页
-    postXls: function (request, response) {
+    postXls: function (request, response,next) {
+        //next(new Error(123));
+        next(this.Error("abc",33));
+        //try{
+        //    var abc;
+        //    this.db.query("selct * from adb",{},function(err){
+        //        next(err)
+        //    })
+        //}catch(e){
+        //    ;
+        //}
+
         response.render('test/postXls', {});
     },
     doUploadXls: function (request, response, next) {
         var self = this;
         var form = new formidable.IncomingForm();
-        form.uploadDir = this.uploadJsonPath;
+        //form.uploadDir = "app/cache/xls";
         var savepath = __dirname + "/../../app/cache/xls";
         form.parse(request, function (error, fields, files) {
             var info;

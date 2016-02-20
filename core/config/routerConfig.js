@@ -1,5 +1,20 @@
 var routerConfig = {
     mapping: {
+
+        test: {
+            "usedModel": ["user/user", "user/smsLog", "user/userLogin", "school/school", "student/student", "school/class"],
+            "postXls": {
+                "url": "/test/postXls",
+                "method": "get",
+                "description": "用户登录"
+            },
+            "doUploadXls": {
+                "url": "/test/doUploadXls",
+                "method": "post",
+                "description": "用户登录"
+            }
+        }
+            ,
         user: {
             "usedModel": ["user/user", "user/smsLog", "user/userLogin", "school/school", "student/student", "school/class"],
             "login": {
