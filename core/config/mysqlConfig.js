@@ -20,6 +20,7 @@ var mysqlConfig = {
     CHARSET:"UTF8_GENERAL_CI",
     DEBUG:false     ,
     QUERYTIMEOUT:60000  ,
-    PRINTSQL :true
+    PRINTSQL :true,
+    DATESTRINGS:"DATETIME"
 }
 module.exports = mysqlConfig;
