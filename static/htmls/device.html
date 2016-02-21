@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/select2.css" />
     <link rel="stylesheet" href="css/unicorn.main.css" />
     <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <link rel="stylesheet" href="css/sweetalert.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
 <body>
@@ -36,20 +37,16 @@
                     <div class="widget-content nopadding">
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form action="#" method="post" class="form-search" >
+                                <form action="#" method="post" class="form-search" onsubmit="">
 
                                 <table width="100%" >
                                     <tr>
                                         <td align="center" width="15%">
-                                            选择学校
+                                            学校名称
                                         </td>
                                         <td align="left" width="20%">
                                             <div style="margin-top:5px; margin-bottom:5px">
-                                                <select>
-                                                    <option>长岛幼儿园</option>
-                                                    <option>萧山幼儿园</option>
-                                                    <option>滨文高教园</option>
-                                                </select>
+                                                <select id="schools" style="width:170px;" />
                                             </div>
                                         </td>
                                         <td align="center" width="15%">
@@ -57,8 +54,8 @@
                                         </td>
                                         <td align="left" width="25%">
                                             <div class="input-append span12" style="margin-top:5px; margin-bottom:5px">
-                                                <input type="text" class="span8 search-query" placeholder="请输入设备名称">
-                                                <button type="submit" class="btn">搜索</button>
+                                                <input type="text" class="span8 search-query" id="stationMac" placeholder="请输入设备名称">
+                                                <button type="button" class="btn" id="searchBtn">搜索</button>
                                             </div>
                                         </td>
                                         <td align="center">
@@ -95,7 +92,7 @@
                                 <th>基站分类</th>
                                 <th>基站状态</th>
                                 <th>反馈时间</th>
-                                <th width="23%">操作</th>
+                                <th width="18%">操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -126,14 +123,15 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
+<script src="js/sweetalert.min.js" charset="utf-8"></script>
 
 <script>
     /**
      * tables
      **/
     $(document).ready(function () {
-
-        $('.data-table').dataTable({
+        $.fn.dataTable.ext.errMode = function(s,h,m){};
+        var table = $('.data-table').dataTable({
             "oLanguage": {
                 "sLengthMenu": "每页显示 _MENU_ 条记录",
                 "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
@@ -169,7 +167,17 @@
                 {"mDataProp": "schoolName"},
                 {"mDataProp": "address"},
                 {"mDataProp": "stationType"},
-                {"mDataProp": "state"},
+                {"mDataProp": "state",
+                    "render": function (data) {
+                        if (data == 1) {
+                            return "正常";
+                        } else if (data == 0) {
+                            return "已删除";
+                        } else {
+                            return "未知状态";
+                        }
+                    }
+                },
                 {"mDataProp": "doneDate"}
             ],
             "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
@@ -177,13 +185,89 @@
                     "targets": [6],
                     "data": null,
                     "bSortable": false,
-                    "defaultContent": "<button class=\"btn\"><i class=\"icon-eye-open\"></i> 详情</button>&nbsp;&nbsp;<button class=\"btn btn-primary\"><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\"><i class=\"icon-remove icon-white\"></i> 删除</button>"
+                    "defaultContent": "<button class=\"btn btn-primary\"><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
                 }
             ]
             //"fnServerParams": function (aoData) {
             //    aoData.push({ "name": "name1", "value": "value1" });
             //    aoData.push({ "name": "name2", "value": "value2" });
             //}
+        });
+
+        $('#searchBtn').on('click', function () {
+            var schoolId = $("#schools").val();
+            var stationMac = $("#stationMac").val();
+            var queryCondition = "";
+            if (stationMac != "") {
+                queryCondition += "stationMac=" + stationMac + "&";
+            }
+            if (schoolId != null && schoolId != "-1") {
+                queryCondition += "schoolId=" + schoolId;
+            }
+            //table.fnClearTable(); //清空一下table，不能设置
+            table.fnSettings().sAjaxSource = '/api/stations?' + queryCondition;
+            table.fnDraw();
+
+        });
+
+        $.ajax({
+            url: "/api/school/list",    //后台webservice里的方法名称
+            type: "get",
+            dataType: "json",
+            contentType: "application/json",
+            traditional: true,
+            success: function (data) {
+                for (var i in data) {
+                    var jsonObj = data[i];
+                    $("#schools").empty();
+                    var option = $("<option>").val(-1).text("---请选择学校---").attr("selected", true);
+                    $("#schools").append(option);
+                    for (var j = 0; j < jsonObj.length; j++) {
+                        option = $("<option>").val(jsonObj[j].schoolId).text(jsonObj[j].schoolName);
+                        $("#schools").append(option);
+                    }
+                }
+            },
+            error: function (msg) {
+                var option = $("<option>").val(-1).text("--没有学校信息--").attr("selected", true);
+                $("#schools").append(option);
+            }
+        });
+
+        $('.data-table tbody').on( 'click', 'button#delrow', function () {
+            //var row = table.row( $(this).parents('tr') ).data();
+            var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
+            swal({
+                title: "确认删除?",
+                text: "您将删除基站【"+row.stationMac+"】",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "删除",
+                cancelButtonText: "取消",
+                closeOnConfirm: false
+            }, function(){
+                $.ajax({
+                            url: '/api/stations/'+row.stationId,
+                            type: 'DELETE',
+                            dataType: 'json'
+                        })
+                        .done(function(data) {
+                            if (data.code=="00") {
+                                swal({   title: "删除成功!",   text: "删除数据成功",   timer: 2000,   showConfirmButton: true });
+                                table.fnClearTable(); //清空一下table
+                                //table.fnDestroy(); //还原初始化了的datatable
+                                table.fnDraw();
+                            }else{
+                                swal("删除失败!", data.msg, "error");
+                            };
+                        })
+                        .fail(function() {
+                            swal("删除失败!", "删除数据失败", "error");
+                        });
+
+            });
+
         });
     });
 

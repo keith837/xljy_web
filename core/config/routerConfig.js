@@ -142,7 +142,7 @@ var routerConfig = {
             }
         },
         station: {
-            "usedModel": ['station/station'],
+            "usedModel": ['station/station', "school/school"],
             "list": {
                 "url": "/api/stations",
                 "method": "get",
