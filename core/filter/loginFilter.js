@@ -1,6 +1,7 @@
 var redisPool = require("../utils/pool/redis/redisPool");
 var logger = require("../utils/logger/logger")(__filename);
 var cacheManager = require("../utils/cache/cacheManager");
+var webConfig = require("../config/webConfig");
 
 function checkLogin(req, res, next){
     var reqPath = req.path;
@@ -21,10 +22,10 @@ function checkLogin(req, res, next){
 
     logger.debug("从请求中获取token：" + token);
     if(!token){
-        if (reqPath.indexOf("/static/") == 0) {
-            return res.redirect('/static/login.html');
+        if (reqPath.indexOf(webConfig.contextPath+"/") == 0) {
+            return res.redirect(webConfig.contextPath+'/login.html');
         } else {
-            return next(new Error("用户未登录！"));
+            return next(new Error("用户未登录！","01"));
         }
 
     }

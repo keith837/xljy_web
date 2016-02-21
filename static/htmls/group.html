@@ -137,7 +137,7 @@
             "bRetrieve": true,
             "bDestroy":true,
             "sPaginationType": "full_numbers",
-            "iDisplayLength": 3,
+            "iDisplayLength": iDisplayLength,
             "bFilter": false,
             "sDom": '<""l>t<"F"fp>',
 
@@ -169,13 +169,15 @@
         $('#searchBtn').on( 'click', function () {
             var groupName = $("#groupName").val();
             if (groupName == null || groupName == "") {
-                swal({   title: "请输入用户组名称",    timer: 2000,   showConfirmButton: true });
-                return;
+                table.fnSettings().sAjaxSource='/api/group/list';
+                table.fnDraw();
+            }else{
+                //table.fnClearTable(); //清空一下table，不能设置
+                table.fnSettings().sAjaxSource='/api/group/list?groupName='+groupName;
+//              table.fnSettings().sServerMethod='GET';
+                table.fnDraw();
             }
-            //table.fnClearTable(); //清空一下table，不能设置
-            table.fnSettings().sAjaxSource='/api/group/list?groupName='+groupName;
-//            table.fnSettings().sServerMethod='GET';
-            table.fnDraw();
+
 
         });
 

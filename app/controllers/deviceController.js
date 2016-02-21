@@ -6,8 +6,8 @@ var basicController = require("../../core/utils/controller/basicController");
 module.exports = new basicController(__filename).init({
     list: function (request, response, next) {
         var self = this;
-        var start = parseInt(request.query.iDisplayStart || 0);
-        var pageSize = parseInt(request.query.iDisplayLength || 10);
+        var start = parseInt(request.query.iDisplayStart || this.webConfig.iDisplayStart);
+        var pageSize = parseInt(request.query.iDisplayLength || this.webConfig.iDisplayLength);
         var queryCondition = {};
         var schoolId = request.query.schoolId;
         if (schoolId) {

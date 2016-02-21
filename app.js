@@ -28,6 +28,10 @@ logger.info("载入入口依赖库完成..");
 app.engine(".ejs", ejs.__express);
 app.set("view engine", 'ejs');
 app.set("views", webConfig.VIEWSPATH);
+
+//app.engine('html',ejs.__express);
+//app.set('view engine', 'html');
+//app.set("views", webConfig.VIEWSPATH);
 //注册过滤器
 new tplFilter(ejs.filters);
 

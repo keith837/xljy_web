@@ -3,6 +3,7 @@
  */
 var mysqlPool = require("../pool/mysql/mysqlPool");
 var redisPool = require("../pool/redis/redisPool");
+var webConfig = require("../../config/webConfig");
 var domain = require('domain');
 var logger;
 var basicController = function(filename){
@@ -11,13 +12,13 @@ var basicController = function(filename){
     this.logger = logger = require("../logger/logger")(filename);
     this.fileUtils = require('../common/fileUtils');
     this.redis = redisPool;
+    this.webConfig = webConfig;
     this.model = {};
 }
 basicController.prototype.Error = function (msg, code) {
     var tempNewError = new Error(msg);
     tempNewError.isCustom = true;
     code && (tempNewError.code = code);
-    ;
     return tempNewError;
 
 }
