@@ -14,7 +14,9 @@ User.findOneByUserName = function(userName, callback){
 }
 
 User.save = function(args, callback){
-
+    var sql = "insert into XL_USER(groupId,roleId,nickName,userName,userUrl,password,custName,pointNum,billId,email,gender,"
+    sql += "birthday,address,token,state,createDate,doneDate,channelId) values (?,?,?,?,null,?,?,0,?,?,?,?,?,null,0,now(),now(),?)";
+    mysqlUtil.query(sql, args, callback);
 }
 
 User.active = function(userName, password, callback){

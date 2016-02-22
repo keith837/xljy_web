@@ -414,7 +414,7 @@ module.exports = new basicController(__filename).init({
             if(user && user.userName == userName){
                 return nrxt("登录名已存在");
             }
-            self.model['user'].save([userName,], function(err, data){
+            self.model['user'].save([groupId], function(err, data){
                 if(err){
                     return next(err);
                 }
