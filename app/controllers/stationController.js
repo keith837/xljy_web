@@ -3,26 +3,43 @@ var basicController = require("../../core/utils/controller/basicController");
 module.exports = new basicController(__filename).init({
     list: function (request, response, next) {
         var self = this;
-        var start = parseInt(request.query.iDisplayStart || 0);
-        var pageSize = parseInt(request.query.iDisplayLength || 10);
-        var queryCondition = {};
+        var start = parseInt(request.query.iDisplayStart || this.webConfig.iDisplayStart);
+        var pageSize = parseInt(request.query.iDisplayLength || this.webConfig.iDisplayLength);
+        var queryCondition = [];
+        var userId = request.user.userId;
         var schoolId = request.query.schoolId;
-        if (schoolId) {
-            queryCondition.schoolId = parseInt(schoolId);
-        }
         var stationMac = request.query.stationMac;
-        if (stationMac) {
-            queryCondition.stationMac = stationMac;
-        }
-        this.model['station'].queryPage(start, pageSize, queryCondition, function (err, totalCount, res) {
+
+        this.model['school'].listByPrincipalId(userId, function (err, schools) {
             if (err) {
                 return next(err);
             }
-            if (totalCount === 0) {
-                return next(self.Error("沒有查询到基站信息."));
-            } else {
-                response.json(self.createPageData("00", totalCount, res));
+            if (!schools || schools.length <= 0) {
+                return next(self.Error("用户[" + userId + "]没有权限查看基站信息."));
             }
+            if (stationMac) {
+                queryCondition.push({"key": "stationMac", "opr": "like", "val": stationMac});
+            }
+            if (schoolId) {
+                queryCondition.push({"key": "schoolId", "opr": "=", "val": parseInt(schoolId)});
+            } else {
+                var schoolIDs = [];
+                for (var i = 0; i < schools.length; i++) {
+                    schoolIDs.push(schools[i].schoolId);
+                }
+                queryCondition.push({"key": "schoolId", "opr": "in", "val": schoolIDs});
+            }
+
+            self.model['station'].queryPage(start, pageSize, queryCondition, function (err, totalCount, res) {
+                if (err) {
+                    return next(err);
+                }
+                if (totalCount == 0) {
+                    return next(self.Error("沒有查询到基站信息."));
+                } else {
+                    response.json(self.createPageData("00", totalCount, res));
+                }
+            });
         });
     },
 

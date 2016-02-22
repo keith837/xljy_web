@@ -18,7 +18,8 @@ mysqlPool.prototype.init = function () {
         user: mysqlConfig.USER,
         password: mysqlConfig.PASSWORD,
         charset: mysqlConfig.CHARSET,
-        database: mysqlConfig.DATABASE
+        database: mysqlConfig.DATABASE,
+        dateStrings: mysqlConfig.DATESTRINGS
     });
     //console.log(this.pool);
     this.pool.on('connection', function (connection) {

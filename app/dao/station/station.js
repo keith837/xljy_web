@@ -15,10 +15,25 @@ Station.queryPage = function (start, pageSize, queryCondition, callback) {
     var sqlCondition = "1=1 ";
     var sqlParams = [];
 
-    if (queryCondition) {
-        for (var key in queryCondition) {
-            sqlCondition += "and m." + key + "=? ";
-            sqlParams.push(queryCondition[key]);
+    if (queryCondition || queryCondition.length > 0) {
+        for (var i in queryCondition) {
+            var opr = queryCondition[i].opr;
+            if (opr == "like") {
+                sqlCondition += "and m." + queryCondition[i].key + " " + opr + " ? ";
+                sqlParams.push("%" + queryCondition[i].val + "%");
+            } else if (opr == "in") {
+                var ids = queryCondition[i].val;
+                var appenderId = "";
+                for (var k in ids) {
+                    appenderId += "?,";
+                    sqlParams.push(ids[k]);
+                }
+                appenderId = appenderId.substr(0, appenderId.length - 1);
+                sqlCondition += "and m." + queryCondition[i].key + " " + opr + " (" + appenderId + ") ";
+            } else {
+                sqlCondition += "and m." + queryCondition[i].key + " " + opr + " ? ";
+                sqlParams.push(queryCondition[i].val);
+            }
         }
     }
 
@@ -34,7 +49,7 @@ Station.queryPage = function (start, pageSize, queryCondition, callback) {
         sqlParams.push(start);
         sqlParams.push(pageSize);
 
-        var sql = "select ifnull(n.schoolName,'未知') as schoolName,m.* FROM XL_STATION m left join XL_SCHOOL n ON m.schoolId=n.schoolId where " + sqlCondition;
+        var sql = "select ifnull(n.schoolName,'未知') as schoolName,m.* FROM XL_STATION m left join XL_SCHOOL n ON m.schoolId=n.schoolId where m.state=1 and " + sqlCondition;
         mysqlUtil.query(sql, sqlParams, function (err, res) {
             callback(err, totalCount, res);
         });

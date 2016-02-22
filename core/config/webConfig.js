@@ -4,11 +4,14 @@
 var webConfig = {
     STATICPATH: [
         {
-            webpath: "/static",
+            webpath: "/xljy",
             filepath: "static/htmls",
             option: {}
         }],
+    contextPath: "/xljy",
     PRINT_ACCESS_LOG: false,
+    iDisplayLength: 10,
+    iDisplayStart: 0,
     VIEWSPATH: 'app/views'
 }
 module.exports = webConfig;
