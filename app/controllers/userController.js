@@ -278,17 +278,27 @@ module.exports = new basicController(__filename).init({
         var securityCode = Math.round(Math.random() * 899999 + 100000);
         SmsSendUtil.sendSms(billId, securityCode, function (data) {
             var error = data.error;
-            self.model['smsLog'].saveSmsLog([billId, securityCode, new Date(), error, data.msg], function (err, info) {
+            self.model['smsLog'].saveSmsLog([billId, securityCode, new Date(), 0, data.msg], function (err, info) {
                 if (err) {
                     return next(err);
                 }
-                if (error != 0) {
-                    return next(new Error(data.msg));
-                }
-                res.json({
-                    code: "00",
-                    msg: "短信下发成功"
+                //if (error != 0) {
+                //    return next(new Error(data.msg));
+                //}
+                self.model['smsLog'].findSms(billId, function (err, smsLog) {
+                    if (err) {
+                        return next(err);
+                    }
+                    if (!smsLog) {
+                        return next(new Error("短信验证码错误"));
+                    }
+                    res.json({
+                        code: "00",
+                        msg: "短信下发成功",
+                        data: smsLog
+                    });
                 });
+
             });
         });
     },
