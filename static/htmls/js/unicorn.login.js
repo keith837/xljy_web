@@ -10,7 +10,7 @@ $(document).ready(function () {
     $('#loginBtn').click(function () {
         //console.info($("#loginform").serializeArray());
         $.ajax({
-            url: "/api/user/login",
+            url: "/api/user/weblogin",
             type: "POST",
             data: $("#loginform").serialize()
         }).done(function(data) {

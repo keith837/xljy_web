@@ -175,6 +175,32 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    weblogin : function(req, res, next){
+        var self = this;
+        var userName = req.body.userName;
+        if(!userName){
+            return next(new Error("登录用户名不能为空"));
+        }
+        var password = req.body.password;
+        self.model['user'].findOneByUserName(userName, function(err, user){
+            if(err){
+                return next(err);
+            }
+            if(!user){
+                return next(new Error("用户信息不存在"));
+            }
+            if(user.state != 1){
+                return next(new Error("该手机号码为白名单用户，未注册"));
+            }
+            if(user.password != password){
+                return next(new Error("登录密码错误"));
+            }
+            user.source = 2;
+            user.channel = 4;
+            self.adminLogin(user, res, next);
+        });
+    },
+
     adminLogin : function(user, res, next) {
         var self = this;
         var date = new Date();

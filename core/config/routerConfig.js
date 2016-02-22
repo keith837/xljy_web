@@ -22,6 +22,11 @@ var routerConfig = {
                 "method": "post",
                 "description": "用户登录"
             },
+            "weblogin": {
+                "url": "/api/user/weblogin",
+                "method": "post",
+                "description": "web用户登录"
+            },
             "whiteCheck" : {
                 "url": "/api/user/whiteCheck/:billId",
                 "method": "get",
