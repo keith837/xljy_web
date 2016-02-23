@@ -195,6 +195,9 @@ module.exports = new basicController(__filename).init({
             if(user.password != password){
                 return next(new Error("登录密码错误"));
             }
+            if(user.roleId <= 0){
+                return next(new Error("当前用户无登录权限"));
+            }
             user.source = 2;
             user.channel = 4;
             self.adminLogin(user, res, next);
@@ -308,9 +311,6 @@ module.exports = new basicController(__filename).init({
                 if (err) {
                     return next(err);
                 }
-                //if (error != 0) {
-                //    return next(new Error(data.msg));
-                //}
                 self.model['smsLog'].findSms(billId, function (err, smsLog) {
                     if (err) {
                         return next(err);
@@ -351,8 +351,6 @@ module.exports = new basicController(__filename).init({
             });
         });
     },
-
-
 
     register : function(req, res, next) {
         var self = this;
@@ -405,8 +403,24 @@ module.exports = new basicController(__filename).init({
         var self = this;
         var start = req.query.start ? parseInt(req.query.start) : 0;
         var pagesize = req.query.pageSize ? parseInt(req.query.pageSize) : 100;
-        var goupId = req.params.groupId ? parseInt(req.params.groupId) : 0;
-        self.model['user'].list(goupId, start, pagesize, function(err, users){
+        var obj = new Object;
+        var groupId = req.query.groupId;
+        if(groupId && groupId > 0){
+            obj.groupId = parseInt(groupId);
+        }
+        var userName = req.query.userName;
+        if(userName){
+            obj.userName = userName;
+        }
+        var billId = req.query.billId;
+        if(billId){
+            obj.billId = billId;
+        }
+        var custName = req.query.custName;
+        if(custName){
+            obj.custName = custName;
+        }
+        self.model['user'].listByPage(obj, start, pagesize, function(err, total, users){
             if(err){
                 return next(err);
             }
@@ -416,16 +430,15 @@ module.exports = new basicController(__filename).init({
                     users[i].stateName = self.cacheManager.getCacheValue("USER_STATE", users[i].state);
                 }
             }
-            res.json({
-                code: "00",
-                data : users
-            })
+            res.json(self.createPageData("00", total, users));
         });
     },
 
     add : function(req, res, next){
+        var self = this;
         var userName = req.body.userName;
         var password = req.body.password;
+        var nickName = req.body.nickName;
         var groupId = req.body.groupId;
         var custName = req.body.custName;
         var billId = req.body.billId | userName;
@@ -443,6 +456,20 @@ module.exports = new basicController(__filename).init({
         if(!custName){
             return next(new Error("用户姓名不能为空"));
         }
+        if(!gender){
+            return next(new Error("用户性别不能为空"));
+        }
+        if(!nickName){
+            if(groupId == 10){
+                nickName = (gender == 1 ? "爸爸" : "妈妈");
+            }else if(groupId == 20){
+                nickName = custName.substr(0, 1) + "老师";
+            }else if(groupId == 30 || groupId == 40 || groupId == 50){
+                nickName = custName.substr(0, 1) + "园长";
+            }else if(groupId == 99){
+                nickName = "超级管理员";
+            }
+        }
         self.model['user'].findOneByUserName(userName, function(err, user){
             if(err){
                 return next(err);
@@ -450,7 +477,7 @@ module.exports = new basicController(__filename).init({
             if(user && user.userName == userName){
                 return nrxt("登录名已存在");
             }
-            self.model['user'].save([groupId], function(err, data){
+            self.model['user'].save([groupId,0,nickName,userName,password,custName,billId,email,gender,birthday,address,4], function(err, data){
                 if(err){
                     return next(err);
                 }
@@ -463,16 +490,111 @@ module.exports = new basicController(__filename).init({
     },
 
     modify : function(req, res, next){
+        var self = this;
+        var userId = parseInt(req.params.userId);
+        if(!userId && userId <= 0){
+            return next(new Error("用户编号不能为空"));
+        }
+        self.model['user'].findOneByUserId(userId, function(err, user){
+            if(err){
+                return next(err);
+            }
+            if(!user){
+                return next(new Error("修改的用户信息不存在"));
+            }
+            var userName = req.body.userName;
+            var groupId = req.body.groupId;
+            var custName = req.body.custName;
+            var nickName = req.body.nickName;
+            var gender = req.body.gender;
+            var password = req.body.password;
+            var billId = req.body.billId | userName;
+            var email = req.body.email;
+            var address = req.body.address;
+            var birthday = req.body.birthday;
+            var remark = req.body.remark;
+            var obj = new Object();
+            if(userName){
+                obj.userName = userName;
+            }
+            if(groupId){
+                obj.groupId = groupId;
+            }
+            if(custName){
+                obj.custName = custName;
+            }
 
+            if(gender){
+                obj.gender = gender;
+            }
+            if(!nickName){
+                if(!groupId){
+                    groupId = user.groupId;
+                }
+                if(groupId == 10){
+                    if(!gender){
+                        gender = user.gender;
+                    }
+                    nickName = (gender == 1 ? "爸爸" : "妈妈");
+                }else if(groupId == 20){
+                    nickName = custName.substr(0, 1) + "老师";
+                }else if(groupId == 30 || groupId == 40 || groupId == 50){
+                    nickName = custName.substr(0, 1) + "园长";
+                }else if(groupId == 99){
+                    nickName = "超级管理员";
+                }
+            }
+            obj.nickName = nickName;
+            if(password){
+                obj.password = password;
+            }
+            if(billId){
+                obj.billId = billId;
+            }
+            if(email){
+                obj.email = email;
+            }
+            if(address){
+                obj.address = address;
+            }
+            if(birthday){
+                obj.birthday = birthday;
+            }
+            if(remark){
+                obj.remark = remark;
+            }
+            self.model['user'].update(obj, userId, function(err, data){
+                if(err){
+                    return next(err);
+                }
+                res.json({
+                    code : "00",
+                    msg : "修改成功"
+                });
+            });
+        });
     },
 
     del : function(req, res, next){
-
+        var self = this;
+        var userId = req.params.userId;
+        if(!userId){
+            return next(new Error("需删除的用户编号为空"));
+        }
+        self.model["user"].delete(userId, function(err, data){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                msg : "用户删除成功"
+            });
+        });
     },
 
     show : function(req, res, next){
         var self = this;
-        var userId = req.params.userId;
+        var userId = parseInt(req.params.userId);
         self.model['user'].findOneByUserId(userId, function(err, user){
             if(err){
                 return next(err);
