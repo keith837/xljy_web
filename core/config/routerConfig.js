@@ -54,7 +54,7 @@ var routerConfig = {
                 "description": "修改密码"
             },
             "list": {
-                "url": "/api/user/list/:groupId",
+                "url": "/api/user/list",
                 "method": "get",
                 "description": "查询所有用户信息"
             },
@@ -62,6 +62,21 @@ var routerConfig = {
                 "url": "/api/user/show/:userId",
                 "method": "get",
                 "description": "查询用户信息"
+            },
+            "add": {
+                "url": "/api/user/add",
+                "method": "post",
+                "description": "新增用户信息"
+            },
+            "del": {
+                "url": "/api/user/del/:userId",
+                "method": "delete",
+                "description": "删除用户信息"
+            },
+            "modify": {
+                "url": "/api/user/modify/:userId",
+                "method": "put",
+                "description": "修改用户信息"
             }
         },
         group : {
