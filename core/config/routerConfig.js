@@ -32,7 +32,6 @@ var routerConfig = {
                 "method": "get",
                 "description": "白名单校验"
             },
-
             "resetPwd": {
                 "url": "/api/user/resetPwd",
                 "method": "post",
@@ -84,7 +83,7 @@ var routerConfig = {
             "remove": {
                 "url": "/api/group/remove/:groupId",
                 "method": "delete",
-                "description": "选择园所"
+                "description": "删除用户组"
             },
             "list": {
                 "url": "/api/group/list",
