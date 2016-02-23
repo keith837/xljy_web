@@ -48,9 +48,9 @@ module.exports = new basicController(__filename).init({
             if (err) {
                 return next(err);
             } else if (data.affectedRows !== 1) {
-                return next(new Error("删除手环记录失败."));
+                return next(new Error("删除用户组失败."));
             }
-            response.json({code: "00", msg: "删除手环记录成功."});
+            response.json({code: "00", msg: "删除用户组成功."});
         });
     }
 });
