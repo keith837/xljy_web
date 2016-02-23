@@ -500,7 +500,7 @@ module.exports = new basicController(__filename).init({
                 return next(err);
             }
             if(!user){
-                return next(new Error("修改的用户信息不存在"));
+                return next(new Error("需修改的用户信息不存在"));
             }
             var userName = req.body.userName;
             var groupId = req.body.groupId;
@@ -584,6 +584,8 @@ module.exports = new basicController(__filename).init({
         self.model["user"].delete(userId, function(err, data){
             if(err){
                 return next(err);
+            }else if (data.affectedRows !== 1){
+                return next(new Error("用户删除失败"));
             }
             res.json({
                 code : "00",
