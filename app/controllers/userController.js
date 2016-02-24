@@ -563,6 +563,7 @@ module.exports = new basicController(__filename).init({
             if(remark){
                 obj.remark = remark;
             }
+            obj.doneDate = new Date();
             self.model['user'].update(obj, userId, function(err, data){
                 if(err){
                     return next(err);

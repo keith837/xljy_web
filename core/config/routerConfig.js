@@ -120,12 +120,12 @@ var routerConfig = {
             },
             "del": {
                 "url": "/api/school/del/:schoolId",
-                "method": "get",
+                "method": "delete",
                 "description": "删除园所"
             },
             "modify": {
                 "url": "/api/school/modify/:schoolId",
-                "method": "get",
+                "method": "put",
                 "description": "修改园所"
             },
             "add": {
