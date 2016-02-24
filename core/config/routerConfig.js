@@ -106,8 +106,33 @@ var routerConfig = {
             "list": {
                 "url": "/api/school/list",
                 "method": "get",
+                "description": "查询校长园所"
+            },
+            "listall": {
+                "url": "/api/school/listall",
+                "method": "get",
+                "description": "查询所有园所"
+            },
+            "show": {
+                "url": "/api/school/show/:schoolId",
+                "method": "get",
                 "description": "查询园所"
-            }
+            },
+            "del": {
+                "url": "/api/school/del/:schoolId",
+                "method": "get",
+                "description": "删除园所"
+            },
+            "modify": {
+                "url": "/api/school/modify/:schoolId",
+                "method": "get",
+                "description": "修改园所"
+            },
+            "add": {
+                "url": "/api/school/add",
+                "method": "post",
+                "description": "新增园所"
+            },
         },
         student : {
             "usedModel": ["student/student"],
@@ -149,10 +174,10 @@ var routerConfig = {
                 "method": "get",
                 "description": "查看动态"
             },
-            "show": {
-                "url": "/api/trends/show/:userId",
+            "mylist": {
+                "url": "/api/trends/list/:userId",
                 "method": "get",
-                "description": "查看我的动态"
+                "description": "查看用户动态"
             },
             "top": {
                 "url": "/api/trends/top/:trendsId/:isTop",

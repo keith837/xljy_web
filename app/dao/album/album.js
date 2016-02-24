@@ -106,33 +106,77 @@ Album.findOne = function(albumType, userId, trendsId, callback){
     mysqlUtil.query("select * from XL_ALBUM where albumType=? and userId=? and albumId=?", [albumType, userId, trendsId], callback);
 }
 
-Album.list = function(albumType, userId, start, pageSize, callback){
-    var sql = "select * from XL_ALBUM where albumType=?";
-    var args = [albumType, start, pageSize];
-    if(userId && userId > 0){
-        sql += " and userId=?";
-        var args = [albumType, userId, start, pageSize];
+Album.queryNum = function(obj, callback){
+    var whereSql = " 1=1 ";
+    var args = new Array();
+    if(obj){
+        for(var key in obj){
+            whereSql += " and m." + key + "=?";
+            args.push(obj[key]);
+        }
     }
-    sql + " limit ?,?";
-    mysqlUtil.query(sql, args, callback);
+    var countSql = "select count(*) AS total from XL_ALBUM m WHERE " + whereSql;
+    mysqlUtil.queryOne(countSql, args, callback);
+}
+
+Album.queryPage = function(obj, start, pageSize, callback){
+    var whereSql = " 1=1 ";
+    var args = new Array();
+    if(obj){
+        for(var key in obj){
+            whereSql += " and m." + key + "=?";
+            args.push(obj[key]);
+        }
+    }
+    var querySql = "select m.* from XL_ALBUM m WHERE " + whereSql;
+    querySql += " limit ?,?";
+    args.push(start);
+    args.push(pageSize);
+    mysqlUtil.query(querySql, args, callback);
+}
+
+Album.listByPage = function(obj, start, pageSize, callback){
+    Album.queryNum(obj, function(err, data){
+        if(err){
+            return callback(err);
+        }
+        var total = 0;
+        if(data){
+            total = data.total;
+        }
+        Album.queryPage(obj, start, pageSize, function(err, users){
+            if(err){
+                return callback(err);
+            }
+            return callback(err, total, users);
+        });
+    });
 }
 
 Album.top = function(albumType, userId, trendsId, isTop, callback){
     mysqlUtil.query("update XL_ALBUM set isTop = ?,doneDate=now() where albumType=? and userId=? and albumId=?", [isTop, albumType, userId, trendsId], callback);
 }
 
-Album.findHandle = function(albumId, handleType, hUserId, callback){
-    var sql = "select * from XL_ALBUM_HANDLE where albumId=? and handleType=?";
-    var args = [albumId, handleType];
-    if(hUserId && hUserId > 0){
-        sql += " and hUserId=?";
-        args = [albumId, handleType, hUserId];
+Album.findHandles = function(albumIds, obj, callback){
+    var sql = "select * from XL_ALBUM_HANDLE where albumId in(";
+    for(var i = 0; i < albumIds.length; i ++){
+        sql += "?,";
     }
-    mysqlUtil.query(sql, args, callback);
+    sql = sql.substr(0, sql.length - 1) + ") ";
+    for(var key in obj){
+        sql += " and " + key + "=?"
+        albumIds.push(obj[key]);
+    }
+    mysqlUtil.query(sql, albumIds, callback);
 }
 
-Album.findPic = function(albumId, callback){
-    mysqlUtil.query("select * from XL_ALBUM_PIC where albumId=?", [albumId], callback);
+Album.findPics = function(albumIds, callback){
+    var sql = "select * from XL_ALBUM_PIC where albumId in(";
+    for(var i = 0; i < albumIds.length; i ++){
+        sql += "?,";
+    }
+    sql = sql.substr(0, sql.length - 1) + ")";
+    mysqlUtil.query(sql, albumIds, callback);
 }
 
 Album.createAlbumComment = function(albumId, handleArgs, callback){

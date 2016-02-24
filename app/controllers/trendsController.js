@@ -132,83 +132,160 @@ module.exports = new basicController(__filename).init({
 
     list : function(req, res, next){
         var self = this;
-        var start = req.query.start ? parseInt(req.query.start) : 0;
-        var pagesize = req.query.pageSize ? parseInt(req.query.pageSize) : 100;
-        self.model['album'].list(3, null, start, pagesize, function(err, trends){
-            if(err){
+        var start = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);
+        var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
+        var obj = new Object();
+        obj.albumType = 3;
+        self.model['album'].listByPage(obj, start, pageSize, function(err, total, trends) {
+            if (err) {
                 return next(err);
             }
-            if(!trends){
-                res.json({
-                    code : "00",
-                    data : trends
-                });
+            if (!trends) {
+                return res.json(self.createPageData("00", total, trends));
             }
-            var trendsArray = new Array();
-            for(var i = 0; i < trends.length; i ++){
-                var currTrends = {
-                    trendsId : trends[i].albumId,
-                    content : trends[i].content,
-                    userId : trends[i].userId,
-                    nickName : trends[i].nickName,
-                    createDate : trends[i].createDate,
-                    likesNum : trends[i].likesNum,
-                    commentNum : trends[i].isComment
-                };
-                self.model["album"].findPic(currTrends.trendsId, function(err, pics){
-                    if(err){
+            var trendsIds = new Array();
+            for (var i = 0; i < trends.length; i ++) {
+                trendsIds.push(trends[i].albumId);
+            }
+            self.model['album'].findPics(trendsIds, function (err, pics) {
+                if (err) {
+                    return next(err);
+                }
+                var picsObject = new Object();
+                if (pics) {
+                    for (var i = 0; i < pics.length; i++) {
+                        var picArray = picsObject[pics[i].albumId];
+                        if (!picArray) {
+                            picArray = new Array();
+                            picsObject[pics[i].albumId] = picArray;
+                        }
+                        picArray.push({
+                            picId: pics[i].picId,
+                            picUrl: pics[i].picUrl
+                        });
+                    }
+                }
+                var handleObj = new Object();
+                handleObj.handleType = 2;
+                self.model['album'].findHandles(trendsIds, handleObj, function (err, handles) {
+                    if (err) {
                         return next(err);
                     }
-                    currTrends.picPaths = new Array();
-                    if(pics){
-                        for(var j = 0; j < pics.length; j ++){
-                            currTrends.picPaths.push({
-                                picId : pics[j].picId,
-                                picPath : pics[j].picUrl
+                    var handlesObject = new Object();
+                    if (handles) {
+                        for (var i = 0; i < handles.length; i++) {
+                            var handleArray = handlesObject[handles[i].albumId];
+                            if (!handleArray) {
+                                handleArray = new Array();
+                                handlesObject[handles[i].albumId] = handleArray;
+                            }
+                            handleArray.push({
+                                handleId: handles[i].handleId,
+                                content: handles[i].content,
+                                nickName: handles[i].nickName,
+                                userId: handles[i].hUserId,
+                                createDate: handles[i].createDate
                             });
                         }
                     }
-                    self.model["album"].findHandle(currTrends.trendsId, 2, null, function(err, handles){
-                        if(err){
-                            return next(err);
-                        }
-                        currTrends.comments = new Array();
-                        if(handles){
-                            for(var g = 0; g < handles.length; g ++){
-                                currTrends.comments.push({
-                                    commentId : handles[g].handleId,
-                                    contend : handles[g].content,
-                                    nickName : handles[g].nickName
-                                });
-                            }
-                        }
+                    var trendsArray = new Array();
+                    for (var i = 0; i < trends.length; i++) {
+                        var currTrends = {
+                            trendsId: trends[i].albumId,
+                            content: trends[i].content,
+                            userId: trends[i].userId,
+                            nickName: trends[i].nickName,
+                            createDate: trends[i].createDate,
+                            likesNum: trends[i].likesNum,
+                            commentNum: trends[i].isComment,
+                            pics: picsObject[trends[i].albumId],
+                            handles: handlesObject[trends[i].albumId]
+                        };
                         trendsArray.push(currTrends);
-                        console.log(i);
-                        if(i == trends.length - 1){
-                            res.json({
-                                code : "00",
-                                data : trendsArray
-                            });
-                        }
-                    });
+                    }
+                    res.json(self.createPageData("00", total, trendsArray));
                 });
-
-            }
+            });
         });
     },
 
-    show : function(req, res, next){
+    mylist : function(req, res, next){
         var self = this;
-        var start = req.query.start ? parseInt(req.query.start) : 0;
-        var pagesize = req.query.pageSize ? parseInt(req.query.pageSize) : 100;
-        var userId = req.params.userId ? parseInt(req.params.userId) : req.user.userId;
-        self.model['album'].list(3, userId, start, pagesize, function(err, trends){
-            if(err){
+        var start = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);
+        var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
+        var userId = parseInt(req.params.userId || req.user.userId);
+        var obj = new Object();
+        obj.albumType = 3;
+        obj.userId = userId;
+        self.model['album'].listByPage(obj, start, pageSize, function(err, total, trends) {
+            if (err) {
                 return next(err);
             }
-            res.json({
-                code : "00",
-                data : trends
+            if (!trends || trends.length <= 0) {
+                return res.json(self.createPageData("00", total, trends));
+            }
+            var trendsIds = new Array();
+            for (var i = 0; i < trends.length; i ++) {
+                trendsIds.push(trends[i].albumId);
+            }
+            self.model['album'].findPics(trendsIds, function (err, pics) {
+                if (err) {
+                    return next(err);
+                }
+                var picsObject = new Object();
+                if (pics) {
+                    for (var i = 0; i < pics.length; i++) {
+                        var picArray = picsObject[pics[i].albumId];
+                        if (!picArray) {
+                            picArray = new Array();
+                            picsObject[pics[i].albumId] = picArray;
+                        }
+                        picArray.push({
+                            picId: pics[i].picId,
+                            picUrl: pics[i].picUrl
+                        });
+                    }
+                }
+                var handleObj = new Object();
+                handleObj.handleType = 2;
+                self.model['album'].findHandles(trendsIds, handleObj, function (err, handles) {
+                    if (err) {
+                        return next(err);
+                    }
+                    var handlesObject = new Object();
+                    if (handles) {
+                        for (var i = 0; i < handles.length; i++) {
+                            var handleArray = handlesObject[handles[i].albumId];
+                            if (!handleArray) {
+                                handleArray = new Array();
+                                handlesObject[handles[i].albumId] = handleArray;
+                            }
+                            handleArray.push({
+                                handleId: handles[i].handleId,
+                                content: handles[i].content,
+                                nickName: handles[i].nickName,
+                                userId: handles[i].hUserId,
+                                createDate: handles[i].createDate
+                            });
+                        }
+                    }
+                    var trendsArray = new Array();
+                    for (var i = 0; i < trends.length; i++) {
+                        var currTrends = {
+                            trendsId: trends[i].albumId,
+                            content: trends[i].content,
+                            userId: trends[i].userId,
+                            nickName: trends[i].nickName,
+                            createDate: trends[i].createDate,
+                            likesNum: trends[i].likesNum,
+                            commentNum: trends[i].isComment,
+                            pics: picsObject[trends[i].albumId],
+                            handles: handlesObject[trends[i].albumId]
+                        };
+                        trendsArray.push(currTrends);
+                    }
+                    res.json(self.createPageData("00", total, trendsArray));
+                });
             });
         });
     },
