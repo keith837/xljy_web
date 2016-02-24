@@ -8,18 +8,19 @@ module.exports = new basicController(__filename).init({
         var self = this;
         var start = parseInt(request.query.iDisplayStart || this.webConfig.iDisplayStart);
         var pageSize = parseInt(request.query.iDisplayLength || this.webConfig.iDisplayLength);
-        var queryCondition = {};
-        var schoolId = request.query.schoolId;
-        if (schoolId) {
-            queryCondition.schoolId = parseInt(schoolId);
-        }
-        var classId = request.query.classId;
-        if (classId) {
-            queryCondition.classId = parseInt(classId);
+        var queryCondition = [];
+        var groupId = request.user.groupId;
+        console.log(request.user);
+        console.log(request.user.classInfo);
+        if (groupId === 20) {
+           // queryCondition.push({"key": "classId", "opr": "=", "val": request.user.classInfo.classId});
+          //  queryCondition.push({"key": "schoolId", "opr": "=", "val": request.user.classInfo.schoolId});
+        } else if (groupId === 30 || groupId === 40) {
+           // queryCondition.push({"key": "schoolId", "opr": "=", "val": request.user.school.schoolId});
         }
         var deviceSign = request.query.deviceSign;
         if (deviceSign) {
-            queryCondition.deviceSign = deviceSign;
+            queryCondition.push({"key": "deviceSign", "opr": "like", "val": deviceSign});
         }
         this.model['device'].queryPage(start, pageSize, queryCondition, function (err, totalCount, res) {
             if (err) {
