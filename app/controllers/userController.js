@@ -14,12 +14,16 @@ module.exports = new basicController(__filename).init({
         if(!userName){
             return next(new Error("登录用户名不能为空"));
         }
+        if(!password){
+            return next(new Error("登录密码不能为空"));
+        }
         if(!source){
-            return next(new Error("登录渠道信息不能为空"));
+            return next(new Error("登入来源不能为空"));
         }
-        if(!channel){
-            return next(new Error("登入入口信息不能为空"));
-        }
+        var clientId = getClientIp(req);
+        //if(!channel){
+        //    return next(new Error("登入渠道信息不能为空"));
+        //}
         if(!groupId){
             return next(new Error("用户组信息不能为空"));
         }
@@ -38,20 +42,20 @@ module.exports = new basicController(__filename).init({
             }
             user.source = source;
             user.channel = channel;
+
             if(groupId == 10){
                 self.parentLogin(user, res, next);
             }else if(groupId == 20){
                 self.teacherLogin(user, res, next);
             }else if(groupId == 30 || groupId == 40 || groupId == 50){
                 self.principalLogin(user, res, next);
-            }else if(groupId == 99){
-                self.adminLogin(user, res, next);
-            }else{
-                return next(new Error("用户组信息未定义"));
+            } else{
+                return next(new Error("用户组"+groupId+"信息未定义"));
             }
-            var clientId = getClientIp(req);
+
             self.model['userLogin'].logLogin([user.groupId,user.userId,user.nickName,user.billId,user.custName,channel,source,source,clientId,null]);
         });
+
     },
 
     parentLogin : function(user, res, next){
@@ -63,7 +67,7 @@ module.exports = new basicController(__filename).init({
             if(!students || students.length <= 0){
                 return next(new Error("该家长未关联宝贝"));
             }
-            if(students.length == 1){
+            if(students.length >= 1){
                 user.student = students[0];
             }
             var date = new Date();
@@ -189,15 +193,16 @@ module.exports = new basicController(__filename).init({
             if(!user){
                 return next(new Error("用户信息不存在"));
             }
+            if(!user.roleId || user.roleId == 0){
+                return next(new Error("当前用户无登录权限"));
+            }
             if(user.state != 1){
                 return next(new Error("该手机号码为白名单用户，未注册"));
             }
             if(user.password != password){
                 return next(new Error("登录密码错误"));
             }
-            if(user.roleId <= 0){
-                return next(new Error("当前用户无登录权限"));
-            }
+
             user.source = 2;
             user.channel = 4;
             self.adminLogin(user, res, next);
@@ -222,6 +227,7 @@ module.exports = new basicController(__filename).init({
                 token : user.token
             }
         });
+        self.model['userLogin'].logLogin([user.groupId,user.userId,user.nickName,user.billId,user.custName,channel,source,source,getClientIp(req),null]);
     },
 
     resetPwd : function(req, res, next){
@@ -401,8 +407,8 @@ module.exports = new basicController(__filename).init({
 
     list : function(req, res, next){
         var self = this;
-        var start = req.query.start ? parseInt(req.query.start) : 0;
-        var pagesize = req.query.pageSize ? parseInt(req.query.pageSize) : 100;
+        var start = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);
+        var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
         var obj = new Object;
         var groupId = req.query.groupId;
         if(groupId && groupId > 0){
@@ -420,7 +426,7 @@ module.exports = new basicController(__filename).init({
         if(custName){
             obj.custName = custName;
         }
-        self.model['user'].listByPage(obj, start, pagesize, function(err, total, users){
+        self.model['user'].listByPage(obj, start, pageSize, function(err, total, users){
             if(err){
                 return next(err);
             }

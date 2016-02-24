@@ -25,7 +25,7 @@ module.exports = new basicController(__filename).init({
     list : function(req, res, next) {
         var self = this;
         var userId = req.user.userId;
-        self.model['school'].listByPrincipalId(userId, function (err, schools) {
+        self.model['school'].findSchool(userId, function (err, schools) {
             if (err) {
                 return next(err);
             }
@@ -44,6 +44,22 @@ module.exports = new basicController(__filename).init({
             res.json({
                 code: "00",
                 schools: retSchools
+            });
+        });
+    },
+    listClass : function(req, res, next) {
+        var self = this;
+        var schoolId = req.params.schoolId;
+        self.model['class'].listBySchoolId(schoolId, function (err, classes) {
+            if (err) {
+                return next(err);
+            }
+            if (!classes || classes.length <= 0) {
+                return next(new Error("该学校没有班级信息"));
+            }
+            res.json({
+                code: "00",
+                classes: classes
             });
         });
     }

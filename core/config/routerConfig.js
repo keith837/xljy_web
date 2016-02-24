@@ -97,7 +97,7 @@ var routerConfig = {
             }
         },
         school : {
-            "usedModel": ["school/school"],
+            "usedModel": ["school/school","school/class"],
             "select": {
                 "url": "/api/school/select/:schoolId",
                 "method": "post",
@@ -105,6 +105,11 @@ var routerConfig = {
             },
             "list": {
                 "url": "/api/school/list",
+                "method": "get",
+                "description": "查询园所"
+            },
+            "listClass": {
+                "url": "/api/school/listClass",
                 "method": "get",
                 "description": "查询园所"
             }

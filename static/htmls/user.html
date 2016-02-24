@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/select2.css" />
     <link rel="stylesheet" href="css/unicorn.main.css" />
     <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <link rel="stylesheet" href="css/sweetalert.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
 <body>
@@ -45,10 +46,7 @@
                                         </td>
                                         <td align="left" width="15%">
                                             <div class="span12" style="margin-top:5px; margin-bottom:5px">
-                                                <select class="span11">
-                                                    <option>长岛幼儿园</option>
-                                                    <option>萧山幼儿园</option>
-                                                    <option>滨文高教园</option>
+                                                <select class="span11" id="schoolId">
                                                 </select>
                                             </div>
                                         </td>
@@ -57,12 +55,7 @@
                                         </td>
                                         <td align="left" width="15%">
                                             <div class="span12" style="margin-top:5px; margin-bottom:5px">
-                                                <select class="span11">
-                                                    <option value="1">托一班</option>
-                                                    <option value="2">托二班</option>
-                                                    <option value="3">小一班</option>
-                                                    <option value="4">中一班</option>
-                                                    <option value="5">大一班</option>
+                                                <select class="span11" id="classId">
                                                 </select>
                                             </div>
                                         </td>
@@ -103,17 +96,15 @@
                         <table class="table table-bordered data-table">
                             <thead>
                             <tr>
-                                <th>登录名</th>
+                                <th width="10%">登录名</th>
                                 <th>学校</th>
-                                <th>班级</th>
-                                <th width="6%">用户组</th>
-                                <th width="5%">姓名</th>
-                                <th>关系</th>
-                                <th width="10%">最后登陆时间</th>
-                                <th width="8%">最后登陆IP</th>
-                                <th>登陆次数</th>
-                                <th width="8%">创建时间</th>
-                                <th width="25%">操作</th>
+                                <th width="7%">用户组</th>
+                                <th width="10%">姓名</th>
+                                <th width="7%">昵称</th>
+                                <th width="14%">最后登陆时间</th>
+                                <th width="14%">最后登陆IP</th>
+                                <th width="14%">创建时间</th>
+                                <th width="16%">操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -144,14 +135,19 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
+<script src="js/sweetalert.min.js" charset="utf-8"></script>
 
 <script>
     /**
      * tables
      **/
     $(document).ready(function () {
-
-        $('.data-table').dataTable({
+        loadSchool();
+        $("#schoolId").select2().on("change", function (e) {
+            loadClass();
+        });
+        $.fn.dataTable.ext.errMode = function(s,h,m){};
+        var table = $('.data-table').dataTable({
             "oLanguage": {
                 "sLengthMenu": "每页显示 _MENU_ 条记录",
                 "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
@@ -171,35 +167,50 @@
             "bLengthChange": false,
 //            "bPaginate":true,
             "bProcessing" : true,
+            'bStateSave': true,
+            "bRetrieve": true,
+            "bDestroy":true,
             "sPaginationType": "full_numbers",
-            "iDisplayLength": 3,
+            "iDisplayLength": iDisplayLength,
             "bFilter": false,
             "sDom": '<""l>t<"F"fp>',
 
 //            "iTotalRecords":"data.iTotalRecords",
-//             "bProcessing": true,
             "bServerSide": true,
             // "sAjaxDataProp":"data.aaData",
-            "sAjaxSource": "../api/stations",
+//            "sAjaxDataProp":"aaData",
+            "sAjaxSource": "/api/user/list",
             "sServerMethod": "GET",
             "aoColumns": [
-                {"mDataProp": "stationMac"},
-                {"mDataProp": "schoolName"},
-                {"mDataProp": "address"},
-                {"mDataProp": "stationType"},
-                {"mDataProp": "state"},
-                {"mDataProp": "schoolName"},
-                {"mDataProp": "schoolName"},
-                {"mDataProp": "schoolName"},
-                {"mDataProp": "schoolName"},
-                {"mDataProp": "doneDate"}
+                {"mDataProp": "userName"},
+                {"mDataProp": "nickName"},
+                {"mDataProp": function(obj){
+                    if(obj.groupId==10){
+                        return "家长";
+                    }else if(obj.groupId==20){
+                        return "老师";
+                    }else if(obj.groupId==30){
+                        return "园长";
+                    }else if(obj.groupId==40){
+                        return "集团园长";
+                    }else if(obj.groupId==50){
+                        return "超级园长";
+                    }else if(obj.groupId==60){
+                        return "游客";
+                    }
+                }},
+                {"mDataProp": "custName"},
+                {"mDataProp": "nickName"},
+                {"mDataProp": "lastLoginDate"},
+                {"mDataProp": "lastLoginIp"},
+                {"mDataProp": "createDate"}
             ],
             "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
                 {
-                    "targets": [10],
+                    "targets": [8],
                     "data": null,
                     "bSortable": false,
-                    "defaultContent": "<button class=\"btn\"><i class=\"icon-eye-open\"></i> 详情</button>&nbsp;&nbsp;<button class=\"btn btn-primary\"><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\"><i class=\"icon-remove icon-white\"></i> 删除</button>"
+                    "defaultContent": "<button class=\"btn btn-primary\"><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\"><i class=\"icon-remove icon-white\"></i> 删除</button>"
                 }
             ]
             //"fnServerParams": function (aoData) {
