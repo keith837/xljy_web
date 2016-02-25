@@ -400,8 +400,8 @@ module.exports = new basicController(__filename).init({
 
     list : function(req, res, next){
         var self = this;
-        var start = parseInt(request.query.iDisplayStart || this.webConfig.iDisplayStart);
-        var pageSize = parseInt(request.query.iDisplayLength || this.webConfig.iDisplayLength);
+        var start = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);
+        var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
         var obj = new Object;
         var groupId = req.query.groupId;
         if(groupId && groupId > 0){
