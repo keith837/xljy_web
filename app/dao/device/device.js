@@ -15,10 +15,25 @@ Device.queryPage = function (start, pageSize, queryCondition, callback) {
     var sqlCondition = "1=1 ";
     var sqlParams = [];
 
-    if (queryCondition) {
-        for (var key in queryCondition) {
-            sqlCondition += "and m." + key + "=? ";
-            sqlParams.push(queryCondition[key]);
+    if (queryCondition || queryCondition.length > 0) {
+        for (var i in queryCondition) {
+            var opr = queryCondition[i].opr;
+            if (opr == "like") {
+                sqlCondition += "and m." + queryCondition[i].key + " " + opr + " ? ";
+                sqlParams.push("%" + queryCondition[i].val + "%");
+            } else if (opr == "in") {
+                var ids = queryCondition[i].val;
+                var appenderId = "";
+                for (var k in ids) {
+                    appenderId += "?,";
+                    sqlParams.push(ids[k]);
+                }
+                appenderId = appenderId.substr(0, appenderId.length - 1);
+                sqlCondition += "and m." + queryCondition[i].key + " " + opr + " (" + appenderId + ") ";
+            } else {
+                sqlCondition += "and m." + queryCondition[i].key + " " + opr + " ? ";
+                sqlParams.push(queryCondition[i].val);
+            }
         }
     }
 
