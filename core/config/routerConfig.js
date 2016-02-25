@@ -135,7 +135,7 @@ var routerConfig = {
             },
         },
         student : {
-            "usedModel": ["student/student"],
+            "usedModel": ["student/student", "school/class"],
             "select": {
                 "url": "/api/student/select/:studentId",
                 "method": "post",
@@ -145,7 +145,32 @@ var routerConfig = {
                 "url": "/api/student/list",
                 "method": "get",
                 "description": "查询学生"
-            }
+            },
+            "listall": {
+                "url": "/api/student/listall",
+                "method": "get",
+                "description": "查询所有学生"
+            },
+            "show": {
+                "url": "/api/student/show/:studentId",
+                "method": "get",
+                "description": "查询学生"
+            },
+            "del": {
+                "url": "/api/student/del/:studentId",
+                "method": "delete",
+                "description": "查询学生"
+            },
+            "modify": {
+                "url": "/api/student/modify/:studentId",
+                "method": "put",
+                "description": "查询学生"
+            },
+            "add": {
+                "url": "/api/student/add",
+                "method": "post",
+                "description": "查询学生"
+            },
         },
         trends : {
             "usedModel": ["album/album"],
