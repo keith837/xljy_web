@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/select2.css" />
     <link rel="stylesheet" href="css/unicorn.main.css" />
     <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <link rel="stylesheet" href="css/sweetalert.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
 <body>
@@ -68,8 +69,8 @@
                                     <tr>
                                         <td align="center">
                                             <div class="input-append span12" style="margin-top:5px; margin-bottom:5px">
-                                                <input type="text" class="span4 search-query" placeholder="请输入手环名称">
-                                                <button type="submit" class="btn">搜索</button>
+                                                <input type="text" class="span4 search-query" id="braceletName" placeholder="请输入手环名称">
+                                                <button type="button" class="btn" id="searchBtn">搜索</button>
                                             </div>
                                         </td>
                                         <td>
@@ -135,6 +136,7 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
+<script src="js/sweetalert.min.js" charset="utf-8"></script>
 
 <!--<script src="js/unicorn.tables.js"></script>-->
 <script>
@@ -143,7 +145,8 @@
      **/
     $(document).ready(function () {
 
-        $('.data-table').dataTable({
+        $.fn.dataTable.ext.errMode = function(s,h,m){};
+        var table = $('.data-table').dataTable({
             "oLanguage": {
                 "sLengthMenu": "每页显示 _MENU_ 条记录",
                 "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
@@ -185,7 +188,7 @@
                     "targets": [4],
                     "data": null,
                     "bSortable": false,
-                    "defaultContent": "<button class=\"btn btn-primary\"><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\"><i class=\"icon-remove icon-white\"></i> 删除</button>"
+                    "defaultContent": "<button class=\"btn btn-primary\"><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id=\"delrow\"><i class=\"icon-remove icon-white\"></i> 删除</button>"
                 }
             ]
             //"fnServerParams": function (aoData) {
@@ -194,24 +197,58 @@
             //}
         });
 
-        /*$('input[type=checkbox],input[type=radio],input[type=file]').uniform();
+        $('#searchBtn').on('click', function () {
+            var braceletName = $("#braceletName").val();
+            var queryCondition = "";
+            if (braceletName != "") {
+                queryCondition += "deviceSign=" + braceletName;
+            }
+            //table.fnClearTable(); //清空一下table，不能设置
+            table.fnSettings().sAjaxSource = '/api/devices?' + queryCondition;
+            table.fnDraw();
 
-        $('select').select2();
+        });
 
-        $("span.icon input:checkbox, th input:checkbox").click(function () {
-            var checkedStatus = this.checked;
-            var checkbox = $(this).parents('.widget-box').find('tr td:first-child input:checkbox');
-            checkbox.each(function () {
-                this.checked = checkedStatus;
-                if (checkedStatus == this.checked) {
-                    $(this).closest('.checker > span').removeClass('checked');
-                }
-                if (this.checked) {
-                    $(this).closest('.checker > span').addClass('checked');
-                }
+
+        $('.data-table tbody').on( 'click', 'button#delrow', function () {
+            //var row = table.row( $(this).parents('tr') ).data();
+            var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
+            swal({
+                title: "确认删除?",
+                text: "您将删除手环【"+row.deviceSign+"】",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "删除",
+                cancelButtonText: "取消",
+                closeOnConfirm: false
+            }, function(){
+                $.ajax({
+                    url: '/api/devices/'+row.deviceId,
+                    type: 'DELETE',
+                    dataType: 'json'
+                })
+                        .done(function(data) {
+                            if (data.code=="00") {
+                                swal({   title: "删除成功!",   text: "删除数据成功",   timer: 2000,   showConfirmButton: true });
+                                table.fnClearTable(); //清空一下table
+                                //table.fnDestroy(); //还原初始化了的datatable
+                                table.fnDraw();
+                            }else{
+                                swal("删除失败!", data.msg, "error");
+                            };
+                        })
+                        .fail(function() {
+                            swal("删除失败!", "删除数据失败", "error");
+                        });
+
             });
-        });*/
+
+        });
+
     });
+
+
 
 </script>
 </body>
