@@ -14,10 +14,6 @@ School.findBySchoolId = function(schoolId, callback){
     mysqlUtil.queryOne("select * from XL_SCHOOL where schoolId = ?", [schoolId], callback);
 }
 
-School.delete = function(schoolId, callback){
-    mysqlUtil.query("delete from XL_SCHOOL where schoolId = ?", [schoolId], callback);
-}
-
 School.queryNum = function(obj, callback){
     var whereSql = " 1=1 ";
     var args = new Array();
