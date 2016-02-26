@@ -55,11 +55,11 @@ module.exports = new basicController(__filename).init({
         var obj = new Object;
         var schoolName = req.query.schoolName;
         if(schoolName){
-            obj.schoolName = parseInt(schoolName);
+            obj.schoolName = schoolName;
         }
         var sUserId = req.query.sUserId;
         if(sUserId){
-            obj.sUserId = sUserId;
+            obj.sUserId = parseInt(sUserId);
         }
         self.model['school'].listByPage(obj, start, pageSize, function(err, total, schools){
             if(err){
