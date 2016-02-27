@@ -10,13 +10,28 @@ module.exports = new basicController(__filename).init({
         var pageSize = parseInt(request.query.iDisplayLength || this.webConfig.iDisplayLength);
         var queryCondition = [];
         var groupId = request.user.groupId;
-        console.log(request.user);
-        console.log(request.user.classInfo);
+        var schools = request.user.schools;
+        var classes = request.user.classes;
         if (groupId === 20) {
-           // queryCondition.push({"key": "classId", "opr": "=", "val": request.user.classInfo.classId});
-          //  queryCondition.push({"key": "schoolId", "opr": "=", "val": request.user.classInfo.schoolId});
+            if (classes && classes.length >= 1) {
+                 classId = [];
+                for (var i in classes) {
+                    classId.push(classes[i].classId);
+                }
+                queryCondition.push({"key": "classId", "opr": "in", "val": classId});
+            } else {
+                return next(self.Error("没有用户对应的班级信息."));
+            }
         } else if (groupId === 30 || groupId === 40) {
-           // queryCondition.push({"key": "schoolId", "opr": "=", "val": request.user.school.schoolId});
+            if (schools && schools.length >= 1) {
+                var schoolId = [];
+                for (var i in schools) {
+                    schoolId.push(schools[i].schoolId);
+                }
+                queryCondition.push({"key": "schoolId", "opr": "in", "val": schoolId});
+            } else {
+                return next(self.Error("没有用户对应的学校信息."));
+            }
         }
         var deviceSign = request.query.deviceSign;
         if (deviceSign) {
@@ -27,7 +42,7 @@ module.exports = new basicController(__filename).init({
                 return next(err);
             }
             if (totalCount == 0) {
-                return next(self.Error("没有查询到手环信息."));
+                return next(self.Error("没有查询到手环信息.", 00));
             } else {
                 response.json(self.createPageData("00", totalCount, res));
             }

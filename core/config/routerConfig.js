@@ -109,7 +109,7 @@ var routerConfig = {
                 "description": "查询园所"
             },
             "listClass": {
-                "url": "/api/school/listClass",
+                "url": "/api/school/listClass/:schoolId",
                 "method": "get",
                 "description": "查询校长园所"
             },

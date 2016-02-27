@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/select2.css" />
     <link rel="stylesheet" href="css/unicorn.main.css" />
     <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <link rel="stylesheet" href="css/sweetalert.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
 <body>
@@ -37,34 +38,50 @@
 
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form class="form-horizontal">
+                                <form class="form-horizontal" id="deviceForm">
                                     <div class="control-group">
                                         <label class="control-label" for="deviceSign">手环设备号</label>
                                         <div class="controls">
-                                            <input type="text" id="deviceSign" placeholder="设备号" class="span3">
+                                            <input type="text" id="deviceSign" name="deviceSign" placeholder="设备号" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="deviceName">手环名称</label>
                                         <div class="controls">
-                                            <input type="text" id="deviceName" placeholder="手环名称" class="span3">
+                                            <input type="text" id="deviceName" name="deviceName" placeholder="手环名称" class="span3">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="schoolId">学校名称</label>
+                                        <div class="controls">
+                                            <input type="text" id="schoolId" placeholder="请选择学校" class="span3">
+                                            <!--
+                                            <select class="span3" id="schoolId">
+                                                <option value="-1">--请选择学校--</option>
+                                            </select>
+                                            -->
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="classId">班级名称</label>
+                                        <div class="controls">
+                                            <input type="text" id="classId" placeholder="请选择班级" class="span3">
+                                            <!--
+                                            <select class="span3" id="classId">
+                                                <option value="-1">--请选择班级--</option>
+                                            </select>
+                                            -->
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="studentId">学生姓名</label>
                                         <div class="controls">
-                                            <select class="span3" id="studentId">
-                                                <option value="1">李凡</option>
-                                                <option value="2">张佳</option>
-                                                <option value="3">陈赫</option>
-                                                <option value="4">凤姐</option>
-                                                <option value="5">其他</option>
-                                            </select>
+                                            <input type="text" id="studentId" name="studentId" placeholder="请选择学生" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <div class="controls">
-                                            <button type="submit" class="btn">提交</button>
+                                            <button type="button" id="commitBtn" class="btn">提交</button>
                                             <button type="reset" class="btn">重置</button>
                                         </div>
                                     </div>
@@ -97,7 +114,124 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
+<script src="js/sweetalert.min.js" charset="utf-8"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $.ajax({
+            url: "/api/school/list",    //后台webservice里的方法名称
+            type: "get",
+            dataType: "json",
+            contentType: "application/json",
+            traditional: true,
+            success: function (data) {
+                if (data.code == "00") {
+                    var jsonObj = data.schools;
+                    var options = [];
+                    for (var j = 0; j < jsonObj.length; j++) {
+                        options.push({id: jsonObj[j].schoolId, text: jsonObj[j].schoolName});
+                    }
+                    $("#schoolId").select2({data: options}).on("change", function (e) {
+                        $("#classId").select2({data: [{id: -1, text: "请选择班级"}]});
+                        $("#studentId").select2({data: [{id: -1, text: "请选择学生"}]});
+                        getClassInfo($(this).val());
+                    });
+                } else {
+                    $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
+                }
+            },
+            error: function (msg) {
+                $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
+            }
+        });
 
 
+        function getClassInfo(schoolId) {
+            if (schoolId == "-1") {
+                return;
+            }
+            $.ajax({
+                url: "/api/school/listClass/"+schoolId,    //后台webservice里的方法名称
+                type: "get",
+                dataType: "json",
+                contentType: "application/json",
+                traditional: true,
+                success: function (data) {
+                    if (data.code == "00") {
+                        var jsonObj = data.classes;
+                        var options = [];
+                        for (var j = 0; j < jsonObj.length; j++) {
+                            options.push({id: jsonObj[j].classId, text: jsonObj[j].className});
+                        }
+                        $("#classId").select2({data: options}).on("change", function (e) {
+                            $("#studentId").select2({data: [{id: -1, text: "请选择学生"}]});
+                            getStudentInfo($(this).val());
+                        });
+                    } else {
+                        $("#classId").select2({data: [{id: -1, text: "请选择班级"}]});
+                    }
+                },
+                error: function (msg) {
+                    $("#classId").select2({data: [{id: -1, text: "请选择班级"}]});
+                }
+            });
+        }
+
+
+        function getStudentInfo(classId) {
+            if (classId == "-1") {
+                return;
+            }
+            $.ajax({
+                url: "/api/student/listall?classId="+classId,    //后台webservice里的方法名称
+                type: "get",
+                dataType: "json",
+                contentType: "application/json",
+                traditional: true,
+                success: function (data) {
+                    if (data.code == "00") {
+                        var jsonObj = data.data;
+                        var options = [];
+                        for (var j = 0; j < jsonObj.length; j++) {
+                            options.push({id: jsonObj[j].studentId, text: jsonObj[j].studentName});
+                        }
+                        $("#studentId").select2({data: options});
+                    } else {
+                        $("#studentId").select2({data: [{id: -1, text: "请选择学生"}]});
+                    }
+                },
+                error: function (msg) {
+                    $("#studentId").select2({data: [{id: -1, text: "请选择学生"}]});
+                }
+            });
+        }
+
+
+        $('#commitBtn').click(function () {
+            $.ajax({
+                url: "/api/devices",
+                type: "post",
+                data: $("#deviceForm").serialize()
+
+            }).done(function (data) {
+                if (data.code == "00") {
+                    swal({title: "保存成功!", text: "保存成功", timer: 1000, showConfirmButton: true}, function () {
+                        setTimeout(function () {
+                            window.location.href = "bracelet.html";
+                        }, 2000);
+                    });
+
+                } else {
+                    swal("保存失败!", data.msg, "error");
+                }
+                ;
+            })
+            .fail(function () {
+                swal("保存失败!", "保存失败", "error");
+            });
+        });
+    });
+</script>
 </body>
 </html>
