@@ -225,7 +225,7 @@ module.exports = new basicController(__filename).init({
                             likesNum: trends[i].likesNum,
                             commentNum: trends[i].isComment,
                             pics: picsObject[trends[i].albumId],
-                            handles: handlesObject[trends[i].albumId],
+                            comments: handlesObject[trends[i].albumId],
                             likes : likesObject[trends[i].albumId]
                         };
                         trendsArray.push(currTrends);
@@ -319,7 +319,7 @@ module.exports = new basicController(__filename).init({
                             likesNum: trends[i].likesNum,
                             commentNum: trends[i].isComment,
                             pics: picsObject[trends[i].albumId],
-                            handles: handlesObject[trends[i].albumId],
+                            comments: handlesObject[trends[i].albumId],
                             likes : likesObject[trends[i].albumId]
                         };
                         trendsArray.push(currTrends);
