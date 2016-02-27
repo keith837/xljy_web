@@ -56,6 +56,7 @@ module.exports = new basicController(__filename).init({
     },
 
     delete: function (req, res, next) {
+        var self = this;
         var userId = req.user.uesrId;
         var trendsId = req.params.trendsId;
         self.model['album'].delete(3, trendsId, userId, function (err, data) {
@@ -74,6 +75,7 @@ module.exports = new basicController(__filename).init({
     },
 
     like: function (req, res, next) {
+        var self = this;
         var userId = req.user.userId;
         var trendsId = req.params.trendsId;
         var groupId = req.user.groupId;
@@ -106,6 +108,7 @@ module.exports = new basicController(__filename).init({
     },
 
     comment: function (req, res, next) {
+        var self = this;
         var userId = req.user.userId;
         var trendsId = req.params.trendsId;
         var content = req.params.content;
