@@ -224,9 +224,9 @@ module.exports = new basicController(__filename).init({
                             createDate: trends[i].createDate,
                             likesNum: trends[i].likesNum,
                             commentNum: trends[i].isComment,
-                            pics: picsObject[trends[i].albumId],
-                            comments: handlesObject[trends[i].albumId],
-                            likes : likesObject[trends[i].albumId]
+                            pics: picsObject[trends[i].albumId] ? picsObject[trends[i].albumId] : new Array(),
+                            comments: handlesObject[trends[i].albumId] ? handlesObject[trends[i].albumId] : new Array(),
+                            likes : likesObject[trends[i].albumId] ? likesObject[trends[i].albumId] : new Array()
                         };
                         trendsArray.push(currTrends);
                     }
@@ -318,9 +318,9 @@ module.exports = new basicController(__filename).init({
                             createDate: trends[i].createDate,
                             likesNum: trends[i].likesNum,
                             commentNum: trends[i].isComment,
-                            pics: picsObject[trends[i].albumId],
-                            comments: handlesObject[trends[i].albumId],
-                            likes : likesObject[trends[i].albumId]
+                            pics: picsObject[trends[i].albumId] ? picsObject[trends[i].albumId] : new Array(),
+                            comments: handlesObject[trends[i].albumId] ? handlesObject[trends[i].albumId] : new Array(),
+                            likes : likesObject[trends[i].albumId] ? likesObject[trends[i].albumId] : new Array()
                         };
                         trendsArray.push(currTrends);
                     }
