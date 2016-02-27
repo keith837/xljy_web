@@ -13,7 +13,7 @@ module.exports = new basicController(__filename).init({
                 return next(new Error("未查到关联的园所信息"));
             }
             var user = req.user;
-            user.school = school;
+            user.schools = [school];
             self.redis.set(user.token, JSON.stringify(user));
             res.json({
                 code: "00",

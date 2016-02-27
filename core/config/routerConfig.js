@@ -14,7 +14,7 @@ var routerConfig = {
                 "description": "用户登录"
             }
         }
-            ,
+        ,
         user: {
             "usedModel": ["user/user", "user/smsLog", "user/userLogin", "school/school", "student/student", "school/class"],
             "login": {
@@ -140,7 +140,7 @@ var routerConfig = {
             },
         },
         student : {
-            "usedModel": ["student/student", "school/class"],
+            "usedModel": ["student/student", "school/class", "school/school"],
             "select": {
                 "url": "/api/student/select/:studentId",
                 "method": "post",
@@ -176,6 +176,34 @@ var routerConfig = {
                 "method": "post",
                 "description": "查询学生"
             },
+        },
+        class : {
+            "usedModel": ["school/class"],
+            "list": {
+                "url": "/api/class/list",
+                "method": "get",
+                "description": "查询所有班级"
+            },
+            "show": {
+                "url": "/api/class/show/:classId",
+                "method": "get",
+                "description": "查询班级"
+            },
+            "add": {
+                "url": "/api/class/add",
+                "method": "post",
+                "description": "新增班级"
+            },
+            "modify": {
+                "url": "/api/class/modify/:classId",
+                "method": "put",
+                "description": "修改班级"
+            },
+            "del": {
+                "url": "/api/class/del/:classId",
+                "method": "delete",
+                "description": "删除班级"
+            }
         },
         trends : {
             "usedModel": ["album/album"],

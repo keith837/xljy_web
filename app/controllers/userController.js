@@ -20,9 +20,6 @@ module.exports = new basicController(__filename).init({
             return next(new Error("登入来源不能为空"));
         }
         var clientId = getClientIp(req);
-        //if(!channel){
-        //    return next(new Error("登入渠道信息不能为空"));
-        //}
         if(!groupId){
             return next(new Error("用户组信息不能为空"));
         }
@@ -41,20 +38,19 @@ module.exports = new basicController(__filename).init({
             }
             user.source = source;
             user.channel = channel;
-
             if(groupId == 10){
                 self.parentLogin(user, res, next);
             }else if(groupId == 20){
                 self.teacherLogin(user, res, next);
             }else if(groupId == 30 || groupId == 40 || groupId == 50){
                 self.principalLogin(user, res, next);
-            } else{
+            }else if(groupId == 99){
+                return next(new Error("系统管理员无法通过app登录"));
+            }else{
                 return next(new Error("用户组"+groupId+"信息未定义"));
             }
-
             self.model['userLogin'].logLogin([user.groupId,user.userId,user.nickName,user.billId,user.custName,channel,source,source,clientId,null]);
         });
-
     },
 
     parentLogin : function(user, res, next){
@@ -66,35 +62,80 @@ module.exports = new basicController(__filename).init({
             if(!students || students.length <= 0){
                 return next(new Error("该家长未关联宝贝"));
             }
-            if(students.length >= 1){
-                user.student = students[0];
-            }
-            var date = new Date();
-            date.setDate(date.getDate() + 7);
-            user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
-            self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
-            var retStudents = new Array();
-            for(var i = 0; i < students.length; i ++){
-                retStudents.push({
-                    studentId : students[i].studentId,
-                    studentName : students[i].studentName,
-                    schoolId : students[i].schoolId,
-                    classId : students[i].classId
+            if(students.length == 1){
+                user.students = [students[0]];
+                self.model['class'].findOne(students[0].classId, function(err, classInfo){
+                    if(err){
+                        return next(err);
+                    }
+                    if(!classInfo){
+                        return next(new Error("未找到宝贝对应的班级信息"));
+                    }
+                    user.classes = [classInfo];
+                    self.model['school'].findBySchoolId(students[0].schoolId, function(err, school){
+                        if(err){
+                            return next(err);
+                        }
+                        if(!school){
+                            return next(new Error("未找到宝贝对应的学校信息"));
+                        }
+                        user.schools = [school];
+                        var date = new Date();
+                        date.setDate(date.getDate() + 7);
+                        user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
+                        self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
+                        var retStudents = new Array();
+                        for(var i = 0; i < students.length; i ++){
+                            retStudents.push({
+                                studentId : students[i].studentId,
+                                studentName : students[i].studentName,
+                                schoolId : students[i].schoolId,
+                                classId : students[i].classId
+                            });
+                        }
+                        res.json({
+                            code : "00",
+                            data : {
+                                userId : user.userId,
+                                billId : user.billId,
+                                nickName : user.nickName,
+                                custName : user.custName,
+                                groupId : user.groupId,
+                                pointNum : user.pointNum,
+                                token : user.token,
+                                students : retStudents
+                            }
+                        });
+                    });
+                });
+            }else{
+                var date = new Date();
+                date.setDate(date.getDate() + 7);
+                user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
+                self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
+                var retStudents = new Array();
+                for(var i = 0; i < students.length; i ++){
+                    retStudents.push({
+                        studentId : students[i].studentId,
+                        studentName : students[i].studentName,
+                        schoolId : students[i].schoolId,
+                        classId : students[i].classId
+                    });
+                }
+                res.json({
+                    code : "00",
+                    data : {
+                        userId : user.userId,
+                        billId : user.billId,
+                        nickName : user.nickName,
+                        custName : user.custName,
+                        groupId : user.groupId,
+                        pointNum : user.pointNum,
+                        token : user.token,
+                        students : retStudents
+                    }
                 });
             }
-            res.json({
-                code : "00",
-                data : {
-                    userId : user.userId,
-                    billId : user.billId,
-                    nickName : user.nickName,
-                    custName : user.custName,
-                    groupId : user.groupId,
-                    pointNum : user.pointNum,
-                    token : user.token,
-                    students : retStudents
-                }
-            });
         });
     },
 
@@ -110,30 +151,39 @@ module.exports = new basicController(__filename).init({
             if(classes.length > 1){
                 return next(new Error("该老师带班数量不唯一"));
             }
-            user.classInfo = classes[0];
-            var date = new Date();
-            date.setDate(date.getDate() + 7);
-            user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
-            self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
-            res.json({
-                code : "00",
-                data : {
-                    userId : user.userId,
-                    billId : user.billId,
-                    nickName : user.nickName,
-                    custName : user.custName,
-                    groupId : user.groupId,
-                    pointNum : user.pointNum,
-                    token : user.token,
-                    classInfo : {
-                        classId : classes[0].classId,
-                        schoolId : classes[0].schoolId,
-                        gradeId : classes[0].gradeId,
-                        className : classes[0].className,
-                        classDesc : classes[0].classDesc
-                    }
+            user.classes = [classes[0]];
+            self.model['school'].findBySchoolId(classes[0].schoolId, function(err, school){
+                if(err){
+                    return next(err);
                 }
-            })
+                if(!school){
+                    return next(new Error("未找到班级对应的学校信息"));
+                }
+                user.schools = [school];
+                var date = new Date();
+                date.setDate(date.getDate() + 7);
+                user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
+                self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
+                res.json({
+                    code : "00",
+                    data : {
+                        userId : user.userId,
+                        billId : user.billId,
+                        nickName : user.nickName,
+                        custName : user.custName,
+                        groupId : user.groupId,
+                        pointNum : user.pointNum,
+                        token : user.token,
+                        classInfo : {
+                            classId : classes[0].classId,
+                            schoolId : classes[0].schoolId,
+                            gradeId : classes[0].gradeId,
+                            className : classes[0].className,
+                            classDesc : classes[0].classDesc
+                        }
+                    }
+                });
+            });
         });
     },
 
@@ -147,7 +197,7 @@ module.exports = new basicController(__filename).init({
                 return next(new Error("该校长未关联园所"));
             }
             if(schools.length == 1){
-                user.school = schools[0];
+                user.schools = [schools[0]];
             }
             var date = new Date();
             date.setDate(date.getDate() + 7);
@@ -192,41 +242,72 @@ module.exports = new basicController(__filename).init({
             if(!user){
                 return next(new Error("用户信息不存在"));
             }
-            if(!user.roleId || user.roleId == 0){
-                return next(new Error("当前用户无登录权限"));
-            }
             if(user.state != 1){
                 return next(new Error("该手机号码为白名单用户，未注册"));
             }
             if(user.password != password){
                 return next(new Error("登录密码错误"));
             }
-
+            if(user.roleId <= 0){
+                return next(new Error("当前用户无登录权限"));
+            }
+            if(user.groupId == 10 || user.groupId == 20){
+                return next(new Error("web端不允许家长及老师用户登录"));
+            }
             user.source = 2;
             user.channel = 4;
             self.adminLogin(user, res, next);
+            var clientId = getClientIp(req);
+            self.model['userLogin'].logLogin([user.groupId,user.userId,user.nickName,user.billId,user.custName,4,2,2,clientId,null]);
         });
     },
 
     adminLogin : function(user, res, next) {
         var self = this;
-        var date = new Date();
-        date.setDate(date.getDate() + 7);
-        user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
-        self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
-        res.json({
-            code : "00",
-            data : {
-                userId : user.userId,
-                billId : user.billId,
-                nickName : user.nickName,
-                custName : user.custName,
-                groupId : user.groupId,
-                pointNum : user.pointNum,
-                token : user.token
-            }
-        });
-        self.model['userLogin'].logLogin([user.groupId,user.userId,user.nickName,user.billId,user.custName,channel,source,source,getClientIp(req),null]);
+        if(user.groupId == 30 || user.groupId == 40 || user.groupId == 50){
+            self.model['school'].listByPrincipalId(user.userId, function(err, schools){
+                if(err){
+                    return next(err);
+                }
+                if(!schools || schools.length <= 0){
+                    return next(new Error("该园长未关联园所"));
+                }
+                user.schools = schools;
+                var date = new Date();
+                date.setDate(date.getDate() + 7);
+                user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
+                self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
+                res.json({
+                    code : "00",
+                    data : {
+                        userId : user.userId,
+                        billId : user.billId,
+                        nickName : user.nickName,
+                        custName : user.custName,
+                        groupId : user.groupId,
+                        pointNum : user.pointNum,
+                        token : user.token
+                    }
+                });
+            });
+        }else{
+            var date = new Date();
+            date.setDate(date.getDate() + 7);
+            user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
+            self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
+            res.json({
+                code : "00",
+                data : {
+                    userId : user.userId,
+                    billId : user.billId,
+                    nickName : user.nickName,
+                    custName : user.custName,
+                    groupId : user.groupId,
+                    pointNum : user.pointNum,
+                    token : user.token
+                }
+            });
+        }
     },
 
     resetPwd : function(req, res, next){
@@ -425,7 +506,7 @@ module.exports = new basicController(__filename).init({
         if(custName){
             obj.custName = custName;
         }
-        self.model['user'].listByPage(obj, start, pageSize, function(err, total, users){
+        self.model['user'].listByPage(obj, start, pagesize, function(err, total, users){
             if(err){
                 return next(err);
             }
