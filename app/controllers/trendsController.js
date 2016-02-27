@@ -279,6 +279,7 @@ module.exports = new basicController(__filename).init({
                         return next(err);
                     }
                     var handlesObject = new Object();
+                    var likesObject = new Object();
                     if (handles) {
                         for(var i = 0; i < handles.length; i ++){
                             if(handles[i].handleType == 1){
