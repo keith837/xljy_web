@@ -8,3 +8,7 @@ Class.listByTeacherId = function(teacherId, callback){
 Class.listBySchoolId = function(schoolId, callback){
     mysqlUtil.query("select * from XL_CLASS where schoolId = ?", [schoolId], callback);
 }
+
+Class.findOne = function(classId, callback){
+    mysqlUtil.queryOne("select * from XL_CLASS where classId = ?", [classId], callback);
+}

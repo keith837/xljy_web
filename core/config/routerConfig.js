@@ -111,11 +111,36 @@ var routerConfig = {
             "listClass": {
                 "url": "/api/school/listClass",
                 "method": "get",
+                "description": "查询校长园所"
+            },
+            "listall": {
+                "url": "/api/school/listall",
+                "method": "get",
+                "description": "查询所有园所"
+            },
+            "show": {
+                "url": "/api/school/show/:schoolId",
+                "method": "get",
                 "description": "查询园所"
-            }
+            },
+            "del": {
+                "url": "/api/school/del/:schoolId",
+                "method": "delete",
+                "description": "删除园所"
+            },
+            "modify": {
+                "url": "/api/school/modify/:schoolId",
+                "method": "put",
+                "description": "修改园所"
+            },
+            "add": {
+                "url": "/api/school/add",
+                "method": "post",
+                "description": "新增园所"
+            },
         },
         student : {
-            "usedModel": ["student/student"],
+            "usedModel": ["student/student", "school/class"],
             "select": {
                 "url": "/api/student/select/:studentId",
                 "method": "post",
@@ -125,7 +150,32 @@ var routerConfig = {
                 "url": "/api/student/list",
                 "method": "get",
                 "description": "查询学生"
-            }
+            },
+            "listall": {
+                "url": "/api/student/listall",
+                "method": "get",
+                "description": "查询所有学生"
+            },
+            "show": {
+                "url": "/api/student/show/:studentId",
+                "method": "get",
+                "description": "查询学生"
+            },
+            "del": {
+                "url": "/api/student/del/:studentId",
+                "method": "delete",
+                "description": "查询学生"
+            },
+            "modify": {
+                "url": "/api/student/modify/:studentId",
+                "method": "put",
+                "description": "查询学生"
+            },
+            "add": {
+                "url": "/api/student/add",
+                "method": "post",
+                "description": "查询学生"
+            },
         },
         trends : {
             "usedModel": ["album/album"],
@@ -154,10 +204,10 @@ var routerConfig = {
                 "method": "get",
                 "description": "查看动态"
             },
-            "show": {
-                "url": "/api/trends/show/:userId",
+            "mylist": {
+                "url": "/api/trends/list/:userId",
                 "method": "get",
-                "description": "查看我的动态"
+                "description": "查看用户动态"
             },
             "top": {
                 "url": "/api/trends/top/:trendsId/:isTop",

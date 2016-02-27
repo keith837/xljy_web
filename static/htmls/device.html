@@ -46,7 +46,9 @@
                                         </td>
                                         <td align="left" width="20%">
                                             <div style="margin-top:5px; margin-bottom:5px">
-                                                <select id="schools" style="width:170px;" />
+                                                <select id="schools" style="width:170px;">
+                                                    <option value="-1">--请选择学校--</option>
+                                                </select>
                                             </div>
                                         </td>
                                         <td align="center" width="15%">
@@ -220,10 +222,10 @@
                 for (var i in data) {
                     var jsonObj = data[i];
                     $("#schools").empty();
-                    var option = $("<option>").val(-1).text("---请选择学校---").attr("selected", true);
-                    $("#schools").append(option);
+                    //var option = $("<option>").val(-1).text("---请选择学校---").attr("selected", true);
+                    //$("#schools").append(option);
                     for (var j = 0; j < jsonObj.length; j++) {
-                        option = $("<option>").val(jsonObj[j].schoolId).text(jsonObj[j].schoolName);
+                        var option = $("<option>").val(jsonObj[j].schoolId).text(jsonObj[j].schoolName);
                         $("#schools").append(option);
                     }
                 }

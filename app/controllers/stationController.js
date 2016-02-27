@@ -120,7 +120,7 @@ function parseStation(request) {
     station.schoolId = parseInt(request.body.schoolId);
     station.location = request.body.location;
     station.type = request.body.type;
-    station.state = request.body.state;
+    station.state = request.body.state || 1;
     station.createDate = request.body.createDate;
     station.doneDate = request.body.doneDate;
     var userId = request.user.userId;

@@ -118,96 +118,6 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>N301</td>
-                                <td>班级通知</td>
-                                <td>明天学校领导视察，请各位系带红领巾</td>
-                                <td><img src="./img/demo/av1.jpg"/></td>
-                                <td>王老师</td>
-                                <td>2016-01-15 07:58:31</td>
-                                <td>2016-01-16 23:58:31</td>
-                                <td>东风幼儿园</td>
-                                <td>
-                                    <button class="btn"><i class="icon-eye-open"></i> 详情</button>
-                                    <button class="btn btn-primary"><i class="icon-pencil icon-white"></i> 编辑</button>
-                                    <button class="btn btn-danger"><i class="icon-remove icon-white"></i> 删除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>N303</td>
-                                <td>校方通知</td>
-                                <td>明天早上升国旗</td>
-                                <td><img src="./img/demo/av2.jpg"/></td>
-                                <td>覃校长</td>
-                                <td>2016-01-15 07:58:31</td>
-                                <td>2016-01-16 23:58:31</td>
-                                <td>东风幼儿园</td>
-                                <td>
-                                    <button class="btn"><i class="icon-eye-open"></i> 详情</button>
-                                    <button class="btn btn-primary"><i class="icon-pencil icon-white"></i> 编辑</button>
-                                    <button class="btn btn-danger"><i class="icon-remove icon-white"></i> 删除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>N304</td>
-                                <td>工作计划</td>
-                                <td>明天早上汇报各班学生通讯录</td>
-                                <td><img src="./img/demo/av3.jpg"/></td>
-                                <td>覃校长</td>
-                                <td>2016-01-15 07:58:31</td>
-                                <td>2016-01-16 23:58:31</td>
-                                <td>东风幼儿园</td>
-                                <td>
-                                    <button class="btn"><i class="icon-eye-open"></i> 详情</button>
-                                    <button class="btn btn-primary"><i class="icon-pencil icon-white"></i> 编辑</button>
-                                    <button class="btn btn-danger"><i class="icon-remove icon-white"></i> 删除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>N305</td>
-                                <td>今日食谱</td>
-                                <td>今日黄瓜炒肉</td>
-                                <td><img src="./img/demo/av2.jpg"/></td>
-                                <td>王老师</td>
-                                <td>2016-01-15 07:58:31</td>
-                                <td>2016-01-16 23:58:31</td>
-                                <td>东风幼儿园</td>
-                                <td>
-                                    <button class="btn"><i class="icon-eye-open"></i> 详情</button>
-                                    <button class="btn btn-primary"><i class="icon-pencil icon-white"></i> 编辑</button>
-                                    <button class="btn btn-danger"><i class="icon-remove icon-white"></i> 删除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>N306</td>
-                                <td>家长通知</td>
-                                <td>明天开家长会</td>
-                                <td><img src="./img/demo/av1.jpg"/></td>
-                                <td>王老师</td>
-                                <td>2016-01-15 07:58:31</td>
-                                <td>2016-01-16 23:58:31</td>
-                                <td>东风幼儿园</td>
-                                <td>
-                                    <button class="btn"><i class="icon-eye-open"></i> 详情</button>
-                                    <button class="btn btn-primary"><i class="icon-pencil icon-white"></i> 编辑</button>
-                                    <button class="btn btn-danger"><i class="icon-remove icon-white"></i> 删除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>N306</td>
-                                <td>教师通知</td>
-                                <td>明天教师节，放假一天</td>
-                                <td><img src="./img/demo/av1.jpg"/></td>
-                                <td>王老师</td>
-                                <td>2016-01-15 07:58:31</td>
-                                <td>2016-01-16 23:58:31</td>
-                                <td>东风幼儿园</td>
-                                <td>
-                                    <button class="btn"><i class="icon-eye-open"></i> 详情</button>
-                                    <button class="btn btn-primary"><i class="icon-pencil icon-white"></i> 编辑</button>
-                                    <button class="btn btn-danger"><i class="icon-remove icon-white"></i> 删除</button>
-                                </td>
-                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -236,4 +146,154 @@
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
 </body>
+
+
+<script>
+    /**
+     * tables
+     **/
+    $(document).ready(function () {
+        $.fn.dataTable.ext.errMode = function(s,h,m){};
+        var table = $('.data-table').dataTable({
+            "oLanguage": {
+                "sLengthMenu": "每页显示 _MENU_ 条记录",
+                "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                "sInfoEmpty": "没有数据",
+                "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "前一页",
+                    "sNext": "后一页",
+                    "sLast": "尾页"
+                },
+                "sZeroRecords": "没有检索到数据",
+                "sProcessing": "<img src='./img/loading.gif' />"
+            },
+//            "bInfo": true,
+            "bJQueryUI": true,
+            "bLengthChange": false,
+//            "bPaginate":true,
+            "bProcessing" : true,
+            "sPaginationType": "full_numbers",
+            "iDisplayLength": iDisplayLength,
+            "bFilter": false,
+            "sDom": '<""l>t<"F"fp>',
+
+//            "iTotalRecords":"data.iTotalRecords",
+//             "bProcessing": true,
+            "bServerSide": true,
+            // "sAjaxDataProp":"data.aaData",
+            "sAjaxSource": "/api/notices",
+            "sServerMethod": "GET",
+            "aoColumns": [
+                {"mDataProp": "noticeId"},
+                {"mDataProp": "noticeTypeId",
+                    "render": function (data) {
+                        switch(data) {
+                            case 1: return "班级通知";break;
+                            case 2: return "教师通知";break;
+                            case 3: return "家长通知";break;
+                            case 4: return "今日食谱";break;
+                            case 5: return "工作计划";break;
+                            case 6: return "紧急通知";break;
+                            default: return "未知类型";
+                        }
+                    }
+                },
+                {"mDataProp": "noticeTitle"},
+                {"mDataProp": "noticeContext"},
+                {"mDataProp": "effDate"},
+                {"mDataProp": "effDate"},
+                {"mDataProp": "effDate"},
+                {"mDataProp": "effDate"},
+                {"mDataProp": "expDate"}
+            ],
+            "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
+                {
+                    "targets": [6],
+                    "data": null,
+                    "bSortable": false,
+                    "defaultContent": "<button class=\"btn btn-primary\"><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
+                }
+            ]
+        });
+
+        $('#searchBtn').on('click', function () {
+            var schoolId = $("#schools").val();
+            var stationMac = $("#stationMac").val();
+            var queryCondition = "";
+            if (stationMac != "") {
+                queryCondition += "stationMac=" + stationMac + "&";
+            }
+            if (schoolId != null && schoolId != "-1") {
+                queryCondition += "schoolId=" + schoolId;
+            }
+            //table.fnClearTable(); //清空一下table，不能设置
+            table.fnSettings().sAjaxSource = '/api/stations?' + queryCondition;
+            table.fnDraw();
+
+        });
+
+        $.ajax({
+            url: "/api/school/list",    //后台webservice里的方法名称
+            type: "get",
+            dataType: "json",
+            contentType: "application/json",
+            traditional: true,
+            success: function (data) {
+                for (var i in data) {
+                    var jsonObj = data[i];
+                    $("#schools").empty();
+                    //var option = $("<option>").val(-1).text("---请选择学校---").attr("selected", true);
+                    //$("#schools").append(option);
+                    for (var j = 0; j < jsonObj.length; j++) {
+                        var option = $("<option>").val(jsonObj[j].schoolId).text(jsonObj[j].schoolName);
+                        $("#schools").append(option);
+                    }
+                }
+            },
+            error: function (msg) {
+                var option = $("<option>").val(-1).text("--没有学校信息--").attr("selected", true);
+                $("#schools").append(option);
+            }
+        });
+
+        $('.data-table tbody').on( 'click', 'button#delrow', function () {
+            //var row = table.row( $(this).parents('tr') ).data();
+            var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
+            swal({
+                title: "确认删除?",
+                text: "您将删除基站【"+row.stationMac+"】",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "删除",
+                cancelButtonText: "取消",
+                closeOnConfirm: false
+            }, function(){
+                $.ajax({
+                    url: '/api/stations/'+row.stationId,
+                    type: 'DELETE',
+                    dataType: 'json'
+                })
+                        .done(function(data) {
+                            if (data.code=="00") {
+                                swal({   title: "删除成功!",   text: "删除数据成功",   timer: 2000,   showConfirmButton: true });
+                                table.fnClearTable(); //清空一下table
+                                //table.fnDestroy(); //还原初始化了的datatable
+                                table.fnDraw();
+                            }else{
+                                swal("删除失败!", data.msg, "error");
+                            };
+                        })
+                        .fail(function() {
+                            swal("删除失败!", "删除数据失败", "error");
+                        });
+
+            });
+
+        });
+    });
+
+</script>
 </html>

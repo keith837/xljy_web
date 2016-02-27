@@ -10,7 +10,6 @@ module.exports = new basicController(__filename).init({
         var source = req.body.source;
         var channel = req.body.channel;
         var groupId = req.body.groupId;
-        console.log(req.body);
         if(!userName){
             return next(new Error("登录用户名不能为空"));
         }
@@ -569,6 +568,7 @@ module.exports = new basicController(__filename).init({
             if(remark){
                 obj.remark = remark;
             }
+            obj.doneDate = new Date();
             self.model['user'].update(obj, userId, function(err, data){
                 if(err){
                     return next(err);
