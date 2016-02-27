@@ -185,7 +185,7 @@ module.exports = new basicController(__filename).init({
                     var likesObject = new Object();
                     if (handles) {
                         for (var i = 0; i < handles.length; i++) {
-                            if(handleType == 1){
+                            if(handles[i].handleType == 1){
                                 var likeArray = likesObject[handles[i].albumId];
                                 if(!likeArray){
                                     likeArray = new Array();
@@ -280,7 +280,7 @@ module.exports = new basicController(__filename).init({
                     }
                     var handlesObject = new Object();
                     if (handles) {
-                        if(handleType == 1){
+                        if(handles[i].handleType == 1){
                             var likeArray = likesObject[handles[i].albumId];
                             if(!likeArray){
                                 likeArray = new Array();
