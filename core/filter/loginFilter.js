@@ -25,7 +25,7 @@ function checkLogin(req, res, next){
         if (reqPath.indexOf(webConfig.contextPath+"/") == 0) {
             return res.redirect(webConfig.contextPath+'/login.html');
         } else {
-            return next(new Error("用户未登录！","01"));
+            return next(new Error("用户未登录！"));
         }
 
     }
@@ -39,7 +39,9 @@ function checkLogin(req, res, next){
             req.user = JSON.parse(data);
             return next();
         }
-        return next(new Error("用户登录信息已失效，请重新登录！"));
+        var tempNewError = new Error("用户未登陆或登录信息已失效，请重新登录！");
+        tempNewError.code = "01";
+        return next(tempNewError);
     });
 }
 
