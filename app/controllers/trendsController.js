@@ -280,32 +280,34 @@ module.exports = new basicController(__filename).init({
                     }
                     var handlesObject = new Object();
                     if (handles) {
-                        if(handles[i].handleType == 1){
-                            var likeArray = likesObject[handles[i].albumId];
-                            if(!likeArray){
-                                likeArray = new Array();
-                                likesObject[handles[i].albumId] = likeArray;
+                        for(var i = 0; i < handles.length; i ++){
+                            if(handles[i].handleType == 1){
+                                var likeArray = likesObject[handles[i].albumId];
+                                if(!likeArray){
+                                    likeArray = new Array();
+                                    likesObject[handles[i].albumId] = likeArray;
+                                }
+                                likeArray.push({
+                                    likeId: handles[i].handleId,
+                                    nickName: handles[i].nickName,
+                                    userId: handles[i].hUserId,
+                                    createDate: handles[i].createDate
+                                });
+                            }else{
+                                var handleArray = handlesObject[handles[i].albumId];
+                                if (!handleArray) {
+                                    handleArray = new Array();
+                                    handlesObject[handles[i].albumId] = handleArray;
+                                }
+                                handleArray.push({
+                                    handleId: handles[i].handleId,
+                                    pHandleId:handles[i].pHandleId,
+                                    content: handles[i].content,
+                                    nickName: handles[i].nickName,
+                                    userId: handles[i].hUserId,
+                                    createDate: handles[i].createDate
+                                });
                             }
-                            likeArray.push({
-                                likeId: handles[i].handleId,
-                                nickName: handles[i].nickName,
-                                userId: handles[i].hUserId,
-                                createDate: handles[i].createDate
-                            });
-                        }else{
-                            var handleArray = handlesObject[handles[i].albumId];
-                            if (!handleArray) {
-                                handleArray = new Array();
-                                handlesObject[handles[i].albumId] = handleArray;
-                            }
-                            handleArray.push({
-                                handleId: handles[i].handleId,
-                                pHandleId:handles[i].pHandleId,
-                                content: handles[i].content,
-                                nickName: handles[i].nickName,
-                                userId: handles[i].hUserId,
-                                createDate: handles[i].createDate
-                            });
                         }
                     }
                     var trendsArray = new Array();
