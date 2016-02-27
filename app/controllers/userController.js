@@ -491,7 +491,7 @@ module.exports = new basicController(__filename).init({
         if(custName){
             obj.custName = custName;
         }
-        self.model['user'].listByPage(obj, start, pagesize, function(err, total, users){
+        self.model['user'].listByPage(obj, start, pageSize, function(err, total, users){
             if(err){
                 return next(err);
             }

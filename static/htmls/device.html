@@ -187,7 +187,7 @@
                     "targets": [6],
                     "data": null,
                     "bSortable": false,
-                    "defaultContent": "<button class=\"btn btn-primary\"><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
+                    "defaultContent": "<button class=\"btn btn-primary\" id='editrow'><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
                 }
             ]
             //"fnServerParams": function (aoData) {
@@ -234,6 +234,13 @@
                 var option = $("<option>").val(-1).text("--没有学校信息--").attr("selected", true);
                 $("#schools").append(option);
             }
+        });
+
+        $('.data-table tbody').on( 'click', 'button#editrow', function () {
+            //var row = table.row( $(this).parents('tr') ).data();
+            var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
+            window.location.href="device_add.html?stationId="+row.stationId;
+
         });
 
         $('.data-table tbody').on( 'click', 'button#delrow', function () {

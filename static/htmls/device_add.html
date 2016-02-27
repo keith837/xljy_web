@@ -42,6 +42,8 @@
                                     <div class="control-group">
                                         <label class="control-label" for="stationMac">基站MAC</label>
                                         <div class="controls">
+                                            <input type="hidden" id="editType" name="editType" value="add" />
+                                            <input type="hidden" id="stationId" name="stationId" value="" />
                                             <input type="text" id="stationMac" name="stationMac" placeholder="基站MAC" class="span3">
                                         </div>
                                     </div>
@@ -60,7 +62,7 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="stationType">基站类型</label>
+                                        <label class="control-label" for="type">基站类型</label>
                                         <div class="controls">
                                             <select class="span3" id="type" name="type">
                                                 <option value="主基站">主基站</option>
@@ -95,6 +97,7 @@
 <script src="js/jquery.cookie.js" charset="utf-8"></script>
 <script src="js/common.js"></script>
 <script src="js/jquery.ui.custom.js"></script>
+<script src="js/jquery.url.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-colorpicker.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
@@ -107,6 +110,17 @@
 
 <script>
     $(document).ready(function () {
+        $.get("/api/stations/"+$.url.param('stationId'),null,function(json){
+            if(json.code == "00"){
+                $("#stationMac").val(json.data[0].stationMac);
+                $("#location").val(json.data[0].address);
+                $("#editType").val("edit");
+                $("#stationId").val(json.data[0].stationId);
+
+            }
+
+        },'json');
+
         $.ajax({
             url: "/api/school/list",    //后台webservice里的方法名称
             type: "get",
@@ -133,9 +147,16 @@
         });
 
         $('#commitBtn').click(function () {
+            var editType = $("#editType").val();
+            var url = "/api/stations";
+            var type = "post";
+            if("edit"==editType){
+                url = "/api/stations/"+$("#stationId").val();
+                type = "put";
+            }
             $.ajax({
-                url: "/api/stations",
-                type: "post",
+                url: url,
+                type: type,
                 data: $("#stationForm").serialize()
 
             }).done(function (data) {

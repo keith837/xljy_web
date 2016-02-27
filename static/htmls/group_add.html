@@ -113,7 +113,7 @@
             }).done(function (data) {
 //                console.info($.cookie('Set-Token'));
                 if (data.code == "00") {
-                    swal({title: "保存成功!", text: "保存成功", timer: 1000, showConfirmButton: true}, function () {
+                    swal({title: "保存成功!", text: "保存成功",type:"success", timer: 1000, showConfirmButton: true}, function () {
                         setTimeout(function () {
                             window.location.href = "group.html";
                         }, 2000);

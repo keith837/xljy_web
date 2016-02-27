@@ -47,9 +47,9 @@
                                                 <button type="button" class="btn" id="searchBtn">搜索</button>
                                             </div>
                                         </td>
-                                        <td>
+                                        <!--td>
                                             <a href="group_add.html" class="btn">新增用户组</a>
-                                        </td>
+                                        </td-->
                                     </tr>
                                 </table>
                                 </form>
@@ -201,7 +201,7 @@
                 })
                 .done(function(data) {
                     if (data.code=="00") {
-                        swal({   title: "删除成功!",   text: "删除数据成功",   timer: 2000,   showConfirmButton: true });
+                        swal({   title: "删除成功!",   text: "删除数据成功",type:"success",   timer: 2000,   showConfirmButton: true });
                         table.fnClearTable(); //清空一下table
                         //table.fnDestroy(); //还原初始化了的datatable
                         table.fnDraw();
