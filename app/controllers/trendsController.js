@@ -107,13 +107,6 @@ module.exports = new basicController(__filename).init({
         });
     },
 
-    commentList : function(req, res, next){
-        var self = this;
-        var start = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);
-        var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
-        var obj = new Object();
-    },
-
     comment: function (req, res, next) {
         var self = this;
         var userId = req.user.userId;

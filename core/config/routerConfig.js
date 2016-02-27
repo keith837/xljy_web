@@ -223,7 +223,7 @@ var routerConfig = {
                 "description": "动态点赞"
             },
             "comment": {
-                "url": "/api/trends/comment/:trendsId/:content",
+                "url": "/api/trends/comment/:trendsId",
                 "method": "put",
                 "description": "动态评论"
             },
