@@ -13,11 +13,29 @@ module.exports = new basicController(__filename).init({
                 return next(new Error("未查到关联的宝贝信息"));
             }
             var user = req.user;
-            user.student = student;
-            self.redis.set(user.token, JSON.stringify(user));
-            res.json({
-                code : "00",
-                msg : "宝贝选择成功"
+            user.students = [student];
+            self.model['class'].findOne(student.classId, function(err, classInfo){
+                if(err){
+                    return next(err);
+                }
+                if(!classInfo){
+                    return next(new Error("未找到宝贝对应的班级信息"));
+                }
+                user.classes = [classInfo];
+                self.model['school'].findBySchoolId(student.schoolId, function(err, school){
+                    if(err){
+                        return next(err);
+                    }
+                    if(!school){
+                        return next(new Error("未找到宝贝对应的学校信息"));
+                    }
+                    user.schools = [school];
+                    self.redis.set(user.token, JSON.stringify(user));
+                    res.json({
+                        code : "00",
+                        msg : "宝贝选择成功"
+                    });
+                });
             });
         });
     },
