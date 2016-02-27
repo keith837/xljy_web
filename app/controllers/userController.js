@@ -291,22 +291,7 @@ module.exports = new basicController(__filename).init({
                 });
             });
         }else{
-            var date = new Date();
-            date.setDate(date.getDate() + 7);
-            user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
-            self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
-            res.json({
-                code : "00",
-                data : {
-                    userId : user.userId,
-                    billId : user.billId,
-                    nickName : user.nickName,
-                    custName : user.custName,
-                    groupId : user.groupId,
-                    pointNum : user.pointNum,
-                    token : user.token
-                }
-            });
+            return next(new Error("用户组" + user.groupId + "信息未定义"));
         }
     },
 
