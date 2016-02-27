@@ -24,16 +24,16 @@ module.exports = new basicController(__filename).init({
         var studentName = '';
         var nickName = req.user.nickName;
         if (groupId == 10) {
-            classId == req.user.student.classId;
-            schoolId = req.user.student.schoolId;
-            studentId = req.user.student.studentId;
-            studentName = req.user.student.studentName;
-            nickName = studentName + studentName;
+            classId == req.user.students[0].classId;
+            schoolId = req.user.studens[0].schoolId;
+            studentId = req.user.studens[0].studentId;
+            studentName = req.user.studens[0].studentName;
+            nickName = studentName + nickName;
         } else if (groupId == 20) {
-            classId = req.user.classInfo.classId;
-            schoolId = req.user.classInfo.schoolId;
-        } else if (groupId == 30 || groupId == 40) {
-            schoolId = req.user.school.schoolId;
+            classId = req.user.classes[0].classId;
+            schoolId = req.user.classes[0].schoolId;
+        } else if (groupId == 30 || groupId == 40 || groupId == 50) {
+            schoolId = req.user.schools[0].schoolId;
         }
         form.parse(req, function (err, fields, files) {
             var content = fields.content;
@@ -83,8 +83,8 @@ module.exports = new basicController(__filename).init({
         var studentName = '';
         var nickName = req.user.nickName;
         if (groupId == 10) {
-            studentId = req.user.student.studentId;
-            studentName = req.user.student.studentName;
+            studentId = req.user.students[0].studentId;
+            studentName = req.user.students[0].studentName;
             nickName = studentName + nickName;
         }
         self.model['album'].findHandle(trendsId, 1, userId, function (err, data) {
@@ -107,21 +107,29 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    commentList : function(req, res, next){
+        var self = this;
+        var start = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);
+        var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
+        var obj = new Object();
+    },
+
     comment: function (req, res, next) {
         var self = this;
         var userId = req.user.userId;
         var trendsId = req.params.trendsId;
-        var content = req.params.content;
+        var pHandleId = req.body.pHandleId ? parseInt(req.body.pHandleId) : 0;
+        var content = req.body.content;
         var groupId = req.user.groupId;
         var studentId = 0;
         var studentName = '';
         var nickName = req.user.nickName;
-        if (groupId == 40) {
-            studentId = req.user.student.studentId;
-            studentName = req.user.student.studentName;
+        if (groupId == 10) {
+            studentId = req.user.students[0].studentId;
+            studentName = req.user.students[0].studentName;
             nickName = studentName + nickName;
         }
-        var handleArgs = [trendsId, content, userId, nickName, studentId, studentName, userId];
+        var handleArgs = [trendsId, pHandleId, content, userId, nickName, studentId, studentName, userId];
         self.model['album'].createAlbumComment(trendsId, handleArgs, function (err, data) {
             if (err) {
                 return next(err);
@@ -169,26 +177,41 @@ module.exports = new basicController(__filename).init({
                     }
                 }
                 var handleObj = new Object();
-                handleObj.handleType = 2;
                 self.model['album'].findHandles(trendsIds, handleObj, function (err, handles) {
                     if (err) {
                         return next(err);
                     }
                     var handlesObject = new Object();
+                    var likesObject = new Object();
                     if (handles) {
                         for (var i = 0; i < handles.length; i++) {
-                            var handleArray = handlesObject[handles[i].albumId];
-                            if (!handleArray) {
-                                handleArray = new Array();
-                                handlesObject[handles[i].albumId] = handleArray;
+                            if(handleType == 1){
+                                var likeArray = likesObject[handles[i].albumId];
+                                if(!likeArray){
+                                    likeArray = new Array();
+                                    likesObject[handles[i].albumId] = likeArray;
+                                }
+                                likeArray.push({
+                                    likeId: handles[i].handleId,
+                                    nickName: handles[i].nickName,
+                                    userId: handles[i].hUserId,
+                                    createDate: handles[i].createDate
+                                });
+                            }else{
+                                var handleArray = handlesObject[handles[i].albumId];
+                                if (!handleArray) {
+                                    handleArray = new Array();
+                                    handlesObject[handles[i].albumId] = handleArray;
+                                }
+                                handleArray.push({
+                                    handleId: handles[i].handleId,
+                                    pHandleId:handles[i].pHandleId,
+                                    content: handles[i].content,
+                                    nickName: handles[i].nickName,
+                                    userId: handles[i].hUserId,
+                                    createDate: handles[i].createDate
+                                });
                             }
-                            handleArray.push({
-                                handleId: handles[i].handleId,
-                                content: handles[i].content,
-                                nickName: handles[i].nickName,
-                                userId: handles[i].hUserId,
-                                createDate: handles[i].createDate
-                            });
                         }
                     }
                     var trendsArray = new Array();
@@ -202,7 +225,8 @@ module.exports = new basicController(__filename).init({
                             likesNum: trends[i].likesNum,
                             commentNum: trends[i].isComment,
                             pics: picsObject[trends[i].albumId],
-                            handles: handlesObject[trends[i].albumId]
+                            handles: handlesObject[trends[i].albumId],
+                            likes : likesObject[trends[i].albumId]
                         };
                         trendsArray.push(currTrends);
                     }
@@ -250,14 +274,25 @@ module.exports = new basicController(__filename).init({
                     }
                 }
                 var handleObj = new Object();
-                handleObj.handleType = 2;
                 self.model['album'].findHandles(trendsIds, handleObj, function (err, handles) {
                     if (err) {
                         return next(err);
                     }
                     var handlesObject = new Object();
                     if (handles) {
-                        for (var i = 0; i < handles.length; i++) {
+                        if(handleType == 1){
+                            var likeArray = likesObject[handles[i].albumId];
+                            if(!likeArray){
+                                likeArray = new Array();
+                                likesObject[handles[i].albumId] = likeArray;
+                            }
+                            likeArray.push({
+                                likeId: handles[i].handleId,
+                                nickName: handles[i].nickName,
+                                userId: handles[i].hUserId,
+                                createDate: handles[i].createDate
+                            });
+                        }else{
                             var handleArray = handlesObject[handles[i].albumId];
                             if (!handleArray) {
                                 handleArray = new Array();
@@ -265,6 +300,7 @@ module.exports = new basicController(__filename).init({
                             }
                             handleArray.push({
                                 handleId: handles[i].handleId,
+                                pHandleId:handles[i].pHandleId,
                                 content: handles[i].content,
                                 nickName: handles[i].nickName,
                                 userId: handles[i].hUserId,
@@ -283,7 +319,8 @@ module.exports = new basicController(__filename).init({
                             likesNum: trends[i].likesNum,
                             commentNum: trends[i].isComment,
                             pics: picsObject[trends[i].albumId],
-                            handles: handlesObject[trends[i].albumId]
+                            handles: handlesObject[trends[i].albumId],
+                            likes : likesObject[trends[i].albumId]
                         };
                         trendsArray.push(currTrends);
                     }
