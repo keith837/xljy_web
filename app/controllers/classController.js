@@ -228,6 +228,20 @@ module.exports = new basicController(__filename).init({
                 data : teachers
             });
         });
+    },
+
+    students : function(req, res, next){
+        var self = this;
+        var classId = parseInt(req.params.classId);
+        self.model['class'].listStudentByClass(classId, function(err, students){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                data : students
+            });
+        });
     }
 
 });

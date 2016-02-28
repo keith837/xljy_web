@@ -218,6 +218,11 @@ var routerConfig = {
                 "url": "/api/class/teachers/:classId",
                 "method": "get",
                 "description": "老师通讯录"
+            },
+            "students" : {
+                "url": "/api/class/students/:classId",
+                "method": "get",
+                "description": "班级学生成员"
             }
         },
         trends : {
