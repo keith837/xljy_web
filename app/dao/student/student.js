@@ -152,7 +152,7 @@ Student.update = function(obj, userId, studentId, callback){
                             return callback(err);
                         }
                         conn.release();
-                        return callback(err, data);;
+                        return callback(err, classData);;
                     });
                 }
 
@@ -161,7 +161,7 @@ Student.update = function(obj, userId, studentId, callback){
     });
 }
 
-Student.queryNum = function(obj, callback){
+Student.queryNum = function(obj, schoolIds, callback){
     var whereSql = " 1=1 ";
     var args = new Array();
     if(obj){
@@ -170,11 +170,19 @@ Student.queryNum = function(obj, callback){
             args.push(obj[key]);
         }
     }
+    if(schoolIds){
+        whereSql += " and A.schoolId in (";
+        for(var i = 0; i < schoolIds.length; i ++){
+            whereSql += "?,";
+            args.push(schoolIds[i]);
+        }
+        whereSql = whereSql.substr(0, whereSql.length - 1) + ")";
+    }
     var countSql = "select count(*) AS total from XL_STUDENT A WHERE " + whereSql;
     mysqlUtil.queryOne(countSql, args, callback);
 }
 
-Student.queryPage = function(obj, start, pageSize, callback){
+Student.queryPage = function(obj, schoolIds, start, pageSize, callback){
     var whereSql = " 1=1 ";
     var args = new Array();
     if(obj){
@@ -182,6 +190,14 @@ Student.queryPage = function(obj, start, pageSize, callback){
             whereSql += " and A." + key + "=?";
             args.push(obj[key]);
         }
+    }
+    if(schoolIds){
+        whereSql += " and A.schoolId in (";
+        for(var i = 0; i < schoolIds.length; i ++){
+            whereSql += "?,";
+            args.push(schoolIds[i]);
+        }
+        whereSql = whereSql.substr(0, whereSql.length - 1) + ")";
     }
     var querySql = "select A.*,B.className,C.schoolName from XL_STUDENT A, XL_CLASS B, XL_SCHOOL C WHERE A.schoolId=C.schoolId and B.classId=A.classId and " + whereSql;
     querySql += " limit ?,?";
@@ -190,8 +206,8 @@ Student.queryPage = function(obj, start, pageSize, callback){
     mysqlUtil.query(querySql, args, callback);
 }
 
-Student.listByPage = function(obj, start, pageSize, callback){
-    Student.queryNum(obj, function(err, data){
+Student.listByPage = function(obj, schoolIds, start, pageSize, callback){
+    Student.queryNum(obj, schoolIds, function(err, data){
         if(err){
             return callback(err);
         }
@@ -199,7 +215,7 @@ Student.listByPage = function(obj, start, pageSize, callback){
         if(data){
             total = data.total;
         }
-        Student.queryPage(obj, start, pageSize, function(err, users){
+        Student.queryPage(obj, schoolIds, start, pageSize, function(err, users){
             if(err){
                 return callback(err);
             }

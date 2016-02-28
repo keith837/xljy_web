@@ -249,10 +249,7 @@ module.exports = new basicController(__filename).init({
         var start = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);
         var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
         var obj = new Object;
-        var schoolId = req.query.schoolId;
-        if(schoolId && schoolId > 0){
-            obj.schoolId = parseInt(schoolId);
-        }
+        var schoolIds = req.query.schoolId ? [parseInt(req.query.schoolId)] : req.user.schoolIds;
         var classId = req.query.classId;
         if(classId && classId > 0){
             obj.classId = parseInt(classId);
@@ -261,9 +258,12 @@ module.exports = new basicController(__filename).init({
         if(studentName){
             obj.studentName = parseInt(studentName);
         }
-        self.model["student"].listByPage(obj, start, pageSize, function(err, total, students){
+        self.model["student"].listByPage(obj, schoolIds, start, pageSize, function(err, total, students){
             if(err){
                 return next(err);
+            }
+            if(!students || students.length <= 0){
+                return res.json(self.createPageData("00", total, students));
             }
             var studentIds = new Array();
             for(var i = 0; i < students.length; i ++){
