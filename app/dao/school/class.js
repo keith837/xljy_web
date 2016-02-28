@@ -213,6 +213,11 @@ Class.saveTeacher = function(args, callback){
     mysqlUtil.query(insertRelSql, args, callback);
 }
 
+Class.listStudentByClass = function(classId, callback){
+    var selectSql = "select * from XL_STUDENT where state = 1 and classId = ?";
+    mysqlUtil.query(selectSql, [classId], callback);
+}
+
 Class.save = function(args, callback){
     mysqlUtil.getConnection(function(err, conn){
         if(err){

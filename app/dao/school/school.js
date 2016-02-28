@@ -87,7 +87,7 @@ School.queryNum = function(schoolObj, brandObj, schoolIds, callback){
         }
         whereSql = whereSql.substr(0, whereSql.length - 1) + ")";
     }
-    var countSql = "select count(*) from XL_SCHOOL A left join XL_SCHOOL_BRAND B on A.brandId=B.brandId join XL_USER C on A.sUserId=C.userId where " + whereSql;
+    var countSql = "select count(*) as total from XL_SCHOOL A left join XL_SCHOOL_BRAND B on A.brandId=B.brandId join XL_USER C on A.sUserId=C.userId where " + whereSql;
     mysqlUtil.queryOne(countSql, args, callback);
 }
 
