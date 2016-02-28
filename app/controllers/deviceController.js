@@ -14,7 +14,7 @@ module.exports = new basicController(__filename).init({
         var classes = request.user.classes;
         if (groupId === 20) {
             if (classes && classes.length >= 1) {
-                 classId = [];
+                classId = [];
                 for (var i in classes) {
                     classId.push(classes[i].classId);
                 }
@@ -41,11 +41,7 @@ module.exports = new basicController(__filename).init({
             if (err) {
                 return next(err);
             }
-            if (totalCount == 0) {
-                return next(self.Error("没有查询到手环信息.", 00));
-            } else {
-                response.json(self.createPageData("00", totalCount, res));
-            }
+            response.json(self.createPageData("00", totalCount, res));
         });
     },
 

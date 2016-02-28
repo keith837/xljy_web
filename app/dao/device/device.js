@@ -2,7 +2,7 @@ var Device = module.exports;
 var mysqlUtil = require("../../../core/utils/pool/mysql/mysqlPool")
 
 Device.queryAllNum = function (condition, params, callback) {
-    var sql = "select count(*) AS total from (select c.schoolId,c.schoolName,b.classId,b.className,a.studentName,m.* from XL_DEVICE m, XL_STUDENT a, XL_CLASS b, XL_SCHOOL c where m.studentId = a.studentId and a.classId = b.classId and a.schoolId = c.schoolId ) m where " + condition;
+    var sql = "select count(*) AS total from (select c.schoolId,c.schoolName,b.classId,b.className,a.studentName,m.* from XL_DEVICE m, XL_STUDENT a, XL_CLASS b, XL_SCHOOL c where m.studentId = a.studentId and a.classId = b.classId and a.schoolId = c.schoolId and m.state=1) m where " + condition;
     mysqlUtil.queryOne(sql, params, function (err, res) {
         if (err) {
             return callback(err);

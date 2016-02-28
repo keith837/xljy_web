@@ -34,11 +34,7 @@ module.exports = new basicController(__filename).init({
                 if (err) {
                     return next(err);
                 }
-                if (totalCount == 0) {
-                    return next(self.Error("沒有查询到基站信息."));
-                } else {
-                    response.json(self.createPageData("00", totalCount, res));
-                }
+                response.json(self.createPageData("00", totalCount, res));
             });
         });
     },
