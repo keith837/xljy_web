@@ -289,7 +289,7 @@ module.exports = new basicController(__filename).init({
                     });
                 }
                 for(var i = 0; i < students.length; i ++){
-                    students[i].parents = parentsObj[parents[i].studentId];
+                    students[i].parents = parentsObj[students[i].studentId];
                 }
                 res.json(self.createPageData("00", total, students));
             });
