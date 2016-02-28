@@ -118,6 +118,9 @@
 
 <script>
     $(document).ready(function () {
+        $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
+        $("#classId").select2({data: [{id: -1, text: "请选择班级"}]});
+        $("#studentId").select2({data: [{id: -1, text: "请选择学生"}]});
 
         $.ajax({
             url: "/api/school/list",    //后台webservice里的方法名称
