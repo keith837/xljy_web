@@ -46,11 +46,7 @@
                                         </td>
                                         <td align="left" width="15%">
                                             <div class="span12" style="margin-top:5px; margin-bottom:5px">
-                                                <select class="span11">
-                                                    <option>长岛幼儿园</option>
-                                                    <option>萧山幼儿园</option>
-                                                    <option>滨文高教园</option>
-                                                </select>
+                                                <input type="text" id="schoolId" name="schoolId" placeholder="请选择学校" class="span12">
                                             </div>
                                         </td>
                                         <td align="center" width="8%">
@@ -58,13 +54,7 @@
                                         </td>
                                         <td align="left" width="15%">
                                             <div class="span12" style="margin-top:5px; margin-bottom:5px">
-                                                <select class="span11">
-                                                    <option value="1">托一班</option>
-                                                    <option value="2">托二班</option>
-                                                    <option value="3">小一班</option>
-                                                    <option value="4">中一班</option>
-                                                    <option value="5">大一班</option>
-                                                </select>
+                                                <input type="text" id="classId" name="classId" placeholder="请选择班级" class="span12">
                                             </div>
                                         </td>
                                         <td align="center" width="8%">
@@ -72,8 +62,8 @@
                                         </td>
                                         <td align="left" width="25%">
                                             <div class="input-append span12" style="margin-top:5px; margin-bottom:5px">
-                                                <input type="text" class="span8 search-query" placeholder="请输入学生名称">
-                                                <button type="submit" class="btn">搜索</button>
+                                                <input type="text" name="studentName" id="studentName" class="span8 search-query" placeholder="请输入学生名称">
+                                                <button type="button" class="btn" id="searchBtn">搜索</button>
                                             </div>
                                         </td>
                                         <td align="center">
@@ -152,6 +142,9 @@
      * tables
      **/
     $(document).ready(function () {
+        $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
+        $("#classId").select2({data: [{id: -1, text: "请选择班级"}]});
+        loadSchool();
         $.fn.dataTable.ext.errMode = function(s,h,m){};
         var table = $('.data-table').dataTable({
             "oLanguage": {
@@ -229,6 +222,40 @@
             //    aoData.push({ "name": "name1", "value": "value1" });
             //    aoData.push({ "name": "name2", "value": "value2" });
             //}
+        });
+
+        $('#searchBtn').on( 'click', function () {
+            var paramsCheck = false;
+            var schoolId = $("#schoolId").val();
+            var params = "";
+            if (schoolId != null && schoolId != "") {
+                paramsCheck = true;
+                params = 'schoolId='+schoolId;
+            }
+
+            var classId = $("#classId").val();
+            if (classId != null && classId != "") {
+                paramsCheck = true;
+                params+='&classId='+classId;
+            }
+            var studentName = $("#studentName").val();
+            if (studentName != null && studentName != "") {
+                paramsCheck = true;
+                params+='&studentName='+studentName;
+            }
+//            console.info(params);
+//            console.info(paramsCheck);
+            if(paramsCheck==true){
+                //table.fnClearTable(); //清空一下table，不能设置
+                table.fnSettings().sAjaxSource='/api/student/listall?'+params;
+//              table.fnSettings().sServerMethod='GET';
+                table.fnDraw();
+            }else{
+                table.fnSettings().sAjaxSource='/api/student/listall';
+                table.fnDraw();
+            }
+
+
         });
         $('.data-table tbody').on( 'click', 'button#editrow', function () {
             //var row = table.row( $(this).parents('tr') ).data();
