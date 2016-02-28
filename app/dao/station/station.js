@@ -2,7 +2,7 @@ var Station = module.exports;
 var mysqlUtil = require("../../../core/utils/pool/mysql/mysqlPool")
 
 Station.queryAllNum = function (condition, params, callback) {
-    var sql = "select count(*) as total from XL_STATION m where " + condition;
+    var sql = "select count(*) as total from XL_STATION m where m.state=1 and " + condition;
     mysqlUtil.queryOne(sql, params, function (err, res) {
         if (err) {
             return callback(err);

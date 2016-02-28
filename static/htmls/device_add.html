@@ -22,7 +22,6 @@
 <div id="content">
     <div id="breadcrumb">
         <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 设备管理</a>
-        <a href="#" class="current">新增基站</a>
     </div>
     <div class="container-fluid">
         <div class="row-fluid">
@@ -50,9 +49,12 @@
                                     <div class="control-group">
                                         <label class="control-label" for="schoolId">所属学校</label>
                                         <div class="controls">
+                                            <!--
                                             <select class="span3" id="schoolId" name="schoolId">
                                                 <option value="-1">--请选择学校--</option>
                                             </select>
+                                            -->
+                                            <input type="text" id="schoolId" name="schoolId" placeholder="请选择学校" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -73,7 +75,8 @@
                                     <div class="control-group">
                                         <div class="controls">
                                             <button type="button" id="commitBtn" class="btn">提交</button>
-                                            <button type="reset" class="btn">重置</button>
+                                            <button type="reset" id="resetBtn" style="display: none;" class="btn">重置</button>
+                                            <button type="button" id="backBtn" style="display: none;" class="btn" onclick="javascript:history.back();">返回</button>
                                         </div>
                                     </div>
                                 </form>
@@ -110,16 +113,25 @@
 
 <script>
     $(document).ready(function () {
-        $.get("/api/stations/"+$.url.param('stationId'),null,function(json){
-            if(json.code == "00"){
-                $("#stationMac").val(json.data[0].stationMac);
-                $("#location").val(json.data[0].address);
-                $("#editType").val("edit");
-                $("#stationId").val(json.data[0].stationId);
+        var stationId = $.url.param('stationId');
+        var curSchoolId = -1;
+        if (stationId) {
+            $('#backBtn').css("display", "");
+            $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>更新基站</a>");
 
-            }
-
-        },'json');
+            $.get("/api/stations/" + stationId, null, function (json) {
+                if (json.code == "00") {
+                    $("#stationMac").val(json.data[0].stationMac);
+                    $("#location").val(json.data[0].address);
+                    $("#editType").val("edit");
+                    $("#stationId").val(json.data[0].stationId);
+                    curSchoolId = json.data[0].schoolId;
+                }
+            }, 'json');
+        } else {
+            $('#resetBtn').css("display", "");
+            $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>新增基站</a>");
+        }
 
         $.ajax({
             url: "/api/school/list",    //后台webservice里的方法名称
@@ -128,25 +140,57 @@
             contentType: "application/json",
             traditional: true,
             success: function (data) {
-                for (var i in data) {
-                    var jsonObj = data[i];
-                    $("#schoolId").empty();
+                if (data.code == "00") {
+                    var jsonObj = data.schools;
+                    var options = [];
+                    var curOption ={};
                     for (var j = 0; j < jsonObj.length; j++) {
-                        var option = $("<option>").val(jsonObj[j].schoolId).text(jsonObj[j].schoolName);
-                        if (j == 0) {
-                            option.attr("selected", true);
+                        options.push({id: jsonObj[j].schoolId, text: jsonObj[j].schoolName});
+                        if (jsonObj[j].schoolId == curSchoolId) {
+                            curOption = {id: jsonObj[j].schoolId, text: jsonObj[j].schoolName};
                         }
-                        $("#schoolId").append(option);
                     }
+                    $("#schoolId").select2({
+                        data: options, initSelection: function (element, callback) {
+                            callback(curOption);
+                        }
+                    });
+                    if (curSchoolId != -1) {
+                        $("#schoolId").select2("val", curSchoolId).trigger("change");
+                    }
+                } else {
+                    $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
                 }
             },
             error: function (msg) {
-                var option = $("<option>").val(-1).text("--没有学校信息--").attr("selected", true);
-                $("#schoolId").append(option);
+                $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
             }
         });
 
         $('#commitBtn').click(function () {
+            var stationMac = $("#stationMac");
+            if (stationMac.val() == "") {
+                stationMac.focus();
+                return;
+            }
+            var schoolId = $("#schoolId");
+            if (schoolId.val() == -1 || schoolId.val() == "") {
+                schoolId.focus();
+                return;
+            }
+
+            var location = $("#location");
+            if (location.val() == "") {
+                location.focus();
+                return;
+            }
+
+            var type = $("#type");
+            if (type.val() == -1 || type.val() == "") {
+                type.focus();
+                return;
+            }
+
             var editType = $("#editType").val();
             var url = "/api/stations";
             var type = "post";

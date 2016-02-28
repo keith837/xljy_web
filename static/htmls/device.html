@@ -46,9 +46,11 @@
                                         </td>
                                         <td align="left" width="20%">
                                             <div style="margin-top:5px; margin-bottom:5px">
+                                                <!--
                                                 <select id="schools" style="width:170px;">
-                                                    <option value="-1">--请选择学校--</option>
                                                 </select>
+                                                -->
+                                                <input type="text" placeholder="请选择学校" id="schools" style="width:170px;" class="span3">
                                             </div>
                                         </td>
                                         <td align="center" width="15%">
@@ -132,6 +134,7 @@
      * tables
      **/
     $(document).ready(function () {
+
         $.fn.dataTable.ext.errMode = function(s,h,m){};
         var table = $('.data-table').dataTable({
             "oLanguage": {
@@ -203,7 +206,7 @@
             if (stationMac != "") {
                 queryCondition += "stationMac=" + stationMac + "&";
             }
-            if (schoolId != null && schoolId != "-1") {
+            if (schoolId != "" && schoolId != "-1") {
                 queryCondition += "schoolId=" + schoolId;
             }
             //table.fnClearTable(); //清空一下table，不能设置
@@ -219,20 +222,21 @@
             contentType: "application/json",
             traditional: true,
             success: function (data) {
-                for (var i in data) {
-                    var jsonObj = data[i];
-                    $("#schools").empty();
-                    //var option = $("<option>").val(-1).text("---请选择学校---").attr("selected", true);
-                    //$("#schools").append(option);
+                if (data.code == "00") {
+                    var jsonObj = data.schools;
+                    var options = [];
                     for (var j = 0; j < jsonObj.length; j++) {
-                        var option = $("<option>").val(jsonObj[j].schoolId).text(jsonObj[j].schoolName);
-                        $("#schools").append(option);
+                        options.push({id: jsonObj[j].schoolId, text: jsonObj[j].schoolName});
                     }
+                    $("#schools").select2({
+                        data: options
+                    });
+                } else {
+                    $("#schools").select2({data: [{id: -1, text: "请选择学校"}]});
                 }
             },
             error: function (msg) {
-                var option = $("<option>").val(-1).text("--没有学校信息--").attr("selected", true);
-                $("#schools").append(option);
+                $("#schools").select2({data: [{id: -1, text: "请选择学校"}]});
             }
         });
 
