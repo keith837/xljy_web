@@ -134,7 +134,7 @@ module.exports = new basicController(__filename).init({
     show : function(req, res, next){
         var self = this;
         var schoolId = parseInt(req.params.schoolId);
-        self.model['school'].findBySchoolId(schoolId, function(err, school){
+        self.model['school'].findInfoByBrandId(schoolId, function(err, school){
             if(err){
                 return next(err);
             }
