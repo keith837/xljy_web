@@ -20,7 +20,7 @@ User.save = function(args, callback){
 }
 
 User.delete = function(userId, callback){
-    mysqlUtil.query("update XL_USER set state = 0 where userId=?", [userId], callback);
+    mysqlUtil.query("update XL_USER set state = 2 where userId=?", [userId], callback);
 }
 
 User.update = function(obj, userId, callback){

@@ -99,10 +99,11 @@
                                 <th width="10%">登录名</th>
                                 <th>学校</th>
                                 <th width="7%">用户组</th>
-                                <th width="10%">姓名</th>
+                                <th width="8%">姓名</th>
                                 <th width="7%">昵称</th>
+                                <th width="6%">状态</th>
                                 <th width="14%">最后登陆时间</th>
-                                <th width="14%">最后登陆IP</th>
+                                <th width="10%">最后登陆IP</th>
                                 <th width="14%">创建时间</th>
                                 <th width="16%">操作</th>
                             </tr>
@@ -201,13 +202,24 @@
                 }},
                 {"mDataProp": "custName"},
                 {"mDataProp": "nickName"},
+                {"mDataProp": function(obj){
+                    if(obj.state==1){
+                        return "正常";
+                    }else if(obj.state==0){
+                        return "未激活";
+                    }else if(obj.state==2){
+                        return "禁用";
+                    }else{
+                        return "其他";
+                    }
+                }},
                 {"mDataProp": "lastLoginDate"},
                 {"mDataProp": "lastLoginIp"},
                 {"mDataProp": "createDate"}
             ],
             "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
                 {
-                    "targets": [8],
+                    "targets": [9],
                     "data": null,
                     "bSortable": false,
                     "defaultContent": "<button class=\"btn btn-primary\"><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
