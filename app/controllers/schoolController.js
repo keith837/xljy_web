@@ -91,9 +91,6 @@ module.exports = new basicController(__filename).init({
             if (err) {
                 return next(err);
             }
-            if (!classes || classes.length <= 0) {
-                return next(new Error("该学校没有班级信息"));
-            }
             res.json({
                 code: "00",
                 classes: classes
