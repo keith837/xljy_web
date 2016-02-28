@@ -55,6 +55,7 @@
                                             </select>
                                             -->
                                             <input type="text" id="schoolId" name="schoolId" placeholder="请选择学校" class="span3">
+                                            <input type="text" style="display: none;" disabled="disabled" id="schoolName" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -114,7 +115,6 @@
 <script>
     $(document).ready(function () {
         var stationId = $.url.param('stationId');
-        var curSchoolId = -1;
         if (stationId) {
             $('#backBtn').css("display", "");
             $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>更新基站</a>");
@@ -125,47 +125,21 @@
                     $("#location").val(json.data[0].address);
                     $("#editType").val("edit");
                     $("#stationId").val(json.data[0].stationId);
-                    curSchoolId = json.data[0].schoolId;
+                    $("#schoolId").val(json.data[0].schoolId);
+                    $("#schoolName").val(json.data[0].schoolName);
+
+                    $("#schoolId").css("display", "none");
+                    $("#schoolName").css("display", "");
                 }
             }, 'json');
         } else {
             $('#resetBtn').css("display", "");
             $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>新增基站</a>");
+
+            $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
+            loadSchool();
         }
 
-        $.ajax({
-            url: "/api/school/list",    //后台webservice里的方法名称
-            type: "get",
-            dataType: "json",
-            contentType: "application/json",
-            traditional: true,
-            success: function (data) {
-                if (data.code == "00") {
-                    var jsonObj = data.schools;
-                    var options = [];
-                    var curOption ={};
-                    for (var j = 0; j < jsonObj.length; j++) {
-                        options.push({id: jsonObj[j].schoolId, text: jsonObj[j].schoolName});
-                        if (jsonObj[j].schoolId == curSchoolId) {
-                            curOption = {id: jsonObj[j].schoolId, text: jsonObj[j].schoolName};
-                        }
-                    }
-                    $("#schoolId").select2({
-                        data: options, initSelection: function (element, callback) {
-                            callback(curOption);
-                        }
-                    });
-                    if (curSchoolId != -1) {
-                        $("#schoolId").select2("val", curSchoolId).trigger("change");
-                    }
-                } else {
-                    $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
-                }
-            },
-            error: function (msg) {
-                $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
-            }
-        });
 
         $('#commitBtn').click(function () {
             var stationMac = $("#stationMac");
@@ -198,27 +172,7 @@
                 url = "/api/stations/"+$("#stationId").val();
                 type = "put";
             }
-            $.ajax({
-                url: url,
-                type: type,
-                data: $("#stationForm").serialize()
-
-            }).done(function (data) {
-                if (data.code == "00") {
-                    swal({title: "保存成功!", text: "保存成功", timer: 1000, showConfirmButton: true}, function () {
-                        setTimeout(function () {
-                            window.location.href = "device.html";
-                        }, 2000);
-                    });
-
-                } else {
-                    swal("保存失败!", data.msg, "error");
-                }
-                ;
-            })
-            .fail(function () {
-                swal("保存失败!", "保存失败", "error");
-            });
+            saveOrUpdate(url, type, "#stationForm", "device.html");
         });
     });
 

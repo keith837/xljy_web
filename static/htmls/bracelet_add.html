@@ -22,7 +22,6 @@
 <div id="content">
     <div id="breadcrumb">
         <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 设备管理</a>
-        <a href="#" class="current">新增手环</a>
     </div>
     <div class="container-fluid">
         <div class="row-fluid">
@@ -42,6 +41,8 @@
                                     <div class="control-group">
                                         <label class="control-label" for="deviceSign">手环设备号</label>
                                         <div class="controls">
+                                            <input type="hidden" id="editType" name="editType" value="add" />
+                                            <input type="hidden" id="deviceId" name="deviceId" value="" />
                                             <input type="text" id="deviceSign" name="deviceSign" placeholder="设备号" class="span3">
                                         </div>
                                     </div>
@@ -55,6 +56,7 @@
                                         <label class="control-label" for="schoolId">学校名称</label>
                                         <div class="controls">
                                             <input type="text" id="schoolId" placeholder="请选择学校" class="span3">
+                                            <input type="text" style="display: none;" disabled="disabled" id="schoolName" class="span3">
                                             <!--
                                             <select class="span3" id="schoolId">
                                                 <option value="-1">--请选择学校--</option>
@@ -66,6 +68,7 @@
                                         <label class="control-label" for="classId">班级名称</label>
                                         <div class="controls">
                                             <input type="text" id="classId" placeholder="请选择班级" class="span3">
+                                            <input type="text" style="display: none;" disabled="disabled" id="className" class="span3">
                                             <!--
                                             <select class="span3" id="classId">
                                                 <option value="-1">--请选择班级--</option>
@@ -77,12 +80,14 @@
                                         <label class="control-label" for="studentId">学生姓名</label>
                                         <div class="controls">
                                             <input type="text" id="studentId" name="studentId" placeholder="请选择学生" class="span3">
+                                            <input type="text" style="display: none;" disabled="disabled" id="studentName" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <div class="controls">
                                             <button type="button" id="commitBtn" class="btn">提交</button>
-                                            <button type="reset" class="btn">重置</button>
+                                            <button type="reset" id="resetBtn" style="display: none;" class="btn">重置</button>
+                                            <button type="button" id="backBtn" style="display: none;" class="btn" onclick="javascript:history.back();">返回</button>
                                         </div>
                                     </div>
                                 </form>
@@ -106,6 +111,7 @@
 <script src="js/jquery.cookie.js" charset="utf-8"></script>
 <script src="js/common.js" charset="utf-8"></script>
 <script src="js/jquery.ui.custom.js"></script>
+<script src="js/jquery.url.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-colorpicker.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
@@ -118,34 +124,82 @@
 
 <script>
     $(document).ready(function () {
-        $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
-        $("#classId").select2({data: [{id: -1, text: "请选择班级"}]});
-        $("#studentId").select2({data: [{id: -1, text: "请选择学生"}]});
-        loadSchool();
+
+        var deviceId = $.url.param('deviceId');
+        if (deviceId) {
+            $('#backBtn').css("display", "");
+            $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>更新手环</a>");
+
+            $.get("/api/devices/" + deviceId, null, function (json) {
+                if (json.code == "00") {
+                    $("#deviceSign").val(json.data[0].deviceSign);
+                    $("#deviceName").val(json.data[0].deviceName);
+                    $("#editType").val("edit");
+                    $("#deviceId").val(json.data[0].deviceId);
+                    $("#schoolId").val(json.data[0].schoolId);
+                    $("#classId").val(json.data[0].classId);
+                    $("#studentId").val(json.data[0].studentId);
+                    $("#schoolName").val(json.data[0].schoolName);
+                    $("#className").val(json.data[0].className);
+                    $("#studentName").val(json.data[0].studentName);
+
+                    $("#schoolId").css("display", "none");
+                    $("#classId").css("display", "none");
+                    $("#studentId").css("display", "none");
+                    $("#schoolName").css("display", "");
+                    $("#className").css("display", "");
+                    $("#studentName").css("display", "");
+                }
+            }, 'json');
+        } else {
+            $('#resetBtn').css("display", "");
+            $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>新增手环</a>");
+
+            $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
+            $("#classId").select2({data: [{id: -1, text: "请选择班级"}]});
+            $("#studentId").select2({data: [{id: -1, text: "请选择学生"}]});
+            loadSchool();
+        }
 
         $('#commitBtn').click(function () {
-            $.ajax({
-                url: "/api/devices",
-                type: "post",
-                data: $("#deviceForm").serialize()
+            var deviceSign = $("#deviceSign");
+            if (deviceSign.val() == "") {
+                deviceSign.focus();
+                return;
+            }
+            var deviceName = $("#deviceName");
+            if (deviceName.val() == "") {
+                deviceName.focus();
+                return;
+            }
+            var schoolId = $("#schoolId");
+            if (schoolId.val() == "" || schoolId.val() == -1) {
+                schoolId.focus();
+                return;
+            }
+            var classId = $("#classId");
+            if (classId.val() == "" || classId.val() == -1) {
+                classId.focus();
+                return;
+            }
+            var studentId = $("#studentId");
+            if (studentId.val() == "" || studentId.val() == -1) {
+                studentId.focus();
+                return;
+            }
 
-            }).done(function (data) {
-                if (data.code == "00") {
-                    swal({title: "保存成功!", text: "保存成功", timer: 1000, showConfirmButton: true}, function () {
-                        setTimeout(function () {
-                            window.location.href = "bracelet.html";
-                        }, 2000);
-                    });
+            var editType = $("#editType").val();
+            var url = "/api/devices";
+            var type = "post";
+            if ("edit" == editType) {
+                url = "/api/devices/" + $("#deviceId").val();
+                type = "put";
+            }
+            saveOrUpdate(url, type, "#deviceForm", "bracelet.html");
 
-                } else {
-                    swal("保存失败!", data.msg, "error");
-                }
-                ;
-            })
-            .fail(function () {
-                swal("保存失败!", "保存失败", "error");
-            });
         });
+
+
     });
 </script>
 </body>

@@ -138,3 +138,26 @@ function loadGroup() {
         }
     });
 }
+
+function saveOrUpdate(url, type, formId, backHref) {
+    $.ajax({
+        url: url,
+        type: type,
+        data: $(formId).serialize()
+
+    }).done(function (data) {
+        if (data.code == "00") {
+            swal({title: "保存成功!", text: "保存成功", timer: 1000, showConfirmButton: true}, function () {
+                setTimeout(function () {
+                    window.location.href = backHref;
+                }, 2000);
+            });
+
+        } else {
+            swal("保存失败!", data.msg, "error");
+        }
+    }).fail(function () {
+        swal("保存失败!", "保存失败", "error");
+    });
+
+}

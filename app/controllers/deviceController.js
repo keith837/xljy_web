@@ -14,7 +14,7 @@ module.exports = new basicController(__filename).init({
         var classes = request.user.classes;
         if (groupId === 20) {
             if (classes && classes.length >= 1) {
-                classId = [];
+                var classId = [];
                 for (var i in classes) {
                     classId.push(classes[i].classId);
                 }

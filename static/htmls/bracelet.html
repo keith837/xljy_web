@@ -69,7 +69,7 @@
                                     <tr>
                                         <td align="center">
                                             <div class="input-append span12" style="margin-top:5px; margin-bottom:5px">
-                                                <input type="text" class="span4 search-query" id="braceletName" placeholder="请输入手环名称">
+                                                <input type="text" class="span4 search-query" id="braceletName" placeholder="请输入设备ID">
                                                 <button type="button" class="btn" id="searchBtn">搜索</button>
                                             </div>
                                         </td>
@@ -102,6 +102,7 @@
                             <thead>
                             <tr>
                                 <th>设备ID</th>
+                                <th>设备名称</th>
                                 <th>学校</th>
                                 <th>班级</th>
                                 <th>学生姓名</th>
@@ -179,16 +180,17 @@
             "sServerMethod": "GET",
             "aoColumns": [
                 {"mDataProp": "deviceSign"},
+                {"mDataProp": "deviceName"},
                 {"mDataProp": "schoolName"},
                 {"mDataProp": "className"},
                 {"mDataProp": "studentName"}
             ],
             "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
                 {
-                    "targets": [4],
+                    "targets": [5],
                     "data": null,
                     "bSortable": false,
-                    "defaultContent": "<button class=\"btn btn-primary\"><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id=\"delrow\"><i class=\"icon-remove icon-white\"></i> 删除</button>"
+                    "defaultContent": "<button class=\"btn btn-primary\" id='editrow'><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id=\"delrow\"><i class=\"icon-remove icon-white\"></i> 删除</button>"
                 }
             ]
             //"fnServerParams": function (aoData) {
@@ -207,6 +209,12 @@
             table.fnSettings().sAjaxSource = '/api/devices?' + queryCondition;
             table.fnDraw();
 
+        });
+
+        $('.data-table tbody').on( 'click', 'button#editrow', function () {
+            //var row = table.row( $(this).parents('tr') ).data();
+            var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
+            window.location.href="bracelet_add.html?deviceId="+row.deviceId;
         });
 
 
