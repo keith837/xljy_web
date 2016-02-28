@@ -120,7 +120,8 @@ module.exports = new basicController(__filename).init({
         if(brandName){
             brandObj.brandName = brandName;
         }
-        self.model['school'].listByPage(obj, brandObj, start, pageSize, function(err, total, schools){
+        var schoolIds = req.query.schoolId ? [req.query.schoolId] : req.user.schoolIds;
+        self.model['school'].listByPage(schoolObj, brandObj, schoolIds, start, pageSize, function(err, total, schools){
             if(err){
                 return next(err);
             }
@@ -236,15 +237,23 @@ module.exports = new basicController(__filename).init({
     del : function(req, res, next){
         var self = this;
         var schoolId = req.params.schoolId;
-        self.model['school'].del(schoolId, function(err, data){
+        self.model['class'].listBySchoolId(schoolId, function(err, classes){
             if(err){
                 return next(err);
-            }else if(data.affectedRows != 1){
-                return next(new Error("需删除的学校信息不存在"));
             }
-            res.json({
-                code : "00",
-                msg : "学校信息删除成功"
+            if(classes && classes.length > 0){
+                return next(new Error("当前学校已关联班级，不允许删除"));
+            }
+            self.model['school'].del(schoolId, function(err, data){
+                if(err){
+                    return next(err);
+                }else if(data.affectedRows != 1){
+                    return next(new Error("需删除的学校信息不存在"));
+                }
+                res.json({
+                    code : "00",
+                    msg : "学校信息删除成功"
+                });
             });
         });
     }

@@ -48,7 +48,7 @@ School.listByBrandId = function(brandId, callback){
  * 根据品牌查询学校
  */
 School.findInfoByBrandId = function(schoolId, callback){
-    mysqlUtil.queryOne("select A.*,B.gUserId,B.brandName from XL_SCHOOL A left join XL_SCHOOL_BRAND B on A.brandId=B.brandId where A.state=1 and A.schoolId = ? ", [schoolId], callback);
+    mysqlUtil.queryOne("select A.*,B.bUserId,B.brandName,C.custName,C.nickName,C.userName from XL_SCHOOL A left join XL_SCHOOL_BRAND B on A.brandId=B.brandId join XL_USER C on A.sUserId=C.userId where A.state=1 and A.schoolId = ? ", [schoolId], callback);
 }
 /**
  * 查询所有学校(超级园长登录时查询所有学校)
@@ -64,22 +64,30 @@ School.listAllSchool = function(callback){
  * @param brandObj 品牌条件
  * @param callback
  */
-School.queryNum = function(schoolObj, brandObj, callback){
+School.queryNum = function(schoolObj, brandObj, schoolIds, callback){
     var whereSql = " A.state=1 ";
     var args = new Array();
     if(schoolObj){
-        for(var key in obj){
+        for(var key in schoolObj){
             whereSql += " and A." + key + "=?";
             args.push(schoolObj[key]);
         }
     }
     if(brandObj){
-        for(var key in obj){
+        for(var key in brandObj){
             whereSql += " and B." + key + "=?";
             args.push(brandObj[key]);
         }
     }
-    var countSql = "select count(*) from XL_SCHOOL A left join XL_SCHOOL_BRAND B on A.brandId=B.brandId where " + whereSql;
+    if(schoolIds){
+        whereSql += " and A.schoolId in (";
+        for(var i = 0; i < schoolIds.length; i ++){
+            whereSql += "?,";
+            args.push(schoolIds[i]);
+        }
+        whereSql = whereSql.substr(0, whereSql.length - 1) + ")";
+    }
+    var countSql = "select count(*) from XL_SCHOOL A left join XL_SCHOOL_BRAND B on A.brandId=B.brandId join XL_USER C on A.sUserId=C.userId where " + whereSql;
     mysqlUtil.queryOne(countSql, args, callback);
 }
 
@@ -91,22 +99,30 @@ School.queryNum = function(schoolObj, brandObj, callback){
  * @param pageSize 每页条数
  * @param callback
  */
-School.queryPage = function(schoolObj, brandObj, start, pageSize, callback){
+School.queryPage = function(schoolObj, brandObj, schoolIds, start, pageSize, callback){
     var whereSql = " A.state=1 ";
     var args = new Array();
     if(schoolObj){
-        for(var key in obj){
+        for(var key in schoolObj){
             whereSql += " and A." + key + "=?";
             args.push(schoolBbj[key]);
         }
     }
     if(brandObj){
-        for(var key in obj){
+        for(var key in brandObj){
             whereSql += " and B." + key + "=?";
             args.push(brandObj[key]);
         }
     }
-    var querySql = "select A.*,B.gUserId,B.brandName from XL_SCHOOL A left join XL_SCHOOL_BRAND B on A.brandId=B.brandId where " + whereSql;
+    if(schoolIds){
+        whereSql += " and A.schoolId in (";
+        for(var i = 0; i < schoolIds.length; i ++){
+            whereSql += "?,";
+            args.push(schoolIds[i]);
+        }
+        whereSql = whereSql.substr(0, whereSql.length - 1) + ")";
+    }
+    var querySql = "select A.*,B.bUserId,B.brandName,C.custName,C.nickName,C.userName from XL_SCHOOL A left join XL_SCHOOL_BRAND B on A.brandId=B.brandId join XL_USER C on A.sUserId=C.userId where " + whereSql;
     querySql += " limit ?,?";
     args.push(start);
     args.push(pageSize);
@@ -121,8 +137,8 @@ School.queryPage = function(schoolObj, brandObj, start, pageSize, callback){
  * @param pageSize 每页条数
  * @param callback
  */
-School.listByPage = function(schoolObj, brandObj, start, pageSize, callback){
-    School.queryNum(obj, function(err, data){
+School.listByPage = function(schoolObj, brandObj, schoolIds, start, pageSize, callback){
+    School.queryNum(schoolObj, brandObj, schoolIds, function(err, data){
         if(err){
             return callback(err);
         }
@@ -130,7 +146,7 @@ School.listByPage = function(schoolObj, brandObj, start, pageSize, callback){
         if(data){
             total = data.total;
         }
-        School.queryPage(obj, start, pageSize, function(err, users){
+        School.queryPage(schoolObj, brandObj, schoolIds, start, pageSize, function(err, users){
             if(err){
                 return callback(err);
             }
