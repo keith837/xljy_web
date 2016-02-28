@@ -216,8 +216,18 @@ module.exports = new basicController(__filename).init({
         });
     },
 
-    contacts : function(req, res, next){
-
+    teachers : function(req, res, next){
+        var self = this;
+        var classId = parseInt(req.params.classId);
+        self.model['class'].listTeacherByClassId(classId, function(err, teachers){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                data : teachers
+            });
+        });
     }
 
 });

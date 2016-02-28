@@ -213,6 +213,11 @@ var routerConfig = {
                 "url": "/api/class/delTeacher/:classId",
                 "method": "delete",
                 "description": "班级关联老师"
+            },
+            "teachers" : {
+                "url": "/api/class/teachers/:classId",
+                "method": "get",
+                "description": "老师通讯录"
             }
         },
         trends : {
