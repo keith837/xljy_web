@@ -22,8 +22,8 @@ Album.createAlbumLike = function(albumId, handleArgs, callback){
                     conn.release();
                     return callback.apply(null, [err, null]);
                 }
-                var insertSql = "insert into XL_ALBUM_HANDLE(albumId,handleType,hUserId,nickName,studentId,studentName,state,";
-                insertSql += "createDate,doneDate,oUserId) values (?,1,?,?,?,?,1,now(),now(),?)";
+                var insertSql = "insert into XL_ALBUM_HANDLE(albumId,handleType,pHandleId,hUserId,nickName,studentId,studentName,state,";
+                insertSql += "createDate,doneDate,oUserId) values (?,1,0,?,?,?,?,1,now(),now(),?)";
                 conn.query(insertSql, handleArgs, function(err, data){
                     if(err){
                         conn.rollback();
@@ -55,7 +55,7 @@ Album.create = function(albumArg, albumPicArgs, callback){
                 return callback.apply(null, [err, null]);
             }
             var albumSql = "insert into XL_ALBUM(schoolId,classId,albumType,albumTitle,content,albumDate,isTop,nickName,studentId";
-            albumSql += ",studentName,likesNum,isComment,state,userId,createDate,doneDate) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),now())";
+            albumSql += ",studentName,likesNum,isComment,state,userId,createDate,doneDate,oUserId) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),now(),?)";
             conn.query(albumSql, albumArg, function(err, data){
                 if(err){
                     conn.rollback();
@@ -63,8 +63,8 @@ Album.create = function(albumArg, albumPicArgs, callback){
                     return callback.apply(null, [err, data]);
                 }
                 var albumId = data.insertId;
-                var albumPicSql = "insert into XL_ALBUM_PIC(picUrl,likesNum,createDate,picDesc,state,doneDate,userId,albumId) values (";
-                albumPicSql += "?,?,now(),?,?,now(),?," + albumId + ")";
+                var albumPicSql = "insert into XL_ALBUM_PIC(picUrl,likesNum,createDate,picDesc,state,doneDate,userId,oUserId,albumId) values (";
+                albumPicSql += "?,?,now(),?,?,now(),?,?," + albumId + ")";
                 createAlbumPic(conn, albumPicSql, albumPicArgs, 0, callback);
             });
         });
@@ -106,8 +106,8 @@ Album.findOne = function(albumType, userId, trendsId, callback){
     mysqlUtil.query("select * from XL_ALBUM where albumType=? and userId=? and albumId=?", [albumType, userId, trendsId], callback);
 }
 
-Album.queryNum = function(obj, callback){
-    var whereSql = " 1=1 ";
+Album.queryNum = function(obj, schoolIds, callback){
+    var whereSql = " 1=1 and m.state = 1 ";
     var args = new Array();
     if(obj){
         for(var key in obj){
@@ -115,12 +115,20 @@ Album.queryNum = function(obj, callback){
             args.push(obj[key]);
         }
     }
-    var countSql = "select count(*) AS total from XL_ALBUM m WHERE " + whereSql;
+    if(schoolIds){
+        whereSql += " and schoolId in (";
+        for(var i = 0; i < schoolIds.length; i ++){
+            whereSql += "?,";
+            args.push(schoolIds[i]);
+        }
+        whereSql = whereSql.substr(0, whereSql.length - 1) + ")";
+    }
+    var countSql = "select count(*) AS total from XL_ALBUM m WHERE " + whereSql + " order by createDate desc";
     mysqlUtil.queryOne(countSql, args, callback);
 }
 
-Album.queryPage = function(obj, start, pageSize, callback){
-    var whereSql = " 1=1 ";
+Album.queryPage = function(obj, schoolIds, start, pageSize, callback){
+    var whereSql = " 1=1 and m.state = 1 ";
     var args = new Array();
     if(obj){
         for(var key in obj){
@@ -128,15 +136,23 @@ Album.queryPage = function(obj, start, pageSize, callback){
             args.push(obj[key]);
         }
     }
-    var querySql = "select m.* from XL_ALBUM m WHERE " + whereSql;
+    if(schoolIds){
+        whereSql += " and schoolId in (";
+        for(var i = 0; i < schoolIds.length; i ++){
+            whereSql += "?,";
+            args.push(schoolIds[i]);
+        }
+        whereSql = whereSql.substr(0, whereSql.length - 1) + ")";
+    }
+    var querySql = "select m.* from XL_ALBUM m WHERE " + whereSql + " order by createDate desc";
     querySql += " limit ?,?";
     args.push(start);
     args.push(pageSize);
     mysqlUtil.query(querySql, args, callback);
 }
 
-Album.listByPage = function(obj, start, pageSize, callback){
-    Album.queryNum(obj, function(err, data){
+Album.listByPage = function(obj, schoolIds, start, pageSize, callback){
+    Album.queryNum(obj, schoolIds, function(err, data){
         if(err){
             return callback(err);
         }
@@ -144,7 +160,7 @@ Album.listByPage = function(obj, start, pageSize, callback){
         if(data){
             total = data.total;
         }
-        Album.queryPage(obj, start, pageSize, function(err, users){
+        Album.queryPage(obj, schoolIds, start, pageSize, function(err, users){
             if(err){
                 return callback(err);
             }
@@ -167,7 +183,12 @@ Album.findHandles = function(albumIds, obj, callback){
         sql += " and " + key + "=?"
         albumIds.push(obj[key]);
     }
-    mysqlUtil.query(sql, albumIds, callback);
+    mysqlUtil.query(sql + " order by createDate desc", albumIds, callback);
+}
+
+Album.findHandle = function(albumId, handleType, userId, callback){
+    var sql = "select * from XL_ALBUM_HANDLE where albumId = ? and handleType = ? and hUserId = ?";
+    mysqlUtil.query(sql, [albumId, handleType, userId], callback);
 }
 
 Album.findPics = function(albumIds, callback){
@@ -195,8 +216,8 @@ Album.createAlbumComment = function(albumId, handleArgs, callback){
                     conn.release();
                     return callback.apply(null, [err, null]);
                 }
-                var insertSql = "insert into XL_ALBUM_HANDLE(albumId,handleType,content,hUserId,nickName,studentId,studentName,state,";
-                insertSql += "createDate,doneDate,oUserId) values (?,2,?,?,?,?,?,1,now(),now(),?)";
+                var insertSql = "insert into XL_ALBUM_HANDLE(albumId,handleType,pHandleId,content,hUserId,nickName,studentId,studentName,state,";
+                insertSql += "createDate,doneDate,oUserId) values (?,2,?,?,?,?,?,?,1,now(),now(),?)";
                 conn.query(insertSql, handleArgs, function(err, data){
                     if(err){
                         conn.rollback();

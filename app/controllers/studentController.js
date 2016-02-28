@@ -13,7 +13,7 @@ module.exports = new basicController(__filename).init({
                 return next(new Error("未查到关联的宝贝信息"));
             }
             var user = req.user;
-            user.students = [student];
+            user.student = student;
             self.model['class'].findOne(student.classId, function(err, classInfo){
                 if(err){
                     return next(err);
@@ -21,7 +21,7 @@ module.exports = new basicController(__filename).init({
                 if(!classInfo){
                     return next(new Error("未找到宝贝对应的班级信息"));
                 }
-                user.classes = [classInfo];
+                user.class = classInfo;
                 self.model['school'].findBySchoolId(student.schoolId, function(err, school){
                     if(err){
                         return next(err);
@@ -30,6 +30,7 @@ module.exports = new basicController(__filename).init({
                         return next(new Error("未找到宝贝对应的学校信息"));
                     }
                     user.schools = [school];
+                    user.schoolIds = [school.schoolId];
                     self.redis.set(user.token, JSON.stringify(user));
                     res.json({
                         code : "00",

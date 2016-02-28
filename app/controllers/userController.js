@@ -1,8 +1,11 @@
 var basicController = require("../../core/utils/controller/basicController");
 var SmsSendUtil = require("../../core/utils/sms/SmsSendUtil.js");
 var jwt = require("jwt-simple");
+var moment = require('moment');
 
 module.exports = new basicController(__filename).init({
+
+    //app端登录
     login : function(req, res, next){
         var self = this;
         var userName = req.body.userName;
@@ -23,7 +26,7 @@ module.exports = new basicController(__filename).init({
         if(!groupId){
             return next(new Error("用户组信息不能为空"));
         }
-        self.model['user'].findOne(groupId, userName, function(err, user){
+        self.model['user'].findByUserName(userName, function(err, user){
             if(err){
                 return next(err);
             }
@@ -32,6 +35,9 @@ module.exports = new basicController(__filename).init({
             }
             if(user.state != 1){
                 return next(new Error("该手机号码为白名单用户，未注册"));
+            }
+            if(user.groupId != groupId){
+                return next(new Error("用户组不一致，不允许登录"));
             }
             if(user.password != password){
                 return next(new Error("登录密码错误"));
@@ -42,17 +48,20 @@ module.exports = new basicController(__filename).init({
                 self.parentLogin(user, res, next);
             }else if(groupId == 20){
                 self.teacherLogin(user, res, next);
-            }else if(groupId == 30 || groupId == 40 || groupId == 50){
-                self.principalLogin(user, res, next);
-            }else if(groupId == 99){
-                return next(new Error("系统管理员无法通过app登录"));
+            }else if(groupId == 30){
+                self.principalLogin(false, user, res, next);
+            }else if(groupId == 40){
+                self.groupLogin(false, user, res, next);
+            }else if(groupId == 50){
+                self.adminLogin(false, user, res, next);
             }else{
-                return next(new Error("用户组"+groupId+"信息未定义"));
+                return next(new Error("用户组" + groupId + "信息未定义"));
             }
             self.model['userLogin'].logLogin([user.groupId,user.userId,user.nickName,user.billId,user.custName,channel,source,source,clientId,null]);
         });
     },
 
+    //家长登录
     parentLogin : function(user, res, next){
         var self = this;
         self.model['student'].listByUserId(user.userId, function(err, students){
@@ -62,8 +71,8 @@ module.exports = new basicController(__filename).init({
             if(!students || students.length <= 0){
                 return next(new Error("该家长未关联宝贝"));
             }
-            if(students.length == 1){
-                user.students = [students[0]];
+            if(students.length == 1){//关联宝贝数量为不需要进行宝贝选择
+                user.student = students[0];
                 self.model['class'].findOne(students[0].classId, function(err, classInfo){
                     if(err){
                         return next(err);
@@ -71,7 +80,7 @@ module.exports = new basicController(__filename).init({
                     if(!classInfo){
                         return next(new Error("未找到宝贝对应的班级信息"));
                     }
-                    user.classes = [classInfo];
+                    user.class = classInfo;
                     self.model['school'].findBySchoolId(students[0].schoolId, function(err, school){
                         if(err){
                             return next(err);
@@ -80,6 +89,7 @@ module.exports = new basicController(__filename).init({
                             return next(new Error("未找到宝贝对应的学校信息"));
                         }
                         user.schools = [school];
+                        user.schoolIds = [school.schoolId];
                         var date = new Date();
                         date.setDate(date.getDate() + 7);
                         user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
@@ -139,6 +149,7 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    //老师登录
     teacherLogin : function(user, res, next){
         var self = this;
         self.model['class'].listByTeacherId(user.userId, function(err, classes){
@@ -151,7 +162,7 @@ module.exports = new basicController(__filename).init({
             if(classes.length > 1){
                 return next(new Error("该老师带班数量不唯一"));
             }
-            user.classes = [classes[0]];
+            user.class = classes[0];
             self.model['school'].findBySchoolId(classes[0].schoolId, function(err, school){
                 if(err){
                     return next(err);
@@ -160,6 +171,7 @@ module.exports = new basicController(__filename).init({
                     return next(new Error("未找到班级对应的学校信息"));
                 }
                 user.schools = [school];
+                user.schoolIds = [school.schoolId];
                 var date = new Date();
                 date.setDate(date.getDate() + 7);
                 user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
@@ -174,7 +186,7 @@ module.exports = new basicController(__filename).init({
                         groupId : user.groupId,
                         pointNum : user.pointNum,
                         token : user.token,
-                        classInfo : {
+                        class : {
                             classId : classes[0].classId,
                             schoolId : classes[0].schoolId,
                             gradeId : classes[0].gradeId,
@@ -187,17 +199,28 @@ module.exports = new basicController(__filename).init({
         });
     },
 
-    principalLogin : function(user, res, next){
+    //园长登录
+    principalLogin : function(isWeb, user, res, next){
         var self = this;
         self.model['school'].listByPrincipalId(user.userId, function(err, schools){
             if(err){
                 return next(err);
             }
             if(!schools || schools.length <= 0){
-                return next(new Error("该校长未关联园所"));
+                return next(new Error("该园长未关联园所"));
             }
-            if(schools.length == 1){
-                user.schools = [schools[0]];
+            if(isWeb){
+                user.schools = schools;
+                var schoolIds = new Array();
+                for(var i = 0; i < schools.length; i ++){
+                    schoolIds.push(schools[i].schoolId);
+                }
+                user.schoolIds = schoolIds;
+            }else{
+                if(schools.length == 1){
+                    user.schools = [schools[0]];
+                    user.schoolIds = [schools[0].schoolId];
+                }
             }
             var date = new Date();
             date.setDate(date.getDate() + 7);
@@ -228,6 +251,98 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    //集团园长登录
+    groupLogin : function(isWeb, user, res, next){
+        var self = this;
+        self.model['school'].listByGroupId(user.userId, function(err, schools){
+            if(err){
+                return next(err);
+            }
+            if(!schools || schools.length <= 0){
+                return next(new Error("该集团园长未关联园所"));
+            }
+            if(isWeb){
+                user.schools = schools;
+                var schoolIds = new Array();
+                for(var i = 0; i < schools.length; i ++){
+                    schoolIds.push(schools[i].schoolId);
+                }
+                user.schoolIds = schoolIds;
+            }else{
+                if(schools.length == 1){
+                    user.schools = [schools[0]];
+                    user.schoolIds = [schools[0].schoolId];
+                }
+            }
+            var date = new Date();
+            date.setDate(date.getDate() + 7);
+            user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
+            self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
+            var retSchools = new Array();
+            for(var i = 0; i < schools.length; i ++){
+                retSchools.push({
+                    schoolId : schools[i].schoolId,
+                    schoolName : schools[i].schoolName,
+                    schoolDesc : schools[i].schoolDesc,
+                    schoolUrl : schools[i].schoolUrl
+                });
+            }
+            res.json({
+                code : "00",
+                data : {
+                    userId : user.userId,
+                    billId : user.billId,
+                    nickName : user.nickName,
+                    custName : user.custName,
+                    groupId : user.groupId,
+                    pointNum : user.pointNum,
+                    token : user.token,
+                    schools : retSchools
+                }
+            });
+        });
+    },
+
+    //超级园长登录
+    adminLogin : function(isWeb, user, res, next) {
+        var self = this;
+        self.model['school'].listAllSchool(function(err, schools){
+            if(err){
+                return next(err);
+            }
+            if(!schools || schools.length <= 0){
+                return next(new Error("园所信息为空"));
+            }
+            var retSchools = new Array();
+            for(var i = 0; i < schools.length; i ++){
+                retSchools.push({
+                    schoolId : schools[i].schoolId,
+                    schoolName : schools[i].schoolName,
+                    schoolDesc : schools[i].schoolDesc,
+                    schoolUrl : schools[i].schoolUrl
+                });
+            }
+            var date = new Date();
+            date.setDate(date.getDate() + 7);
+            user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
+            self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
+            res.json({
+                code : "00",
+                data : {
+                    userId : user.userId,
+                    billId : user.billId,
+                    nickName : user.nickName,
+                    custName : user.custName,
+                    groupId : user.groupId,
+                    pointNum : user.pointNum,
+                    token : user.token,
+                    schools : retSchools
+                }
+            });
+        });
+    },
+
+    //web端登录
     weblogin : function(req, res, next){
         var self = this;
         var userName = req.body.userName;
@@ -235,7 +350,7 @@ module.exports = new basicController(__filename).init({
             return next(new Error("登录用户名不能为空"));
         }
         var password = req.body.password;
-        self.model['user'].findOneByUserName(userName, function(err, user){
+        self.model['user'].findByUserName(userName, function(err, user){
             if(err){
                 return next(err);
             }
@@ -256,43 +371,16 @@ module.exports = new basicController(__filename).init({
             }
             user.source = 2;
             user.channel = 4;
-            self.adminLogin(user, res, next);
+            if(user.groupId == 30){
+                self.principalLogin(true, user, res, next);
+            }else if(user.groupId == 40){
+                self.groupLogin(true, user, res, next);
+            }else if(user.groupId == 50){
+                self.adminLogin(true, user, res, next);
+            }
             var clientId = getClientIp(req);
             self.model['userLogin'].logLogin([user.groupId,user.userId,user.nickName,user.billId,user.custName,4,2,2,clientId,null]);
         });
-    },
-
-    adminLogin : function(user, res, next) {
-        var self = this;
-        if(user.groupId == 30 || user.groupId == 40 || user.groupId == 50){
-            self.model['school'].listByPrincipalId(user.userId, function(err, schools){
-                if(err){
-                    return next(err);
-                }
-                if(!schools || schools.length <= 0){
-                    return next(new Error("该园长未关联园所"));
-                }
-                user.schools = schools;
-                var date = new Date();
-                date.setDate(date.getDate() + 7);
-                user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
-                self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
-                res.json({
-                    code : "00",
-                    data : {
-                        userId : user.userId,
-                        billId : user.billId,
-                        nickName : user.nickName,
-                        custName : user.custName,
-                        groupId : user.groupId,
-                        pointNum : user.pointNum,
-                        token : user.token
-                    }
-                });
-            });
-        }else{
-            return next(new Error("用户组" + user.groupId + "信息未定义"));
-        }
     },
 
     resetPwd : function(req, res, next){
@@ -318,7 +406,7 @@ module.exports = new basicController(__filename).init({
             }
             var date = new Date();
             date.setMinutes(date.getMinutes() - 5);
-            if(smsLog.sendDate < date){
+            if (smsLog.sendDate < moment(date).format("YYYY-MM-DD HH:mm:ss")) {
                 return next(new Error("短信验证码已过期"));
             }
             self.model['user'].modifyPwd(userName, password, function(err, data){
@@ -347,7 +435,7 @@ module.exports = new basicController(__filename).init({
         if (!password) {
             return next(new Error("新密码不能为空"));
         }
-        self.model['user'].findOneByUserName(userName, function (err, user) {
+        self.model['user'].findByUserName(userName, function (err, user) {
             if (err) {
                 return next(err);
             }
@@ -406,7 +494,7 @@ module.exports = new basicController(__filename).init({
         if(!billId){
             return next(new Error("手机号码不能为空"));
         }
-        self.model['user'].findOneByUserName(billId, function(err, user){
+        self.model['user'].findByUserName(billId, function(err, user){
             if(err){
                 return next(err);
             }
@@ -434,7 +522,7 @@ module.exports = new basicController(__filename).init({
         if (!securityCode) {
             return next(new Error("短信验证码不能为空"));
         }
-        self.model['user'].findOneByUserName(userName, function(err, user){
+        self.model['user'].findByUserName(userName, function(err, user){
             if(err){
                 return next(err);
             }
@@ -453,7 +541,7 @@ module.exports = new basicController(__filename).init({
                 }
                 var date = new Date();
                 date.setMinutes(date.getMinutes() - 5);
-                if (smsLog.sendDate < date) {
+                if (smsLog.sendDate < moment(date).format("YYYY-MM-DD HH:mm:ss")) {
                     return next(new Error("短信验证码已过期"));
                 }
                 self.model['user'].active(userName, password, function (err, data) {
@@ -491,7 +579,8 @@ module.exports = new basicController(__filename).init({
         if(custName){
             obj.custName = custName;
         }
-        self.model['user'].listByPage(obj, start, pageSize, function(err, total, users){
+        var schoolIds = req.query.schoolId ? [parseInt(req.query.schoolId)] : req.user.schoolIds;
+        self.model['user'].listByPage(obj, schoolIds, start, pageSize, function(err, total, users){
             if(err){
                 return next(err);
             }
@@ -508,11 +597,13 @@ module.exports = new basicController(__filename).init({
     add : function(req, res, next){
         var self = this;
         var userName = req.body.userName;
+        var roleId = req.body.roleId ? parseInt(req.body.roleID) : 0;
+        var schoolId = req.body.schoolId ? parseInt(req.body.schoolId) : 0;
         var password = req.body.password;
         var nickName = req.body.nickName;
         var groupId = req.body.groupId;
         var custName = req.body.custName;
-        var billId = req.body.billId | userName;
+        var billId = req.body.billId || userName;
         var email = req.body.email;
         var gender = req.body.gender;
         var address = req.body.address;
@@ -541,14 +632,14 @@ module.exports = new basicController(__filename).init({
                 nickName = "超级管理员";
             }
         }
-        self.model['user'].findOneByUserName(userName, function(err, user){
+        self.model['user'].findByUserName(userName, function(err, user){
             if(err){
                 return next(err);
             }
             if(user && user.userName == userName){
-                return nrxt("登录名已存在");
+                return next("用户登录名已存在");
             }
-            self.model['user'].save([groupId,0,nickName,userName,password,custName,billId,email,gender,birthday,address,4], function(err, data){
+            self.model['user'].save([groupId,roleId,schoolId,nickName,userName,password,custName,billId,email,gender,birthday,address,4], function(err, data){
                 if(err){
                     return next(err);
                 }
@@ -566,7 +657,7 @@ module.exports = new basicController(__filename).init({
         if(!userId && userId <= 0){
             return next(new Error("用户编号不能为空"));
         }
-        self.model['user'].findOneByUserId(userId, function(err, user){
+        self.model['user'].findByUserId(userId, function(err, user){
             if(err){
                 return next(err);
             }
@@ -575,6 +666,8 @@ module.exports = new basicController(__filename).init({
             }
             var userName = req.body.userName;
             var groupId = req.body.groupId;
+            var roleId = req.body.roleId
+            var schoolId = req.body.schoolId;
             var custName = req.body.custName;
             var nickName = req.body.nickName;
             var gender = req.body.gender;
@@ -594,7 +687,12 @@ module.exports = new basicController(__filename).init({
             if(custName){
                 obj.custName = custName;
             }
-
+            if(roleId){
+                obj.roleId = roleId;
+            }
+            if(schoolId){
+                obj.schoolId = schoolId;
+            }
             if(gender){
                 obj.gender = gender;
             }
@@ -669,7 +767,7 @@ module.exports = new basicController(__filename).init({
     show : function(req, res, next){
         var self = this;
         var userId = parseInt(req.params.userId);
-        self.model['user'].findOneByUserId(userId, function(err, user){
+        self.model['user'].findByUserId(userId, function(err, user){
             if(err){
                 return next(err);
             }

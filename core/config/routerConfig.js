@@ -213,18 +213,18 @@ var routerConfig = {
                 "description": "发布动态"
             },
             "delete": {
-                "url": "/api/trends/delete/:trendsId",
-                "method": "del",
+                "url": "/api/trends/del/:trendsId",
+                "method": "delete",
                 "description": "删除动态"
             },
             "like": {
                 "url": "/api/trends/like/:trendsId",
-                "method": "put",
+                "method": "post",
                 "description": "动态点赞"
             },
             "comment": {
                 "url": "/api/trends/comment/:trendsId",
-                "method": "put",
+                "method": "post",
                 "description": "动态评论"
             },
             "list": {

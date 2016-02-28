@@ -24,24 +24,24 @@ module.exports = new basicController(__filename).init({
         var studentName = '';
         var nickName = req.user.nickName;
         if (groupId == 10) {
-            classId == req.user.students[0].classId;
-            schoolId = req.user.students[0].schoolId;
-            studentId = req.user.students[0].studentId;
-            studentName = req.user.students[0].studentName;
+            classId == req.user.student.classId;
+            schoolId = req.user.student.schoolId;
+            studentId = req.user.student.studentId;
+            studentName = req.user.student.studentName;
             nickName = studentName + nickName;
         } else if (groupId == 20) {
-            classId = req.user.classes[0].classId;
-            schoolId = req.user.classes[0].schoolId;
+            classId = req.user.class.classId;
+            schoolId = req.user.class.schoolId;
         } else if (groupId == 30 || groupId == 40 || groupId == 50) {
             schoolId = req.user.schools[0].schoolId;
         }
         form.parse(req, function (err, fields, files) {
             var content = fields.content;
             var isTop = fields.isTop || 0;
-            var albumArg = [schoolId, classId, 3, '动态信息', content, new Date(), isTop, nickName, studentId, studentName, 0, 0, 1, req.user.userId];
+            var albumArg = [schoolId, classId, 3, '动态信息', content, new Date(), isTop, nickName, studentId, studentName, 0, 0, 1, userId, userId];
             var albumPicArgs = new Array();
             for (var photos in files) {
-                albumPicArgs.push([files[photos].path, 0, null, 1, req.user.userId]);
+                albumPicArgs.push([files[photos].path, 0, null, 1, userId, userId]);
             }
             self.model['album'].create(albumArg, albumPicArgs, function (err, data) {
                 if (err) {
@@ -83,8 +83,8 @@ module.exports = new basicController(__filename).init({
         var studentName = '';
         var nickName = req.user.nickName;
         if (groupId == 10) {
-            studentId = req.user.students[0].studentId;
-            studentName = req.user.students[0].studentName;
+            studentId = req.user.student.studentId;
+            studentName = req.user.student.studentName;
             nickName = studentName + nickName;
         }
         self.model['album'].findHandle(trendsId, 1, userId, function (err, data) {
@@ -118,8 +118,8 @@ module.exports = new basicController(__filename).init({
         var studentName = '';
         var nickName = req.user.nickName;
         if (groupId == 10) {
-            studentId = req.user.students[0].studentId;
-            studentName = req.user.students[0].studentName;
+            studentId = req.user.student.studentId;
+            studentName = req.user.student.studentName;
             nickName = studentName + nickName;
         }
         var handleArgs = [trendsId, pHandleId, content, userId, nickName, studentId, studentName, userId];
@@ -140,7 +140,8 @@ module.exports = new basicController(__filename).init({
         var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
         var obj = new Object();
         obj.albumType = 3;
-        self.model['album'].listByPage(obj, start, pageSize, function(err, total, trends) {
+        var schoolIds = req.query.schoolId ? [parseInt(req.query.schoolId)] : req.user.schoolIds;
+        self.model['album'].listByPage(obj, schoolIds, start, pageSize, function(err, total, trends) {
             if (err) {
                 return next(err);
             }
@@ -237,7 +238,7 @@ module.exports = new basicController(__filename).init({
         var obj = new Object();
         obj.albumType = 3;
         obj.userId = userId;
-        self.model['album'].listByPage(obj, start, pageSize, function(err, total, trends) {
+        self.model['album'].listByPage(obj, null, start, pageSize, function(err, total, trends) {
             if (err) {
                 return next(err);
             }
