@@ -178,7 +178,7 @@ var routerConfig = {
             },
         },
         class : {
-            "usedModel": ["school/class"],
+            "usedModel": ["school/class", "student/student"],
             "list": {
                 "url": "/api/class/list",
                 "method": "get",
@@ -203,6 +203,16 @@ var routerConfig = {
                 "url": "/api/class/del/:classId",
                 "method": "delete",
                 "description": "删除班级"
+            },
+            "addTeacher" : {
+                "url": "/api/class/addTeacher/:classId",
+                "method": "post",
+                "description": "班级关联老师"
+            },
+            "delTeacher" : {
+                "url": "/api/class/delTeacher/:classId",
+                "method": "delete",
+                "description": "班级关联老师"
             }
         },
         trends : {

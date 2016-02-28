@@ -1,19 +1,15 @@
 var basicController = require("../../core/utils/controller/basicController");
 
 module.exports = new basicController(__filename).init({
+
     list : function(req, res, next){
         var self = this;
         var start = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);
         var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
         var obj = new Object;
-        var schoolId = req.query.schoolId;
         var className = req.query.className;
         var gradeId = req.query.gradeId;
         var tUserId = req.query.tUserId;
-        if(schoolId){
-            obj.schoolId = parseInt(schoolId);
-        }
-        var sUserId = req.query.sUserId;
         if(tUserId){
             obj.tUserId = parseInt(tUserId);
         }
@@ -23,7 +19,8 @@ module.exports = new basicController(__filename).init({
         if(className){
             obj.className = className;
         }
-        self.model['class'].listByPage(obj, start, pageSize, function(err, total, classes){
+        var schoolIds = req.query.schoolId ? [req.query.schoolId] : req.user.schoolIds;
+        self.model['class'].listByPage(obj, schoolIds, start, pageSize, function(err, total, classes){
             if(err){
                 return next(err);
             }
@@ -34,13 +31,13 @@ module.exports = new basicController(__filename).init({
     show : function(req, res, next){
         var self = this;
         var classId = parseInt(req.params.classId);
-        self.model['class'].findByClassId(schoolId, function(err, classInfo){
+        self.model['class'].findByClassId(classId, function(err, classInfo){
             if(err){
                 return next(err);
             }
             res.json({
                 code : "00",
-                data : classInfo
+                data : classInfo ? classInfo : null
             });
         });
     },
@@ -108,7 +105,7 @@ module.exports = new basicController(__filename).init({
         }
         obj.oUserId = oUserId;
         obj.doneDate = new Date();
-        self.model['class'].update(obj, classId, function(err, data){
+        self.model['class'].update(obj, tUserId, classId, function(err, data){
             if(err){
                 return next(err);
             }else if(data.affectedRows != 1){
@@ -123,19 +120,104 @@ module.exports = new basicController(__filename).init({
 
     del : function(req, res, next){
         var self = this;
-        var classId = req.params.classId;
-        self.model['class'].del(classId, function(err, data){
+        var classId = parseInt(req.params.classId);
+        self.model['student'].countByClassId(classId, function(err, students){
             if(err){
                 return next(err);
-            }else if(data.affectedRows != 1){
-                return next(new Error("需删除的班级信息不存在"));
             }
-            res.json({
-                code : "00",
-                msg : "班级信息删除成功"
+            if(students && students.total > 0){
+                return next(new Error("该班级下关联" + students.total + "个学生，不允许删除"));
+            }
+            self.model['class'].countTeacherByClassId(classId, function(err, teachers){
+                if(err){
+                    return next(err);
+                }
+                if(teachers && teachers.total > 0){
+                    return next(new Error("该班级下关联" + teachers.total + "个老师，不允许删除"));
+                }
+                self.model['class'].delete(classId, function(err, data){
+                    if(err){
+                        return next(err);
+                    }else if(data.affectedRows != 1){
+                        return next(new Error("需删除的班级信息不存在"));
+                    }
+                    res.json({
+                        code : "00",
+                        msg : "班级信息删除成功"
+                    });
+                });
             });
         });
     },
 
+    addTeacher : function(req, res, next){
+        var self = this;
+        var classId = parseInt(req.params.classId);
+        var tUserId = req.body.tUserId;
+        if(!tUserId){
+            return next(new Error("老师编号不能为空"));
+        }
+        var jobType = req.body.jobType;
+        if(!jobType){
+            return next(new Error("老师职位不能为空"));
+        }
+        var oUserId = req.user.userId;
+        self.model['class'].findOne(classId, function(err, classInfo){
+            if(err){
+                return next(err);
+            }
+            if(!classInfo){
+                return next(new Error("班级信息不存在"));
+            }
+            self.model['class'].findRelByClassAndTeacherId(classId, tUserId, function(err, relData){
+                if(err){
+                    return next(err);
+                }
+                if(relData){
+                    return next(new Error("班级已关联该老师"));
+                }
+                self.model['class'].saveTeacher([classInfo.schoolId, classId, tUserId, jobType, req.user.userId], function(err, data){
+                    if(err){
+                        return next(err);
+                    }else if(data.affectedRows != 1){
+                        return next(new Error("班级关联老师失败"));
+                    }
+                    res.json({
+                        code : "00",
+                        msg : "班级关联老师成功"
+                    });
+                });
+            });
+        });
+    },
+
+    delTeacher : function(req, res, next){
+        var self = this;
+        var classId = parseInt(req.params.classId);
+        var tUserId = req.body.tUserId;
+        self.model['class'].findRelByClassAndTeacherId(classId, tUserId, function(err, relData){
+            if(err){
+                return next(err);
+            }
+            if(!relData){
+                return next(new Error("当前班级未关联该老师"));
+            }
+            self.model['class'].delTeacher(relData.relId, function(err, data){
+                if(err){
+                    return next(err);
+                }else if(data.affectedRows != 1){
+                    return next(new Error("班级取消老师关联关系失败"));
+                }
+                res.json({
+                    code : "00",
+                    msg : "班级取消老师关联关系成功"
+                });
+            });
+        });
+    },
+
+    contacts : function(req, res, next){
+
+    }
 
 });

@@ -2,33 +2,92 @@ var Class = module.exports;
 var mysqlUtil = require("../../../core/utils/pool/mysql/mysqlPool");
 
 Class.listByTeacherId = function(teacherId, callback){
-    mysqlUtil.query("select * from XL_CLASS where tUserId = ?", [teacherId], callback);
+    mysqlUtil.query("select * from XL_CLASS where state=1 and tUserId = ?", [teacherId], callback);
 }
 
 Class.listBySchoolId = function(schoolId, callback){
-    mysqlUtil.query("select * from XL_CLASS where schoolId = ?", [schoolId], callback);
+    mysqlUtil.query("select * from XL_CLASS where state=1 and schoolId = ?", [schoolId], callback);
 }
 
 Class.findOne = function(classId, callback){
-    mysqlUtil.queryOne("select * from XL_CLASS where classId = ?", [classId], callback);
+    mysqlUtil.queryOne("select * from XL_CLASS where state=1 and classId = ?", [classId], callback);
 }
 
 Class.listAllByTeacherId = function(teacherId, callback){
-    mysqlUtil.query("select B.* from XL_CLASS_TEACHER_REL A,XL_CLASS B where A.classId=B.classId and A.userId=?", [teacherId], callback);
+    mysqlUtil.query("select B.* from XL_CLASS_TEACHER_REL A,XL_CLASS B where A.classId=B.classId and A.state=1 and B.state=1 and A.userId=?", [teacherId], callback);
+}
+
+/**
+ * 班级通讯录查询
+ * @param classId
+ * @param callback
+ */
+Class.listTeacherByClassId = function(classId, callback){
+    mysqlUtil.query("select A.classId,A.isMaster,A.jobType,B.nickName,B.userName,B.custName,B.userId from XL_CLASS_TEACHER_REL A,XL_USER B where A.tUserId=B.userId and A.state=1 and A.classId=?", [classId], callback);
+}
+
+/**
+ * 根据班级统计非班主任老师个数，供班级删除时校验
+ * @param classId
+ * @param callback
+ */
+Class.countTeacherByClassId = function(classId, callback){
+    mysqlUtil.queryOne("select count(*) as total from XL_CLASS_TEACHER_REL where state = 1 and isMaster = 0 and classId = ?", [classId], callback);
+}
+
+Class.findRelByClassAndTeacherId = function(classId, tUserId, callback){
+    mysqlUtil.queryOne("select * from XL_CLASS_TEACHER_REL where state=1 and classId=? and tUserId=?", [classId, tUserId], callback);
 }
 
 Class.findByClassId = function(classId, callback){
     var sql = "select A.*,B.nickName,B.custName,C.schoolName from XL_CLASS A,XL_USER B, XL_SCHOOL C where "
-    sql += "A.schoolId=C.schoolId AND A.tUserId=B.userId AND classId=?";
+    sql += "A.schoolId=C.schoolId AND A.tUserId=B.userId AND A.state=1 and classId=?";
     mysqlUtil.queryOne(sql, [classId], callback);
 }
 
-Class.delete = function(classId, callback){
-    mysqlUtil.query("delete from XL_CLASS where classId = ?", [classId], callback);
+Class.delTeacher = function(relId, callback){
+    var updateSql = "update XL_CLASS_TEACHER_REL set state=0 where relId = ?";
+    mysqlUtil.query(updateSql, relId, callback);
 }
 
-Class.queryNum = function(obj, callback){
-    var whereSql = " 1=1 ";
+Class.delete = function(classId, callback){
+    mysqlUtil.getConnection(function(err, conn){
+        if(err){
+            return callback(err);
+        }
+        conn.beginTransaction(function(err){
+            if(err){
+                return callback(err);
+            }
+            conn.query("update XL_CLASS set state = 0 where classId=?", [classId], function(err, classData){
+                if(err){
+                    conn.rollback();
+                    conn.release();
+                    return callback(err);
+                }
+                conn.query("update XL_CLASS_TEACHER_REL set state = 0 where isMaster=1 and classId=?", [classId], function(err, data){
+                    if(err){
+                        conn.rollback();
+                        conn.release();
+                        return callback(err);
+                    }
+                    conn.commit(function(err){
+                        if(err){
+                            conn.rollback();
+                            conn.release();
+                            return callback(err);
+                        }
+                        conn.release();
+                        return callback(err, classData);
+                    });
+                });
+            });
+        });
+    });
+}
+
+Class.queryNum = function(obj, schoolIds, callback){
+    var whereSql = " 1=1 and A.state=1 ";
     var args = new Array();
     if(obj){
         for(var key in obj){
@@ -36,18 +95,34 @@ Class.queryNum = function(obj, callback){
             args.push(obj[key]);
         }
     }
+    if(schoolIds){
+        whereSql += " and A.schoolId in (";
+        for(var i = 0; i < schoolIds.length; i ++){
+            whereSql += "?,";
+            args.push(schoolIds[i]);
+        }
+        whereSql = whereSql.substr(0, whereSql.length - 1) + ")";
+    }
     var countSql = "select count(*) as total from XL_CLASS A,XL_USER B, XL_SCHOOL C where A.schoolId=C.schoolId AND A.tUserId=B.userId AND " + whereSql;
     mysqlUtil.queryOne(countSql, args, callback);
 }
 
-Class.queryPage = function(obj, start, pageSize, callback){
-    var whereSql = " 1=1 ";
+Class.queryPage = function(obj, schoolIds, start, pageSize, callback){
+    var whereSql = " 1=1 and A.state=1 ";
     var args = new Array();
     if(obj){
         for(var key in obj){
             whereSql += " and A." + key + "=?";
             args.push(obj[key]);
         }
+    }
+    if(schoolIds){
+        whereSql += " and A.schoolId in (";
+        for(var i = 0; i < schoolIds.length; i ++){
+            whereSql += "?,";
+            args.push(schoolIds[i]);
+        }
+        whereSql = whereSql.substr(0, whereSql.length - 1) + ")";
     }
     var querySql = "select A.*,B.nickName,B.custName,C.schoolName from XL_CLASS A,XL_USER B, XL_SCHOOL C where A.schoolId=C.schoolId AND A.tUserId=B.userId AND " + whereSql;
     querySql += " limit ?,?";
@@ -56,8 +131,8 @@ Class.queryPage = function(obj, start, pageSize, callback){
     mysqlUtil.query(querySql, args, callback);
 }
 
-Class.listByPage = function(obj, start, pageSize, callback){
-    Class.queryNum(obj, function(err, data){
+Class.listByPage = function(obj, schoolIds, start, pageSize, callback){
+    Class.queryNum(obj, schoolIds, function(err, data){
         if(err){
             return callback(err);
         }
@@ -65,7 +140,7 @@ Class.listByPage = function(obj, start, pageSize, callback){
         if(data){
             total = data.total;
         }
-        Class.queryPage(obj, start, pageSize, function(err, users){
+        Class.queryPage(obj, schoolIds, start, pageSize, function(err, users){
             if(err){
                 return callback(err);
             }
@@ -74,21 +149,106 @@ Class.listByPage = function(obj, start, pageSize, callback){
     });
 }
 
-Class.update = function(obj, classId, callback){
-    var sql = "update XL_CLASS set ";
-    var args = new Array();
-    for(var key in obj){
-        sql += key + "=?,";
-        args.push(obj[key]);
-    }
-    sql = sql.substr(0, sql.length - 1);
-    sql += " where classId=?";
-    args.push(classId);
-    mysqlUtil.query(sql, args, callback);
+Class.update = function(obj, tUserId, classId, callback){
+    mysqlUtil.getConnection(function(err, conn){
+        if(err){
+            return callback(err);
+        }
+        conn.beginTransaction(function(err){
+            if(err){
+                return callback(err);
+            }
+            var updateSql = "update XL_CLASS set ";
+            var args = new Array();
+            for(var key in obj){
+                updateSql += key + "=?,";
+                args.push(obj[key]);
+            }
+            updateSql = updateSql.substr(0, updateSql.length - 1);
+            updateSql += " where classId=?";
+            args.push(classId);
+            conn.query(updateSql, args, function(err, classData){
+                if(err){
+                    conn.rollback();
+                    conn.release();
+                    return callback(err);
+                }
+                if(tUserId){
+                    var updateRelSql = "update XL_CLASS_TEACHER_REL set tUserId=?,doneDate=now(),oUserId=? where isMaster=1 and classId=?";
+                    conn.query(updateRelSql, [tUserId,obj.oUserId,classId], function(err, data){
+                        if(err){
+                            conn.rollback();
+                            conn.release();
+                            return callback(err);
+                        }
+                        conn.commit(function(err){
+                            if(err){
+                                conn.rollback();
+                                conn.release();
+                                return callback(err);
+                            }
+                            conn.release();
+                            return callback(err, classData);;
+                        });
+                    });
+                }else{
+                    conn.commit(function(err){
+                        if(err){
+                            conn.rollback();
+                            conn.release();
+                            return callback(err);
+                        }
+                        conn.release();
+                        return callback(err, classData);;
+                    });
+                }
+            });
+        });
+    });
+}
+
+Class.saveTeacher = function(args, callback){
+    var insertRelSql = "insert into XL_CLASS_TEACHER_REL(schoolId,classId,tUserId,isMaster,jobType,state,createDate,doneDate,oUserId)";
+    insertRelSql += " values (?,?,?,0,?,1,now(),now(),?)";
+    mysqlUtil.query(insertRelSql, args, callback);
 }
 
 Class.save = function(args, callback){
-    var sql = "insert into XL_CLASS(schoolId,gradeId,tUserId,className,classDesc,classUrl,state,";
-    sql += "createDate,doneDate,oUserId) values (?,?,?,?,?,?,1,now(),now(),?)";
-    mysqlUtil.query(sql, args, callback);
+    mysqlUtil.getConnection(function(err, conn){
+        if(err){
+            return callback(err);
+        }
+        conn.beginTransaction(function(err){
+            if(err){
+                return callback(err);
+            }
+            var insertClassSql = "insert into XL_CLASS(schoolId,gradeId,tUserId,className,classDesc,classUrl,state,";
+            insertClassSql += "createDate,doneDate,oUserId) values (?,?,?,?,?,?,1,now(),now(),?)";
+            conn.query(insertClassSql, args, function(err, classData){
+                if(err){
+                    conn.rollback();
+                    conn.release();
+                    return callback(err);
+                }
+                var insertRelSql = "insert into XL_CLASS_TEACHER_REL(schoolId,classId,tUserId,isMaster,jobType,state,createDate,doneDate,oUserId)";
+                insertRelSql += " values (?,?,?,1,?,1,now(),now(),?)";
+                conn.query(insertRelSql, [args[0],classData.insertId,args[2],'班主任',args[6]], function(err, data){
+                    if(err){
+                        conn.rollback();
+                        conn.release();
+                        return callback(err);
+                    }
+                    conn.commit(function(err){
+                        if(err){
+                            conn.rollback();
+                            conn.release();
+                            return callback(err);
+                        }
+                        conn.release();
+                        return callback(err, data);;
+                    });
+                });
+            });
+        });
+    });
 }

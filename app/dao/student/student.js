@@ -2,28 +2,39 @@ var Student = module.exports;
 var mysqlUtil = require("../../../core/utils/pool/mysql/mysqlPool");
 
 Student.listByUserId = function (userId, callback) {
-    mysqlUtil.query("select A.* from XL_STUDENT A, XL_USER_STUDENT_REL B WHERE A.studentId=B.studentId and B.userId=?", [userId], callback);
+    mysqlUtil.query("select A.* from XL_STUDENT A, XL_USER_STUDENT_REL B WHERE A.studentId=B.studentId and A.state=1 and B.state=1 and B.userId=?", [userId], callback);
 }
 
 Student.findOne = function (userId, studentId, callback) {
-    mysqlUtil.queryOne("select A.* from XL_STUDENT A, XL_USER_STUDENT_REL B WHERE A.studentId=B.studentId and B.userId=? and A.studentId=?", [userId, studentId], callback);
+    mysqlUtil.queryOne("select A.* from XL_STUDENT A, XL_USER_STUDENT_REL B WHERE A.studentId=B.studentId and A.state=1 and B.state=1 and B.userId=? and A.studentId=?", [userId, studentId], callback);
 }
 
 Student.findByStudentId = function(studentId, callback){
-    mysqlUtil.queryOne("select * from XL_STUDENT where studentId = ?", [studentId], callback);
+    mysqlUtil.queryOne("select * from XL_STUDENT where state = 1 and studentId = ?", [studentId], callback);
 }
 
 Student.findStudentInfo = function(studentId, callback){
-    mysqlUtil.queryOne("select A.*,B.className,C.schoolName from XL_STUDENT A, XL_CLASS B, XL_SCHOOL C WHERE A.schoolId=C.schoolId and B.classId=A.classId and A.studentId=?", [studentId], callback);
+    mysqlUtil.queryOne("select A.*,B.className,C.schoolName from XL_STUDENT A, XL_CLASS B, XL_SCHOOL C WHERE A.schoolId=C.schoolId and B.classId=A.classId and A.state=1 and A.studentId=?", [studentId], callback);
 }
 
 Student.findParents = function(studentIds, callback){
-    var sql = "select A.*,B.nickName,B.custName from XL_USER_STUDENT_REL A, XL_USER B WHERE A.userId=B.userId and A.studentId in (";
+    var sql = "select A.*,B.nickName,B.custName from XL_USER_STUDENT_REL A, XL_USER B WHERE A.userId=B.userId and ";
+    sql +=  "A.state=1 and A.studentId in (";
     for(var i = 0; i < studentIds.length; i ++){
         sql += "?,";
     }
     sql = sql.substr(0, sql.length - 1) + ")";
     mysqlUtil.query(sql, studentIds, callback);
+}
+
+/**
+ * 根据班级统计学生数量，删除学校时校验
+ * @param classId
+ * @param callback
+ */
+Student.countByClassId = function(classId, callback){
+    var sql = "select count(*) as total from XL_STUDENT where state = 1 and classId = ?";
+    mysqlUtil.queryOne(sql, [classId], callback);
 }
 
 Student.save = function(args, userId, oUserId, callback){
@@ -75,13 +86,13 @@ Student.delete = function(studentId, callback){
             if(err){
                 return callback(err);
             }
-            conn.query("delete from XL_STUDENT where studentId=?", [studentId], function(err, data){
+            conn.query("update XL_STUDENT set state = 0 where studentId=?", [studentId], function(err, data){
                 if(err){
                     conn.rollback();
                     conn.release();
                     return callback(err);
                 }
-                conn.query("delete from XL_USER_STUDENT_REL where studentId=?", [studentId], function(err, data){
+                conn.query("update XL_USER_STUDENT_REL set state = 0 where studentId=?", [studentId], function(err, data){
                     if(err){
                         conn.rollback();
                         conn.release();
@@ -120,7 +131,7 @@ Student.update = function(obj, userId, studentId, callback){
             updateSql = updateSql.substr(0, updateSql.length - 1);
             updateSql += " where studentId=?";
             args.push(studentId);
-            conn.query(updateSql, args, function(err, classData){
+            conn.query(updateSql, args, function(err, studentData){
                 if(err){
                     conn.rollback();
                     conn.release();
@@ -141,7 +152,7 @@ Student.update = function(obj, userId, studentId, callback){
                                 return callback(err);
                             }
                             conn.release();
-                            return callback(err, data);;
+                            return callback(err, studentData);
                         });
                     });
                 }else{
@@ -152,7 +163,7 @@ Student.update = function(obj, userId, studentId, callback){
                             return callback(err);
                         }
                         conn.release();
-                        return callback(err, classData);;
+                        return callback(err, studentData);;
                     });
                 }
 
@@ -162,7 +173,7 @@ Student.update = function(obj, userId, studentId, callback){
 }
 
 Student.queryNum = function(obj, schoolIds, callback){
-    var whereSql = " 1=1 ";
+    var whereSql = " 1=1 and A.state=1 ";
     var args = new Array();
     if(obj){
         for(var key in obj){
@@ -199,7 +210,7 @@ Student.queryPage = function(obj, schoolIds, start, pageSize, callback){
         }
         whereSql = whereSql.substr(0, whereSql.length - 1) + ")";
     }
-    var querySql = "select A.*,B.className,C.schoolName from XL_STUDENT A, XL_CLASS B, XL_SCHOOL C WHERE A.schoolId=C.schoolId and B.classId=A.classId and " + whereSql;
+    var querySql = "select A.*,B.className,C.schoolName from XL_STUDENT A, XL_CLASS B, XL_SCHOOL C WHERE A.schoolId=C.schoolId and B.classId=A.classId and A.state=1 and " + whereSql;
     querySql += " limit ?,?";
     args.push(start);
     args.push(pageSize);
