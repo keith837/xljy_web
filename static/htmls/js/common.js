@@ -8,6 +8,15 @@ $.ajaxSetup({
     }
 });
 
+function initNullSelect(component) {
+    $(component).select2({
+        data: [], initSelection: function (element, callback) {
+            callback({});
+        }
+    });
+    $(component).select2("val", -1);
+}
+
 function loadSchool(){
     $.ajax({
         url: "/api/school/list",    //后台webservice里的方法名称
@@ -25,25 +34,25 @@ function loadSchool(){
                 var schoolSelect = $("#schoolId").select2({data: options});
                 if($("#classId").length==1) {
                     schoolSelect.on("change", function (e) {
-                        $("#classId").select2({data: [{id: -1, text: "请选择班级"}]});
+                        initNullSelect("#classId");
                         if ($("#studentId").length == 1) {
-                            $("#studentId").select2({data: [{id: -1, text: "请选择学生"}]});
+                            initNullSelect("#studentId");
                         }
                         getClassInfo($(this).val());
                     });
                 }
             } else {
-                $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
+                initNullSelect("#schoolId");
             }
         },
         error: function (msg) {
-            $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
+            initNullSelect("#schoolId");
         }
     });
 }
 
 function getClassInfo(schoolId) {
-    if (schoolId == "-1") {
+    if (schoolId == "-1" || schoolId == "") {
         return;
     }
     $.ajax({
@@ -63,22 +72,22 @@ function getClassInfo(schoolId) {
                 var classSelect = $("#classId").select2({data: options});
                 if($("#studentId").length==1) {
                     classSelect.on("change", function (e) {
-                        $("#studentId").select2({data: [{id: -1, text: "请选择学生"}]});
+                        initNullSelect("#studentId");
                         getStudentInfo($(this).val());
                     });
                 }
             } else {
-                $("#classId").select2({data: [{id: -1, text: "请选择班级"}]});
+                initNullSelect("#classId");
             }
         },
         error: function (msg) {
-            $("#classId").select2({data: [{id: -1, text: "请选择班级"}]});
+            initNullSelect("#classId");
         }
     });
 }
 
 function getStudentInfo(classId) {
-    if (classId == "-1") {
+    if (classId == "-1" || classId == "") {
         return;
     }
     $.ajax({
@@ -96,11 +105,11 @@ function getStudentInfo(classId) {
                 }
                 $("#studentId").select2({data: options});
             } else {
-                $("#studentId").select2({data: [{id: -1, text: "请选择学生"}]});
+                initNullSelect("#studentId");
             }
         },
         error: function (msg) {
-            $("#studentId").select2({data: [{id: -1, text: "请选择学生"}]});
+            initNullSelect("#studentId");
         }
     });
 }
