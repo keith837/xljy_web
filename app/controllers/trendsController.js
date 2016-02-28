@@ -25,9 +25,9 @@ module.exports = new basicController(__filename).init({
         var nickName = req.user.nickName;
         if (groupId == 10) {
             classId == req.user.students[0].classId;
-            schoolId = req.user.studens[0].schoolId;
-            studentId = req.user.studens[0].studentId;
-            studentName = req.user.studens[0].studentName;
+            schoolId = req.user.students[0].schoolId;
+            studentId = req.user.students[0].studentId;
+            studentName = req.user.students[0].studentName;
             nickName = studentName + nickName;
         } else if (groupId == 20) {
             classId = req.user.classes[0].classId;
