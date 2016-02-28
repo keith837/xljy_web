@@ -37,35 +37,33 @@
                     <div class="widget-content nopadding">
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form action="#" method="post" class="form-search" >
+                                <form action="/api/user/list" method="post" class="form-search" >
 
                                 <table width="100%" >
                                     <tr>
+                                        <td align="center" width="8%">
+                                            选择用户组
+                                        </td>
+                                        <td align="left" width="15%">
+                                            <div class="span12" style="margin-top:5px; margin-bottom:5px">
+                                                <input type="text" id="groupId" name="groupId" placeholder="请选择用户组" class="span12">
+                                            </div>
+                                        </td>
                                         <td align="center" width="8%">
                                             选择学校
                                         </td>
                                         <td align="left" width="15%">
                                             <div class="span12" style="margin-top:5px; margin-bottom:5px">
-                                                <select class="span11" id="schoolId">
-                                                </select>
+                                                <input type="text" id="schoolId" name="schoolId" placeholder="请选择学校" class="span12">
                                             </div>
                                         </td>
                                         <td align="center" width="8%">
-                                            选择班级
-                                        </td>
-                                        <td align="left" width="15%">
-                                            <div class="span12" style="margin-top:5px; margin-bottom:5px">
-                                                <select class="span11" id="classId">
-                                                </select>
-                                            </div>
-                                        </td>
-                                        <td align="center" width="8%">
-                                            用户名称
+                                            用户信息
                                         </td>
                                         <td align="left" width="25%">
                                             <div class="input-append span12" style="margin-top:5px; margin-bottom:5px">
-                                                <input type="text" class="span8 search-query" placeholder="请输入用户名称">
-                                                <button type="submit" class="btn">搜索</button>
+                                                <input type="text" class="span8 search-query" id="custName" name="custName" placeholder="请输入用户名或手机号">
+                                                <button type="button" class="btn" id="searchBtn">搜索</button>
                                             </div>
                                         </td>
                                         <td align="center">
@@ -143,10 +141,11 @@
      * tables
      **/
     $(document).ready(function () {
+        $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
+        $("#groupId").select2({data: [{id: -1, text: "请选择用户组"}]});
         loadSchool();
-        $("#schoolId").select2().on("change", function (e) {
-            loadClass();
-        });
+        loadGroup();
+
         $.fn.dataTable.ext.errMode = function(s,h,m){};
         var table = $('.data-table').dataTable({
             "oLanguage": {
@@ -229,6 +228,40 @@
             //    aoData.push({ "name": "name1", "value": "value1" });
             //    aoData.push({ "name": "name2", "value": "value2" });
             //}
+        });
+
+        $('#searchBtn').on( 'click', function () {
+            var paramsCheck = false;
+            var schoolId = $("#schoolId").val();
+            var params = "";
+            if (schoolId != null && schoolId != "") {
+                paramsCheck = true;
+                params = 'schoolId='+schoolId;
+            }
+
+            var groupId = $("#groupId").val();
+            if (groupId != null && groupId != "") {
+                paramsCheck = true;
+                params+='&groupId='+groupId;
+            }
+            var custName = $("#custName").val();
+            if (custName != null && custName != "") {
+                paramsCheck = true;
+                params+='&custName='+custName;
+            }
+//            console.info(params);
+//            console.info(paramsCheck);
+            if(paramsCheck==true){
+                //table.fnClearTable(); //清空一下table，不能设置
+                table.fnSettings().sAjaxSource='/api/user/list?'+params;
+//              table.fnSettings().sServerMethod='GET';
+                table.fnDraw();
+            }else{
+                table.fnSettings().sAjaxSource='/api/user/list';
+                table.fnDraw();
+            }
+
+
         });
 
         $('.data-table tbody').on( 'click', 'button#delrow', function () {
