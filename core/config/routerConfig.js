@@ -78,6 +78,19 @@ var routerConfig = {
                 "description": "修改用户信息"
             }
         },
+        menu : {
+            "usedModel": ["base/menu"],
+            "list": {
+                "url": "/api/menu/list",
+                "method": "get",
+                "description": "查询菜单"
+            },
+            "sortMenus": {
+                "url": "/api/menu/sort",
+                "method": "get",
+                "description": "菜单排序"
+            }
+        },
         group : {
             "usedModel": ["group/group"],
             "remove": {
