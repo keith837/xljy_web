@@ -48,6 +48,21 @@ module.exports = new basicController(__filename).init({
             queryCondition.push({"key": "expDate", "opr": "<=", "val": expDateEnd});
         }
 
+        var querySchoolId = request.query.schoolId;
+        if (querySchoolId) {
+            querySchoolId = parseInt(querySchoolId);
+            if (!isNaN(querySchoolId)) {
+                queryCondition.push({"key": "schoolId", "opr": "=", "val": querySchoolId});
+            }
+        }
+
+        var queryClassId = request.query.classId;
+        if (queryClassId) {
+            queryClassId = parseInt(queryClassId);
+            if (!isNaN(queryClassId)) {
+                queryCondition.push({"key": "classId", "opr": "=", "val": queryClassId});
+            }
+        }
 
         this.model['notice'].queryByNoticeType(start, pageSize, noticeTypeId, groupId, schoolId, classId, queryCondition, function (err, totalCount, res) {
             if (err) {

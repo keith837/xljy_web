@@ -233,18 +233,34 @@ Photos.addAlbumComment = function (albumId, userId, nickName, parentHandleId, co
     });
 }
 
-Photos.queryByAlbumType = function (start, pageSize, albumType, groupId, schoolId, classId, cb) {
+Photos.queryByAlbumType = function (start, pageSize, queryCondition, cb) {
     var tasks = [function (callback) {
-        var sql = "select * from XL_CLASS_ALBUM where state=1 and albumType=?";
-        var params = [albumType];
-        if (groupId === 10 || groupId === 20) {
-            sql += " and classId=?";
-            params.push(classId);
-        } else if (groupId === 30 || groupId === 40) {
-            // 同一个学校权限内
-            sql += " and schoolId=?";
-            params.push(schoolId);
+        var sql = "select * from XL_CLASS_ALBUM m where state=1 ";
+        var params = [];
+        var sqlCondition = "";
+        if (queryCondition || queryCondition.length > 0) {
+            for (var i in queryCondition) {
+                var opr = queryCondition[i].opr;
+                if (opr == "like") {
+                    sqlCondition += "and m." + queryCondition[i].key + " " + opr + " ? ";
+                    params.push("%" + queryCondition[i].val + "%");
+                } else if (opr == "in") {
+                    var ids = queryCondition[i].val;
+                    var appenderId = "";
+                    for (var k in ids) {
+                        appenderId += "?,";
+                        params.push(ids[k]);
+                    }
+                    appenderId = appenderId.substr(0, appenderId.length - 1);
+                    sqlCondition += "and m." + queryCondition[i].key + " " + opr + " (" + appenderId + ") ";
+                } else {
+                    sqlCondition += "and m." + queryCondition[i].key + " " + opr + " ? ";
+                    params.push(queryCondition[i].val);
+                }
+            }
         }
+        sql = sql + sqlCondition;
+
         var countSQL = "select count(*) as total from (" + sql + ") m";
         sql = "select * from (" + sql + " order by albumId desc) m limit ?,?";
         mysqlUtil.queryOne(countSQL, params, function (err, res) {
@@ -253,7 +269,7 @@ Photos.queryByAlbumType = function (start, pageSize, albumType, groupId, schoolI
             }
             var totalNum = res.total;
             if (totalNum === 0) {
-                return callback(new Error("没有查到相册信息."));
+                return callback(err, [0, []]);
             }
             params.push(start);
             params.push(pageSize);
@@ -290,6 +306,9 @@ Photos.findHandleById = function (albumId, handleType, callback) {
 }
 
 function findAlbumLikeByArray(totalNum, album, i, callback) {
+    if (totalNum == 0) {
+        return callback(null, [totalNum, album]);
+    }
     if (i < album.length - 1) {
         Photos.findHandleById(album[i].albumId, 1, function (err, res) {
             if (err) {
@@ -313,6 +332,9 @@ function findAlbumLikeByArray(totalNum, album, i, callback) {
 }
 
 function findAlbumCommentByArray(totalNum, album, i, callback) {
+    if (totalNum == 0) {
+        return callback(null, [totalNum, album]);
+    }
     if (i < album.length - 1) {
         Photos.findHandleById(album[i].albumId, 2, function (err, res) {
             if (err) {
@@ -336,6 +358,9 @@ function findAlbumCommentByArray(totalNum, album, i, callback) {
 }
 
 function findAlbumPicByArray(totalNum, album, i, callback) {
+    if (totalNum == 0) {
+        return callback(null, [totalNum, album]);
+    }
     if (i < album.length - 1) {
         Photos.findPicById(album[i].albumId, function (err, res) {
             if (err) {

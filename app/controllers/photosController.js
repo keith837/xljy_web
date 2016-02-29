@@ -33,13 +33,15 @@ module.exports = new basicController(__filename).init({
                 return next(this.Error("家长只能发布成长点滴"));
             }
         } else if (groupId === 20) {
-            classId = req.user.classInfo.classId;
-            schoolId = req.user.classInfo.schoolId;
+            classId = req.user.class.classId;
+            schoolId = req.user.class.schoolId;
             if (albumType === 2) {
                 return next(this.Error("教师不能发布成长点滴"));
             }
         } else if (groupId === 30 || groupId === 40) {
             return next(this.Error("园长不能发布班级相册"));
+        } else {
+            return next(this.Error("用户没有相应权限"));
         }
 
         var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "PHOTOS");
@@ -153,23 +155,53 @@ module.exports = new basicController(__filename).init({
         var userId = req.user.userId;
         var groupId = req.user.groupId;
 
-        var classId = 0;
-        var schoolId = 0;
+        var queryCondition = [];
         if (groupId === 10) {
-            classId = req.user.student.classId;
-            schoolId = req.user.student.schoolId;
+            queryCondition.push({"key": "classId", "opr": "=", "val": req.user.student.classId});
         } else if (groupId === 20) {
-            classId = req.user.classInfo.classId;
-            schoolId = req.user.classInfo.schoolId;
+            queryCondition.push({"key": "classId", "opr": "=", "val": req.user.class.classId});
         } else if (groupId === 30 || groupId === 40) {
-            schoolId = req.user.school.schoolId;
+            var schoolIds = req.user.schoolIds;
+            if (schoolIds == null || schoolIds.length <= 0) {
+                return next(this.Error("园长没有对应的学校信息"));
+            }
+            queryCondition.push({"key": "schoolId", "opr": "in", "val": schoolIds});
+        } else if (groupId == 50) {
+        } else {
+            return next(this.Error("用户没有相应权限"));
         }
         var albumType = parseInt(req.query.albumType);
         if (!albumType || isNaN(albumType)) {
             return next(this.Error("没有输入相册类型."));
         }
+        queryCondition.push({"key": "albumType", "opr": "=", "val": albumType});
 
-        this.model['photos'].queryByAlbumType(start, pageSize, albumType, groupId, schoolId, classId, function (err, totalCount, results) {
+        var publishDateStart = req.query.publishDateStart;
+        if (publishDateStart) {
+            queryCondition.push({"key": "createDate", "opr": ">=", "val": publishDateStart});
+        }
+        var publishDateEnd = req.query.publishDateEnd;
+        if (publishDateEnd) {
+            queryCondition.push({"key": "createDate", "opr": "<=", "val": publishDateEnd});
+        }
+
+        var querySchoolId = req.query.schoolId;
+        if (querySchoolId) {
+            querySchoolId = parseInt(querySchoolId);
+            if (!isNaN(querySchoolId)) {
+                queryCondition.push({"key": "schoolId", "opr": "=", "val": querySchoolId});
+            }
+        }
+
+        var queryClassId = req.query.classId;
+        if (queryClassId) {
+            queryClassId = parseInt(queryClassId);
+            if (!isNaN(queryClassId)) {
+                queryCondition.push({"key": "classId", "opr": "=", "val": queryClassId});
+            }
+        }
+
+        this.model['photos'].queryByAlbumType(start, pageSize, queryCondition, function (err, totalCount, results) {
             if (err) {
                 return next(err);
             }
@@ -196,10 +228,10 @@ module.exports = new basicController(__filename).init({
             studentName = req.user.student.studentName;
             nickName = studentName + nickName;
         } else if (groupId === 20) {
-            classId = req.user.classInfo.classId;
-            schoolId = req.user.classInfo.schoolId;
+            classId = req.user.class.classId;
+            schoolId = req.user.class.schoolId;
         } else if (groupId === 30 || groupId === 40) {
-            schoolId = req.user.school.schoolId;
+            schoolId = req.user.schoolIds[0];
         }
 
         var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "PHOTOS");
