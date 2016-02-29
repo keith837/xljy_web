@@ -5,7 +5,7 @@ module.exports = new basicController(__filename).init({
         var self = this;
         var brandName = req.body.brandName;
         var bUserId = req.body.bUserId;
-        var brandUrl = req.body.brandUrl;
+        var brandDesc = req.body.brandDesc;
         var remark = req.body.remark;
         var oUserId = req.user.userId;
         if(!brandName){
@@ -14,7 +14,7 @@ module.exports = new basicController(__filename).init({
         if(!bUserId){
             return next("集团园长编号不能为空");
         }
-        self.model["brand"].save([brandName,bUserId,brandUrl,oUserId,remark], function(err, data){
+        self.model["brand"].save([brandName,bUserId,brandDesc,oUserId,remark], function(err, data){
             if(err){
                 return next(err);
             }

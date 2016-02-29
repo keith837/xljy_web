@@ -3,7 +3,7 @@ var mysqlUtil = require("../../../core/utils/pool/mysql/mysqlPool");
 var Brand = module.exports;
 
 Brand.findByBrandId = function(brandId, callback){
-    var sql = "select A.*,B.custName,B.userName,B.nickName from XL_BRAND A, XL_USER B where A.bUserId=B.userId where";
+    var sql = "select A.*,B.custName,B.userName,B.nickName from XL_SCHOOL_BRAND A, XL_USER B where A.bUserId=B.userId and";
     sql += " A.state = 1 and brandId = ?";
     mysqlUtil.queryOne(sql, [brandId], callback);
 }
@@ -22,7 +22,7 @@ Brand.queryNum = function(obj, callback){
             args.push(schoolObj[key]);
         }
     }
-    var countSql = "select count(*) as total from XL_BRAND A, XL_USER B where A.bUserId=B.userId where " + whereSql;
+    var countSql = "select count(*) as total from XL_SCHOOL_BRAND A, XL_USER B where A.bUserId=B.userId where " + whereSql;
     mysqlUtil.queryOne(countSql, args, callback);
 }
 
@@ -42,7 +42,7 @@ Brand.queryPage = function(obj, start, pageSize, callback){
             args.push(obj[key]);
         }
     }
-    var querySql = "select A.*,B.custName,B.userName,B.nickName from XL_BRAND A, XL_USER B where A.bUserId=B.userId where " + whereSql;
+    var querySql = "select A.*,B.custName,B.userName,B.nickName from XL_SCHOOL_BRAND A, XL_USER B where A.bUserId=B.userId where " + whereSql;
     querySql += " limit ?,?";
     args.push(start);
     args.push(pageSize);
@@ -81,7 +81,7 @@ Brand.listByPage = function(obj, start, pageSize, callback){
  * @param callback
  */
 Brand.update = function(obj, brandId, callback){
-    var sql = "update XL_BRAND set ";
+    var sql = "update XL_SCHOOL_BRAND set ";
     var args = new Array();
     for(var key in obj){
         sql += key + "=?,";
@@ -99,7 +99,7 @@ Brand.update = function(obj, brandId, callback){
  * @param callback
  */
 Brand.del = function(brandId, callback){
-    mysqlUtil.query("update XL_BRAND set state=0 where brandId=?", [brandId], callback);
+    mysqlUtil.query("update XL_SCHOOL_BRAND set state=0 where brandId=?", [brandId], callback);
 }
 
 /**
@@ -108,7 +108,7 @@ Brand.del = function(brandId, callback){
  * @param callback
  */
 Brand.save = function(args, callback){
-    var sql = "insert into XL_BRAND(brandName,bUserId,brandUrl,state,createDate,doneDate,oUserId,remark";
+    var sql = "insert into XL_SCHOOL_BRAND(brandName,bUserId,brandDesc,state,createDate,doneDate,oUserId,remark";
     sql += ") values (?,?,?,1,now(),now(),?,?)";
     mysqlUtil.query(sql, args, callback);
 }
