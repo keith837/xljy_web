@@ -150,7 +150,7 @@ var routerConfig = {
         },
 
         brand : {
-            "usedModel": ["school/brand"],
+            "usedModel": ["school/brand", "school/school"],
             "list": {
                 "url": "/api/brand/list",
                 "method": "get",
