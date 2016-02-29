@@ -11,26 +11,42 @@ module.exports = new basicController(__filename).init({
         var start = parseInt(request.query.iDisplayStart || this.webConfig.iDisplayStart);
         var pageSize = parseInt(request.query.iDisplayLength || this.webConfig.iDisplayLength);
 
+        var queryCondition = [];
         var userId = request.user.userId;
         var groupId = request.user.groupId;
 
-        var classId = 0;
-        var schoolId = 0;
+        var classId = {};
+        var schoolId = {};
         if (groupId === 10) {
-            classId = request.user.student.classId;
-            schoolId = request.user.student.schoolId;
+            classId = {"key": "classId", "opr": "=", "val": request.user.student.classId};
+            schoolId = {"key": "schoolId", "opr": "=", "val": request.user.student.schoolId};
         } else if (groupId === 20) {
-            classId = request.user.classInfo.classId;
-            schoolId = request.user.classInfo.schoolId;
+            classId = {"key": "classId", "opr": "=", "val": request.user.class.classId};
+            schoolId = {"key": "schoolId", "opr": "=", "val": request.user.class.schoolId};
         } else if (groupId === 30 || groupId === 40) {
-            schoolId = request.user.school.schoolId;
+            var schoolIds = request.user.schoolIds;
+            if (schoolIds == null || schoolIds.length <= 0) {
+                return next(this.Error("园长没有对应的学校信息"));
+            }
+            schoolId = {"key": "schoolId", "opr": "in", "val": schoolIds};
         }
         var noticeTypeId = parseInt(request.query.noticeTypeId);
         if (!noticeTypeId || isNaN(noticeTypeId)) {
             return next(this.Error("没有输入通知类型."));
         }
+        queryCondition.push({"key": "noticeTypeId", "opr": "=", "val": noticeTypeId});
 
-        this.model['notice'].queryByNoticeType(start, pageSize, noticeTypeId, groupId, schoolId, classId, function (err, totalCount, res) {
+        var expDateStart = request.query.expDateStart;
+        if (expDateStart) {
+            queryCondition.push({"key": "expDate", "opr": ">=", "val": expDateStart});
+        }
+        var expDateEnd = request.query.expDateEnd;
+        if (expDateEnd) {
+            queryCondition.push({"key": "expDate", "opr": "<=", "val": expDateEnd});
+        }
+
+
+        this.model['notice'].queryByNoticeType(start, pageSize, noticeTypeId, groupId, schoolId, classId, queryCondition, function (err, totalCount, res) {
             if (err) {
                 return next(err);
             }
