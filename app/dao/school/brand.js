@@ -22,7 +22,7 @@ Brand.queryNum = function(obj, callback){
             args.push(schoolObj[key]);
         }
     }
-    var countSql = "select count(*) as total from XL_SCHOOL_BRAND A, XL_USER B where A.bUserId=B.userId where " + whereSql;
+    var countSql = "select count(*) as total from XL_SCHOOL_BRAND A, XL_USER B where A.bUserId=B.userId and " + whereSql;
     mysqlUtil.queryOne(countSql, args, callback);
 }
 
@@ -42,7 +42,7 @@ Brand.queryPage = function(obj, start, pageSize, callback){
             args.push(obj[key]);
         }
     }
-    var querySql = "select A.*,B.custName,B.userName,B.nickName from XL_SCHOOL_BRAND A, XL_USER B where A.bUserId=B.userId where " + whereSql;
+    var querySql = "select A.*,B.custName,B.userName,B.nickName from XL_SCHOOL_BRAND A, XL_USER B where A.bUserId=B.userId and " + whereSql;
     querySql += " limit ?,?";
     args.push(start);
     args.push(pageSize);
@@ -57,7 +57,7 @@ Brand.queryPage = function(obj, start, pageSize, callback){
  * @param callback
  */
 Brand.listByPage = function(obj, start, pageSize, callback){
-    School.queryNum(obj, function(err, data){
+    Brand.queryNum(obj, function(err, data){
         if(err){
             return callback(err);
         }
@@ -65,7 +65,7 @@ Brand.listByPage = function(obj, start, pageSize, callback){
         if(data){
             total = data.total;
         }
-        School.queryPage(obj, start, pageSize, function(err, users){
+        Brand.queryPage(obj, start, pageSize, function(err, users){
             if(err){
                 return callback(err);
             }

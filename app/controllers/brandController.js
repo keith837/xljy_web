@@ -95,7 +95,7 @@ module.exports = new basicController(__filename).init({
             if(err){
                 return next(err);
             }
-            res.josn({
+            res.json({
                 code : "00",
                 data : brand
             });
