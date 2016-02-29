@@ -6,7 +6,7 @@ var Notice = module.exports;
 var mysqlUtil = require("../../../core/utils/pool/mysql/mysqlPool");
 var async = require("async");
 
-Notice.queryByNoticeType = function (start, pageSize, noticeTypeId, groupId, schoolId, classId, callback) {
+Notice.queryByNoticeType = function (start, pageSize, noticeTypeId, groupId, schoolId, classId, queryCondition, callback) {
 
     mysqlUtil.queryOne("select * from XL_NOTICE_ROLE_REL where state=1 and noticeTypeId=? and groupId=?", [noticeTypeId, groupId], function (err, res) {
         if (err) {
@@ -17,17 +17,40 @@ Notice.queryByNoticeType = function (start, pageSize, noticeTypeId, groupId, sch
             return callback(new Error("根据组ID无法查询到通知类型配置"));
         }
         var relType = res.relType;
-        var sql = "select * from XL_NOTICE where state=1 and expDate>=date_add(curdate(),interval 1 day)";
+        var sql = "select * from XL_NOTICE m where state=1 and expDate>=date_add(curdate(),interval 1 day) ";
         var params = [];
         //同一个班级权限内
         if (relType === 1) {
-            sql += " and classId=?";
-            params.push(classId);
+            queryCondition.push(classId);
         } else if (relType === 2) {
             // 同一个学校权限内
-            sql += " and schoolId=?";
-            params.push(schoolId);
+            queryCondition.push(schoolId);
         }
+
+        var sqlCondition = "";
+        if (queryCondition || queryCondition.length > 0) {
+            for (var i in queryCondition) {
+                var opr = queryCondition[i].opr;
+                if (opr == "like") {
+                    sqlCondition += "and m." + queryCondition[i].key + " " + opr + " ? ";
+                    params.push("%" + queryCondition[i].val + "%");
+                } else if (opr == "in") {
+                    var ids = queryCondition[i].val;
+                    var appenderId = "";
+                    for (var k in ids) {
+                        appenderId += "?,";
+                        params.push(ids[k]);
+                    }
+                    appenderId = appenderId.substr(0, appenderId.length - 1);
+                    sqlCondition += "and m." + queryCondition[i].key + " " + opr + " (" + appenderId + ") ";
+                } else {
+                    sqlCondition += "and m." + queryCondition[i].key + " " + opr + " ? ";
+                    params.push(queryCondition[i].val);
+                }
+            }
+        }
+        sql = sql + sqlCondition;
+
         var countSQL = "select count(*) as total from (" + sql + ") m";
         sql = "select * from (" + sql + " order by effDate asc) m limit ?,?";
         mysqlUtil.queryOne(countSQL, params, function (err, res) {
@@ -35,6 +58,9 @@ Notice.queryByNoticeType = function (start, pageSize, noticeTypeId, groupId, sch
                 return callback(err);
             }
             var totalNum = res.total;
+            if (totalNum === 0) {
+                return callback(err, 0, []);
+            }
             params.push(start);
             params.push(pageSize);
             mysqlUtil.query(sql, params, function (err, res) {

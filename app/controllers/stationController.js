@@ -10,32 +10,33 @@ module.exports = new basicController(__filename).init({
         var schoolId = request.query.schoolId;
         var stationMac = request.query.stationMac;
 
-        this.model['school'].listByPrincipalId(userId, function (err, schools) {
+        var groupId = request.user.groupId;
+        var schools = null;
+        if (groupId === 20) {
+            schools = {"key": "schoolId", "opr": "=", "val": request.user.class.schoolId};
+        } else if (groupId === 30 || groupId === 40) {
+            schools = {"key": "schoolId", "opr": "in", "val": request.user.schoolIds};
+        } else if (groupId === 50) {
+        } else {
+            return next(self.Error("用户没有相应权限"))
+        }
+
+        if (stationMac) {
+            queryCondition.push({"key": "stationMac", "opr": "like", "val": stationMac});
+        }
+        if (schoolId) {
+            queryCondition.push({"key": "schoolId", "opr": "=", "val": parseInt(schoolId)});
+        } else {
+            if (schools != null) {
+                queryCondition.push(schools);
+            }
+        }
+
+        self.model['station'].queryPage(start, pageSize, queryCondition, function (err, totalCount, res) {
             if (err) {
                 return next(err);
             }
-            if (!schools || schools.length <= 0) {
-                return next(self.Error("用户[" + userId + "]没有权限查看基站信息."));
-            }
-            if (stationMac) {
-                queryCondition.push({"key": "stationMac", "opr": "like", "val": stationMac});
-            }
-            if (schoolId) {
-                queryCondition.push({"key": "schoolId", "opr": "=", "val": parseInt(schoolId)});
-            } else {
-                var schoolIDs = [];
-                for (var i = 0; i < schools.length; i++) {
-                    schoolIDs.push(schools[i].schoolId);
-                }
-                queryCondition.push({"key": "schoolId", "opr": "in", "val": schoolIDs});
-            }
-
-            self.model['station'].queryPage(start, pageSize, queryCondition, function (err, totalCount, res) {
-                if (err) {
-                    return next(err);
-                }
-                response.json(self.createPageData("00", totalCount, res));
-            });
+            response.json(self.createPageData("00", totalCount, res));
         });
     },
 
