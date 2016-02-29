@@ -13,8 +13,8 @@ var routerConfig = {
                 "method": "post",
                 "description": "用户登录"
             }
-        }
-        ,
+        },
+
         user: {
             "usedModel": ["user/user", "user/smsLog", "user/userLogin", "school/school", "student/student", "school/class"],
             "login": {
@@ -78,17 +78,13 @@ var routerConfig = {
                 "description": "修改用户信息"
             }
         },
+
         menu : {
             "usedModel": ["base/menu"],
             "list": {
                 "url": "/api/menu/list",
                 "method": "get",
                 "description": "查询菜单"
-            },
-            "sortMenus": {
-                "url": "/api/menu/sort",
-                "method": "get",
-                "description": "菜单排序"
             }
         },
         group : {
@@ -150,8 +146,38 @@ var routerConfig = {
                 "url": "/api/school/add",
                 "method": "post",
                 "description": "新增园所"
-            },
+            }
         },
+
+        brand : {
+            "usedModel": ["school/brand"],
+            "list": {
+                "url": "/api/brand/list",
+                "method": "get",
+                "description": "查询所有品牌"
+            },
+            "show": {
+                "url": "/api/brand/show/:brandId",
+                "method": "get",
+                "description": "查询品牌"
+            },
+            "del": {
+                "url": "/api/brand/del/:brandId",
+                "method": "delete",
+                "description": "删除品牌"
+            },
+            "modify": {
+                "url": "/api/brand/modify/:brandId",
+                "method": "put",
+                "description": "修改品牌"
+            },
+            "add": {
+                "url": "/api/brand/add",
+                "method": "post",
+                "description": "新增品牌"
+            }
+        },
+
         student : {
             "usedModel": ["student/student", "school/class", "school/school"],
             "select": {
