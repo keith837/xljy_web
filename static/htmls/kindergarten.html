@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" href="css/fullcalendar.css" />
     <link rel="stylesheet" href="css/colorpicker.css" />
     <link rel="stylesheet" href="css/datepicker.css" />
@@ -13,6 +14,7 @@
     <link rel="stylesheet" href="css/select2.css" />
     <link rel="stylesheet" href="css/unicorn.main.css" />
     <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <link rel="stylesheet" href="css/sweetalert.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
 <body>
@@ -115,12 +117,13 @@
 <script src="js/jquery.ui.custom.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-colorpicker.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/bootstrap-datetimepicker.min.js"></script>
 <script src="js/jquery.uniform.js"></script>
 <script src="js/select2.min.js"></script>
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
+<script src="js/sweetalert.min.js" charset="utf-8"></script>
 <script>
     /**
      * tables
@@ -162,7 +165,7 @@
             "bServerSide": true,
             // "sAjaxDataProp":"data.aaData",
 //            "sAjaxDataProp":"aaData",
-            "sAjaxSource": "/api/school/list",
+            "sAjaxSource": "/api/school/listall",
             "sServerMethod": "GET",
             "aoColumns": [
                 {"mDataProp": "schoolName"},
@@ -187,14 +190,15 @@
             //}
         });
 
+
         $('#searchBtn').on( 'click', function () {
             var schoolName = $("#schoolName").val();
             if (schoolName == null || schoolName == "") {
-                table.fnSettings().sAjaxSource='/api/school/list';
+                table.fnSettings().sAjaxSource='/api/school/listall';
                 table.fnDraw();
             }else{
                 //table.fnClearTable(); //清空一下table，不能设置
-                table.fnSettings().sAjaxSource='/api/school/list?schoolName='+schoolName;
+                table.fnSettings().sAjaxSource='/api/school/listall?schoolName='+schoolName;
 //              table.fnSettings().sServerMethod='GET';
                 table.fnDraw();
             }

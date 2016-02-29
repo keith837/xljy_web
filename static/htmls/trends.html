@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" href="css/fullcalendar.css" />
     <link rel="stylesheet" href="css/colorpicker.css" />
     <link rel="stylesheet" href="css/datepicker.css" />
@@ -44,13 +45,9 @@
                                         <td align="center" width="8%">
                                             选择学校
                                         </td>
-                                        <td align="left" width="20%">
+                                        <td align="left" width="33%">
                                             <div class="span12" style="margin-top:5px; margin-bottom:5px">
-                                                <select class="span12">
-                                                    <option>长岛幼儿园</option>
-                                                    <option>萧山幼儿园</option>
-                                                    <option>滨文高教园</option>
-                                                </select>
+                                                <input type="text" id="schoolId" name="schoolId" placeholder="请选择学校" class="span12">
                                             </div>
                                         </td>
                                         <td align="center" width="8%">
@@ -58,28 +55,16 @@
                                         </td>
                                         <td align="left" width="10%">
                                             <div class="span12" style="margin-top:5px; margin-bottom:5px">
-                                                <select class="span12">
-                                                    <option value="1">托一班</option>
-                                                    <option value="2">托二班</option>
-                                                    <option value="3">小一班</option>
-                                                    <option value="4">中一班</option>
-                                                    <option value="5">大一班</option>
-                                                </select>
+                                                <input type="text" id="classId" name="classId" placeholder="请选择班级" class="span12">
                                             </div>
                                         </td>
                                         <td align="center" width="8%">
-                                            考勤状态
+                                            动态标题
                                         </td>
                                         <td>
-                                            <select class="span8">
-                                                <option>未佩戴设备</option>
-                                                <option>正常到校</option>
-                                                <option>非正常到校</option>
-                                                <option>未到校</option>
-                                                <option>正常离校</option>
-                                                <option>非正常离校</option>
-                                                <option>请假</option>
-                                            </select>
+                                            <div class="span12" style="margin-top:5px; margin-bottom:5px">
+                                                <input type="text" id="trendsContent" name="trendsContent" placeholder="请输入动态" class="span12">
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -88,22 +73,22 @@
                                         </td>
                                         <td align="left">
                                             <div class="span12" style="margin-top:5px; margin-bottom:5px">
-                                                <input class="span5" type="text" placeholder="开始时间">
+                                                <input class="form_datetime span5" id="beginTime" name="beginTime" type="text" placeholder="开始时间">
                                                 &nbsp;
                                                 至
-                                                &nbsp;
-                                                <input class="span5" type="text" placeholder="结束时间">
+                                                &nbsp;&nbsp;
+                                                <input class="form_datetime span5" id="endTime" name="endTime" type="text" placeholder="结束时间">
                                             </div>
                                         </td>
                                         <td align="center">
                                             学生姓名
                                         </td>
                                         <td align="left" width="10%">
-                                            <input size="24" type="text" placeholder="请输入学生姓名">
+                                            <input type="text" name="custName" id="custName" placeholder="请输入发布者">
                                         </td>
                                         <td colspan="2" align="left">
                                             <div style=margin-left:80px;">
-                                                <button type="submit" class="btn">搜索</button>
+                                                <button type="button" class="btn" id="searchBtn">搜索</button>
                                                 <button type="submit" class="btn">导出</button>
                                             </div>
                                         </td>
@@ -132,21 +117,20 @@
                         <table class="table table-bordered data-table">
                             <thead>
                             <tr>
-                                <th>编号</th>
-                                <th>图片</th>
-                                <th>图片数量</th>
-                                <th>描述</th>
-                                <th>老师</th>
-                                <th>发布时间</th>
-                                <th>学校</th>
-                                <th>班级</th>
-                                <th>评论</th>
-                                <th>点赞</th>
-                                <th width="25%">操作</th>
+                                <th width="5%">编号</th>
+                                <th width="7%">图片数量</th>
+                                <th>标题</th>
+                                <th width="8%">用户</th>
+                                <th width="14%">发布时间</th>
+                                <th width="14%">学校</th>
+                                <th width="14%">班级</th>
+                                <th width="6%">评论数</th>
+                                <th width="6%">点赞数</th>
+                                <th width="16%">操作</th>
                             </tr>
                             </thead>
                             <tbody>
-                            
+
                             </tbody>
                         </table>
                     </div>
@@ -162,18 +146,192 @@
     </div>
 </div>
 
+
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.cookie.js" charset="utf-8"></script>
 <script src="js/common.js"></script>
 <script src="js/jquery.ui.custom.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-colorpicker.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/bootstrap-datetimepicker.min.js"></script>
 <script src="js/jquery.uniform.js"></script>
 <script src="js/select2.min.js"></script>
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
 <script src="js/sweetalert.min.js" charset="utf-8"></script>
+<script>
+
+    /**
+     * tables
+     **/
+    $(document).ready(function () {
+        $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
+        $("#classId").select2({data: [{id: -1, text: "请选择班级"}]});
+        loadSchool();
+        $.fn.datetimepicker.dates['zh-CN'] = {
+            days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+            daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+            daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
+            months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+            monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+            today: "今日",
+            suffix: [],
+            meridiem: ["上午", "下午"]
+        };
+        $(".form_datetime").datetimepicker({
+            //minView: "month", //选择日期后，不会再跳转去选择时分秒
+            format: 'yyyy-mm-dd hh:ii',
+            language: 'zh-CN',
+            autoclose:true //选择日期后自动关闭
+        });
+        $.fn.dataTable.ext.errMode = function(s,h,m){};
+        var table = $('.data-table').dataTable({
+            "oLanguage": {
+                "sLengthMenu": "每页显示 _MENU_ 条记录",
+                "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                "sInfoEmpty": "没有数据",
+                "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "前一页",
+                    "sNext": "后一页",
+                    "sLast": "尾页"
+                },
+                "sZeroRecords": "没有检索到数据",
+                "sProcessing": "<img src='./img/loading.gif' />"
+            },
+//            "bInfo": true,
+            "bJQueryUI": true,
+            "bLengthChange": false,
+//            "bPaginate":true,
+            "bProcessing" : true,
+            'bStateSave': true,
+            "bRetrieve": true,
+            "bDestroy":true,
+            "sPaginationType": "full_numbers",
+            "iDisplayLength": iDisplayLength,
+            "bFilter": false,
+            "sDom": '<""l>t<"F"fp>',
+
+//            "iTotalRecords":"data.iTotalRecords",
+            "bServerSide": true,
+            // "sAjaxDataProp":"data.aaData",
+//            "sAjaxDataProp":"aaData",
+            "sAjaxSource": "/api/trends/list",
+            "sServerMethod": "GET",
+            "aoColumns": [
+                {"mDataProp": "trendsId"},
+                {"mDataProp": function(obj){
+                    return obj.pics.length;
+                }},
+                {"mDataProp": "content"},
+                {"mDataProp": "nickName"},
+                {"mDataProp": "createDate"},
+                {"mDataProp": "schoolId"},
+                {"mDataProp": "classId"},
+                {"mDataProp": "commentNum"},
+                {"mDataProp": "likesNum"}
+            ],
+            "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
+                {
+                    "targets": [9],
+                    "data": null,
+                    "bSortable": false,
+                    "defaultContent": "<button class='btn'><i class='icon-eye-open'></i> 详情</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
+                }
+            ]
+            //"fnServerParams": function (aoData) {
+            //    aoData.push({ "name": "name1", "value": "value1" });
+            //    aoData.push({ "name": "name2", "value": "value2" });
+            //}
+        });
+        $('#searchBtn').on( 'click', function () {
+            var paramsCheck = false;
+            var schoolId = $("#schoolId").val();
+            var params = "";
+            if (schoolId != null && schoolId != "") {
+                paramsCheck = true;
+                params = 'schoolId='+schoolId;
+            }
+
+            var classId = $("#classId").val();
+            if (classId != null && classId != "") {
+                paramsCheck = true;
+                params+='&classId='+classId;
+            }
+            var content = $("#trendsContent").val();
+            if (content != null && content != "") {
+                paramsCheck = true;
+                params+='&content='+content;
+            }
+            var beginTime = $("#beginTime").val();
+            if (beginTime != null && beginTime != "") {
+                paramsCheck = true;
+                params+='&beginTime='+beginTime;
+            }
+            var endTime = $("#endTime").val();
+            if (endTime != null && endTime != "") {
+                paramsCheck = true;
+                params+='&endTime='+endTime;
+            }
+            var custName = $("#custName").val();
+            if (custName != null && custName != "") {
+                paramsCheck = true;
+                params+='&custName='+custName;
+            }
+//            console.info(params);
+//            console.info(paramsCheck);
+            if(paramsCheck==true){
+                //table.fnClearTable(); //清空一下table，不能设置
+                table.fnSettings().sAjaxSource='/api/trends/list?'+params;
+//              table.fnSettings().sServerMethod='GET';
+                table.fnDraw();
+            }else{
+                table.fnSettings().sAjaxSource='/api/trends/list';
+                table.fnDraw();
+            }
+
+
+        });
+
+        $('.data-table tbody').on( 'click', 'button#delrow', function () {
+            //var row = table.row( $(this).parents('tr') ).data();
+            var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
+
+            swal({
+                title: "确认删除?",
+                text: "您将删除动态【"+row.content+"】",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "删除",
+                cancelButtonText: "取消",
+                closeOnConfirm: false
+            }, function(){
+                $.ajax({
+                    url: '/api/trends/del/'+row.trendsId,
+                    type: 'DELETE',
+                    dataType: 'json'
+                })
+                        .done(function(data) {
+                            if (data.code=="00") {
+                                swal({   title: "删除成功!",   text: "删除数据成功",type:"success",   timer: 2000,   showConfirmButton: true });
+                                table.fnClearTable(); //清空一下table
+                                //table.fnDestroy(); //还原初始化了的datatable
+                                table.fnDraw();
+                            }else{
+                                swal("删除失败!", data.msg, "error");
+                            };
+                        })
+                        .fail(function() {
+                            swal("删除失败!", "删除数据失败", "error");
+                        });
+
+            });
+
+        });
+    });
+</script>
 </body>
 </html>
