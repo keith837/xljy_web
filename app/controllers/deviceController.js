@@ -10,29 +10,15 @@ module.exports = new basicController(__filename).init({
         var pageSize = parseInt(request.query.iDisplayLength || this.webConfig.iDisplayLength);
         var queryCondition = [];
         var groupId = request.user.groupId;
-        var schools = request.user.schools;
-        var classes = request.user.classes;
         if (groupId === 20) {
-            if (classes && classes.length >= 1) {
-                var classId = [];
-                for (var i in classes) {
-                    classId.push(classes[i].classId);
-                }
-                queryCondition.push({"key": "classId", "opr": "in", "val": classId});
-            } else {
-                return next(self.Error("没有用户对应的班级信息."));
-            }
+            queryCondition.push({"key": "classId", "opr": "=", "val": request.user.class.classId});
         } else if (groupId === 30 || groupId === 40) {
-            if (schools && schools.length >= 1) {
-                var schoolId = [];
-                for (var i in schools) {
-                    schoolId.push(schools[i].schoolId);
-                }
-                queryCondition.push({"key": "schoolId", "opr": "in", "val": schoolId});
-            } else {
-                return next(self.Error("没有用户对应的学校信息."));
-            }
+            queryCondition.push({"key": "schoolId", "opr": "in", "val": request.user.schoolIds});
+        } else if (groupId === 50) {
+        } else {
+            return next(self.Error("用户没有相应权限"))
         }
+
         var deviceSign = request.query.deviceSign;
         if (deviceSign) {
             queryCondition.push({"key": "deviceSign", "opr": "like", "val": deviceSign});

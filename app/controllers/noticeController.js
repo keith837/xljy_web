@@ -29,6 +29,9 @@ module.exports = new basicController(__filename).init({
                 return next(this.Error("园长没有对应的学校信息"));
             }
             schoolId = {"key": "schoolId", "opr": "in", "val": schoolIds};
+        } else if (groupId == 50) {
+        } else {
+            return next(this.Error("用户没有相应权限"));
         }
         var noticeTypeId = parseInt(request.query.noticeTypeId);
         if (!noticeTypeId || isNaN(noticeTypeId)) {
@@ -84,10 +87,13 @@ module.exports = new basicController(__filename).init({
             classId == request.user.student.classId;
             schoolId = request.user.student.schoolId;
         } else if (groupId == 20) {
-            classId = request.user.classInfo.classId;
-            schoolId = request.user.classInfo.schoolId;
+            classId = request.user.class.classId;
+            schoolId = request.user.class.schoolId;
         } else if (groupId == 30 || groupId == 40) {
-            schoolId = request.user.school.schoolId;
+            schoolId = request.user.schoolIds[0];
+        } else if (groupId == 50) {
+        } else {
+            return next(this.Error("用户没有相应权限"));
         }
         form.parse(request, function (err, fields, files) {
             var content = fields.content;
