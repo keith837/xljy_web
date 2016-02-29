@@ -145,7 +145,7 @@ module.exports = new basicController(__filename).init({
             if (err) {
                 return next(err);
             }
-            if (!trends) {
+            if (!trends || trends.length <= 0) {
                 return res.json(self.createPageData("00", total, trends));
             }
             var trendsIds = new Array();
