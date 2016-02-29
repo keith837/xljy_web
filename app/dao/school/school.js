@@ -44,6 +44,11 @@ School.listByBrandId = function(brandId, callback){
     mysqlUtil.query("select A.*,B.gUserId,B.brandName from XL_SCHOOL A left join XL_SCHOOL_BRAND B on A.brandId=B.brandId where A.state=1 and B.brandId = ? ", [brandId], callback);
 }
 
+School.countSchoolByBrandId = function(brandId, callback){
+    var sql = "select count(*) as total from XL_SCHOOL where state =1 and brandId = ?";
+    mysqlUtil.queryOne(sql, brandId, callback);
+}
+
 /**
  * 根据品牌查询学校
  */
