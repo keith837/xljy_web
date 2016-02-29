@@ -35,11 +35,14 @@ function sortMenus(rootId, menus){
         if(parentId == 0){
             continue;
         }
-        var childs = rootMenus[parentId].childs;
-        if(!childs){
-            childs = rootMenus[parentId].childs = new Array();
+        var parentMenu = rootMenus[parentId];
+        if(parentMenu){
+            var childs = parentMenu.childs;
+            if(!childs){
+                childs = parentMenu.childs = new Array();
+            }
+            childs.push(menus[i]);
         }
-        childs.push(menus[i]);
     }
     return retMenus;
 }
