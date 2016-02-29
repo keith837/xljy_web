@@ -71,7 +71,7 @@ module.exports = new basicController(__filename).init({
             if(err){
                 return next(err);
             }
-            if(schools && schools.tatal > 0){
+            if(schools && schools.total > 0){
                 return next(new Error("该品牌已关联学校，不允许删除"));
             }
             self.model['brand'].del(brandId, function(err, data){
