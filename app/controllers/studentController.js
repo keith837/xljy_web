@@ -231,7 +231,8 @@ module.exports = new basicController(__filename).init({
                         parentsArray.push({
                             nickName: parents[i].nickName,
                             userId: parents[i].userId,
-                            custName: parents[i].custName
+                            custName: parents[i].custName,
+                            userName: parents[i].userName
                         });
                     }
                 }
@@ -285,7 +286,8 @@ module.exports = new basicController(__filename).init({
                     parentsArray.push({
                         nickName: parents[i].nickName,
                         userId: parents[i].userId,
-                        custName: parents[i].custName
+                        custName: parents[i].custName,
+                        userName: parents[i].userName
                     });
                 }
                 for(var i = 0; i < students.length; i ++){
