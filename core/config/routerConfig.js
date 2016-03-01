@@ -280,7 +280,7 @@ var routerConfig = {
                 "description": "班级关联老师"
             },
             "teachers" : {
-                "url": "/api/class/teachers/:classId",
+                "url": "/api/class/teachers",
                 "method": "get",
                 "description": "班级老师通讯录"
             },
