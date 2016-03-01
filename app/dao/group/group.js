@@ -11,6 +11,11 @@ Group.queryAllNum = function (condition, params, callback) {
     });
 }
 
+Group.mylistByGroupId = function(groupId, callback){
+    var sql = "select * from XL_USER_GROUP where groupId < ?";
+    mysqlUtil.query(sql, [groupId], callback);
+}
+
 Group.queryPage = function (start, pageSize, queryCondition, callback) {
     var sqlCondition = " m.state=1 ";
     var sqlParams = [];
