@@ -110,7 +110,7 @@ var routerConfig = {
                 "description": "编辑用户组"
             },
             "mylist" : {
-                "url": "/apigroup/mylist/:groupId",
+                "url": "/api/group/mylist/:groupId",
                 "method": "get",
                 "description": "查询当前用户可操作的用户组"
             }
