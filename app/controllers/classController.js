@@ -218,7 +218,15 @@ module.exports = new basicController(__filename).init({
 
     teachers : function(req, res, next){
         var self = this;
-        var classId = parseInt(req.params.classId);
+        var classId = req.query.classId;
+        if(!classId){
+            var groupId = req.user.groupId;
+            if(groupId == 10 || groupId == 20){
+                classId = req.user.classId;
+            }else{
+                return next(new Error("请传人班级编号"));
+            }
+        }
         self.model['class'].listTeacherByClassId(classId, function(err, teachers){
             if(err){
                 return next(err);
