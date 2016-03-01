@@ -27,6 +27,16 @@ Class.listTeacherByClassId = function(classId, callback){
 }
 
 /**
+ * 班级园长查询
+ * @param classId
+ * @param callback
+ */
+Class.findPrincipalBySchoolId = function(classId, callback){
+    var sql = "select C.userId,C.userName,C.custName,C.nickName,A.schoolId,A.schoolName from XL_SCHOOL A, XL_CLASS B, XL_USER C where A.schoolId=B.schoolId and A.sUserId=C.userId and B.classId=?";
+    mysqlUtil.queryOne(sql, [classId], callback);
+}
+
+/**
  * 根据班级统计非班主任老师个数，供班级删除时校验
  * @param classId
  * @param callback

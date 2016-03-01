@@ -242,6 +242,20 @@ module.exports = new basicController(__filename).init({
                 data : students
             });
         });
+    },
+
+    principal : function(req, res, next){
+        var self = this;
+        var classId = parseInt(req.params.classId);
+        self.model['class'].findPrincipalBySchoolId(classId, function(err, principal){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                principal : principal ? principal : null
+            })
+        });
     }
 
 });
