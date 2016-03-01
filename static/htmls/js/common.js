@@ -2,6 +2,7 @@
  * Created by lynn on 2016/2/20.
  */
 var iDisplayLength = 5;
+var autoCloseTime = 2000;
 $.ajaxSetup({
     headers: {
         "Set-Token": $.cookie('token')

@@ -122,16 +122,39 @@
             var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
             return this.optional(element) || (length == 11 && mobile.test(value));
         }, "请正确填写您的手机号码");
+        $("#userName").select2({data: [{id: -1, text: "请选择法人"}]});
+        $.ajax({
+            url: "/api/user/list",    //后台webservice里的方法名称
+            type: "get",
+            dataType: "json",
+            data: {groupId:40},
+            contentType: "application/json",
+            traditional: true,
+            success: function (data) {
+                if (data.code == "00") {
+                    var options = [];
+                    $.each(data.data, function (i, item) {
+                        options.push({id: item.userName, text: item.custName});
+                    })
+                    $("#userName").select2({data: options});
+
+                } else {
+                    initNullSelect("#userName");
+                }
+            },
+            error: function (msg) {
+                initNullSelect("#userName");
+            }
+        });
 
         $("#brandForm").validate({
+            ignore: ".ignore",
             rules:{
                 brandName:{
                     required:true
                 },
                 userName:{
-                    required:true,
-                    number:true,
-                    isMobile:true
+                    required:true
                 }
             },
             errorClass: "help-inline",
@@ -151,7 +174,7 @@
 
                 }).done(function (data) {
                     if (data.code == "00") {
-                        swal("保存失败!", "保存成功", "success");
+                        swal({title: "保存成功!", text: "保存成功",type:"success", timer: autoCloseTime, showConfirmButton: true});
 //                        swal({title: "保存成功!", text: "保存成功",type:"success", timer: 1000, showConfirmButton: true}, function () {
 //                            setTimeout(function () {
 //                                window.location.href = "brand.html";
@@ -159,10 +182,10 @@
 //                        });
 
                     } else {
-                        swal("保存失败!", data.msg, "error");
+                        swal({title: "保存失败!", text:  data.msg,type:"error", timer: autoCloseTime});
                     }
                 }).fail(function () {
-                    swal("保存失败!", "保存失败", "error");
+                    swal({title: "保存失败!", text: "保存失败",type:"error", timer: autoCloseTime});
                  });
             }
         });
