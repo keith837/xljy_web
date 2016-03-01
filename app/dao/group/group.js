@@ -12,7 +12,7 @@ Group.queryAllNum = function (condition, params, callback) {
 }
 
 Group.mylistByGroupId = function(groupId, callback){
-    var sql = "select * from Xl_USER_GROUP where groupId < groupId";
+    var sql = "select * from XL_USER_GROUP where groupId < groupId";
     mysqlUtil.query(sql, [groupId], callback);
 }
 
