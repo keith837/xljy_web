@@ -171,7 +171,7 @@
         var table = $('.data-table').dataTable(extend(extendParams,initTableParams));
 
         $('#searchBtn').on('click', function () {
-            var schoolId = $("#schools").val();
+            var schoolId = $("#schoolId").val();
             var stationMac = $("#stationMac").val();
             var queryCondition = "";
             if (stationMac != "") {
@@ -185,8 +185,6 @@
             table.fnDraw();
 
         });
-
-        loadSchool();
 
         $('.data-table tbody').on( 'click', 'button#editrow', function () {
             //var row = table.row( $(this).parents('tr') ).data();

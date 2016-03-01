@@ -6,69 +6,52 @@ var Notice = module.exports;
 var mysqlUtil = require("../../../core/utils/pool/mysql/mysqlPool");
 var async = require("async");
 
-Notice.queryByNoticeType = function (start, pageSize, noticeTypeId, groupId, schoolId, classId, queryCondition, callback) {
+Notice.queryByNoticeType = function (start, pageSize, queryCondition, callback) {
 
-    mysqlUtil.queryOne("select * from XL_NOTICE_ROLE_REL where state=1 and noticeTypeId=? and groupId=?", [noticeTypeId, groupId], function (err, res) {
+    var sql = "select * from XL_NOTICE m where m.state=1 and m.expDate>=date_sub(curdate(),interval 30 day) ";
+    var params = [];
+
+    var sqlCondition = "";
+    if (queryCondition || queryCondition.length > 0) {
+        for (var i in queryCondition) {
+            var opr = queryCondition[i].opr;
+            if (opr == "like") {
+                sqlCondition += "and " + queryCondition[i].key + " " + opr + " ? ";
+                params.push("%" + queryCondition[i].val + "%");
+            } else if (opr == "in") {
+                var ids = queryCondition[i].val;
+                var appenderId = "";
+                for (var k in ids) {
+                    appenderId += "?,";
+                    params.push(ids[k]);
+                }
+                appenderId = appenderId.substr(0, appenderId.length - 1);
+                sqlCondition += "and " + queryCondition[i].key + " " + opr + " (" + appenderId + ") ";
+            } else {
+                sqlCondition += "and " + queryCondition[i].key + " " + opr + " ? ";
+                params.push(queryCondition[i].val);
+            }
+        }
+    }
+    sql = sql + sqlCondition;
+
+    var countSQL = "select count(*) as total from (" + sql + ") m";
+    sql = "select * from (" + sql + " order by effDate desc) m limit ?,?";
+    mysqlUtil.queryOne(countSQL, params, function (err, res) {
         if (err) {
             return callback(err);
         }
-
-        if (!res) {
-            return callback(new Error("根据组ID无法查询到通知类型配置"));
+        var totalNum = res.total;
+        if (totalNum === 0) {
+            return callback(err, 0, []);
         }
-        var relType = res.relType;
-        var sql = "select * from XL_NOTICE m where state=1 and expDate>=date_add(curdate(),interval 1 day) ";
-        var params = [];
-        //同一个班级权限内
-        if (relType === 1) {
-            queryCondition.push(classId);
-        } else if (relType === 2) {
-            // 同一个学校权限内
-            queryCondition.push(schoolId);
-        }
-
-        var sqlCondition = "";
-        if (queryCondition || queryCondition.length > 0) {
-            for (var i in queryCondition) {
-                var opr = queryCondition[i].opr;
-                if (opr == "like") {
-                    sqlCondition += "and m." + queryCondition[i].key + " " + opr + " ? ";
-                    params.push("%" + queryCondition[i].val + "%");
-                } else if (opr == "in") {
-                    var ids = queryCondition[i].val;
-                    var appenderId = "";
-                    for (var k in ids) {
-                        appenderId += "?,";
-                        params.push(ids[k]);
-                    }
-                    appenderId = appenderId.substr(0, appenderId.length - 1);
-                    sqlCondition += "and m." + queryCondition[i].key + " " + opr + " (" + appenderId + ") ";
-                } else {
-                    sqlCondition += "and m." + queryCondition[i].key + " " + opr + " ? ";
-                    params.push(queryCondition[i].val);
-                }
-            }
-        }
-        sql = sql + sqlCondition;
-
-        var countSQL = "select count(*) as total from (" + sql + ") m";
-        sql = "select * from (" + sql + " order by effDate asc) m limit ?,?";
-        mysqlUtil.queryOne(countSQL, params, function (err, res) {
+        params.push(start);
+        params.push(pageSize);
+        mysqlUtil.query(sql, params, function (err, res) {
             if (err) {
                 return callback(err);
             }
-            var totalNum = res.total;
-            if (totalNum === 0) {
-                return callback(err, 0, []);
-            }
-            params.push(start);
-            params.push(pageSize);
-            mysqlUtil.query(sql, params, function (err, res) {
-                if (err) {
-                    return callback(err);
-                }
-                findPicByArray(totalNum, res, 0, callback);
-            });
+            findPicByArray(totalNum, res, 0, callback);
         });
     });
 }
@@ -83,8 +66,8 @@ Notice.publishNotice = function (noticeParam, noticePic, callback) {
             if (err) {
                 return callback.apply(null, [err, null]);
             }
-            var sql = "insert into XL_NOTICE(noticeTypeId,noticeTitle,noticeContext,effDate,expDate,state,createDate,doneDate,schoolId,classId,userId)";
-            sql += "values(?,?,?,?,?,1,now(),now(),?,?,?)";
+            var sql = "insert into XL_NOTICE(noticeTypeId,noticeTitle,noticeContext,effDate,expDate,state,createDate,doneDate,schoolId,classId,userId,schoolName,className,userName,nickName)";
+            sql += "values(?,?,?,?,?,1,now(),now(),?,?,?,?,?,?,?)";
 
             conn.query(sql, noticeParam, function (err, res) {
                 if (err) {

@@ -33,21 +33,53 @@ module.exports = new basicController(__filename).init({
         } else {
             return next(this.Error("用户没有相应权限"));
         }
-        var noticeTypeId = parseInt(request.query.noticeTypeId);
-        if (!noticeTypeId || isNaN(noticeTypeId)) {
-            return next(this.Error("没有输入通知类型."));
-        }
-        queryCondition.push({"key": "noticeTypeId", "opr": "=", "val": noticeTypeId});
 
-        var expDateStart = request.query.expDateStart;
-        if (expDateStart) {
-            queryCondition.push({"key": "expDate", "opr": ">=", "val": expDateStart});
-        }
-        var expDateEnd = request.query.expDateEnd;
-        if (expDateEnd) {
-            queryCondition.push({"key": "expDate", "opr": "<=", "val": expDateEnd});
+        var noticeTypeId = null;
+        if (request.user.source == 2 && request.user.channel == 4) {
+            // web login
+            noticeTypeId = -1;
+            if (groupId == 50) {
+                // 超级园长
+            } else {
+                queryCondition.push(schoolId);
+            }
+        } else {
+            noticeTypeId = parseInt(request.query.noticeTypeId);
+            if (!noticeTypeId || isNaN(noticeTypeId)) {
+                return next(this.Error("没有输入通知类型."));
+            }
+            queryCondition.push({"key": "noticeTypeId", "opr": "=", "val": noticeTypeId});
+            if (noticeTypeId == 1 || noticeTypeId == 7) {
+                if (groupId == 10 || groupId == 20) {
+                    queryCondition.push(classId);
+                } else {
+                    queryCondition.push(schoolId);
+                }
+            } else {
+                queryCondition.push(schoolId);
+            }
         }
 
+        var effDateStart = request.query.effDateStart;
+        if (effDateStart) {
+            queryCondition.push({"key": "effDate", "opr": ">=", "val": effDateStart});
+        }
+        var effDateEnd = request.query.effDateEnd;
+        if (effDateEnd) {
+            queryCondition.push({"key": "effDate", "opr": "<=", "val": effDateEnd});
+        }
+        var queryUserName = request.query.custName;
+        if (queryUserName) {
+            queryCondition.push({"key": "userName", "opr": "like", "val": queryUserName});
+        }
+        var noticeTitle = request.query.noticeTitle;
+        if (noticeTitle) {
+            queryCondition.push({"key": "noticeTitle", "opr": "like", "val": noticeTitle});
+        }
+        var noticeContext = request.query.noticeContext;
+        if (noticeContext) {
+            queryCondition.push({"key": "noticeContext", "opr": "like", "val": noticeContext});
+        }
         var querySchoolId = request.query.schoolId;
         if (querySchoolId) {
             querySchoolId = parseInt(querySchoolId);
@@ -64,7 +96,7 @@ module.exports = new basicController(__filename).init({
             }
         }
 
-        this.model['notice'].queryByNoticeType(start, pageSize, noticeTypeId, groupId, schoolId, classId, queryCondition, function (err, totalCount, res) {
+        this.model['notice'].queryByNoticeType(start, pageSize, queryCondition, function (err, totalCount, res) {
             if (err) {
                 return next(err);
             }
@@ -97,25 +129,21 @@ module.exports = new basicController(__filename).init({
         form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
 
         var classId = 0;
-        var schoolId = 0;
-        if (groupId == 10) {
-            classId == request.user.student.classId;
-            schoolId = request.user.student.schoolId;
-        } else if (groupId == 20) {
-            classId = request.user.class.classId;
-            schoolId = request.user.class.schoolId;
-        } else if (groupId == 30 || groupId == 40) {
-            schoolId = request.user.schoolIds[0];
-        } else if (groupId == 50) {
-        } else {
-            return next(this.Error("用户没有相应权限"));
+        var className = "";
+        var schoolId = request.user.schools[0].schoolId;
+        var schoolName = request.user.schools[0].schoolName;
+        var userName = request.user.custName;
+        var nickName = request.user.nickName;
+        if (groupId == 10 || groupId == 20) {
+            classId == request.user.class.classId;
+            className = request.user.class.className;
         }
         form.parse(request, function (err, fields, files) {
             var content = fields.content;
             var title = fields.title;
             var effDate = fields.effDate;
             var expDate = fields.expDate;
-            var noticeParam = [noticeTypeId, title, content, effDate, expDate, schoolId, classId, userId];
+            var noticeParam = [noticeTypeId, title, content, effDate, expDate, schoolId, classId, userId, schoolName, className, userName, nickName];
             var noticePics = new Array();
             for (var photos in files) {
                 noticePics.push([files[photos].path, userId]);
@@ -198,22 +226,28 @@ module.exports = new basicController(__filename).init({
 
 
 function checkPermission(groupId, noticeTypeId) {
-    if (groupId === 10) {
+    //家长、集团园长、超级园长无权限发布通知
+    if (groupId === 10 || groupId === 40 || groupId === 50) {
         return false;
     }
 
-    if (noticeTypeId === 1) {
-        //班级通知
-        if (groupId === 20) {
-            return true;
-        } else {
-            return false;
-        }
-    } else if (noticeTypeId === 2 || noticeTypeId === 3 || noticeTypeId === 4 || noticeTypeId === 5 || noticeTypeId === 6) {
-        if (groupId === 30 || groupId === 40) {
+    if (groupId === 20) {
+        //教师可以发布 班级通知 和 今日作业
+        if (noticeTypeId === 1 || noticeTypeId === 7) {
             return true;
         } else {
             return false;
         }
     }
+
+    if (groupId === 30) {
+        // 园长可以发布 教师通知、家长通知、今日食谱、工作计划、紧急通知
+        if (noticeTypeId === 2 || noticeTypeId === 3 || noticeTypeId === 4 || noticeTypeId === 5 || noticeTypeId === 6) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 }

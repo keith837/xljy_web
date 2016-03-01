@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/select2.css" />
     <link rel="stylesheet" href="css/unicorn.main.css" />
     <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <link rel="stylesheet" href="css/sweetalert.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
 <body>
@@ -36,54 +37,62 @@
                     <div class="widget-content nopadding">
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form action="#" method="post" class="form-search" >
+                                <form action="#" method="post" class="form-horizontal" >
 
-                                <table width="100%" >
-                                    <tr>
-                                        <td align="center" width="8%">
-                                            选择学校
-                                        </td>
-                                        <td align="left" width="15%">
-                                            <div class="span12" style="margin-top:5px; margin-bottom:5px">
-                                                <select class="span11">
-                                                    <option>长岛幼儿园</option>
-                                                    <option>萧山幼儿园</option>
-                                                    <option>滨文高教园</option>
-                                                </select>
-                                            </div>
-                                        </td>
-                                        <td align="center" width="8%">
-                                            选择班级
-                                        </td>
-                                        <td align="left" width="15%">
-                                            <div class="span12" style="margin-top:5px; margin-bottom:5px">
-                                                <select class="span11">
-                                                    <option value="1">托一班</option>
-                                                    <option value="2">托二班</option>
-                                                    <option value="3">小一班</option>
-                                                    <option value="4">中一班</option>
-                                                    <option value="5">大一班</option>
-                                                </select>
-                                            </div>
-                                        </td>
-                                        <td align="center" width="8%">
-                                            选择时间
-                                        </td>
-                                        <td align="left" width="30%">
-                                            <div class="span12" style="margin-top:5px; margin-bottom:5px">
-                                                <input class="span5" type="text" placeholder="开始时间">
-                                                &nbsp;
-                                                至
-                                                &nbsp;
-                                                <input class="span5" type="text" placeholder="结束时间">
-                                            </div>
-                                        </td>
-                                        <td align="center">
-                                            <a href="" class="btn">搜索</a>
-                                            <a href="notice_add.html" class="btn">发布通知</a>
-                                        </td>
-                                    </tr>
-                                </table>
+                                    <table width="100%" >
+                                        <tr>
+                                            <td align="center" width="8%">
+                                                选择学校
+                                            </td>
+                                            <td align="left" width="30%">
+                                                <div class="span12" style="margin-top:5px; margin-bottom:5px">
+                                                    <input type="text" id="schoolId" name="schoolId" placeholder="请选择学校" class="span12">
+                                                </div>
+                                            </td>
+                                            <td align="center" width="8%">
+                                                选择班级
+                                            </td>
+                                            <td align="left" width="10%">
+                                                <div class="span12" style="margin-top:5px; margin-bottom:5px">
+                                                    <input type="text" id="classId" name="classId" placeholder="请选择班级" class="span12">
+                                                </div>
+                                            </td>
+                                            <td align="center" width="8%">
+                                                通知标题
+                                            </td>
+                                            <td>
+                                                <div class="span12" style="margin-top:5px; margin-bottom:5px">
+                                                    <input type="text" id="noticeTitle" placeholder="请输入通知标题" class="span12">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" width="8%">
+                                                生效时间
+                                            </td>
+                                            <td align="left">
+                                                <div class="span12" style="margin-top:5px; margin-bottom:5px">
+                                                    <input class="form_datetime span5" id="beginTime" type="text" placeholder="开始时间">
+                                                    &nbsp;
+                                                    至
+                                                    &nbsp;&nbsp;
+                                                    <input class="form_datetime span5" id="endTime" type="text" placeholder="结束时间">
+                                                </div>
+                                            </td>
+                                            <td align="center">
+                                                发布人
+                                            </td>
+                                            <td align="left" width="10%">
+                                                <input type="text" name="custName" id="custName" placeholder="请输入发布者">
+                                            </td>
+                                            <td colspan="2" align="right">
+                                                <div class="input-append span12" style="margin-top:5px; margin-bottom:5px">
+                                                    <input type="text" class="span8 search-query" id="noticeContent" placeholder="请输入通知内容">
+                                                    <button type="button" class="btn" id="searchBtn">搜索</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </form>
                             </div>
                         </div>
@@ -104,17 +113,17 @@
                     </div>
                     <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
-                            <thead>
+                        <thead>
                             <tr>
-                                <th>编号</th>
-                                <th width="10%">通知类型</th>
+                                <th>通知类型</th>
+                                <th>标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;题</th>
                                 <th>通知内容</th>
-                                <th>图片</th>
-                                <th width="8%">发布人</th>
-                                <th>发布时间</th>
+                                <th>发布人</th>
+                                <th>生效时间</th>
                                 <th>失效时间</th>
                                 <th>学校</th>
-                                <th width="25%">操作</th>
+                                <th>班级</th>
+                                <th width="16%">操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -145,6 +154,7 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
+<script src="js/sweetalert.min.js" charset="utf-8"></script>
 </body>
 
 
@@ -153,40 +163,16 @@
      * tables
      **/
     $(document).ready(function () {
-        $.fn.dataTable.ext.errMode = function(s,h,m){};
-        var table = $('.data-table').dataTable({
-            "oLanguage": {
-                "sLengthMenu": "每页显示 _MENU_ 条记录",
-                "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
-                "sInfoEmpty": "没有数据",
-                "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
-                "oPaginate": {
-                    "sFirst": "首页",
-                    "sPrevious": "前一页",
-                    "sNext": "后一页",
-                    "sLast": "尾页"
-                },
-                "sZeroRecords": "没有检索到数据",
-                "sProcessing": "<img src='./img/loading.gif' />"
-            },
-//            "bInfo": true,
-            "bJQueryUI": true,
-            "bLengthChange": false,
-//            "bPaginate":true,
-            "bProcessing" : true,
-            "sPaginationType": "full_numbers",
-            "iDisplayLength": iDisplayLength,
-            "bFilter": false,
-            "sDom": '<""l>t<"F"fp>',
 
-//            "iTotalRecords":"data.iTotalRecords",
-//             "bProcessing": true,
+        loadSchool();
+        var initTableParams = initDataTable();
+
+        var extendParams = {
             "bServerSide": true,
             // "sAjaxDataProp":"data.aaData",
             "sAjaxSource": "/api/notices",
             "sServerMethod": "GET",
             "aoColumns": [
-                {"mDataProp": "noticeId"},
                 {"mDataProp": "noticeTypeId",
                     "render": function (data) {
                         switch(data) {
@@ -196,103 +182,82 @@
                             case 4: return "今日食谱";break;
                             case 5: return "工作计划";break;
                             case 6: return "紧急通知";break;
+                            case 7: return "今日作业";break;
                             default: return "未知类型";
                         }
                     }
                 },
                 {"mDataProp": "noticeTitle"},
-                {"mDataProp": "noticeContext"},
+                {"mDataProp": "noticeContext",
+                    "render": function (data) {
+                        return data.substring(0, 6);
+                    }
+                },
+                {"mDataProp": "userName"},
                 {"mDataProp": "effDate"},
-                {"mDataProp": "effDate"},
-                {"mDataProp": "effDate"},
-                {"mDataProp": "effDate"},
-                {"mDataProp": "expDate"}
+                {"mDataProp": "expDate"},
+                {"mDataProp": "schoolName"},
+                {"mDataProp": "className",
+                    "render": function (data) {
+                        return data;
+                    }
+                }
             ],
             "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
                 {
-                    "targets": [6],
+                    "targets": [8],
                     "data": null,
                     "bSortable": false,
-                    "defaultContent": "<button class=\"btn btn-primary\"><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
+                    "defaultContent": "<button class=\"btn btn-primary\" id='detailrow'><i class=\"icon-pencil icon-white\"></i>详情</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
                 }
             ]
-        });
+        };
+
+        var table = $('.data-table').dataTable(extend(extendParams,initTableParams));
 
         $('#searchBtn').on('click', function () {
-            var schoolId = $("#schools").val();
-            var stationMac = $("#stationMac").val();
+            var schoolId = $("#schoolId").val();
+            var classId = $("#classId").val();
+            var noticeTitle = $("#noticeTitle").val();
+            var noticeContent = $("#noticeContent").val();
+            var beginTime = $("#beginTime").val();
+            var endTime = $("#endTime").val();
+            var custName = $("#custName").val();
+
             var queryCondition = "";
-            if (stationMac != "") {
-                queryCondition += "stationMac=" + stationMac + "&";
-            }
             if (schoolId != null && schoolId != "-1") {
-                queryCondition += "schoolId=" + schoolId;
+                queryCondition += "schoolId=" + schoolId + "&";
+            }
+            if (classId != null && classId != "-1") {
+                queryCondition += "classId=" + classId + "&";
+            }
+            if (noticeTitle != "") {
+                queryCondition += "noticeTitle=" + noticeTitle + "&";
+            }
+            if (noticeContent != "") {
+                queryCondition += "noticeContext=" + noticeContent + "&";
+            }
+            if (beginTime != "") {
+                queryCondition += "effDateStart=" + beginTime + "&";
+            }
+            if (endTime != "") {
+                queryCondition += "effDateEnd=" + endTime + "&";
+            }
+            if (custName != "") {
+                queryCondition += "custName=" + custName + "&";
             }
             //table.fnClearTable(); //清空一下table，不能设置
-            table.fnSettings().sAjaxSource = '/api/stations?' + queryCondition;
+            table.fnSettings().sAjaxSource = '/api/notices?' + queryCondition;
             table.fnDraw();
-
-        });
-
-        $.ajax({
-            url: "/api/school/list",    //后台webservice里的方法名称
-            type: "get",
-            dataType: "json",
-            contentType: "application/json",
-            traditional: true,
-            success: function (data) {
-                for (var i in data) {
-                    var jsonObj = data[i];
-                    $("#schools").empty();
-                    //var option = $("<option>").val(-1).text("---请选择学校---").attr("selected", true);
-                    //$("#schools").append(option);
-                    for (var j = 0; j < jsonObj.length; j++) {
-                        var option = $("<option>").val(jsonObj[j].schoolId).text(jsonObj[j].schoolName);
-                        $("#schools").append(option);
-                    }
-                }
-            },
-            error: function (msg) {
-                var option = $("<option>").val(-1).text("--没有学校信息--").attr("selected", true);
-                $("#schools").append(option);
-            }
         });
 
         $('.data-table tbody').on( 'click', 'button#delrow', function () {
             //var row = table.row( $(this).parents('tr') ).data();
             var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
-            swal({
-                title: "确认删除?",
-                text: "您将删除基站【"+row.stationMac+"】",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "删除",
-                cancelButtonText: "取消",
-                closeOnConfirm: false
-            }, function(){
-                $.ajax({
-                    url: '/api/stations/'+row.stationId,
-                    type: 'DELETE',
-                    dataType: 'json'
-                })
-                        .done(function(data) {
-                            if (data.code=="00") {
-                                swal({   title: "删除成功!",   text: "删除数据成功",   timer: 2000,   showConfirmButton: true });
-                                table.fnClearTable(); //清空一下table
-                                //table.fnDestroy(); //还原初始化了的datatable
-                                table.fnDraw();
-                            }else{
-                                swal("删除失败!", data.msg, "error");
-                            };
-                        })
-                        .fail(function() {
-                            swal("删除失败!", "删除数据失败", "error");
-                        });
-
-            });
-
+            deleteRow("您将删除通知【"+row.noticeTitle+"】",'/api/notices/'+row.noticeId,'DELETE',null,table);
         });
+
+
     });
 
 </script>

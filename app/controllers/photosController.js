@@ -19,13 +19,18 @@ module.exports = new basicController(__filename).init({
         if (!albumType || isNaN(albumType)) {
             return next(this.Error("没有输入相册类型."));
         }
-        var classId = 0;
-        var schoolId = 0;
+        if (groupId == 30 || groupId == 40 || groupId == 50) {
+            return next(this.Error("园长不能发布班级相册"));
+        }
+
         var studentId = 0;
         var studentName = '';
+        var schoolId = req.user.schools[0].schoolId;
+        var schoolName = req.user.schools[0].schoolName;
+        var classId = req.user.class.classId;
+        var className = req.user.class.className;
+        var userName = req.user.custName;
         if (groupId === 10) {
-            classId = req.user.student.classId;
-            schoolId = req.user.student.schoolId;
             studentId = req.user.student.studentId;
             studentName = req.user.student.studentName;
             nickName = studentName + nickName;
@@ -33,15 +38,9 @@ module.exports = new basicController(__filename).init({
                 return next(this.Error("家长只能发布成长点滴"));
             }
         } else if (groupId === 20) {
-            classId = req.user.class.classId;
-            schoolId = req.user.class.schoolId;
             if (albumType === 2) {
                 return next(this.Error("教师不能发布成长点滴"));
             }
-        } else if (groupId === 30 || groupId === 40) {
-            return next(this.Error("园长不能发布班级相册"));
-        } else {
-            return next(this.Error("用户没有相应权限"));
         }
 
         var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "PHOTOS");
@@ -58,7 +57,7 @@ module.exports = new basicController(__filename).init({
         form.parse(req, function (err, fields, files) {
             var content = fields.content;
             var albumTitle = fields.albumTitle;
-            var albumParam = [albumType, albumTitle, content, schoolId, classId, userId, nickName, studentId, studentName];
+            var albumParam = [albumType, albumTitle, content, schoolId, classId, userId, nickName, studentId, studentName, schoolName, className, userName];
             var albumPics = new Array();
             for (var photos in files) {
                 albumPics.push([files[photos].path, userId]);

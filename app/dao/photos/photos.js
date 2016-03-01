@@ -15,8 +15,8 @@ Photos.publish = function (albumParam, albumPics, callback) {
             if (err) {
                 return callback.apply(null, [err, null]);
             }
-            var sql = "insert into XL_CLASS_ALBUM(albumType,albumTitle,content,likesNum,isComment,state,schoolId,classId,userId,createDate,doneDate,nickName,studentId,studentName)";
-            sql += "values(?,?,?,0,0,1,?,?,?,now(),now(),?,?,?)";
+            var sql = "insert into XL_CLASS_ALBUM(albumType,albumTitle,content,likesNum,isComment,state,schoolId,classId,userId,createDate,doneDate,nickName,studentId,studentName,schoolName,className,userName)";
+            sql += "values(?,?,?,0,0,1,?,?,?,now(),now(),?,?,?,?,?,?)";
 
             conn.query(sql, albumParam, function (err, res) {
                 if (err) {
