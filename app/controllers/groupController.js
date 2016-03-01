@@ -27,7 +27,7 @@ module.exports = new basicController(__filename).init({
 
     mylist : function(req, res, next){
         var groupId = req.params.groupId;
-        if(groupId && groupId <= 0){
+        if(!groupId || groupId <= 0){
             groupId = req.user.groupId;
         }
         this.model['group'].mylistByGroupId(groupId, function(err, groups){
