@@ -108,6 +108,11 @@ var routerConfig = {
                 "url": "/api/group/create",
                 "method": "post",
                 "description": "编辑用户组"
+            },
+            "mylist" : {
+                "url": "/api/group/mylist/:groupId",
+                "method": "get",
+                "description": "查询当前用户可操作的用户组"
             }
         },
         school : {

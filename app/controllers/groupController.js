@@ -25,6 +25,22 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    mylist : function(req, res, next){
+        var groupId = req.params.groupId;
+        if(groupId && groupId <= 0){
+            groupId = req.user.groupId;
+        }
+        this.model['school'].mylistByGroupId(groupId, function(err, groups){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                data : groups ? groups : new Array()
+            });
+        });
+    },
+
     create: function (request, response, next) {
         var param = {};
         param = parseGroup(request);
