@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" href="css/fullcalendar.css" />
     <link rel="stylesheet" href="css/colorpicker.css" />
     <link rel="stylesheet" href="css/datepicker.css" />
@@ -152,6 +153,7 @@
 <script src="js/jquery.uniform.js"></script>
 <script src="js/select2.min.js"></script>
 <script src="js/jquery.dataTables.js"></script>
+<script src="js/bootstrap-datetimepicker.min.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
 <script src="js/sweetalert.min.js" charset="utf-8"></script>
@@ -164,7 +166,10 @@
      **/
     $(document).ready(function () {
 
+        $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
+        $("#classId").select2({data: [{id: -1, text: "请选择班级"}]});
         loadSchool();
+        initDateTimePicker();
         var initTableParams = initDataTable();
 
         var extendParams = {
