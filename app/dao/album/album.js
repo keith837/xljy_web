@@ -135,7 +135,7 @@ Album.queryNum = function(obj, schoolIds, startDate, endDate, callback){
     mysqlUtil.queryOne(countSql, args, callback);
 }
 
-Album.queryPage = function(obj, schoolIds, start, pageSize, callback){
+Album.queryPage = function(obj, schoolIds, startDate, endDate, start, pageSize, callback){
     var whereSql = " 1=1 and m.state = 1 ";
     var args = new Array();
     if(obj){
