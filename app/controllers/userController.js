@@ -700,6 +700,9 @@ module.exports = new basicController(__filename).init({
                 if(!groupId){
                     groupId = user.groupId;
                 }
+                if(!custName){
+                    custName = user.custName;
+                }
                 if(groupId == 10){
                     if(!gender){
                         gender = user.gender;
@@ -709,8 +712,6 @@ module.exports = new basicController(__filename).init({
                     nickName = custName.substr(0, 1) + "老师";
                 }else if(groupId == 30 || groupId == 40 || groupId == 50){
                     nickName = custName.substr(0, 1) + "园长";
-                }else if(groupId == 99){
-                    nickName = "超级管理员";
                 }
             }
             obj.nickName = nickName;
