@@ -234,9 +234,23 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    teachers : function(req, res, next){
+        var self = this;
+        var schoolId = parseInt(req.params.schoolId);
+        self.model['school'].listTeacherBySchoolId(schoolId, function(err, teachers){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                data : teachers ? teachers : new Array()
+            });
+        });
+    },
+
     del : function(req, res, next){
         var self = this;
-        var schoolId = req.params.schoolId;
+        var schoolId = parseInt(req.params.schoolId);
         self.model['class'].listBySchoolId(schoolId, function(err, classes){
             if(err){
                 return next(err);

@@ -151,7 +151,12 @@ var routerConfig = {
                 "url": "/api/school/add",
                 "method": "post",
                 "description": "新增园所"
-            }
+            },
+            "teachers" : {
+                "url": "/api/school/teachers/:schoolId",
+                "method": "get",
+                "description": "学校老师查询"
+            },
         },
 
         brand : {
@@ -231,6 +236,7 @@ var routerConfig = {
                 "description": "学生家长查询"
             }
         },
+
         class : {
             "usedModel": ["school/class", "student/student"],
             "list": {
@@ -289,6 +295,7 @@ var routerConfig = {
                 "description": "班级家长成员"
             }
         },
+
         trends : {
             "usedModel": ["album/album"],
             "create": {

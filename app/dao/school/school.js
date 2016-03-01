@@ -64,6 +64,16 @@ School.listAllSchool = function(callback){
 }
 
 /**
+ * 学校教师查询
+ * @param schoolId
+ * @param callback
+ */
+School.listTeacherBySchoolId = function(schoolId, callback){
+    var sql = "select A.classId,A.className,C.userId,C.userName,C.nickName,C.custName from XL_CLASS A,XL_CLASS_TEACHER_REL B,XL_USER C where A.classId=B.classId and B.tUserId=C.userId and A.state=1 and B.state=1 and A.schoolId=? order by classId";
+    mysqlUtil.query(sql, [schoolId], callback);
+}
+
+/**
  * 查询学校数量
  * @param schoolBbj 学校条件
  * @param brandObj 品牌条件
