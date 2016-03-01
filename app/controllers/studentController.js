@@ -101,7 +101,7 @@ module.exports = new basicController(__filename).init({
                 return next(err);
             }
             if(!classInfo){
-                return nrxt("学生关联的班级信息不存在");
+                return next("学生关联的班级信息不存在");
             }
             self.model['student'].save([classInfo.schoolId,classId,studentName,studentAge,gender,cardNum,address,oUserId,remark], userId, oUserId, function(err, data){
                 if(err){
