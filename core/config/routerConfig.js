@@ -184,7 +184,7 @@ var routerConfig = {
         },
 
         student : {
-            "usedModel": ["student/student", "school/class", "school/school"],
+            "usedModel": ["student/student", "school/class", "school/school", "student/studentLeave"],
             "select": {
                 "url": "/api/student/select/:studentId",
                 "method": "post",
@@ -220,6 +220,11 @@ var routerConfig = {
                 "method": "post",
                 "description": "查询学生"
             },
+            "leave": {
+                "url": "/api/student/leave",
+                "method": "post",
+                "description": "请假申请"
+            }
         },
         class : {
             "usedModel": ["school/class", "student/student"],
