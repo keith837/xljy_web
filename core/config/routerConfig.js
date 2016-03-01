@@ -266,7 +266,12 @@ var routerConfig = {
             "teachers" : {
                 "url": "/api/class/teachers/:classId",
                 "method": "get",
-                "description": "老师通讯录"
+                "description": "班级老师通讯录"
+            },
+            "principal":{
+                "url": "/api/class/principal/:classId",
+                "method": "get",
+                "description": "班级园长查询"
             },
             "students" : {
                 "url": "/api/class/students/:classId",
