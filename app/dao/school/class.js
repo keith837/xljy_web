@@ -37,6 +37,16 @@ Class.findPrincipalBySchoolId = function(classId, callback){
 }
 
 /**
+ * 班级家长查询
+ * @param classId
+ * @param callback
+ */
+Class.listParentsByClassId = function(classId, callback){
+    var sql = "select A.studentId,A.studentName,C.userId,C.userName,C.nickName,C.custName from XL_STUDENT A,XL_USER_STUDENT_REL B,XL_USER C where A.studentId=B.studentId and B.userId=C.userId and A.state=1 and B.state=1 and classId=? order by B.studentId";
+    mysqlUtil.query(sql, [classId], callback);
+}
+
+/**
  * 根据班级统计非班主任老师个数，供班级删除时校验
  * @param classId
  * @param callback

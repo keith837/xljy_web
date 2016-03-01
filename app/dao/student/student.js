@@ -18,7 +18,7 @@ Student.findStudentInfo = function(studentId, callback){
 }
 
 Student.findParents = function(studentIds, callback){
-    var sql = "select A.*,B.nickName,B.custName from XL_USER_STUDENT_REL A, XL_USER B WHERE A.userId=B.userId and ";
+    var sql = "select A.*,B.nickName,B.custName,B.userName from XL_USER_STUDENT_REL A, XL_USER B WHERE A.userId=B.userId and ";
     sql +=  "A.state=1 and A.studentId in (";
     for(var i = 0; i < studentIds.length; i ++){
         sql += "?,";

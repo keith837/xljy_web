@@ -224,6 +224,11 @@ var routerConfig = {
                 "url": "/api/student/leave",
                 "method": "post",
                 "description": "请假申请"
+            },
+            "parents": {
+                "url": "/api/student/parents/:studentId",
+                "method": "get",
+                "description": "学生家长查询"
             }
         },
         class : {
@@ -277,6 +282,11 @@ var routerConfig = {
                 "url": "/api/class/students/:classId",
                 "method": "get",
                 "description": "班级学生成员"
+            },
+            "parents" : {
+                "url": "/api/class/parents/:classId",
+                "method": "get",
+                "description": "班级家长成员"
             }
         },
         trends : {

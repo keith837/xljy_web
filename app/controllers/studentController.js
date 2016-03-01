@@ -209,6 +209,31 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    parents : function(req, res, next){
+        var self = this;
+        var studentId = parseInt(req.params.studentId);
+        self.model['student'].findParents([studentId], function(err, parents){
+            if(err){
+                return next(err);
+            }
+            var parentsArray = new Array();
+            if(parents) {
+                for (var i = 0; i < parents.length; i++) {
+                    parentsArray.push({
+                        nickName: parents[i].nickName,
+                        userId: parents[i].userId,
+                        custName: parents[i].custName,
+                        userName: parents[i].userName
+                    });
+                }
+            }
+            res.json({
+                code : "00",
+                data : parentsArray
+            });
+        });
+    },
+
     show : function(req, res, next){
         var self = this;
         var studentId = parseInt(req.params.studentId);
