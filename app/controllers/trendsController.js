@@ -152,6 +152,10 @@ module.exports = new basicController(__filename).init({
         if(custName){
             obj.custName = custName;
         }
+        var content = req.query.content;
+        if(content){
+            obj.content = content;
+        }
         var startDate = req.query.startDate;
         var endDate = req.query.endDate;
         self.model['album'].listByPage(obj, schoolIds, startDate, endDate, start, pageSize, function(err, total, trends) {
