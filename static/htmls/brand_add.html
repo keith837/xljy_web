@@ -1,0 +1,172 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>响亮教育管理平台</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="css/fullcalendar.css" />
+    <link rel="stylesheet" href="css/colorpicker.css" />
+    <link rel="stylesheet" href="css/datepicker.css" />
+    <link rel="stylesheet" href="css/uniform.css" />
+    <link rel="stylesheet" href="css/select2.css" />
+    <link rel="stylesheet" href="css/unicorn.main.css" />
+    <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <link rel="stylesheet" href="css/sweetalert.css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+</head>
+<body>
+
+
+<div id="content">
+    <div id="breadcrumb">
+        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 园所管理</a>
+        <a href="#" class="current">新增品牌</a>
+    </div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-box">
+                    <div class="widget-title">
+								<span class="icon">
+									<i class="icon-th"></i>
+								</span>
+                        <h5>品牌信息</h5>
+                    </div>
+                    <div class="widget-content nopadding">
+
+                        <div class="container-fluid">
+                            <div class="row-fluid">
+                                <form class="form-horizontal" id="brandForm" name="brandForm" action="/api/brand/add" method="post">
+                                    <div class="control-group">
+                                        <label class="control-label" for="brandName">名称</label>
+                                        <div class="controls">
+                                            <input type="text" id="brandName" name="brandName" placeholder="请输入品牌名称" class="span3">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="userName">品牌法人</label>
+                                        <div class="controls">
+                                            <input type="text" id="userName" name="userName" placeholder="请输入品牌法人代表（手机号）" class="span3">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="brandDesc">品牌描述</label>
+                                        <div class="controls">
+                                            <textarea name="brandDesc" id="brandDesc" rows="3" class="span3"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <button type="submit" id="commitBtn" class="btn">提交</button>
+                                            <button type="reset" class="btn">重置</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="row-fluid">
+            <div id="footer" class="span12">
+                Copyright 浙江响亮教育科技股份有限公司 © 2015 <a href="https://wrapbootstrap.com/user/diablo9983">响亮教育</a>
+            </div>
+        </div>
+    </div>
+
+
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery.cookie.js" charset="utf-8"></script>
+<script src="js/common.js"></script>
+<script src="js/jquery.ui.custom.js"></script>
+<script src="js/jquery.validate.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-colorpicker.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/jquery.uniform.js"></script>
+<script src="js/select2.min.js"></script>
+<script src="js/jquery.dataTables.js"></script>
+<script src="js/unicorn.js"></script>
+<script src="js/unicorn.form_common.js" charset="utf-8"></script>
+<script src="js/sweetalert.min.js" charset="utf-8"></script>
+<script>
+
+    $(document).ready(function(){
+        var cnmsg = {
+            required: "必选字段",
+            remote: "请修正该字段",
+            email: "请输入正确格式的电子邮件",
+            url: "请输入合法的网址",
+            date: "请输入合法的日期",
+            dateISO: "请输入合法的日期 (ISO).",
+            number: "请输入合法的数字",
+            digits: "只能输入整数",
+            creditcard: "请输入合法的信用卡号",
+            equalTo: "请再次输入相同的值",
+            accept: "请输入拥有合法后缀名的字符串",
+            maxlength: jQuery.format("请输入一个长度最多是 {0} 的字符串"),
+            minlength: jQuery.format("请输入一个长度最少是 {0} 的字符串"),
+            rangelength: jQuery.format("请输入一个长度介于 {0} 和 {1} 之间的字符串"),
+            range: jQuery.format("请输入一个介于 {0} 和 {1} 之间的值"),
+            max: jQuery.format("请输入一个最大为 {0} 的值"),
+            min: jQuery.format("请输入一个最小为 {0} 的值")
+        };
+        jQuery.extend(jQuery.validator.messages, cnmsg);
+        jQuery.validator.addMethod("isMobile", function(value, element) {
+            var length = value.length;
+            var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
+            return this.optional(element) || (length == 11 && mobile.test(value));
+        }, "请正确填写您的手机号码");
+
+        $("#brandForm").validate({
+            rules:{
+                brandName:{
+                    required:true
+                },
+                userName:{
+                    required:true,
+                    number:true,
+                    isMobile:true
+                }
+            },
+            errorClass: "help-inline",
+            errorElement: "span",
+            highlight:function(element, errorClass, validClass) {
+                $(element).parents('.control-group').addClass('error');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).parents('.control-group').removeClass('error');
+                $(element).parents('.control-group').addClass('success');
+            },
+            submitHandler: function(form) {
+                $.ajax({
+                    url: "/api/brand/add",
+                    type: "POST",
+                    data: $("#brandForm").serialize()
+
+                }).done(function (data) {
+                    if (data.code == "00") {
+                        swal("保存失败!", "保存成功", "success");
+//                        swal({title: "保存成功!", text: "保存成功",type:"success", timer: 1000, showConfirmButton: true}, function () {
+//                            setTimeout(function () {
+//                                window.location.href = "brand.html";
+//                            }, 2000);
+//                        });
+
+                    } else {
+                        swal("保存失败!", data.msg, "error");
+                    }
+                }).fail(function () {
+                    swal("保存失败!", "保存失败", "error");
+                 });
+            }
+        });
+    });
+</script>
+</body>
+</html>

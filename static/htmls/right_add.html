@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>响亮教育管理平台</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="css/fullcalendar.css" />
+    <link rel="stylesheet" href="css/colorpicker.css" />
+    <link rel="stylesheet" href="css/datepicker.css" />
+    <link rel="stylesheet" href="css/uniform.css" />
+    <link rel="stylesheet" href="css/select2.css" />
+    <link rel="stylesheet" href="css/unicorn.main.css" />
+    <link rel="stylesheet" href="css/sweetalert.css" />
+    <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+</head>
+<body>
+
+
+<div id="content">
+    <div id="breadcrumb">
+        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 系统管理</a>
+        <a href="#" class="current">权限管理</a>
+    </div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-box">
+                    <div class="widget-title">
+								<span class="icon">
+									<i class="icon-th"></i>
+								</span>
+                        <h5>用户赋权</h5>
+                    </div>
+                    <div class="widget-content nopadding">
+
+                        <div class="container-fluid">
+                            <div class="row-fluid">
+                                <form class="form-horizontal" action="/api/group/create" method="post" id="groupForm">
+                                    <div class="control-group">
+                                        <label class="control-label" for="userName">用户账号</label>
+                                        <div class="controls">
+                                            <input type="text" id="userName" placeholder="请输入用户账号" class="span3" name="userName">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="groupDesc">备注</label>
+                                        <div class="controls">
+                                            <textarea rows="3" id="groupDesc" class="span3" name="groupDesc"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="roleId">权限</label>
+                                        <div class="controls">
+                                            <input type="text" id="roleId" name="roleId" placeholder="请选择权限" class="span3">
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <button type="button" id="commitBtn" class="btn">提交</button>
+                                            <button type="reset" class="btn">重置</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        <div class="row-fluid">
+            <div id="footer" class="span12">
+                Copyright 浙江响亮教育科技股份有限公司 © 2015 <a href="https://wrapbootstrap.com/user/diablo9983">响亮教育</a>
+            </div>
+        </div>
+    </div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery.cookie.js" charset="utf-8"></script>
+<script src="js/common.js"></script>
+<script src="js/jquery.ui.custom.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-colorpicker.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/jquery.uniform.js"></script>
+<script src="js/select2.min.js"></script>
+<script src="js/jquery.dataTables.js"></script>
+<script src="js/unicorn.js"></script>
+<script src="js/unicorn.form_common.js" charset="utf-8"></script>
+<script src="js/sweetalert.min.js" charset="utf-8"></script>
+<script>
+
+    $(document).ready(function () {
+
+        $('#commitBtn').click(function () {
+//            console.info($("#loginform").serializeArray());
+//            console.info($("#groupForm").serialize());
+            $.ajax({
+                url: "/api/group/create",
+                type: "POST",
+                data: $("#groupForm").serialize()
+
+            }).done(function (data) {
+//                console.info($.cookie('Set-Token'));
+                if (data.code == "00") {
+                    swal({title: "保存成功!", text: "保存成功",type:"success", timer: 1000, showConfirmButton: true}, function () {
+                        setTimeout(function () {
+                            window.location.href = "group.html";
+                        }, 2000);
+                    });
+
+                } else {
+                    swal("保存失败!", data.msg, "error");
+                }
+                ;
+            })
+                    .fail(function () {
+                        swal("保存失败!", "保存失败", "error");
+                    });
+        });
+    });
+</script>
+
+
+</body>
+</html>
