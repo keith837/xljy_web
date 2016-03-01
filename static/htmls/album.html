@@ -71,7 +71,7 @@
                                             </div>
                                         </td>
                                         <td align="center">
-                                            <button type="submit" class="btn">搜索</button>
+                                            <button type="button" id="searchBtn" class="btn">搜索</button>
                                         </td>
                                     </tr>
                                 </table>
@@ -185,7 +185,35 @@
         };
         var table = $('.data-table').dataTable(extend(extendParams,initTableParams));
 
+        $('#searchBtn').on('click', function () {
+            var schoolId = $("#schoolId").val();
+            var classId = $("#classId").val();
+            var beginTime = $("#beginTime").val();
+            var endTime = $("#endTime").val();
 
+            var queryCondition = "";
+            if (schoolId != null && schoolId != "-1") {
+                queryCondition += "schoolId=" + schoolId + "&";
+            }
+            if (classId != null && classId != "-1") {
+                queryCondition += "classId=" + classId + "&";
+            }
+            if (beginTime != "") {
+                queryCondition += "publishDateStart=" + beginTime + "&";
+            }
+            if (endTime != "") {
+                queryCondition += "publishDateEnd=" + endTime + "&";
+            }
+            //table.fnClearTable(); //清空一下table，不能设置
+            table.fnSettings().sAjaxSource = '/api/photos?' + queryCondition;
+            table.fnDraw();
+        });
+
+        $('.data-table tbody').on( 'click', 'button#delrow', function () {
+            //var row = table.row( $(this).parents('tr') ).data();
+            var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
+            deleteRow("您将删除相册编号【"+row.albumId+"】",'/api/photos/'+row.albumId,'DELETE',null,table);
+        });
 
 
     });
