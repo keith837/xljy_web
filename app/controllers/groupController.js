@@ -30,7 +30,7 @@ module.exports = new basicController(__filename).init({
         if(groupId && groupId <= 0){
             groupId = req.user.groupId;
         }
-        this.model['school'].mylistByGroupId(groupId, function(err, groups){
+        this.model['group'].mylistByGroupId(groupId, function(err, groups){
             if(err){
                 return next(err);
             }
