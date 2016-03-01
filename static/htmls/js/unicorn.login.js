@@ -17,6 +17,8 @@ $(document).ready(function () {
             if (data.code=="00") {
                 //console.info(data);
                 $.cookie('token', data.data.token);
+                $.cookie('userId', data.data.userId);
+                $.cookie('groupId', data.data.groupId);
                 swal({   title: "登陆成功!",   text: "登陆成功",  type: "success", timer: 1000,   showConfirmButton: true },function(){
                     setTimeout(function(){
                        window.location.href="main.html";

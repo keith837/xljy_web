@@ -17,6 +17,19 @@ module.exports = new basicController(__filename).init({
                 data : retMenus
             });
         });
+    },
+    listRoles : function(req, res, next){
+        var self = this;
+        var groupId = req.user.groupId;
+        self.model['menu'].listRoles(groupId,function(err, roles){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                data : roles
+            });
+        });
     }
 });
 

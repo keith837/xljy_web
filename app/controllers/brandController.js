@@ -4,34 +4,25 @@ module.exports = new basicController(__filename).init({
     add : function(req, res, next){
         var self = this;
         var brandName = req.body.brandName;
-        var userName = req.body.userName;
+        var bUserId = req.body.bUserId;
         var brandDesc = req.body.brandDesc;
         var remark = req.body.remark;
         var oUserId = req.user.userId;
         if(!brandName){
             return next("品牌名称不能为空");
         }
-        if(!userName){
+        if(!bUserId){
             return next("集团园长编号不能为空");
         }
-        self.model['user'].findByUserName(userName, function(err, user){
+        self.model["brand"].save([brandName,bUserId,brandDesc,oUserId,remark], function(err, data){
             if(err){
                 return next(err);
             }
-            if(!user){
-                return next(new Error("品牌法人在系统未找到，请先录入"));
-            }
-            self.model["brand"].save([brandName,user.userId,brandDesc,oUserId,remark], function(err, data){
-                if(err){
-                    return next(err);
-                }
-                res.json({
-                    code : "00",
-                    msg : "品牌添加成功"
-                });
+            res.json({
+                code : "00",
+                msg : "品牌添加成功"
             });
         });
-
     },
 
     modify : function(req, res, next){

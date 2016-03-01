@@ -21,8 +21,8 @@
 
 <div id="content">
     <div id="breadcrumb">
-        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 园所管理</a>
-        <a href="#" class="current">新增品牌</a>
+        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 权限管理</a>
+        <a href="#" class="current">用户授权</a>
     </div>
     <div class="container-fluid">
         <div class="row-fluid">
@@ -32,29 +32,23 @@
 								<span class="icon">
 									<i class="icon-th"></i>
 								</span>
-                        <h5>品牌信息</h5>
+                        <h5>授权信息</h5>
                     </div>
                     <div class="widget-content nopadding">
 
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form class="form-horizontal" id="brandForm" name="brandForm" action="/api/brand/add" method="post">
+                                <form class="form-horizontal" id="roleForm" name="roleForm" action="/api/brand/add" method="post">
                                     <div class="control-group">
-                                        <label class="control-label" for="brandName">名称</label>
+                                        <label class="control-label" for="roleId">角色</label>
                                         <div class="controls">
-                                            <input type="text" id="brandName" name="brandName" placeholder="请输入品牌名称" class="span5">
+                                            <input type="text" id="roleId" name="roleId" placeholder="请选择角色" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="bUserId">品牌法人</label>
+                                        <label class="control-label" for="bUserId">用户</label>
                                         <div class="controls">
-                                            <input type="text" id="bUserId" name="bUserId" placeholder="请输入品牌法人代表（手机号）" class="span5">
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label" for="brandDesc">品牌描述</label>
-                                        <div class="controls">
-                                            <textarea name="brandDesc" id="brandDesc" rows="3" class="span5"></textarea>
+                                            <input type="text" id="bUserId" name="bUserId" placeholder="请选择用户" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -97,17 +91,47 @@
 <script>
 
     $(document).ready(function(){
-        $("#bUserId").select2({data: [{id: -1, text: "请选择法人"}]});
-        loadUser(40);
+        $("#roleId").select2({data: [{id: -1, text: "请选择角色"}]});
+        $("#bUserId").select2({data: [{id: -1, text: "请选择用户"}]});
+        var groupId = $.cookie('groupId');
+        if(groupId==50){
+            loadUser(40);
+        }else{
+            loadUser(30);
+        }
+
         initValidator();
 
-        $("#brandForm").validate({
+        $.ajax({
+            url: "/api/role/listRoles",    //后台webservice里的方法名称
+            type: "get",
+            dataType: "json",
+            contentType: "application/json",
+            traditional: true,
+            success: function (data) {
+                if (data.code == "00") {
+                    var options = [];
+                    $.each(data.data, function (i, item) {
+                        options.push({id: item.roleId, text: item.roleName});
+                    })
+                    $("#roleId").select2({data: options});
+
+                } else {
+                    initNullSelect("#roleId");
+                }
+            },
+            error: function (msg) {
+                initNullSelect("#roleId");
+            }
+        });
+
+        $("#roleForm").validate({
             ignore: ".ignore",
             rules:{
-                brandName:{
+                bUserId:{
                     required:true
                 },
-                bUserId:{
+                roleId:{
                     required:true
                 }
             },
@@ -121,7 +145,7 @@
                 $(element).parents('.control-group').addClass('success');
             },
             submitHandler: function(form) {
-                saveOrUpdate("/api/brand/add", "POST", "#brandForm");
+                saveOrUpdate("/api/user/modify/"+ $('#bUserId').val(), "put", "#roleForm");
             }
         });
     });

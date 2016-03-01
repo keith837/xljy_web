@@ -85,6 +85,11 @@ var routerConfig = {
                 "url": "/api/menu/list",
                 "method": "get",
                 "description": "查询菜单"
+            },
+            "listRoles": {
+                "url": "/api/role/listRoles",
+                "method": "get",
+                "description": "查询角色"
             }
         },
         group : {
@@ -150,7 +155,7 @@ var routerConfig = {
         },
 
         brand : {
-            "usedModel": ["school/brand", "school/school","user/user"],
+            "usedModel": ["school/brand", "school/school"],
             "list": {
                 "url": "/api/brand/list",
                 "method": "get",

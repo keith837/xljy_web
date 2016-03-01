@@ -1,13 +1,125 @@
 /**
  * Created by lynn on 2016/2/20.
  */
+//分页显示条数
 var iDisplayLength = 5;
+//弹窗自动关闭时间
 var autoCloseTime = 2000;
+
+//校验
+function initValidator(){
+    var cnmsg = {
+        required: "必选字段",
+        remote: "请修正该字段",
+        email: "请输入正确格式的电子邮件",
+        url: "请输入合法的网址",
+        date: "请输入合法的日期",
+        dateISO: "请输入合法的日期 (ISO).",
+        number: "请输入合法的数字",
+        digits: "只能输入整数",
+        creditcard: "请输入合法的信用卡号",
+        equalTo: "请再次输入相同的值",
+        accept: "请输入拥有合法后缀名的字符串",
+        maxlength: jQuery.format("请输入一个长度最多是 {0} 的字符串"),
+        minlength: jQuery.format("请输入一个长度最少是 {0} 的字符串"),
+        rangelength: jQuery.format("请输入一个长度介于 {0} 和 {1} 之间的字符串"),
+        range: jQuery.format("请输入一个介于 {0} 和 {1} 之间的值"),
+        max: jQuery.format("请输入一个最大为 {0} 的值"),
+        min: jQuery.format("请输入一个最小为 {0} 的值")
+    };
+    jQuery.extend(jQuery.validator.messages, cnmsg);
+    jQuery.validator.addMethod("isMobile", function(value, element) {
+        var length = value.length;
+        var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
+        return this.optional(element) || (length == 11 && mobile.test(value));
+    }, "请正确填写您的手机号码");
+}
+
+
+//初始化日期
+function initDateTimePicker(){
+    $.fn.datetimepicker.dates['zh-CN'] = {
+        days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+        daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+        daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
+        months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+        monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+        today: "今日",
+        suffix: [],
+        meridiem: ["上午", "下午"]
+    };
+    $(".form_datetime").datetimepicker({
+        //minView: "month", //选择日期后，不会再跳转去选择时分秒
+        format: 'yyyy-mm-dd hh:ii',
+        language: 'zh-CN',
+        autoclose:true //选择日期后自动关闭
+    });
+    $.fn.dataTable.ext.errMode = function(s,h,m){};
+}
+
+//初始化datatable
+function initDataTable(){
+    $.fn.dataTable.ext.errMode = function(s,h,m){};
+    return {
+        "oLanguage": {
+            "sLengthMenu": "每页显示 _MENU_ 条记录",
+            "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+            "sInfoEmpty": "没有数据",
+            "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+            "oPaginate": {
+                "sFirst": "首页",
+                "sPrevious": "前一页",
+                "sNext": "后一页",
+                "sLast": "尾页"
+            },
+            "sZeroRecords": "没有检索到数据",
+            "sProcessing": "<img src='./img/loading.gif' />"
+        },
+//            "bInfo": true,
+        "bJQueryUI": true,
+        "bLengthChange": false,
+//            "bPaginate":true,
+        "bProcessing" : true,
+        "sPaginationType": "full_numbers",
+        "iDisplayLength": iDisplayLength,
+        "bFilter": false,
+        "sDom": '<""l>t<"F"fp>'
+
+//            "iTotalRecords":10,/*
+//             "bProcessing": true,
+//        "bServerSide": true
+        //"sAjaxDataProp":"data.aaData",
+
+        //"fnServerParams": function (aoData) {
+        //    aoData.push({ "name": "name1", "value": "value1" });
+        //    aoData.push({ "name": "name2", "value": "value2" });
+        //}
+    };
+}
+
 $.ajaxSetup({
     headers: {
         "Set-Token": $.cookie('token')
     }
 });
+//合并json
+function extend(destination, source) {
+    for (var property in source)
+        destination[property] = source[property];
+    return destination;
+}
+//function extend(des, src, override){
+//    if(src instanceof Array){
+//        for(var i = 0, len = src.length; i < len; i++)
+//            extend(des, src[i], override);
+//    }
+//    for( var i in src){
+//        if(override || !(i in des)){
+//            des[i] = src[i];
+//        }
+//    }
+//    return des;
+//}
 
 function initNullSelect(component) {
     $(component).select2({
@@ -17,7 +129,7 @@ function initNullSelect(component) {
     });
     $(component).select2("val", -1);
 }
-
+//加载学校
 function loadSchool(){
     $.ajax({
         url: "/api/school/list",    //后台webservice里的方法名称
@@ -51,7 +163,7 @@ function loadSchool(){
         }
     });
 }
-
+//加载班级
 function getClassInfo(schoolId) {
     if (schoolId == "-1" || schoolId == "") {
         return;
@@ -86,7 +198,7 @@ function getClassInfo(schoolId) {
         }
     });
 }
-
+//加载学生
 function getStudentInfo(classId) {
     if (classId == "-1" || classId == "") {
         return;
@@ -114,7 +226,7 @@ function getStudentInfo(classId) {
         }
     });
 }
-
+//加载用户组
 function loadGroup() {
     $.ajax({
         url: "/api/group/list",    //后台webservice里的方法名称
@@ -139,7 +251,67 @@ function loadGroup() {
         }
     });
 }
+//加载用户
+function loadUser(groupId) {
+    $.ajax({
+        url: "/api/user/list",    //后台webservice里的方法名称
+        type: "get",
+        dataType: "json",
+        data: {groupId:groupId},
+        contentType: "application/json",
+        traditional: true,
+        success: function (data) {
+            if (data.code == "00") {
+                var options = [];
+                $.each(data.data, function (i, item) {
+                    options.push({id: item.userId, text: item.custName});
+                })
+                $("#bUserId").select2({data: options});
 
+            } else {
+                initNullSelect("#bUserId");
+            }
+        },
+        error: function (msg) {
+            initNullSelect("#bUserId");
+        }
+    });
+}
+
+//删除
+function deleteRow(text,url,type,data,table){
+    swal({
+        title: "确认删除?",
+        text: text,
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "删除",
+        cancelButtonText: "取消",
+        closeOnConfirm: false
+    }, function(){
+        $.ajax({
+            url: url,
+            type: type,
+            data: data,
+            dataType: 'json'
+        }).done(function(data) {
+                if (data.code=="00") {
+                    swal({   title: "删除成功!",   text: "删除数据成功",   timer: autoCloseTime,   showConfirmButton: true });
+                    table.fnClearTable(); //清空一下table
+                    //table.fnDestroy(); //还原初始化了的datatable
+                    table.fnDraw();
+                }else{
+                    swal({title: "删除失败!", text:  data.msg,  type:"error", timer: autoCloseTime});
+                };
+        }).fail(function() {
+            swal({title: "删除失败!", text:  "删除数据失败",  type:"error", timer: autoCloseTime});
+        });
+
+    });
+}
+
+//新增或修改
 function saveOrUpdate(url, type, formId, backHref) {
     $.ajax({
         url: url,
@@ -148,17 +320,22 @@ function saveOrUpdate(url, type, formId, backHref) {
 
     }).done(function (data) {
         if (data.code == "00") {
-            swal({title: "保存成功!", text: "保存成功", timer: 1000, showConfirmButton: true}, function () {
-                setTimeout(function () {
-                    window.location.href = backHref;
-                }, 2000);
-            });
+            if(typeof(backHref) != "undefined"){
+                swal({title: "保存成功!", text: "保存成功", timer: autoCloseTime, showConfirmButton: true}, function () {
+                    setTimeout(function () {
+                        window.location.href = backHref;
+                    }, 2000);
+                });
+            }else{
+                swal({title: "保存成功!", text: "保存成功",type:"success", timer: autoCloseTime, showConfirmButton: true});
+            }
+
 
         } else {
-            swal("保存失败!", data.msg, "error");
+            swal({title: "保存失败!", text:  data.msg,type:"error", timer: autoCloseTime});
         }
     }).fail(function () {
-        swal("保存失败!", "保存失败", "error");
+        swal({title: "保存失败!", text: "保存失败",type:"error", timer: autoCloseTime});
     });
 
 }
