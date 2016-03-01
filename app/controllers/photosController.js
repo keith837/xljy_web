@@ -169,11 +169,16 @@ module.exports = new basicController(__filename).init({
         } else {
             return next(this.Error("用户没有相应权限"));
         }
-        var albumType = parseInt(req.query.albumType);
-        if (!albumType || isNaN(albumType)) {
-            return next(this.Error("没有输入相册类型."));
+        if (req.user.source == 2 && req.user.channel == 4) {
+            //web login
+        } else {
+            var albumType = parseInt(req.query.albumType);
+            if (!albumType || isNaN(albumType)) {
+                return next(this.Error("没有输入相册类型."));
+            }
+            queryCondition.push({"key": "albumType", "opr": "=", "val": albumType});
         }
-        queryCondition.push({"key": "albumType", "opr": "=", "val": albumType});
+
 
         var publishDateStart = req.query.publishDateStart;
         if (publishDateStart) {

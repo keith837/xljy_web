@@ -75,7 +75,7 @@
                                     </div>
                                     <div class="control-group">
                                         <div class="controls">
-                                            <button type="button" id="commitBtn" class="btn">提交</button>
+                                            <button type="submit" id="commitBtn" class="btn">提交</button>
                                             <button type="reset" id="resetBtn" style="display: none;" class="btn">重置</button>
                                             <button type="button" id="backBtn" style="display: none;" class="btn" onclick="javascript:history.back();">返回</button>
                                         </div>
@@ -108,6 +108,7 @@
 <script src="js/jquery.uniform.js"></script>
 <script src="js/select2.min.js"></script>
 <script src="js/jquery.dataTables.js"></script>
+<script src="js/jquery.validate.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
 <script src="js/sweetalert.min.js" charset="utf-8"></script>
@@ -140,40 +141,44 @@
             loadSchool();
         }
 
-
-        $('#commitBtn').click(function () {
-            var stationMac = $("#stationMac");
-            if (stationMac.val() == "") {
-                stationMac.focus();
-                return;
+        $("#stationForm").validate({
+            ignore: ".ignore",
+            rules:{
+                stationMac:{
+                    required:true
+                },
+                schoolId:{
+                    required:true
+                },
+                location:{
+                    required:true
+                },
+                type:{
+                    required:true
+                }
+            },
+            errorClass: "help-inline",
+            errorElement: "span",
+            highlight:function(element, errorClass, validClass) {
+                $(element).parents('.control-group').addClass('error');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).parents('.control-group').removeClass('error');
+                $(element).parents('.control-group').addClass('success');
+            },
+            submitHandler: function(form) {
+                var editType = $("#editType").val();
+                var url = "/api/stations";
+                var type = "post";
+                if("edit"==editType){
+                    url = "/api/stations/"+$("#stationId").val();
+                    type = "put";
+                }
+                saveOrUpdate(url, type, "#stationForm", "device.html");
             }
-            var schoolId = $("#schoolId");
-            if (schoolId.val() == -1 || schoolId.val() == "") {
-                schoolId.focus();
-                return;
-            }
-
-            var location = $("#location");
-            if (location.val() == "") {
-                location.focus();
-                return;
-            }
-
-            var type = $("#type");
-            if (type.val() == -1 || type.val() == "") {
-                type.focus();
-                return;
-            }
-
-            var editType = $("#editType").val();
-            var url = "/api/stations";
-            var type = "post";
-            if("edit"==editType){
-                url = "/api/stations/"+$("#stationId").val();
-                type = "put";
-            }
-            saveOrUpdate(url, type, "#stationForm", "device.html");
         });
+
+
     });
 
 </script>

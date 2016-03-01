@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" href="css/fullcalendar.css" />
     <link rel="stylesheet" href="css/colorpicker.css" />
     <link rel="stylesheet" href="css/datepicker.css" />
@@ -13,6 +14,7 @@
     <link rel="stylesheet" href="css/select2.css" />
     <link rel="stylesheet" href="css/unicorn.main.css" />
     <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <link rel="stylesheet" href="css/sweetalert.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
 <body>
@@ -45,37 +47,27 @@
                                         </td>
                                         <td align="left" width="15%">
                                             <div class="span12" style="margin-top:5px; margin-bottom:5px">
-                                                <select class="span11">
-                                                    <option>长岛幼儿园</option>
-                                                    <option>萧山幼儿园</option>
-                                                    <option>滨文高教园</option>
-                                                </select>
+                                                <input type="text" id="schoolId" name="schoolId" placeholder="请选择学校" class="span12">
                                             </div>
                                         </td>
                                         <td align="center" width="8%">
                                             选择班级
                                         </td>
                                         <td align="left" width="15%">
-                                            <div class="span12">
-                                                <select class="span11">
-                                                    <option value="1">托一班</option>
-                                                    <option value="2">托二班</option>
-                                                    <option value="3">小一班</option>
-                                                    <option value="4">中一班</option>
-                                                    <option value="5">大一班</option>
-                                                </select>
+                                            <div class="span12" style="margin-top:5px; margin-bottom:5px">
+                                                <input type="text" id="classId" name="classId" placeholder="请选择班级" class="span12">
                                             </div>
                                         </td>
                                         <td align="center" width="8%">
-                                            选择时间
+                                            发布时间
                                         </td>
                                         <td align="left" width="35%">
                                             <div class="span12" style="margin-top:5px; margin-bottom:5px">
-                                                <input class="span5" type="text" placeholder="开始时间">
+                                                <input class="form_datetime span5" id="beginTime" type="text" placeholder="开始时间">
                                                 &nbsp;
                                                 至
-                                                &nbsp;
-                                                <input class="span5" type="text" placeholder="结束时间">
+                                                &nbsp;&nbsp;
+                                                <input class="form_datetime span5" id="endTime" type="text" placeholder="结束时间">
                                             </div>
                                         </td>
                                         <td align="center">
@@ -115,61 +107,11 @@
                                 <th>班级</th>
                                 <th>评论</th>
                                 <th>点赞</th>
-                                <th width="25%">操作</th>
+                                <th width="16%">操作</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>P301</td>
-                                <td><img src="./img/demo/av1.jpg"/></td>
-                                <td>4</td>
-                                <td>小朋友很乖哦</td>
-                                <td>王老师</td>
-                                <td>2016-01-15 00:58:31</td>
-                                <td>东风幼儿园</td>
-                                <td>大三班</td>
-                                <td>3</td>
-                                <td>5</td>
-                                <td>
-                                    <button class="btn"><i class="icon-eye-open"></i> 详情</button>
-                                    <button class="btn btn-primary"><i class="icon-pencil icon-white"></i> 编辑</button>
-                                    <button class="btn btn-danger"><i class="icon-remove icon-white"></i> 删除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>P302</td>
-                                <td><img src="./img/demo/av2.jpg"/></td>
-                                <td>4</td>
-                                <td>小朋友很乖哦</td>
-                                <td>李老师</td>
-                                <td>2016-01-15 00:58:31</td>
-                                <td>东风幼儿园</td>
-                                <td>大三班</td>
-                                <td>3</td>
-                                <td>5</td>
-                                <td>
-                                    <button class="btn"><i class="icon-eye-open"></i> 详情</button>
-                                    <button class="btn btn-primary"><i class="icon-pencil icon-white"></i> 编辑</button>
-                                    <button class="btn btn-danger"><i class="icon-remove icon-white"></i> 删除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>P303</td>
-                                <td><img src="./img/demo/av3.jpg"/></td>
-                                <td>3</td>
-                                <td>小朋友很乖哦</td>
-                                <td>唐老师</td>
-                                <td>2016-01-15 00:58:31</td>
-                                <td>东风幼儿园</td>
-                                <td>大三班</td>
-                                <td>3</td>
-                                <td>5</td>
-                                <td>
-                                    <button class="btn"><i class="icon-eye-open"></i> 详情</button>
-                                    <button class="btn btn-primary"><i class="icon-pencil icon-white"></i> 编辑</button>
-                                    <button class="btn btn-danger"><i class="icon-remove icon-white"></i> 删除</button>
-                                </td>
-                            </tr>
+
                             </tbody>
                         </table>
                     </div>
@@ -197,5 +139,57 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
+<script src="js/sweetalert.min.js" charset="utf-8"></script>
+<script src="js/bootstrap-datetimepicker.min.js"></script>
 </body>
+
+<script>
+    /**
+     * tables
+     **/
+    $(document).ready(function () {
+
+        $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
+        $("#classId").select2({data: [{id: -1, text: "请选择班级"}]});
+        loadSchool();
+        initDateTimePicker();
+        var initTableParams = initDataTable();
+        var extendParams = {
+            "bServerSide": true,
+            "sAjaxSource": "/api/photos",
+            "sServerMethod": "GET",
+            "aoColumns": [
+                {"mDataProp": "albumId"},
+                {"mDataProp": function(obj){
+                    return "<img src="+obj.picPaths[0].picUrl+"/>";
+                }},
+                {"mDataProp": function(obj){
+                    return obj.picPaths.length;
+                }},
+                {"mDataProp": "content"},
+                {"mDataProp": "userName"},
+                {"mDataProp": "createDate"},
+                {"mDataProp": "schoolName"},
+                {"mDataProp": "className"},
+                {"mDataProp": "isComment"},
+                {"mDataProp": "likesNum"}
+            ],
+            "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
+                {
+                    "targets": [10],
+                    "data": null,
+                    "bSortable": false,
+                    "defaultContent": "<button class='btn'><i class='icon-eye-open'></i> 详情</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
+                }
+            ]
+        };
+        var table = $('.data-table').dataTable(extend(extendParams,initTableParams));
+
+
+
+
+    });
+
+</script>
+
 </html>
