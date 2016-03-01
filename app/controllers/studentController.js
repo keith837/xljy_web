@@ -294,6 +294,42 @@ module.exports = new basicController(__filename).init({
                 res.json(self.createPageData("00", total, students));
             });
         });
+    },
+
+    leave : function(req, res, next){
+        var self = this;
+        var startDate = req.body.startDate;
+        var endDate = req.body.endDate;
+        var reason = req.body.reason;
+        var remark = req.body.remark;
+        var groupId = req.user.groupId;
+        if(groupId != 10){
+            return next(new Error("非家长永不允许提交请假申请单"));
+        }
+        if(!startDate){
+            return next(new Error("请输入请假开始时间"));
+        }
+        if(!endDate){
+            return next(new Error("请输入请假结束时间"));
+        }
+        if(!reason){
+            return next(new Error("请输入请假原因"));
+        }
+        var studentId = req.user.student.studentId;
+        var classId = req.user.class.classId;
+        var schoolId = req.user.schools[0].schoolId;
+        var userId = req.user.userId;
+        var tUserId = req.user.class.tUserId;
+        self.model['studentLeave'].save([schoolId, classId, userId, studentId, tUserId, startDate, endDate, reason, userId, remark], function(err, data){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                msg : "请假申请提交成功"
+            });
+        });
+
     }
 
 });
