@@ -222,7 +222,7 @@ module.exports = new basicController(__filename).init({
         if(!classId){
             var groupId = req.user.groupId;
             if(groupId == 10 || groupId == 20){
-                classId = req.user.classId;
+                classId = req.user.class.classId;
             }else{
                 return next(new Error("请传人班级编号"));
             }
