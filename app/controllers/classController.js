@@ -239,7 +239,7 @@ module.exports = new basicController(__filename).init({
             }
             res.json({
                 code : "00",
-                data : students
+                data : students ? students : new Array()
             });
         });
     },
@@ -254,8 +254,22 @@ module.exports = new basicController(__filename).init({
             res.json({
                 code : "00",
                 principal : principal ? principal : null
-            })
+            });
         });
+    },
+
+    parents : function(req, res, next){
+        var self = this;
+        var classId = parseInt(req.params.classId);
+        self.model['class'].listParentsByClassId(classId, function(err, parents){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                data : parents ? parents : new Array()
+            });
+        })
     }
 
 });
