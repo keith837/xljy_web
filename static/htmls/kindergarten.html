@@ -129,39 +129,8 @@
      * tables
      **/
     $(document).ready(function () {
-//        $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
-//        $("#classId").select2({data: [{id: -1, text: "请选择班级"}]});
-//        loadSchool();
-        $.fn.dataTable.ext.errMode = function(s,h,m){};
-        var table = $('.data-table').dataTable({
-            "oLanguage": {
-                "sLengthMenu": "每页显示 _MENU_ 条记录",
-                "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
-                "sInfoEmpty": "没有数据",
-                "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
-                "oPaginate": {
-                    "sFirst": "首页",
-                    "sPrevious": "前一页",
-                    "sNext": "后一页",
-                    "sLast": "尾页"
-                },
-                "sZeroRecords": "没有检索到数据",
-                "sProcessing": "<img src='./img/loading.gif' />"
-            },
-//            "bInfo": true,
-            "bJQueryUI": true,
-            "bLengthChange": false,
-//            "bPaginate":true,
-            "bProcessing" : true,
-            'bStateSave': true,
-            "bRetrieve": true,
-            "bDestroy":true,
-            "sPaginationType": "full_numbers",
-            "iDisplayLength": iDisplayLength,
-            "bFilter": false,
-            "sDom": '<""l>t<"F"fp>',
-
-//            "iTotalRecords":"data.iTotalRecords",
+        var initTableParams = initDataTable();
+        var extendParams = {
             "bServerSide": true,
             // "sAjaxDataProp":"data.aaData",
 //            "sAjaxDataProp":"aaData",
@@ -188,7 +157,8 @@
             //    aoData.push({ "name": "name1", "value": "value1" });
             //    aoData.push({ "name": "name2", "value": "value2" });
             //}
-        });
+        };
+        var table = $('.data-table').dataTable(extend(extendParams,initTableParams));
 
 
         $('#searchBtn').on( 'click', function () {
@@ -209,38 +179,7 @@
         $('.data-table tbody').on( 'click', 'button#delrow', function () {
             //var row = table.row( $(this).parents('tr') ).data();
             var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
-
-            swal({
-                title: "确认删除?",
-                text: "您将删除学生【"+row.studentName+"】",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "删除",
-                cancelButtonText: "取消",
-                closeOnConfirm: false
-            }, function(){
-                $.ajax({
-                    url: '/api/student/del/'+row.studentId,
-                    type: 'DELETE',
-                    dataType: 'json'
-                })
-                        .done(function(data) {
-                            if (data.code=="00") {
-                                swal({   title: "删除成功!",   text: "删除数据成功",type:"success",   timer: 2000,   showConfirmButton: true });
-                                table.fnClearTable(); //清空一下table
-                                //table.fnDestroy(); //还原初始化了的datatable
-                                table.fnDraw();
-                            }else{
-                                swal("删除失败!", data.msg, "error");
-                            };
-                        })
-                        .fail(function() {
-                            swal("删除失败!", "删除数据失败", "error");
-                        });
-
-            });
-
+            deleteRow("您将删除学生【"+row.studentName+"】", '/api/student/del/'+row.studentId,'DELETE',null,table);
         });
     });
 

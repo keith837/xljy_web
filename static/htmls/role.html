@@ -95,9 +95,9 @@
         $("#bUserId").select2({data: [{id: -1, text: "请选择用户"}]});
         var groupId = $.cookie('groupId');
         if(groupId==50){
-            loadUser(40);
+            loadUser(40,"bUserId");
         }else{
-            loadUser(30);
+            loadUser(30,"bUserId");
         }
 
         initValidator();

@@ -252,7 +252,7 @@ function loadGroup() {
     });
 }
 //加载用户
-function loadUser(groupId) {
+function loadUser(groupId,selectId) {
     $.ajax({
         url: "/api/user/list",    //后台webservice里的方法名称
         type: "get",
@@ -266,14 +266,14 @@ function loadUser(groupId) {
                 $.each(data.data, function (i, item) {
                     options.push({id: item.userId, text: item.custName});
                 })
-                $("#bUserId").select2({data: options});
+                $("#"+selectId).select2({data: options});
 
             } else {
-                initNullSelect("#bUserId");
+                initNullSelect("#"+selectId);
             }
         },
         error: function (msg) {
-            initNullSelect("#bUserId");
+            initNullSelect("#"+selectId);
         }
     });
 }

@@ -98,7 +98,7 @@
 
     $(document).ready(function(){
         $("#bUserId").select2({data: [{id: -1, text: "请选择法人"}]});
-        loadUser(40);
+        loadUser(40,"bUserId");
         initValidator();
 
         $("#brandForm").validate({

@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/select2.css" />
     <link rel="stylesheet" href="css/unicorn.main.css" />
     <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <link rel="stylesheet" href="css/sweetalert.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
 <body>
@@ -37,66 +38,63 @@
 
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form class="form-horizontal">
+                                <form class="form-horizontal" name="studentForm" id="studentForm">
                                     <div class="control-group">
                                         <label class="control-label" for="studentName">真实姓名</label>
                                         <div class="controls">
-                                            <input type="text" id="studentName" placeholder="真实姓名" class="span3">
+                                            <input type="text" id="studentName" name="studentName" placeholder="真实姓名" class="span3">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="schoolId">所属学校</label>
+                                        <div class="controls">
+                                            <input type="text" id="schoolId" name="schoolId" placeholder="请选择学校" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="classId">所属班级</label>
                                         <div class="controls">
-                                            <select class="span3" id="classId">
-                                                <option value="1">托一班</option>
-                                                <option value="2">托二班</option>
-                                                <option value="3">小一班</option>
-                                                <option value="4">中一班</option>
-                                                <option value="5">大一班</option>
-                                            </select>
+                                            <input type="text" id="classId" name="classId" placeholder="请选择班级" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="userId">绑定家长</label>
                                         <div class="controls">
-                                            <select class="span3" id="userId">
-                                                <option value="1">李刚</option>
-                                                <option value="2">王思聪</option>
-                                            </select>
+                                            <input type="text" id="userId" name="userId" placeholder="请选择家长" class="span3">
                                         </div>
                                     </div>
 
                                     <div class="control-group">
                                         <label class="control-label" for="cardNum">身份证号</label>
                                         <div class="controls">
-                                            <input type="text" id="cardNum" placeholder="身份证号" class="span3">
+                                            <input type="text" id="cardNum" name="cardNum" placeholder="身份证号" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="studentAge">学生年龄</label>
                                         <div class="controls">
-                                            <input type="text" id="studentAge" placeholder="学生年龄" class="span3">
+                                            <input type="text" id="studentAge" name="studentAge" placeholder="学生年龄" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="gender">性别</label>
                                         <div class="controls">
-                                            <select class="span3" id="gender">
-                                                <option>男</option>
-                                                <option>女</option>
+                                            <select class="span3" id="gender" name="gender">
+                                                <option value="1">男</option>
+                                                <option value="0">女</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="address">联系地址</label>
                                         <div class="controls">
-                                            <input type="text" id="address" placeholder="联系地址" class="span3">
+                                            <input type="text" id="address" name="address" placeholder="联系地址" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="remark">备注</label>
                                         <div class="controls">
-                                            <textarea rows="3" id="remark" class="span3"></textarea>
+                                            <textarea rows="3" id="remark" name="remark" class="span3"></textarea>
                                         </div>
                                     </div>
 
@@ -128,6 +126,7 @@
 <script src="js/jquery.cookie.js" charset="utf-8"></script>
 <script src="js/common.js"></script>
 <script src="js/jquery.ui.custom.js"></script>
+<script src="js/jquery.validate.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-colorpicker.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
@@ -136,7 +135,69 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
+<script src="js/sweetalert.min.js" charset="utf-8"></script>
+<script>
+    /**
+     * tables
+     **/
+    $(document).ready(function () {
+        $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
+        $("#classId").select2({data: [{id: -1, text: "请选择班级"}]});
+        $("#userId").select2({data: [{id: -1, text: "请选择家长"}]});
+        loadSchool();
+        loadUser(10,"userId");
+        initValidator();
+        $("#studentForm").validate({
+            ignore: ".ignore",
+            rules:{
+                studentName:{
+                    required:true
+                },
+                schoolId:{
+                    required:true
+                },
+                classId:{
+                    required:true
+                },
+                userId:{
+                    required:true
+                },
+                cardNum:{
+                    required:true,
+                    number:true,
+                    maxlength:18
+                },
+                studentAge:{
+                    required:true,
+                    number:true,
+                    max:18
+                },
+                gender:{
+                    required:true
+                },
+                address:{
+                    required:true
+                },
+                remark:{
+                    required:true
+                }
+            },
+            errorClass: "help-inline",
+            errorElement: "span",
+            highlight:function(element, errorClass, validClass) {
+                $(element).parents('.control-group').addClass('error');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).parents('.control-group').removeClass('error');
+                $(element).parents('.control-group').addClass('success');
+            },
+            submitHandler: function(form) {
+                saveOrUpdate("/api/student/add", "post", "#studentForm","student.html");
+            }
+        });
+    });
 
+</script>
 
 </body>
 </html>

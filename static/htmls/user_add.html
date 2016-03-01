@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/select2.css" />
     <link rel="stylesheet" href="css/unicorn.main.css" />
     <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <link rel="stylesheet" href="css/sweetalert.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
 <body>
@@ -37,70 +38,72 @@
 
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form class="form-horizontal">
+                                <form class="form-horizontal" name="userForm" id="userForm">
                                     <div class="control-group">
                                         <label class="control-label" for="userName">登陆名</label>
                                         <div class="controls">
-                                            <input type="text" id="userName" placeholder="登陆名" class="span3">
+                                            <input type="text" id="userName" name="userName" placeholder="登陆名" class="span3">
                                         </div>
                                         <label class="control-label inline right" for="password">密码</label>
                                         <div class="controls inline right">
-                                            <input type="text" id="password" placeholder="密码" class="span3">
+                                            <input type="text" id="password" name="password" placeholder="密码" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="groupName">所属群组</label>
+                                        <label class="control-label" for="groupId">所属群组</label>
                                         <div class="controls">
-                                            <select class="span3" id="groupName">
-                                                <option>超级管理员</option>
-                                                <option>集团校长</option>
-                                                <option>园长</option>
-                                            </select>
+                                            <input type="text" id="groupId" name="groupId" placeholder="请选择用户组" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="custName">真实姓名</label>
                                         <div class="controls">
-                                            <input type="text" id="custName" placeholder="真实姓名" class="span3">
+                                            <input type="text" id="custName" name="custName" placeholder="真实姓名" class="span3">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="nickName">昵称</label>
+                                        <div class="controls">
+                                            <input type="text" id="nickName" name="nickName" placeholder="昵称" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="billId">联系电话</label>
                                         <div class="controls">
-                                            <input type="text" id="billId" placeholder="联系电话" class="span3">
+                                            <input type="text" id="billId" name="billId" placeholder="联系电话" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="email">邮箱</label>
                                         <div class="controls">
-                                            <input type="text" id="email" placeholder="邮箱" class="span3">
+                                            <input type="text" id="email" name="email" placeholder="邮箱" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="gender">性别</label>
                                         <div class="controls">
-                                            <select class="span3" id="gender">
-                                                <option>男</option>
-                                                <option>女</option>
+                                            <select class="span3" id="gender" name="gender">
+                                                <option value="1">男</option>
+                                                <option value="0">女</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="address">联系地址</label>
                                         <div class="controls">
-                                            <input type="text" id="address" placeholder="联系地址" class="span3">
+                                            <input type="text" id="address" name="address" placeholder="联系地址" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="birthday">出生年月</label>
                                         <div class="controls">
-                                            <input type="text" id="birthday" placeholder="出生年月" class="span3">
+                                            <input type="text" id="birthday" name="birthday" placeholder="出生年月,如：2011-12-27" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="remark">备注</label>
                                         <div class="controls">
-                                            <textarea rows="3" id="remark" class="span3"></textarea>
+                                            <textarea rows="3" id="remark" name="remark" class="span3"></textarea>
                                         </div>
                                     </div>
 
@@ -132,6 +135,7 @@
 <script src="js/jquery.cookie.js" charset="utf-8"></script>
 <script src="js/common.js"></script>
 <script src="js/jquery.ui.custom.js"></script>
+<script src="js/jquery.validate.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-colorpicker.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
@@ -140,7 +144,70 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
+<script src="js/sweetalert.min.js" charset="utf-8"></script>
+<script>
 
+    $(document).ready(function () {
+        $("#groupId").select2({data: [{id: -1, text: "请选择用户组"}]});
+        loadGroup();
+        initValidator();
+        $("#userForm").validate({
+            ignore: ".ignore",
+            rules:{
+                userName:{
+                    required:true,
+                    isMobile:true
+                },
+                password:{
+                    required:true
+                },
+                groupId:{
+                    required:true
+                },
+                custName:{
+                    required:true
+                },
+                nickName:{
+                    required:true
+                },
+                billId:{
+                    required:true,
+                    isMobile:true
+                },
+                email:{
+                    required:true,
+                    email:true
+                },
+                gender:{
+                    required:true
+                },
+                address:{
+                    required:true
+                },
+                birthday:{
+                    required:true,
+                    date:true
+                },
+                remark:{
+                    required:true
+                }
+            },
+            errorClass: "help-inline",
+            errorElement: "span",
+            highlight:function(element, errorClass, validClass) {
+                $(element).parents('.control-group').addClass('error');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).parents('.control-group').removeClass('error');
+                $(element).parents('.control-group').addClass('success');
+            },
+            submitHandler: function(form) {
+                saveOrUpdate("/api/user/add", "post", "#userForm","user.html");
+            }
+        });
+    });
+
+</script>
 
 </body>
 </html>

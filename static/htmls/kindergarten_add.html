@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/select2.css" />
     <link rel="stylesheet" href="css/unicorn.main.css" />
     <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <link rel="stylesheet" href="css/sweetalert.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
 <body>
@@ -37,45 +38,41 @@
 
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form class="form-horizontal">
+                                <form class="form-horizontal" name="schoolForm" id="schoolForm">
                                     <div class="control-group">
                                         <label class="control-label" for="schoolName">名称</label>
                                         <div class="controls">
-                                            <input type="text" id="schoolName" placeholder="学校名称" class="span3">
+                                            <input type="text" id="schoolName" name="schoolName" placeholder="学校名称" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="address">地址</label>
                                         <div class="controls">
-                                            <input type="text" id="address" placeholder="学校地址" class="span3">
+                                            <input type="text" id="address" name="address" placeholder="学校地址" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="sUserId">负责人</label>
                                         <div class="controls">
-                                            <select class="span3" id="sUserId">
-                                                <option value="1">李刚</option>
-                                                <option value="2">王思聪</option>
-                                                <option value="3">陈园长</option>
-                                            </select>
+                                            <input type="text" id="sUserId" name="sUserId" placeholder="请选择用户" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="billId">联系电话</label>
                                         <div class="controls">
-                                            <input type="text" id="billId" placeholder="联系电话" class="span3">
+                                            <input type="text" id="billId" name="billId" placeholder="联系电话" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="schoolUrl">平面图</label>
                                         <div class="controls">
-                                            <input type="file" id="schoolUrl" class="span3"/>
+                                            <input type="file" id="schoolUrl" name="schoolUrl" class="span3"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="schoolDesc">学校简介</label>
                                         <div class="controls">
-                                            <textarea rows="3" id="schoolDesc" class="span3"></textarea>
+                                            <textarea rows="3" id="schoolDesc" name="schoolDesc" class="span3"></textarea>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -105,6 +102,7 @@
 <script src="js/jquery.cookie.js" charset="utf-8"></script>
 <script src="js/common.js"></script>
 <script src="js/jquery.ui.custom.js"></script>
+<script src="js/jquery.validate.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-colorpicker.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
@@ -113,5 +111,50 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
+<script src="js/sweetalert.min.js" charset="utf-8"></script>
+<script>
+
+    $(document).ready(function(){
+        $("#sUserId").select2({data: [{id: -1, text: "请选择用户"}]});
+        loadUser(30,"sUserId");
+        initValidator();
+        $("#schoolForm").validate({
+            ignore: ".ignore",
+            rules:{
+                schoolName:{
+                    required:true
+                },
+                address:{
+                    required:true
+                },
+                sUserId:{
+                    required:true
+                },
+                billId:{
+                    required:true,
+                    isMobile:true
+                },
+                schoolUrl:{
+                    required:true
+                },
+                schoolDesc:{
+                    required:true
+                }
+            },
+            errorClass: "help-inline",
+            errorElement: "span",
+            highlight:function(element, errorClass, validClass) {
+                $(element).parents('.control-group').addClass('error');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).parents('.control-group').removeClass('error');
+                $(element).parents('.control-group').addClass('success');
+            },
+            submitHandler: function(form) {
+                saveOrUpdate("/api/school/add", "post", "#schoolForm","kindergarten.html");
+            }
+        });
+    })
+</script>
 </body>
 </html>
