@@ -54,8 +54,8 @@ Album.create = function(albumArg, albumPicArgs, callback){
             if(err){
                 return callback.apply(null, [err, null]);
             }
-            var albumSql = "insert into XL_ALBUM(schoolId,classId,albumType,albumTitle,content,albumDate,isTop,nickName,studentId";
-            albumSql += ",studentName,likesNum,isComment,state,userId,createDate,doneDate,oUserId) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),now(),?)";
+            var albumSql = "insert into XL_ALBUM(schoolId,schoolName,classId,albumType,albumTitle,content,albumDate,isTop,userName,custName,nickName,studentId";
+            albumSql += ",studentName,likesNum,isComment,state,userId,createDate,doneDate,oUserId) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),now(),?)";
             conn.query(albumSql, albumArg, function(err, data){
                 if(err){
                     conn.rollback();
@@ -106,7 +106,7 @@ Album.findOne = function(albumType, userId, trendsId, callback){
     mysqlUtil.query("select * from XL_ALBUM where albumType=? and userId=? and albumId=?", [albumType, userId, trendsId], callback);
 }
 
-Album.queryNum = function(obj, schoolIds, callback){
+Album.queryNum = function(obj, schoolIds, startDate, endDate, callback){
     var whereSql = " 1=1 and m.state = 1 ";
     var args = new Array();
     if(obj){
@@ -116,12 +116,20 @@ Album.queryNum = function(obj, schoolIds, callback){
         }
     }
     if(schoolIds){
-        whereSql += " and schoolId in (";
+        whereSql += " and m.schoolId in (";
         for(var i = 0; i < schoolIds.length; i ++){
             whereSql += "?,";
             args.push(schoolIds[i]);
         }
         whereSql = whereSql.substr(0, whereSql.length - 1) + ")";
+    }
+    if(startDate){
+        whereSql += " and m.createDate >= ? ";
+        args.push(startDate);
+    }
+    if(endDate){
+        whereSql += " and m.createDate <= ? ";
+        args.push(endDate);
     }
     var countSql = "select count(*) AS total from XL_ALBUM m WHERE " + whereSql + " order by createDate desc";
     mysqlUtil.queryOne(countSql, args, callback);
@@ -137,12 +145,20 @@ Album.queryPage = function(obj, schoolIds, start, pageSize, callback){
         }
     }
     if(schoolIds){
-        whereSql += " and schoolId in (";
+        whereSql += " and m.schoolId in (";
         for(var i = 0; i < schoolIds.length; i ++){
             whereSql += "?,";
             args.push(schoolIds[i]);
         }
         whereSql = whereSql.substr(0, whereSql.length - 1) + ")";
+    }
+    if(startDate){
+        whereSql += " and m.createDate >= ? ";
+        args.push(startDate);
+    }
+    if(endDate){
+        whereSql += " and m.createDate <= ? ";
+        args.push(endDate);
     }
     var querySql = "select m.* from XL_ALBUM m WHERE " + whereSql + " order by createDate desc";
     querySql += " limit ?,?";
@@ -151,8 +167,8 @@ Album.queryPage = function(obj, schoolIds, start, pageSize, callback){
     mysqlUtil.query(querySql, args, callback);
 }
 
-Album.listByPage = function(obj, schoolIds, start, pageSize, callback){
-    Album.queryNum(obj, schoolIds, function(err, data){
+Album.listByPage = function(obj, schoolIds, startDate, endDate, start, pageSize, callback){
+    Album.queryNum(obj, schoolIds, startDate, endDate, function(err, data){
         if(err){
             return callback(err);
         }
@@ -160,7 +176,7 @@ Album.listByPage = function(obj, schoolIds, start, pageSize, callback){
         if(data){
             total = data.total;
         }
-        Album.queryPage(obj, schoolIds, start, pageSize, function(err, users){
+        Album.queryPage(obj, schoolIds, startDate, endDate, start, pageSize, function(err, users){
             if(err){
                 return callback(err);
             }

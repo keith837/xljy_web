@@ -35,10 +35,13 @@ module.exports = new basicController(__filename).init({
         } else if (groupId == 30 || groupId == 40 || groupId == 50) {
             schoolId = req.user.schools[0].schoolId;
         }
+        var schoolName = req.user.schools[0].schoolName;
+        var userName = req.user.userName;
+        var custName = req.user.custName;
         form.parse(req, function (err, fields, files) {
             var content = fields.content;
             var isTop = fields.isTop || 0;
-            var albumArg = [schoolId, classId, 3, '动态信息', content, new Date(), isTop, nickName, studentId, studentName, 0, 0, 1, userId, userId];
+            var albumArg = [schoolId, schoolName, classId, 3, '动态信息', content, new Date(), isTop, userName, custName, nickName, studentId, studentName, 0, 0, 1, userId, userId];
             var albumPicArgs = new Array();
             for (var photos in files) {
                 albumPicArgs.push([files[photos].path, 0, null, 1, userId, userId]);
@@ -141,7 +144,17 @@ module.exports = new basicController(__filename).init({
         var obj = new Object();
         obj.albumType = 3;
         var schoolIds = req.query.schoolId ? [parseInt(req.query.schoolId)] : req.user.schoolIds;
-        self.model['album'].listByPage(obj, schoolIds, start, pageSize, function(err, total, trends) {
+        var userName = req.query.userName;
+        if(userName){
+            obj.userName = userName;
+        }
+        var custName = req.query.custName;
+        if(custName){
+            obj.custName = custName;
+        }
+        var startDate = req.query.startDate;
+        var endDate = req.query.endDate;
+        self.model['album'].listByPage(obj, schoolIds, startDate, endDate, start, pageSize, function(err, total, trends) {
             if (err) {
                 return next(err);
             }
@@ -215,6 +228,9 @@ module.exports = new basicController(__filename).init({
                             content: trends[i].content,
                             userId: trends[i].userId,
                             nickName: trends[i].nickName,
+                            userName: trends[i].userName,
+                            custName: trends[i].custName,
+                            schoolName: trends[i].schoolName,
                             createDate: trends[i].createDate,
                             likesNum: trends[i].likesNum,
                             commentNum: trends[i].isComment,
@@ -312,6 +328,9 @@ module.exports = new basicController(__filename).init({
                             content: trends[i].content,
                             userId: trends[i].userId,
                             nickName: trends[i].nickName,
+                            userName: trends[i].userName,
+                            custName: trends[i].custName,
+                            schoolName: trends[i].schoolName,
                             createDate: trends[i].createDate,
                             likesNum: trends[i].likesNum,
                             commentNum: trends[i].isComment,
