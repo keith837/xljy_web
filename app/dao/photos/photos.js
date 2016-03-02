@@ -183,6 +183,56 @@ Photos.addAlbumLike = function (albumId, userId, nickName, studentId, studentNam
     });
 }
 
+Photos.unLike = function (albumId, userId, handleId, cb) {
+    mysqlUtil.getConnection(function (err, conn) {
+        if (err) {
+            return callback.apply(null, [err, null]);
+        }
+
+        var tasks = [function (callback) {
+            conn.beginTransaction(function (err) {
+                callback(err);
+            });
+        }, function (callback) {
+            conn.query("select count(*) as total from XL_CLASS_ALBUM where albumId=? and state=1", albumId, function (err, data) {
+                if (err) {
+                    return callback(err);
+                }
+                if (data[0].total !== 1) {
+                    return callback(new Error("找不到相册[" + albumId + "]"));
+                } else {
+                    callback(err, data);
+                }
+            });
+        }, function (query, callback) {
+            var updateSql = "update XL_CLASS_ALBUM set likesNum=likesNum - 1,doneDate=now() where albumId=?";
+            conn.query(updateSql, albumId, function (err, upd) {
+                callback(err, upd);
+            });
+        }, function (res, callback) {
+            var likeSQL = "update XL_CLASS_ALBUM_HANDLE set state=0,doneDate=now(),oUserId=? where handleId=?";
+            conn.query(likeSQL, [userId, handleId], function (err, res) {
+                callback(err, res);
+            });
+        }, function (res, callback) {
+            conn.commit(function (err) {
+                callback(err);
+            });
+        }];
+
+        async.waterfall(tasks, function (err, results) {
+            if (err) {
+                conn.rollback();
+                conn.release();
+                return cb(err);
+            }
+            conn.release();
+            cb.apply(null, [null, results]);
+        });
+    });
+}
+
+
 Photos.addAlbumComment = function (albumId, userId, nickName, parentHandleId, content, studentId, studentName, callback) {
     mysqlUtil.getConnection(function (err, conn) {
         if (err) {

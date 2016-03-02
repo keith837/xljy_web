@@ -323,11 +323,6 @@ var routerConfig = {
                 "method": "post",
                 "description": "动态点赞"
             },
-            "unlike": {
-                "url": "/api/trends/unlike/:trendsId",
-                "method": "put",
-                "description": "取消点赞"
-            },
             "comment": {
                 "url": "/api/trends/comment/:trendsId",
                 "method": "post",
@@ -449,6 +444,11 @@ var routerConfig = {
                 "url": "/api/photos/like/:id",
                 "method": "put",
                 "description": "相册点赞"
+            },
+            "unlike": {
+                "url": "/api/photos/unlike/:id",
+                "method": "put",
+                "description": "相册取消点赞"
             },
             "comment": {
                 "url": "/api/photos/comment/:id",
