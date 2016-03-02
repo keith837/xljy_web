@@ -57,7 +57,7 @@ Station.queryPage = function (start, pageSize, queryCondition, callback) {
 }
 
 Station.add = function (station, callback) {
-    mysqlUtil.queryOne("select count(*) as count from XL_SCHOOL where schoolId=?", [station.schoolId], function (err, res) {
+    mysqlUtil.queryOne("select count(*) as count from XL_SCHOOL where schoolId=? and state=1", [station.schoolId], function (err, res) {
         if (err) {
             return callback(err);
         } else if (res.count !== 1) {
@@ -91,7 +91,7 @@ Station.queryDetail = function (id, callback) {
 }
 
 Station.update = function (station, callback) {
-    mysqlUtil.queryOne("select count(*) as count from XL_SCHOOL where schoolId=?", [station.schoolId], function (err, res) {
+    mysqlUtil.queryOne("select count(*) as count from XL_SCHOOL where schoolId=? and state=1", [station.schoolId], function (err, res) {
         if (err) {
             return callback(err);
         } else if (res.count !== 1) {

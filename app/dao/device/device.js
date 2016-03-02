@@ -57,7 +57,7 @@ Device.queryPage = function (start, pageSize, queryCondition, callback) {
 }
 
 Device.add = function (device, callback) {
-    mysqlUtil.queryOne("select count(*) as total from XL_STUDENT where studentId=?", [device.studentId], function (err, res) {
+    mysqlUtil.queryOne("select count(*) as total from XL_STUDENT where studentId=? and state=1", [device.studentId], function (err, res) {
         if (err) {
             return callback(err);
         } else if (res.total !== 1) {
@@ -82,7 +82,7 @@ Device.del = function (id, callback) {
 }
 
 Device.update = function (device, callback) {
-    mysqlUtil.queryOne("select count(*) as count from XL_STUDENT where studentId=?", [device.studentId], function (err, res) {
+    mysqlUtil.queryOne("select count(*) as count from XL_STUDENT where studentId=? and state=1", [device.studentId], function (err, res) {
         if (err) {
             return callback(err);
         } else if (res.count !== 1) {
