@@ -60,11 +60,11 @@ module.exports = new basicController(__filename).init({
             }
         }
 
-        var effDateStart = request.query.effDateStart;
+        var effDateStart = request.query.startDate;
         if (effDateStart) {
             queryCondition.push({"key": "effDate", "opr": ">=", "val": effDateStart});
         }
-        var effDateEnd = request.query.effDateEnd;
+        var effDateEnd = request.query.endDate;
         if (effDateEnd) {
             queryCondition.push({"key": "effDate", "opr": "<=", "val": effDateEnd});
         }

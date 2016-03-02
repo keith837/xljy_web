@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="css/select2.css" />
     <link rel="stylesheet" href="css/unicorn.main.css" />
     <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="css/sweetalert.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
 <body>
@@ -37,47 +39,43 @@
 
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form class="form-horizontal">
+                                <form class="form-horizontal" id="noticeForm" method="post">
                                     <div class="control-group">
                                         <label class="control-label" for="noticeTitle">标题</label>
                                         <div class="controls">
-                                            <input type="text" id="noticeTitle" placeholder="标题" class="span3">
+                                            <input type="text" id="noticeTitle" name="noticeTitle" placeholder="标题" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="picUrl">缩略图</label>
                                         <div class="controls">
-                                            <input type="file" id="picUrl" class="span3"/>
+                                            <input type="file" id="picUrl" name="picUrl" class="span3"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="noticeTypeId">通知类型</label>
                                         <div class="controls">
-                                            <select class="span3" id="noticeTypeId">
-                                                <option>今日食谱</option>
-                                                <option>校方通知</option>
-                                                <option>班级通知</option>
-                                                <option>紧急通知</option>
-                                                <option>工作计划</option>
+                                            <select class="span3" id="noticeTypeId" name="noticeTypeId">
+                                                <option value="6">紧急通知</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="noticeContext">通知内容</label>
                                         <div class="controls">
-                                            <textarea rows="3" id="noticeContext" class="span3"></textarea>
+                                            <textarea rows="3" id="noticeContext" name="noticeContext" class="span3"></textarea>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="effDate">生效时间</label>
                                         <div class="controls">
-                                            <input type="text" id="effDate" placeholder="生效时间" class="span3">
+                                            <input type="text" id="effDate" name="effDate" placeholder="生效时间" class="form_datetime span5">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="expDate">失效时间</label>
                                         <div class="controls">
-                                            <input type="text" id="expDate" placeholder="失效时间" class="span3">
+                                            <input type="text" id="expDate" name="expDate" placeholder="失效时间" class="form_datetime span5">
                                         </div>
                                     </div>
 
@@ -114,9 +112,55 @@
 <script src="js/jquery.uniform.js"></script>
 <script src="js/select2.min.js"></script>
 <script src="js/jquery.dataTables.js"></script>
+<script src="js/jquery.validate.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
-
+<script src="js/sweetalert.min.js" charset="utf-8"></script>
+<script src="js/bootstrap-datetimepicker.min.js"></script>
 
 </body>
+<script>
+    /**
+     * tables
+     **/
+    $(document).ready(function () {
+        initDateTimePicker();
+
+        $("#noticeForm").validate({
+            ignore: ".ignore",
+            rules:{
+                noticeTitle:{
+                    required:true
+                },
+                noticeTypeId:{
+                    required:true
+                },
+                noticeContext:{
+                    required:true
+                },
+                effDate:{
+                    required:true
+                },
+                expDate:{
+                    required:true
+                }
+            },
+            errorClass: "help-inline",
+            errorElement: "span",
+            highlight:function(element, errorClass, validClass) {
+                $(element).parents('.control-group').addClass('error');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).parents('.control-group').removeClass('error');
+                $(element).parents('.control-group').addClass('success');
+            },
+            submitHandler: function(form) {
+                var noticeTypeId = $("#noticeTypeId").val();
+                saveOrUpdate("/api/notices?noticeTypeId="+noticeTypeId, "post", "#noticeForm", "notice.html");
+            }
+        });
+
+    });
+
+</script>
 </html>

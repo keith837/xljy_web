@@ -120,6 +120,28 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    unlike: function (req, res, next) {
+        var self = this;
+
+        var userId = req.user.userId;
+        var albumId = parseInt(req.params.id);
+        //handleType:1:点赞,2:评论
+        this.model['photos'].findHandle(albumId, 1, userId, function (err, data) {
+            if (err) {
+                return next(err);
+            }
+            if (!data || data.length != 1) {
+                return next(self.Error("用户没有点赞，无法取消"));
+            }
+            self.model['photos'].unLike(albumId, userId, data[0].handleId, function (err, data) {
+                if (err) {
+                    return next(err);
+                }
+                res.json({code: "00", msg: "取消相册点赞成功"});
+            });
+        });
+    },
+
     comment: function (req, res, next) {
         var userId = req.user.userId;
         var groupId = req.user.groupId;
@@ -180,11 +202,11 @@ module.exports = new basicController(__filename).init({
         }
 
 
-        var publishDateStart = req.query.publishDateStart;
+        var publishDateStart = req.query.startDate;
         if (publishDateStart) {
             queryCondition.push({"key": "createDate", "opr": ">=", "val": publishDateStart});
         }
-        var publishDateEnd = req.query.publishDateEnd;
+        var publishDateEnd = req.query.endDate;
         if (publishDateEnd) {
             queryCondition.push({"key": "createDate", "opr": "<=", "val": publishDateEnd});
         }
