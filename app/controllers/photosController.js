@@ -15,7 +15,7 @@ module.exports = new basicController(__filename).init({
         var nickName = req.user.nickName;
 
         var albumType = parseInt(req.query.albumType);
-        //1:班级相册;2:成长点滴
+        //1:班级相册;2:成长点滴;3:精彩瞬间
         if (!albumType || isNaN(albumType)) {
             return next(this.Error("没有输入相册类型."));
         }
@@ -171,8 +171,8 @@ module.exports = new basicController(__filename).init({
 
     list: function (req, res, next) {
         var self = this;
-        var start = parseInt(req.query.iDisplayStart || 0);
-        var pageSize = parseInt(req.query.iDisplayLength || 10);
+        var start = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);
+        var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
         var userId = req.user.userId;
         var groupId = req.user.groupId;
 
