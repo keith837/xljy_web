@@ -5,6 +5,7 @@ var moment = require('moment');
 
 module.exports = new basicController(__filename).init({
 
+    //退出登录
     logout : function(req, res, next){
         var self = this;
         var token = req.user.token;
