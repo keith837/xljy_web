@@ -76,6 +76,11 @@ var routerConfig = {
                 "url": "/api/user/modify/:userId",
                 "method": "put",
                 "description": "修改用户信息"
+            },
+            "logout" : {
+                "url": "/api/user/logout",
+                "method": "post",
+                "description": "退出登录"
             }
         },
 
