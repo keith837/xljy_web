@@ -113,6 +113,7 @@ module.exports = new basicController(__filename).init({
                                 groupId : user.groupId,
                                 pointNum : user.pointNum,
                                 token : user.token,
+                                webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
                                 students : retStudents
                             }
                         });
@@ -142,6 +143,7 @@ module.exports = new basicController(__filename).init({
                         groupId : user.groupId,
                         pointNum : user.pointNum,
                         token : user.token,
+                        webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
                         students : retStudents
                     }
                 });
@@ -186,6 +188,7 @@ module.exports = new basicController(__filename).init({
                         groupId : user.groupId,
                         pointNum : user.pointNum,
                         token : user.token,
+                        webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
                         class : {
                             classId : classes[0].classId,
                             schoolId : classes[0].schoolId,
@@ -245,6 +248,7 @@ module.exports = new basicController(__filename).init({
                     groupId : user.groupId,
                     pointNum : user.pointNum,
                     token : user.token,
+                    webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
                     schools : retSchools
                 }
             });
@@ -297,6 +301,7 @@ module.exports = new basicController(__filename).init({
                     groupId : user.groupId,
                     pointNum : user.pointNum,
                     token : user.token,
+                    webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
                     schools : retSchools
                 }
             });
@@ -336,6 +341,7 @@ module.exports = new basicController(__filename).init({
                     groupId : user.groupId,
                     pointNum : user.pointNum,
                     token : user.token,
+                    webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
                     schools : retSchools
                 }
             });
