@@ -202,11 +202,11 @@ module.exports = new basicController(__filename).init({
         }
 
 
-        var publishDateStart = req.query.publishDateStart;
+        var publishDateStart = req.query.startDate;
         if (publishDateStart) {
             queryCondition.push({"key": "createDate", "opr": ">=", "val": publishDateStart});
         }
-        var publishDateEnd = req.query.publishDateEnd;
+        var publishDateEnd = req.query.endDate;
         if (publishDateEnd) {
             queryCondition.push({"key": "createDate", "opr": "<=", "val": publishDateEnd});
         }

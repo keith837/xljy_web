@@ -199,10 +199,10 @@
                 queryCondition += "classId=" + classId + "&";
             }
             if (beginTime != "") {
-                queryCondition += "publishDateStart=" + beginTime + "&";
+                queryCondition += "startDate=" + beginTime + "&";
             }
             if (endTime != "") {
-                queryCondition += "publishDateEnd=" + endTime + "&";
+                queryCondition += "endDate=" + endTime + "&";
             }
             //table.fnClearTable(); //清空一下table，不能设置
             table.fnSettings().sAjaxSource = '/api/photos?' + queryCondition;
