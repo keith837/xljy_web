@@ -77,6 +77,23 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    unlike : function(req, res, next){
+        var self = this;
+        var userId = req.user.userId;
+        var trendsId = parseInt(req.params.trendsId);
+        self.model['album'].cancelAlbumLike(trendsId, userId, function(err, data){
+            if(err){
+                return next(err);
+            }else if(!data || data.affectedRows != 1){
+                return next(new Error("当前用户未点赞"));
+            }
+            res.json({
+                code: "00",
+                msg: "取消点赞成功"
+            });
+        });
+    },
+
     like: function (req, res, next) {
         var self = this;
         var userId = req.user.userId;

@@ -248,6 +248,25 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    classes : function(req, res, next){
+        var self = this;
+        var schoolId = req.query.schoolId;
+        if(!schoolId){
+            schoolId = req.user.schools[0].schoolId;
+        }else{
+            schoolId = parseInt(schoolId);
+        }
+        self.model['school'].listClassBySchoolId(schoolId, function(err, classes){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                data : classes ? classes : new Array()
+            });
+        });
+    },
+
     del : function(req, res, next){
         var self = this;
         var schoolId = parseInt(req.params.schoolId);

@@ -64,6 +64,17 @@ School.listAllSchool = function(callback){
 }
 
 /**
+ * 学校班级查询
+ * @param schoolId
+ * @param callback
+ */
+School.listClassBySchoolId = function(schoolId, callback){
+    var sql = "select A.className,A.classId,A.tUserId,C.userName,C.custName,C.nickName,count(*) as studentNum from XL_CLASS A, XL_STUDENT B, XL_USER C where "
+    sql += "A.classId=B.classId and A.tUserId=C.userId and A.state=1 and B.state=1 and A.schoolId=? group by A.className,A.classId,A.tUserId,C.userName,C.custName,C.nickName";
+    mysqlUtil.query(sql, [schoolId], callback);
+}
+
+/**
  * 学校教师查询
  * @param schoolId
  * @param callback

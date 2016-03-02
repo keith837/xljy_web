@@ -162,6 +162,11 @@ var routerConfig = {
                 "method": "get",
                 "description": "学校老师查询"
             },
+            "classes" : {
+                "url": "/api/school/classes",
+                "method": "get",
+                "description": "学校班级查询"
+            }
         },
 
         brand : {
@@ -317,6 +322,11 @@ var routerConfig = {
                 "url": "/api/trends/like/:trendsId",
                 "method": "post",
                 "description": "动态点赞"
+            },
+            "unlike": {
+                "url": "/api/trends/unlike/:trendsId",
+                "method": "put",
+                "description": "取消点赞"
             },
             "comment": {
                 "url": "/api/trends/comment/:trendsId",
