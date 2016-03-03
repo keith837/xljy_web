@@ -57,7 +57,6 @@ module.exports = new basicController(__filename).init({
         form.parse(req, function (err, fields, files) {
             var content = fields.content;
             var albumTitle = fields.albumTitle;
-            var albumParam = [albumType, albumTitle, content, schoolId, classId, userId, nickName, studentId, studentName, schoolName, className, userName];
             var albumPics = new Array();
             for (var photos in files) {
                 albumPics.push([files[photos].path, userId]);
@@ -65,6 +64,7 @@ module.exports = new basicController(__filename).init({
             if (albumPics.length === 0) {
                 return next(self.Error("没有上传照片."));
             }
+            var albumParam = [albumType, albumTitle, content, schoolId, classId, userId, nickName, studentId, studentName, schoolName, className, userName, albumPics.length];
             self.model['photos'].publish(albumParam, albumPics, function (err, data) {
                 if (err) {
                     return next(err);
@@ -173,6 +173,9 @@ module.exports = new basicController(__filename).init({
         var self = this;
         var start = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);
         var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
+
+        var photoLength = parseInt(req.query.iDisplayPhotoLength || this.webConfig.iDisplayPhotoLength);
+        var commentLength = parseInt(req.query.iDisplayCommentLength || this.webConfig.iDisplayCommentLength);
         var userId = req.user.userId;
         var groupId = req.user.groupId;
 
@@ -227,7 +230,7 @@ module.exports = new basicController(__filename).init({
             }
         }
 
-        this.model['photos'].queryByAlbumType(start, pageSize, queryCondition, function (err, totalCount, results) {
+        this.model['photos'].queryByAlbumType(start, pageSize, photoLength, commentLength, queryCondition, function (err, totalCount, results) {
             if (err) {
                 return next(err);
             }
@@ -289,5 +292,87 @@ module.exports = new basicController(__filename).init({
                 res.json({code: "00", msg: "编辑相册成功"});
             });
         });
+    },
+    moreComment: function (req, res, next) {
+        var self = this;
+
+        var start = parseInt(req.query.iDisplayStart) || 0;
+        var commentLength = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayCommentLength);
+        var userId = req.user.userId;
+
+        var albumId = req.params.albumId;
+
+        this.model['photos'].moreComment(albumId, start, commentLength, function (err, totalCount, results) {
+            if (err) {
+                return next(err);
+            }
+            res.json(self.createPageData("00", totalCount, results));
+        });
+    },
+
+    morePhoto: function (req, res, next) {
+        var self = this;
+
+        var start = parseInt(req.query.iDisplayStart) || 0;
+        var photoLength = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayPhotoLength);
+        var userId = req.user.userId;
+
+        var albumId = req.params.albumId;
+
+        this.model['photos'].morePhoto(albumId, start, photoLength, function (err, totalCount, results) {
+            if (err) {
+                return next(err);
+            }
+            res.json(self.createPageData("00", totalCount, results));
+        });
+    },
+
+    delPhoto: function (req, res, next) {
+        var self = this;
+        var userId = req.user.userId;
+        var picId = parseInt(req.params.id);
+        var albumId = parseInt(req.params.albumId);
+        this.model['photos'].delPhoto(albumId, picId, userId, function (err, data) {
+            if (err) {
+                return next(err);
+            }
+            res.json({code: "00", msg: "照片删除成功"});
+        });
+    },
+
+    addPhoto: function (req, res, next) {
+        var self = this;
+        var userId = req.user.userId;
+        var classId = req.user.class.classId;
+        var albumId = parseInt(req.params.albumId);
+
+        var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "PHOTOS");
+        uploadDir += "class" + classId + "/";
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir);
+        }
+
+        var form = new formidable.IncomingForm();   //创建上传表单
+        form.encoding = 'utf-8';		//设置编辑
+        form.uploadDir = uploadDir;	 //设置上传目录
+        form.keepExtensions = true;	 //保留后缀
+        form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
+        form.parse(req, function (err, fields, files) {
+            var albumPics = new Array();
+            for (var photos in files) {
+                albumPics.push([files[photos].path, userId]);
+            }
+            if (albumPics.length === 0) {
+                return next(self.Error("没有上传照片."));
+            }
+            self.model['photos'].addPhoto(userId, albumId, albumPics, function (err, data) {
+                if (err) {
+                    return next(err);
+                }
+                res.json({code: "00", msg: "添加照片成功"});
+            });
+        });
     }
+
+
 });

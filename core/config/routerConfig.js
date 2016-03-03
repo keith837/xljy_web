@@ -450,6 +450,16 @@ var routerConfig = {
                 "method": "put",
                 "description": "相册点赞"
             },
+            "addPhoto": {
+                "url": "/api/photos/:albumId/add",
+                "method": "put",
+                "description": "添加照片"
+            },
+            "delPhoto": {
+                "url": "/api/photos/:albumId/:id",
+                "method": "delete",
+                "description": "删除照片"
+            },
             "unlike": {
                 "url": "/api/photos/unlike/:id",
                 "method": "put",
@@ -459,6 +469,16 @@ var routerConfig = {
                 "url": "/api/photos/comment/:id",
                 "method": "put",
                 "description": "相册评论"
+            },
+            "moreComment": {
+                "url": "/api/photos/:albumId/comments",
+                "method": "get",
+                "description": "更多相册评论"
+            },
+            "morePhoto": {
+                "url": "/api/photos/:albumId/photo",
+                "method": "get",
+                "description": "查看更多照片"
             },
             "list": {
                 "url": "/api/photos",

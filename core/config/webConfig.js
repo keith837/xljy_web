@@ -17,6 +17,8 @@ var webConfig = {
     PRINT_ACCESS_LOG: false,
     iDisplayLength: 10,
     iDisplayStart: 0,
+    iDisplayPhotoLength: 9,
+    iDisplayCommentLength: 6,
     VIEWSPATH: 'app/views'
 }
 module.exports = webConfig;
