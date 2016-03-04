@@ -347,6 +347,11 @@ var routerConfig = {
                 "url": "/api/trends/top/:trendsId/:isTop",
                 "method": "put",
                 "description": "动态置顶及下移"
+            },
+            "unlike": {
+                "url": "/api/trends/unlike/:trendsId",
+                "method": "put",
+                "description": "动态取消点赞"
             }
         },
         station: {
