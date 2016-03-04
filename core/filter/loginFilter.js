@@ -22,12 +22,12 @@ function checkLogin(req, res, next){
 
     logger.debug("从请求中获取token：" + token);
     if(!token){
+        var msg = "用户未登录！";
         if (reqPath.indexOf(webConfig.contextPath+"/") == 0) {
-            return res.redirect(webConfig.contextPath+'/login.html');
+            return res.redirect(webConfig.contextPath+'/login.html?msg=' + msg);
         } else {
-            return next(new Error("用户未登录！"));
+            return next(new Error(msg));
         }
-
     }
     redisPool.get(token, function(err, data){
         if(err){
@@ -39,9 +39,14 @@ function checkLogin(req, res, next){
             req.user = JSON.parse(data);
             return next();
         }
-        var tempNewError = new Error("用户未登陆或登录信息已失效，请重新登录！");
-        tempNewError.code = "01";
-        return next(tempNewError);
+        var msg = "用户未登陆或登录信息已失效，请重新登录！";
+        if (reqPath.indexOf(webConfig.contextPath+"/") == 0) {
+            return res.redirect(webConfig.contextPath+'/login.html?msg=' + msg);
+        } else {
+            var tempNewError = new Error(msg);
+            tempNewError.code = "01";
+            return next(tempNewError);
+        }
     });
 }
 
