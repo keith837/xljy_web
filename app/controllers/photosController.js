@@ -5,6 +5,7 @@
 var basicController = require("../../core/utils/controller/basicController");
 var formidable = require("formidable");
 var fs = require("fs");
+var path = require("path");
 
 module.exports = new basicController(__filename).init({
 
@@ -59,7 +60,7 @@ module.exports = new basicController(__filename).init({
             var albumTitle = fields.albumTitle;
             var albumPics = new Array();
             for (var photos in files) {
-                albumPics.push([files[photos].path, userId]);
+                albumPics.push([path.normalize(files[photos].path).replace(/\\/g, '/'), userId]);
             }
             if (albumPics.length === 0) {
                 return next(self.Error("没有上传照片."));
@@ -280,7 +281,7 @@ module.exports = new basicController(__filename).init({
             var albumParam = [albumTitle, content, schoolId, classId, userId, nickName, studentId, studentName, albumId];
             var albumPics = new Array();
             for (var photos in files) {
-                albumPics.push([files[photos].path, userId]);
+                albumPics.push([path.normalize(files[photos].path).replace(/\\/g, '/'), userId]);
             }
             if (albumPics.length === 0) {
                 return next(self.Error("没有上传照片."));
@@ -360,7 +361,7 @@ module.exports = new basicController(__filename).init({
         form.parse(req, function (err, fields, files) {
             var albumPics = new Array();
             for (var photos in files) {
-                albumPics.push([files[photos].path, userId]);
+                albumPics.push([path.normalize(files[photos].path).replace(/\\/g, '/'), userId]);
             }
             if (albumPics.length === 0) {
                 return next(self.Error("没有上传照片."));
