@@ -3,6 +3,7 @@
  */
 var formidable = require("formidable");
 var fs = require("fs");
+var path = require("path");
 
 var basicController = require("../../core/utils/controller/basicController");
 module.exports = new basicController(__filename).init({
@@ -139,14 +140,14 @@ module.exports = new basicController(__filename).init({
             className = request.user.class.className;
         }
         form.parse(request, function (err, fields, files) {
-            var content = fields.content;
-            var title = fields.title;
+            var content = fields.noticeContext;
+            var title = fields.noticeTitle;
             var effDate = fields.effDate;
             var expDate = fields.expDate;
             var noticeParam = [noticeTypeId, title, content, effDate, expDate, schoolId, classId, userId, schoolName, className, userName, nickName];
             var noticePics = new Array();
             for (var photos in files) {
-                noticePics.push([files[photos].path, userId]);
+                noticePics.push([path.normalize(files[photos].path).replace(/\\/g, '/'), userId]);
             }
             self.model['notice'].publishNotice(noticeParam, noticePics, function (err, data) {
                 if (err) {
@@ -202,14 +203,14 @@ module.exports = new basicController(__filename).init({
         form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
 
         form.parse(request, function (err, fields, files) {
-            var content = fields.content;
-            var title = fields.title;
+            var content = fields.noticeContext;
+            var title = fields.noticeTitle;
             var effDate = fields.effDate;
             var expDate = fields.expDate;
             var noticeParam = [userId, title, content, effDate, expDate, noticeId];
             var noticePics = new Array();
             for (var photos in files) {
-                noticePics.push([files[photos].path, userId]);
+                noticePics.push([path.normalize(files[photos].path).replace(/\\/g, '/'), userId]);
             }
             self.model['notice'].editNotice(noticeParam, noticePics, function (err, data) {
                 if (err) {

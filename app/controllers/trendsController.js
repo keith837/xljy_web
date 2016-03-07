@@ -1,6 +1,7 @@
 var basicController = require("../../core/utils/controller/basicController");
 var formidable = require("formidable");
 var fs = require("fs");
+var path = require("path");
 
 module.exports = new basicController(__filename).init({
     create: function (req, res, next) {
@@ -44,7 +45,7 @@ module.exports = new basicController(__filename).init({
             var albumArg = [schoolId, schoolName, classId, 3, '动态信息', content, new Date(), isTop, userName, custName, nickName, studentId, studentName, 0, 0, 1, userId, userId];
             var albumPicArgs = new Array();
             for (var photos in files) {
-                albumPicArgs.push([files[photos].path, 0, null, 1, userId, userId]);
+                albumPicArgs.push([path.normalize(files[photos].path).replace(/\\/g, '/'), 0, null, 1, userId, userId]);
             }
             self.model['album'].create(albumArg, albumPicArgs, function (err, data) {
                 if (err) {
