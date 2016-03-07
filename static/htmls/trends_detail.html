@@ -22,13 +22,13 @@
 
 <div id="content">
     <div id="breadcrumb">
-        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 相册管理</a>
-        <a href="#" class="current">相册信息</a>
+        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 动态管理</a>
+        <a href="#" class="current">动态详情</a>
     </div>
     <div class="container-fluid">
         <div class="row-fluid">
             <div class="span12">
-                <div class="widget-box">
+                <div class="widget-box" style="margin-bottom:0;">
                     <div class="widget-title">
 								<span class="icon">
 									<i class="icon-th"></i>
@@ -38,14 +38,14 @@
                     <div class="widget-content nopadding">
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form action="#" method="post" class="form-search" >
+                                <form action="#" method="post" class="form-horizontal" >
 
                                 <table width="100%" >
                                     <tr>
                                         <td align="center" width="8%">
                                             选择学校
                                         </td>
-                                        <td align="left" width="15%">
+                                        <td align="left" width="33%">
                                             <div class="span12" style="margin-top:5px; margin-bottom:5px">
                                                 <input type="text" id="schoolId" name="schoolId" placeholder="请选择学校" class="span12">
                                             </div>
@@ -53,31 +53,50 @@
                                         <td align="center" width="8%">
                                             选择班级
                                         </td>
-                                        <td align="left" width="15%">
+                                        <td align="left" width="10%">
                                             <div class="span12" style="margin-top:5px; margin-bottom:5px">
                                                 <input type="text" id="classId" name="classId" placeholder="请选择班级" class="span12">
                                             </div>
                                         </td>
                                         <td align="center" width="8%">
-                                            发布时间
+                                            动态内容
                                         </td>
-                                        <td align="left" width="35%">
+                                        <td>
                                             <div class="span12" style="margin-top:5px; margin-bottom:5px">
-                                                <input class="form_datetime span5" id="beginTime" type="text" placeholder="开始时间">
+                                                <input type="text" id="trendsContent" name="trendsContent" placeholder="请输入动态内容" class="span12">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" width="8%">
+                                            选择时间
+                                        </td>
+                                        <td align="left">
+                                            <div class="span12" style="margin-top:5px; margin-bottom:5px">
+                                                <input class="form_datetime span5" id="startDate" name="startDate" type="text" placeholder="开始时间">
                                                 &nbsp;
                                                 至
                                                 &nbsp;&nbsp;
-                                                <input class="form_datetime span5" id="endTime" type="text" placeholder="结束时间">
+                                                <input class="form_datetime span5" id="endTime" name="endTime" type="text" placeholder="结束时间">
                                             </div>
                                         </td>
                                         <td align="center">
-                                            <button type="button" id="searchBtn" class="btn">搜索</button>
+                                            发布者
+                                        </td>
+                                        <td align="left" width="10%">
+                                            <input type="text" name="custName" id="custName" placeholder="请输入发布者姓名">
+                                        </td>
+                                        <td colspan="2" align="left">
+                                            <div style=margin-left:80px;">
+                                                <button type="button" class="btn" id="searchBtn">搜&nbsp;&nbsp;索</button>
+                                            </div>
                                         </td>
                                     </tr>
                                 </table>
                                 </form>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -91,22 +110,21 @@
 								<span class="icon">
 									<i class="icon-th"></i>
 								</span>
-                        <h5>相册列表</h5>
+                        <h5>动态列表</h5>
                     </div>
                     <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
                             <thead>
                             <tr>
-                                <th>编号</th>
-                                <th>图片</th>
-                                <th>图片数量</th>
-                                <th>描述</th>
-                                <th>老师</th>
-                                <th>发布时间</th>
-                                <th>学校</th>
-                                <th>班级</th>
-                                <th>评论</th>
-                                <th>点赞</th>
+                                <th width="5%">编号</th>
+                                <th width="7%">图片数量</th>
+                                <th>动态内容</th>
+                                <th width="8%">用户</th>
+                                <th width="14%">发布时间</th>
+                                <th width="14%">学校</th>
+                                <th width="14%">班级</th>
+                                <th width="6%">评论数</th>
+                                <th width="6%">点赞数</th>
                                 <th width="16%">操作</th>
                             </tr>
                             </thead>
@@ -127,28 +145,26 @@
     </div>
 </div>
 
+
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.cookie.js" charset="utf-8"></script>
 <script src="js/common.js"></script>
 <script src="js/jquery.ui.custom.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-colorpicker.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/bootstrap-datetimepicker.min.js"></script>
 <script src="js/jquery.uniform.js"></script>
 <script src="js/select2.min.js"></script>
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
 <script src="js/sweetalert.min.js" charset="utf-8"></script>
-<script src="js/bootstrap-datetimepicker.min.js"></script>
-</body>
-
 <script>
+
     /**
      * tables
      **/
     $(document).ready(function () {
-
         $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
         $("#classId").select2({data: [{id: -1, text: "请选择班级"}]});
         loadSchool();
@@ -156,29 +172,25 @@
         var initTableParams = initDataTable();
         var extendParams = {
             "bServerSide": true,
-            "sAjaxSource": "/api/photos",
+            // "sAjaxDataProp":"data.aaData",
+            "sAjaxSource": "/api/trends/list",
             "sServerMethod": "GET",
             "aoColumns": [
-                {"mDataProp": "albumId"},
+                {"mDataProp": "trendsId"},
                 {"mDataProp": function(obj){
-                    if(typeof(obj.picPaths) != "undefined" && obj.picPaths.length>0) {
-                        return "<img src=" + obj.picPaths[0].picUrl + " />";
-                    }else{
-                        return "";
-                    }
+                    return obj.pics.length;
                 }},
-                {"mDataProp": "photoCount"},
                 {"mDataProp": "content"},
-                {"mDataProp": "userName"},
+                {"mDataProp": "nickName"},
                 {"mDataProp": "createDate"},
-                {"mDataProp": "schoolName"},
-                {"mDataProp": "className"},
-                {"mDataProp": "isComment"},
+                {"mDataProp": "schoolId"},
+                {"mDataProp": "classId"},
+                {"mDataProp": "commentNum"},
                 {"mDataProp": "likesNum"}
             ],
             "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
                 {
-                    "targets": [10],
+                    "targets": [9],
                     "data": null,
                     "bSortable": false,
                     "defaultContent": "<button class='btn'><i class='icon-eye-open'></i> 详情</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
@@ -186,40 +198,59 @@
             ]
         };
         var table = $('.data-table').dataTable(extend(extendParams,initTableParams));
-
-        $('#searchBtn').on('click', function () {
+        $('#searchBtn').on( 'click', function () {
+            var paramsCheck = false;
             var schoolId = $("#schoolId").val();
-            var classId = $("#classId").val();
-            var beginTime = $("#beginTime").val();
-            var endTime = $("#endTime").val();
+            var params = "";
+            if (schoolId != null && schoolId != "") {
+                paramsCheck = true;
+                params = 'schoolId='+schoolId;
+            }
 
-            var queryCondition = "";
-            if (schoolId != null && schoolId != "-1") {
-                queryCondition += "schoolId=" + schoolId + "&";
+            var classId = $("#classId").val();
+            if (classId != null && classId != "") {
+                paramsCheck = true;
+                params+='&classId='+classId;
             }
-            if (classId != null && classId != "-1") {
-                queryCondition += "classId=" + classId + "&";
+            var content = $("#trendsContent").val();
+            if (content != null && content != "") {
+                paramsCheck = true;
+                params+='&content='+content;
             }
-            if (beginTime != "") {
-                queryCondition += "startDate=" + beginTime + "&";
+            var beginTime = $("#startDate").val();
+            if (beginTime != null && beginTime != "") {
+                paramsCheck = true;
+                params+='&startDate='+beginTime;
             }
-            if (endTime != "") {
-                queryCondition += "endDate=" + endTime + "&";
+            var endTime = $("#endDate").val();
+            if (endTime != null && endTime != "") {
+                paramsCheck = true;
+                params+='&endDate='+endTime;
             }
-            //table.fnClearTable(); //清空一下table，不能设置
-            table.fnSettings().sAjaxSource = '/api/photos?' + queryCondition;
-            table.fnDraw();
+            var custName = $("#custName").val();
+            if (custName != null && custName != "") {
+                paramsCheck = true;
+                params+='&custName='+custName;
+            }
+            if(paramsCheck==true){
+                //table.fnClearTable(); //清空一下table，不能设置
+                table.fnSettings().sAjaxSource='/api/trends/list?'+params;
+//              table.fnSettings().sServerMethod='GET';
+                table.fnDraw();
+            }else{
+                table.fnSettings().sAjaxSource='/api/trends/list';
+                table.fnDraw();
+            }
+
         });
 
         $('.data-table tbody').on( 'click', 'button#delrow', function () {
             //var row = table.row( $(this).parents('tr') ).data();
             var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
-            deleteRow("您将删除相册编号【"+row.albumId+"】",'/api/photos/'+row.albumId,'DELETE',null,table);
+            deleteRow("您将删除动态【"+row.content+"】",'/api/trends/del/'+row.trendsId,'DELETE',null,table);
+
         });
-
-
     });
-
 </script>
-
+</body>
 </html>

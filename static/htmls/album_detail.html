@@ -161,11 +161,7 @@
             "aoColumns": [
                 {"mDataProp": "albumId"},
                 {"mDataProp": function(obj){
-                    if(typeof(obj.picPaths) != "undefined" && obj.picPaths.length>0) {
-                        return "<img src=" + obj.picPaths[0].picUrl + " />";
-                    }else{
-                        return "";
-                    }
+                    return "<img src="+obj.picPaths[0].picUrl+" />";
                 }},
                 {"mDataProp": "photoCount"},
                 {"mDataProp": "content"},

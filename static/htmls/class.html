@@ -22,8 +22,8 @@
 
 <div id="content">
     <div id="breadcrumb">
-        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 相册管理</a>
-        <a href="#" class="current">相册信息</a>
+        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 园所管理</a>
+        <a href="#" class="current">班级信息</a>
     </div>
     <div class="container-fluid">
         <div class="row-fluid">
@@ -42,36 +42,24 @@
 
                                 <table width="100%" >
                                     <tr>
-                                        <td align="center" width="8%">
-                                            选择学校
-                                        </td>
-                                        <td align="left" width="15%">
-                                            <div class="span12" style="margin-top:5px; margin-bottom:5px">
-                                                <input type="text" id="schoolId" name="schoolId" placeholder="请选择学校" class="span12">
-                                            </div>
+                                        <td align="center" width="15%">
+                                            <input type="text" class="span4 search-query" placeholder="请输入园所名称" id="schoolName" name="schoolName">
                                         </td>
                                         <td align="center" width="8%">
-                                            选择班级
-                                        </td>
-                                        <td align="left" width="15%">
-                                            <div class="span12" style="margin-top:5px; margin-bottom:5px">
-                                                <input type="text" id="classId" name="classId" placeholder="请选择班级" class="span12">
-                                            </div>
-                                        </td>
-                                        <td align="center" width="8%">
-                                            发布时间
+                                            选择时间
                                         </td>
                                         <td align="left" width="35%">
                                             <div class="span12" style="margin-top:5px; margin-bottom:5px">
-                                                <input class="form_datetime span5" id="beginTime" type="text" placeholder="开始时间">
+                                                <input class="span5" type="text" placeholder="开始时间">
                                                 &nbsp;
                                                 至
-                                                &nbsp;&nbsp;
-                                                <input class="form_datetime span5" id="endTime" type="text" placeholder="结束时间">
+                                                &nbsp;
+                                                <input class="span5" type="text" placeholder="结束时间">
                                             </div>
                                         </td>
                                         <td align="center">
-                                            <button type="button" id="searchBtn" class="btn">搜索</button>
+                                            <a href="#" class="btn">搜索</a>
+                                            <a href="class_add.html" class="btn" target="_self">新增班级</a>
                                         </td>
                                     </tr>
                                 </table>
@@ -91,23 +79,18 @@
 								<span class="icon">
 									<i class="icon-th"></i>
 								</span>
-                        <h5>相册列表</h5>
+                        <h5>园所列表</h5>
                     </div>
                     <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
                             <thead>
                             <tr>
-                                <th>编号</th>
-                                <th>图片</th>
-                                <th>图片数量</th>
-                                <th>描述</th>
-                                <th>老师</th>
-                                <th>发布时间</th>
-                                <th>学校</th>
-                                <th>班级</th>
-                                <th>评论</th>
-                                <th>点赞</th>
-                                <th width="16%">操作</th>
+                                <th width="15%">学校</th>
+                                <th width="20%">平面图</th>
+                                <th>地址</th>
+                                <th width="10%">负责人</th>
+                                <th width="12%">电话</th>
+                                <th width="10%">操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -133,93 +116,72 @@
 <script src="js/jquery.ui.custom.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-colorpicker.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/bootstrap-datetimepicker.min.js"></script>
 <script src="js/jquery.uniform.js"></script>
 <script src="js/select2.min.js"></script>
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
 <script src="js/sweetalert.min.js" charset="utf-8"></script>
-<script src="js/bootstrap-datetimepicker.min.js"></script>
-</body>
-
 <script>
     /**
      * tables
      **/
     $(document).ready(function () {
-
-        $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
-        $("#classId").select2({data: [{id: -1, text: "请选择班级"}]});
-        loadSchool();
-        initDateTimePicker();
         var initTableParams = initDataTable();
         var extendParams = {
             "bServerSide": true,
-            "sAjaxSource": "/api/photos",
+            // "sAjaxDataProp":"data.aaData",
+//            "sAjaxDataProp":"aaData",
+            "sAjaxSource": "/api/school/listall",
             "sServerMethod": "GET",
             "aoColumns": [
-                {"mDataProp": "albumId"},
-                {"mDataProp": function(obj){
-                    if(typeof(obj.picPaths) != "undefined" && obj.picPaths.length>0) {
-                        return "<img src=" + obj.picPaths[0].picUrl + " />";
-                    }else{
-                        return "";
-                    }
-                }},
-                {"mDataProp": "photoCount"},
-                {"mDataProp": "content"},
-                {"mDataProp": "userName"},
-                {"mDataProp": "createDate"},
                 {"mDataProp": "schoolName"},
-                {"mDataProp": "className"},
-                {"mDataProp": "isComment"},
-                {"mDataProp": "likesNum"}
+                {"mDataProp": function(obj){
+                    return "<img src='"+obj.schoolUrl+"'/>";
+                }},
+                {"mDataProp": "address"},
+                {"mDataProp": "oUserId"},
+                {"mDataProp": "billId"}
             ],
             "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
                 {
-                    "targets": [10],
+                    "targets": [5],
                     "data": null,
                     "bSortable": false,
-                    "defaultContent": "<button class='btn'><i class='icon-eye-open'></i> 详情</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
+                    "defaultContent": "<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
                 }
             ]
+            //"fnServerParams": function (aoData) {
+            //    aoData.push({ "name": "name1", "value": "value1" });
+            //    aoData.push({ "name": "name2", "value": "value2" });
+            //}
         };
         var table = $('.data-table').dataTable(extend(extendParams,initTableParams));
 
-        $('#searchBtn').on('click', function () {
-            var schoolId = $("#schoolId").val();
-            var classId = $("#classId").val();
-            var beginTime = $("#beginTime").val();
-            var endTime = $("#endTime").val();
 
-            var queryCondition = "";
-            if (schoolId != null && schoolId != "-1") {
-                queryCondition += "schoolId=" + schoolId + "&";
+        $('#searchBtn').on( 'click', function () {
+            var schoolName = $("#schoolName").val();
+            if (schoolName == null || schoolName == "") {
+                table.fnSettings().sAjaxSource='/api/school/listall';
+                table.fnDraw();
+            }else{
+                //table.fnClearTable(); //清空一下table，不能设置
+                table.fnSettings().sAjaxSource='/api/school/listall?schoolName='+schoolName;
+//              table.fnSettings().sServerMethod='GET';
+                table.fnDraw();
             }
-            if (classId != null && classId != "-1") {
-                queryCondition += "classId=" + classId + "&";
-            }
-            if (beginTime != "") {
-                queryCondition += "startDate=" + beginTime + "&";
-            }
-            if (endTime != "") {
-                queryCondition += "endDate=" + endTime + "&";
-            }
-            //table.fnClearTable(); //清空一下table，不能设置
-            table.fnSettings().sAjaxSource = '/api/photos?' + queryCondition;
-            table.fnDraw();
+
+
         });
 
         $('.data-table tbody').on( 'click', 'button#delrow', function () {
             //var row = table.row( $(this).parents('tr') ).data();
             var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
-            deleteRow("您将删除相册编号【"+row.albumId+"】",'/api/photos/'+row.albumId,'DELETE',null,table);
+            deleteRow("您将删除学生【"+row.studentName+"】", '/api/student/del/'+row.studentId,'DELETE',null,table);
         });
-
-
     });
 
 </script>
-
+</body>
 </html>
