@@ -149,7 +149,16 @@ Album.queryNum = function(obj, schoolIds, startDate, endDate, callback){
     var args = new Array();
     if(obj){
         for(var key in obj){
-            whereSql += " and m." + key + "=?";
+            var keyValue = obj[key];
+            whereSql += " and m." + key;
+            if(typeof keyValue == 'string'){
+                if(keyValue.indexOf("%") >= 0){
+                    whereSql += " like ? ";
+                    args.push(obj[key]);
+                    continue;
+                }
+            }
+            whereSql += " = ? ";
             args.push(obj[key]);
         }
     }
@@ -178,7 +187,16 @@ Album.queryPage = function(obj, schoolIds, startDate, endDate, start, pageSize, 
     var args = new Array();
     if(obj){
         for(var key in obj){
-            whereSql += " and m." + key + "=?";
+            var keyValue = obj[key];
+            whereSql += " and m." + key;
+            if(typeof keyValue == 'string'){
+                if(keyValue.indexOf("%") >= 0){
+                    whereSql += " like ? ";
+                    args.push(obj[key]);
+                    continue;
+                }
+            }
+            whereSql += " = ? ";
             args.push(obj[key]);
         }
     }
@@ -228,16 +246,37 @@ Album.top = function(albumType, userId, trendsId, isTop, callback){
 }
 
 Album.findHandles = function(albumIds, obj, callback){
+    var tempArgs = new Array();
     var sql = "select * from XL_ALBUM_HANDLE where state = 1 and albumId in(";
     for(var i = 0; i < albumIds.length; i ++){
         sql += "?,";
+        tempArgs.push(albumIds[i]);
     }
     sql = sql.substr(0, sql.length - 1) + ") ";
     for(var key in obj){
         sql += " and " + key + "=?"
-        albumIds.push(obj[key]);
+        tempArgs.push(obj[key]);
     }
-    mysqlUtil.query(sql + " order by createDate desc", albumIds, callback);
+    mysqlUtil.query(sql + " order by createDate", tempArgs, callback);
+}
+
+Album.findHandlesByOver = function(albumIds, obj, length, callback){
+    var tempArgs = new Array();
+    var sql = "SELECT albumId, handleId, pHandleId, content, nickName, hUserId, createDate, rank FROM ( SELECT albumId, handleId, pHandleId, content, nickName, hUserId,";
+    sql += "createDate, IF ( @albumId = b.albumId, @rank := @rank + 1, @rank := 1 ) AS rank ,@albumId := b.albumId FROM ( SELECT albumId, handleId, pHandleId, content, ";
+    sql += "nickName, hUserId, createDate FROM XL_ALBUM_HANDLE WHERE state = 1 AND albumId in(";
+    for(var i = 0; i < albumIds.length; i ++){
+        sql += "?,";
+        tempArgs.push(albumIds[i]);
+    }
+    sql = sql.substr(0, sql.length - 1) + ") ";
+    for(var key in obj){
+        sql += " and " + key + "=?"
+        tempArgs.push(obj[key]);
+    }
+    sql += " ORDER BY albumId, createDate ) b, ( SELECT @NAME := NULL, @rank := 0 ) a ) result WHERE rank <= ?";
+    tempArgs.push(length);
+    mysqlUtil.query(sql, tempArgs, callback);
 }
 
 Album.findHandle = function(albumId, handleType, userId, callback){
@@ -252,6 +291,20 @@ Album.findPics = function(albumIds, callback){
     }
     sql = sql.substr(0, sql.length - 1) + ")";
     mysqlUtil.query(sql, albumIds, callback);
+}
+
+Album.findPicsByOver = function(albumIds, length, callback){
+    var tempArgs = new Array();
+    var sql = "SELECT albumId, picId, picUrl, createDate FROM ( SELECT albumId, picId, picUrl, createDate, IF ( @albumId = b.albumId, @rank := @rank + 1, @rank := 1 ) AS rank ,";
+    sql += "@albumId := b.albumId FROM ( SELECT albumId, picId, picUrl, createDate FROM XL_ALBUM_PIC WHERE state = 1 AND albumId IN (";
+    for(var i = 0; i < albumIds.length; i ++){
+        sql += "?,";
+        tempArgs.push(albumIds[i]);
+    }
+    sql = sql.substr(0, sql.length - 1) + ")";
+    sql += " ORDER BY albumId, createDate ) b, (SELECT @NAME := NULL, @rank := 0) a ) result WHERE rank <= ?";
+    tempArgs.push(length);
+    mysqlUtil.query(sql, tempArgs, callback);
 }
 
 Album.createAlbumComment = function(albumId, handleArgs, callback){
