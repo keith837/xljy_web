@@ -145,7 +145,7 @@ module.exports = new basicController(__filename).init({
 
     add : function(req, res, next){
         var self = this;
-        var brandId = req.body.brandId ? paresInt(req.body.brandId) : 0;
+        var brandId = req.body.brandId ? parseInt(req.body.brandId) : 0;
         var schoolName = req.body.schoolName;
         var sUserId = req.body.sUserId;
         var address = req.body.address;
