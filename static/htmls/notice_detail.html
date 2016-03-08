@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/select2.css" />
     <link rel="stylesheet" href="css/unicorn.main.css" />
     <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" href="css/sweetalert.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
@@ -21,8 +22,8 @@
 
 <div id="content">
     <div id="breadcrumb">
-        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 园所管理</a>
-        <a href="#" class="current">新增园所</a>
+        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 通知管理</a>
+        <a href="#" class="current">通知详情</a>
     </div>
     <div class="container-fluid">
         <div class="row-fluid">
@@ -32,49 +33,52 @@
 								<span class="icon">
 									<i class="icon-th"></i>
 								</span>
-                        <h5>园所信息</h5>
+                        <h5>通知信息</h5>
                     </div>
                     <div class="widget-content nopadding">
 
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form class="form-horizontal" name="schoolForm" id="schoolForm">
+                                <form class="form-horizontal" id="noticeForm" method="post">
                                     <div class="control-group">
-                                        <label class="control-label" for="schoolName">名称</label>
+                                        <label class="control-label" for="noticeTitle">标题</label>
                                         <div class="controls">
-                                            <input type="text" id="schoolName" name="schoolName" placeholder="学校名称" class="span3">
+                                            <input type="text" id="noticeTitle" name="noticeTitle" placeholder="标题" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="address">地址</label>
+                                        <label class="control-label" for="picUrl">缩略图</label>
                                         <div class="controls">
-                                            <input type="text" id="address" name="address" placeholder="学校地址" class="span3">
+                                            <input type="file" id="picUrl" name="picUrl" class="span3"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="sUserId">负责人</label>
+                                        <label class="control-label" for="noticeTypeId">通知类型</label>
                                         <div class="controls">
-                                            <input type="text" id="sUserId" name="sUserId" placeholder="请选择用户" class="span3">
+                                            <select class="span3" id="noticeTypeId" name="noticeTypeId">
+                                                <option value="6">紧急通知</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="billId">联系电话</label>
+                                        <label class="control-label" for="noticeContext">通知内容</label>
                                         <div class="controls">
-                                            <input type="text" id="billId" name="billId" placeholder="联系电话" class="span3">
+                                            <textarea rows="3" id="noticeContext" name="noticeContext" class="span3"></textarea>
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="schoolUrl">平面图</label>
+                                        <label class="control-label" for="effDate">生效时间</label>
                                         <div class="controls">
-                                            <input type="file" id="schoolUrl" name="schoolUrl" class="span3"/>
+                                            <input type="text" id="effDate" name="effDate" placeholder="生效时间" class="form_datetime span5">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="schoolDesc">学校简介</label>
+                                        <label class="control-label" for="expDate">失效时间</label>
                                         <div class="controls">
-                                            <textarea rows="3" id="schoolDesc" name="schoolDesc" class="span3"></textarea>
+                                            <input type="text" id="expDate" name="expDate" placeholder="失效时间" class="form_datetime span5">
                                         </div>
                                     </div>
+
                                     <div class="control-group">
                                         <div class="controls">
                                             <button type="submit" class="btn">提交</button>
@@ -90,6 +94,7 @@
         </div>
     </div>
 
+
         <div class="row-fluid">
             <div id="footer" class="span12">
                 Copyright 浙江响亮教育科技股份有限公司 © 2015 <a href="https://wrapbootstrap.com/user/diablo9983">响亮教育</a>
@@ -97,47 +102,46 @@
         </div>
     </div>
 
-
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.cookie.js" charset="utf-8"></script>
 <script src="js/common.js"></script>
 <script src="js/jquery.ui.custom.js"></script>
-<script src="js/jquery.validate.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-colorpicker.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
 <script src="js/jquery.uniform.js"></script>
 <script src="js/select2.min.js"></script>
 <script src="js/jquery.dataTables.js"></script>
+<script src="js/jquery.validate.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
 <script src="js/sweetalert.min.js" charset="utf-8"></script>
-<script>
+<script src="js/bootstrap-datetimepicker.min.js"></script>
 
-    $(document).ready(function(){
-        $("#sUserId").select2({data: [{id: -1, text: "请选择用户"}]});
-        loadUser(30,"sUserId");
-        initValidator();
-        $("#schoolForm").validate({
+</body>
+<script>
+    /**
+     * tables
+     **/
+    $(document).ready(function () {
+        initDateTimePicker();
+
+        $("#noticeForm").validate({
             ignore: ".ignore",
             rules:{
-                schoolName:{
+                noticeTitle:{
                     required:true
                 },
-                address:{
+                noticeTypeId:{
                     required:true
                 },
-                sUserId:{
+                noticeContext:{
                     required:true
                 },
-                billId:{
-                    required:true,
-                    isMobile:true
-                },
-                schoolUrl:{
+                effDate:{
                     required:true
                 },
-                schoolDesc:{
+                expDate:{
                     required:true
                 }
             },
@@ -151,10 +155,12 @@
                 $(element).parents('.control-group').addClass('success');
             },
             submitHandler: function(form) {
-                saveOrUpdate("/api/school/add", "post", "#schoolForm","kindergarten.html");
+                var noticeTypeId = $("#noticeTypeId").val();
+                saveOrUpdate("/api/notices?noticeTypeId="+noticeTypeId, "post", "#noticeForm", "notice.html");
             }
         });
-    })
+
+    });
+
 </script>
-</body>
 </html>

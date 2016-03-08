@@ -59,7 +59,7 @@ function initDateTimePicker(){
 
 //初始化datatable
 function initDataTable(){
-    $.fn.dataTable.ext.errMode = function(s,h,m){};
+   // $.fn.dataTable.ext.errMode = function(s,h,m){};
     return {
         "oLanguage": {
             "sLengthMenu": "每页显示 _MENU_ 条记录",
@@ -75,6 +75,8 @@ function initDataTable(){
             "sZeroRecords": "没有检索到数据",
             "sProcessing": "<img src='./img/loading.gif' />"
         },
+        "bInfo": true,
+        "sErrMode":"throw",
 //            "bInfo": true,
         "bJQueryUI": true,
         "bLengthChange": false,

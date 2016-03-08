@@ -21,8 +21,8 @@
 
 <div id="content">
     <div id="breadcrumb">
-        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 园所管理</a>
-        <a href="#" class="current">新增园所</a>
+        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 用户管理</a>
+        <a href="#" class="current">用户详情</a>
     </div>
     <div class="container-fluid">
         <div class="row-fluid">
@@ -32,29 +32,39 @@
 								<span class="icon">
 									<i class="icon-th"></i>
 								</span>
-                        <h5>园所信息</h5>
+                        <h5>用户信息</h5>
                     </div>
                     <div class="widget-content nopadding">
 
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form class="form-horizontal" name="schoolForm" id="schoolForm">
+                                <form class="form-horizontal" name="userForm" id="userForm">
                                     <div class="control-group">
-                                        <label class="control-label" for="schoolName">名称</label>
+                                        <label class="control-label" for="userName">登陆名</label>
                                         <div class="controls">
-                                            <input type="text" id="schoolName" name="schoolName" placeholder="学校名称" class="span3">
+                                            <input type="text" id="userName" name="userName" placeholder="登陆名" class="span3">
+                                        </div>
+                                        <label class="control-label inline right" for="password">密码</label>
+                                        <div class="controls inline right">
+                                            <input type="text" id="password" name="password" placeholder="密码" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="address">地址</label>
+                                        <label class="control-label" for="groupId">所属群组</label>
                                         <div class="controls">
-                                            <input type="text" id="address" name="address" placeholder="学校地址" class="span3">
+                                            <input type="text" id="groupId" name="groupId" placeholder="请选择用户组" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="sUserId">负责人</label>
+                                        <label class="control-label" for="custName">真实姓名</label>
                                         <div class="controls">
-                                            <input type="text" id="sUserId" name="sUserId" placeholder="请选择用户" class="span3">
+                                            <input type="text" id="custName" name="custName" placeholder="真实姓名" class="span3">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="nickName">昵称</label>
+                                        <div class="controls">
+                                            <input type="text" id="nickName" name="nickName" placeholder="昵称" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -64,17 +74,39 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="schoolUrl">平面图</label>
+                                        <label class="control-label" for="email">邮箱</label>
                                         <div class="controls">
-                                            <input type="file" id="schoolUrl" name="schoolUrl" class="span3"/>
+                                            <input type="text" id="email" name="email" placeholder="邮箱" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="schoolDesc">学校简介</label>
+                                        <label class="control-label" for="gender">性别</label>
                                         <div class="controls">
-                                            <textarea rows="3" id="schoolDesc" name="schoolDesc" class="span3"></textarea>
+                                            <select class="span3" id="gender" name="gender">
+                                                <option value="1">男</option>
+                                                <option value="0">女</option>
+                                            </select>
                                         </div>
                                     </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="address">联系地址</label>
+                                        <div class="controls">
+                                            <input type="text" id="address" name="address" placeholder="联系地址" class="span3">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="birthday">出生年月</label>
+                                        <div class="controls">
+                                            <input type="text" id="birthday" name="birthday" placeholder="出生年月,如：2011-12-27" class="span3">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="remark">备注</label>
+                                        <div class="controls">
+                                            <textarea rows="3" id="remark" name="remark" class="span3"></textarea>
+                                        </div>
+                                    </div>
+
                                     <div class="control-group">
                                         <div class="controls">
                                             <button type="submit" class="btn">提交</button>
@@ -89,6 +121,7 @@
             </div>
         </div>
     </div>
+
 
         <div class="row-fluid">
             <div id="footer" class="span12">
@@ -114,30 +147,48 @@
 <script src="js/sweetalert.min.js" charset="utf-8"></script>
 <script>
 
-    $(document).ready(function(){
-        $("#sUserId").select2({data: [{id: -1, text: "请选择用户"}]});
-        loadUser(30,"sUserId");
+    $(document).ready(function () {
+        $("#groupId").select2({data: [{id: -1, text: "请选择用户组"}]});
+        loadGroup();
         initValidator();
-        $("#schoolForm").validate({
+        $("#userForm").validate({
             ignore: ".ignore",
             rules:{
-                schoolName:{
+                userName:{
+                    required:true,
+                    isMobile:true
+                },
+                password:{
                     required:true
                 },
-                address:{
+                groupId:{
                     required:true
                 },
-                sUserId:{
+                custName:{
+                    required:true
+                },
+                nickName:{
                     required:true
                 },
                 billId:{
                     required:true,
                     isMobile:true
                 },
-                schoolUrl:{
+                email:{
+                    required:true,
+                    email:true
+                },
+                gender:{
                     required:true
                 },
-                schoolDesc:{
+                address:{
+                    required:true
+                },
+                birthday:{
+                    required:true,
+                    date:true
+                },
+                remark:{
                     required:true
                 }
             },
@@ -151,10 +202,12 @@
                 $(element).parents('.control-group').addClass('success');
             },
             submitHandler: function(form) {
-                saveOrUpdate("/api/school/add", "post", "#schoolForm","kindergarten.html");
+                saveOrUpdate("/api/user/add", "post", "#userForm","user.html");
             }
         });
-    })
+    });
+
 </script>
+
 </body>
 </html>

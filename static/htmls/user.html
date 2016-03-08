@@ -91,19 +91,17 @@
                         <h5>会员列表</h5>
                     </div>
                     <div class="widget-content nopadding">
-                        <table class="table table-bordered data-table">
+                        <table class="table table-bordered table-striped data-table">
                             <thead>
                             <tr>
-                                <th width="10%">登录名</th>
-                                <th>学校</th>
-                                <th width="7%">用户组</th>
-                                <th width="8%">姓名</th>
-                                <th width="7%">昵称</th>
-                                <th width="6%">状态</th>
+                                <th width="7%">登录名</th>
+                                <th >学校</th>
+                                <th >用户组</th>
+                                <th >姓名</th>
+                                <th >状态</th>
                                 <th width="14%">最后登陆时间</th>
-                                <th width="10%">最后登陆IP</th>
                                 <th width="14%">创建时间</th>
-                                <th width="16%">操作</th>
+                                <th width="24%">操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -171,7 +169,6 @@
                     }
                 }},
                 {"mDataProp": "custName"},
-                {"mDataProp": "nickName"},
                 {"mDataProp": function(obj){
                     if(obj.state==1){
                         return "正常";
@@ -184,15 +181,14 @@
                     }
                 }},
                 {"mDataProp": "lastLoginDate"},
-                {"mDataProp": "lastLoginIp"},
                 {"mDataProp": "createDate"}
             ],
             "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
                 {
-                    "targets": [9],
+                    "targets": [7],
                     "data": null,
                     "bSortable": false,
-                    "defaultContent": "<button class=\"btn btn-primary\" id='editrow'><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
+                    "defaultContent": "<button class='btn'><i class='icon-eye-open'></i> 详情</button>&nbsp;&nbsp;<button class=\"btn btn-primary\" id='editrow'><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
                 }
             ]
             //"fnServerParams": function (aoData) {

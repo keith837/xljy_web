@@ -39,7 +39,7 @@
 
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form class="form-horizontal" id="noticeForm" method="post">
+                                <form class="form-horizontal" id="noticeForm" method="post" enctype="multipart/form-data">
                                     <div class="control-group">
                                         <label class="control-label" for="noticeTitle">标题</label>
                                         <div class="controls">
@@ -113,6 +113,7 @@
 <script src="js/select2.min.js"></script>
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/jquery.validate.js"></script>
+<script src="js/jquery.form.min.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
 <script src="js/sweetalert.min.js" charset="utf-8"></script>
@@ -153,10 +154,31 @@
             unhighlight: function(element, errorClass, validClass) {
                 $(element).parents('.control-group').removeClass('error');
                 $(element).parents('.control-group').addClass('success');
+            }
+
+        });
+
+
+        $("#noticeForm").ajaxForm({
+            url: "/api/notices?noticeTypeId=" + $("#noticeTypeId").val(),
+            success: function (data) {
+                if (data.code == "00") {
+                    swal({
+                        title: "保存成功!",
+                        text: "保存成功",
+                        timer: autoCloseTime,
+                        showConfirmButton: true
+                    }, function () {
+                        setTimeout(function () {
+                            window.location.href = "notice.html";
+                        }, 2000);
+                    });
+                } else {
+                    swal({title: "保存失败!", text: data.msg, type: "error", timer: autoCloseTime});
+                }
             },
-            submitHandler: function(form) {
-                var noticeTypeId = $("#noticeTypeId").val();
-                saveOrUpdate("/api/notices?noticeTypeId="+noticeTypeId, "post", "#noticeForm", "notice.html");
+            error: function (data) {
+                swal({title: "保存失败!", text: "保存失败!", type: "error", timer: autoCloseTime});
             }
         });
 

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/fullcalendar.css"/>
     <link rel="stylesheet" href="css/unicorn.main.css"/>
     <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color"/>
+    <link rel="stylesheet" href="css/sweetalert.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
 </head>
 <body>
@@ -21,7 +22,7 @@
 <div id="user-nav" class="navbar navbar-inverse">
     <div style="float:left;padding-top:8px;">admin , 欢迎访问响亮教育云端管理平台&nbsp;&nbsp;&nbsp;&nbsp;</div>
     <ul class="nav btn-group">
-        <li class="btn btn-inverse"><a title="" href="login.html"><i class="icon icon-share-alt"></i> <span
+        <li class="btn btn-inverse"><a title="" href="javascript:logoutFun();"><i class="icon icon-share-alt"></i> <span
                 class="text">退出</span></a></li>
     </ul>
 </div>
@@ -33,5 +34,23 @@
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.peity.min.js"></script>
 <script src="js/fullcalendar.min.js"></script>
+<script src="js/sweetalert.min.js" charset="utf-8"></script>
+<script>
+
+    function logoutFun(){
+        $.ajax({
+            url: "/api/user/logout",
+            type: "post",
+            dataType: 'json'
+        }).done(function(data) {
+            $.cookie("token",null);
+            $.cookie("userId",null);
+            $.cookie("groupId",null);
+            window.top.location = "login.html?msg=退出成功";
+        }).fail(function() {
+            swal({title: "系统异常!", text:  "系统异常",  type:"error", timer: autoCloseTime});
+        });
+    }
+</script>
 </body>
 </html>
