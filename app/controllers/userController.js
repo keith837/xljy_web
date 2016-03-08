@@ -481,26 +481,34 @@ module.exports = new basicController(__filename).init({
         var self = this;
         var billId = req.params.billId;
         var securityCode = Math.round(Math.random() * 899999 + 100000);
-        SmsSendUtil.sendSms(billId, securityCode, function (data) {
-            var error = data.error;
-            self.model['smsLog'].saveSmsLog([billId, securityCode, new Date(), 0, data.msg], function (err, info) {
-                if (err) {
-                    return next(err);
-                }
-                self.model['smsLog'].findSms(billId, function (err, smsLog) {
+        self.model['user'].findByUserName(billId, function(err, user){
+            if(err){
+                return next(err);
+            }
+            if(!user){
+                return next(new Error('用户不存在'));
+            }
+            SmsSendUtil.sendSms(billId, securityCode, function (data) {
+                var error = data.error;
+                self.model['smsLog'].saveSmsLog([billId, securityCode, new Date(), 0, data.msg], function (err, info) {
                     if (err) {
                         return next(err);
                     }
-                    if (!smsLog) {
-                        return next(new Error("短信验证码错误"));
-                    }
-                    res.json({
-                        code: "00",
-                        msg: "短信下发成功",
-                        data: smsLog
+                    self.model['smsLog'].findSms(billId, function (err, smsLog) {
+                        if (err) {
+                            return next(err);
+                        }
+                        if (!smsLog) {
+                            return next(new Error("短信验证码错误"));
+                        }
+                        res.json({
+                            code: "00",
+                            msg: "短信下发成功",
+                            data: smsLog
+                        });
                     });
-                });
 
+                });
             });
         });
     },
