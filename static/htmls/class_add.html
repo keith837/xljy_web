@@ -38,11 +38,11 @@
 
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form class="form-horizontal" name="schoolForm" id="schoolForm">
+                                <form class="form-horizontal" name="schoolForm" id="classForm">
                                     <div class="control-group">
-                                        <label class="control-label" for="schoolName">名称</label>
+                                        <label class="control-label" for="className">名称</label>
                                         <div class="controls">
-                                            <input type="text" id="schoolName" name="schoolName" placeholder="班级名称" class="span3">
+                                            <input type="text" id="className" name="className" placeholder="班级名称" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -58,7 +58,7 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="gradeId">联系电话</label>
+                                        <label class="control-label" for="gradeId">年级</label>
                                         <div class="controls">
                                             <input type="text" id="gradeId" name="gradeId" placeholder="请选择年级" class="span3">
                                         </div>
@@ -115,29 +115,32 @@
 <script>
 
     $(document).ready(function(){
-        $("#sUserId").select2({data: [{id: -1, text: "请选择用户"}]});
-        loadUser(30,"sUserId");
+        $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
+        $("#tUserId").select2({data: [{id: -1, text: "请选择用户"}]});
+        $("#gradeId").select2({data: [{id: -1, text: "请选择用户"}]});
+        loadSchool();
+        loadUser(30,"tUserId");
+        loadGrade("gradeId");
         initValidator();
-        $("#schoolForm").validate({
+        $("#classForm").validate({
             ignore: ".ignore",
             rules:{
-                schoolName:{
+                className:{
                     required:true
                 },
-                address:{
+                schoolId:{
                     required:true
                 },
-                sUserId:{
+                tUserId:{
                     required:true
                 },
-                billId:{
-                    required:true,
-                    isMobile:true
-                },
-                schoolUrl:{
+                gradeId:{
                     required:true
                 },
-                schoolDesc:{
+                classUrl:{
+                    required:true
+                },
+                classDesc:{
                     required:true
                 }
             },
@@ -151,7 +154,7 @@
                 $(element).parents('.control-group').addClass('success');
             },
             submitHandler: function(form) {
-                saveOrUpdate("/api/school/add", "post", "#schoolForm","kindergarten.html");
+                saveOrUpdate("/api/class/add", "post", "#classForm","class.html");
             }
         });
     })

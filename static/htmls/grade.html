@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
-    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" href="css/fullcalendar.css" />
     <link rel="stylesheet" href="css/colorpicker.css" />
     <link rel="stylesheet" href="css/datepicker.css" />
@@ -23,7 +22,7 @@
 <div id="content">
     <div id="breadcrumb">
         <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 园所管理</a>
-        <a href="#" class="current">班级信息</a>
+        <a href="#" class="current">年级管理</a>
     </div>
     <div class="container-fluid">
         <div class="row-fluid">
@@ -38,18 +37,18 @@
                     <div class="widget-content nopadding">
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form action="#" method="post" class="form-search" >
+                                <form action="#" method="post" class="form-search" onsubmit="">
 
-                                <table width="100%" >
-                                    <tr>
-                                        <td align="center">
-                                            <div class="input-append span12" style="margin-top:5px; margin-bottom:5px">
-                                                <input type="text" class="span4 search-query" id="braceletName" placeholder="请输入年级名称">
-                                                <button type="button" class="btn" id="searchBtn">搜索</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
+                                    <table width="100%" >
+                                        <tr>
+                                            <td align="center">
+                                                <div class="input-append span12" style="margin-top:5px; margin-bottom:5px">
+                                                    <input type="text" class="span4 search-query" placeholder="请输入年级名称" id="gradeName" name="gradeName">
+                                                    <button type="button" class="btn" id="searchBtn">搜索</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </form>
                             </div>
                         </div>
@@ -63,26 +62,21 @@
             <div class="span12">
                 <div class="widget-box">
                     <div class="widget-title">
-								<span class="icon">
-									<i class="icon-th"></i>
-								</span>
-                        <h5>园所列表</h5>
+                        <h5>年级列表</h5>
                     </div>
                     <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
                             <thead>
                             <tr>
-                                <th width="15%">所属学校</th>
-                                <th width="20%">年纪名称</th>
-                                <th>学生入园时间</th>
-                                <th width="10%">学生出园时间</th>
-                                <th width="12%">老师上课时间</th>
-                                <th width="10%">老师下课时间</th>
-                                <th width="10%">操作</th>
+                                <th>年级名称</th>
+                                <th >所属学校</th>
+                                <th >入园时间</th>
+                                <th >离园时间</th>
+                                <th >上班时间</th>
+                                <th >下班时间</th>
                             </tr>
                             </thead>
                             <tbody>
-
                             </tbody>
                         </table>
                     </div>
@@ -104,13 +98,14 @@
 <script src="js/jquery.ui.custom.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-colorpicker.js"></script>
-<script src="js/bootstrap-datetimepicker.min.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
 <script src="js/jquery.uniform.js"></script>
 <script src="js/select2.min.js"></script>
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
 <script src="js/sweetalert.min.js" charset="utf-8"></script>
+
 <script>
     /**
      * tables
@@ -121,42 +116,28 @@
             "bServerSide": true,
             // "sAjaxDataProp":"data.aaData",
 //            "sAjaxDataProp":"aaData",
-            "sAjaxSource": "/api/school/listall",
+            "sAjaxSource": "/api/grade/list",
             "sServerMethod": "GET",
             "aoColumns": [
+                {"mDataProp": "gradeName"},
                 {"mDataProp": "schoolName"},
-                {"mDataProp": function(obj){
-                    return "<img src='"+obj.schoolUrl+"'/>";
-                }},
-                {"mDataProp": "address"},
-                {"mDataProp": "oUserId"},
-                {"mDataProp": "oUserId"},
-                {"mDataProp": "billId"}
-            ],
-            "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
-                {
-                    "targets": [6],
-                    "data": null,
-                    "bSortable": false,
-                    "defaultContent": "<button class=\"btn btn-primary\" id='editrow'><i class=\"icon-pencil icon-white\"></i> 编辑</button>"
-                }
+                {"mDataProp": "sComeDate"},
+                {"mDataProp": "sLeaveDate"},
+                {"mDataProp": "tComeDate"},
+                {"mDataProp": "tLeaveDate"}
             ]
-            //"fnServerParams": function (aoData) {
-            //    aoData.push({ "name": "name1", "value": "value1" });
-            //    aoData.push({ "name": "name2", "value": "value2" });
-            //}
+
         };
         var table = $('.data-table').dataTable(extend(extendParams,initTableParams));
 
-
         $('#searchBtn').on( 'click', function () {
-            var schoolName = $("#schoolName").val();
-            if (schoolName == null || schoolName == "") {
-                table.fnSettings().sAjaxSource='/api/school/listall';
+            var gradeName = $("#gradeName").val();
+            if (gradeName == null || gradeName == "") {
+                table.fnSettings().sAjaxSource='/api/grade/list';
                 table.fnDraw();
             }else{
                 //table.fnClearTable(); //清空一下table，不能设置
-                table.fnSettings().sAjaxSource='/api/school/listall?schoolName='+schoolName;
+                table.fnSettings().sAjaxSource='/api/grade/list?gradeName='+gradeName;
 //              table.fnSettings().sServerMethod='GET';
                 table.fnDraw();
             }
@@ -167,10 +148,12 @@
         $('.data-table tbody').on( 'click', 'button#delrow', function () {
             //var row = table.row( $(this).parents('tr') ).data();
             var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
-            deleteRow("您将删除学生【"+row.studentName+"】", '/api/student/del/'+row.studentId,'DELETE',null,table);
+            deleteRow("您将删除年级【"+row.gradeName+"】", '/api/grade/remove/'+row.gradeId,'DELETE',null,table);
+
         });
     });
 
 </script>
 </body>
 </html>
+

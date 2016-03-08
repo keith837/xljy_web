@@ -280,6 +280,57 @@ function loadUser(groupId,selectId) {
     });
 }
 
+//加载品牌
+function loadBrand(selectId) {
+    $.ajax({
+        url: "/api/brand/mylist",    //后台webservice里的方法名称
+        type: "get",
+        dataType: "json",
+        contentType: "application/json",
+        traditional: true,
+        success: function (data) {
+            if (data.code == "00") {
+                var options = [];
+                $.each(data.data, function (i, item) {
+                    options.push({id: item.brandId, text: item.brandName});
+                })
+                $("#"+selectId).select2({data: options});
+
+            } else {
+                initNullSelect("#"+selectId);
+            }
+        },
+        error: function (msg) {
+            initNullSelect("#"+selectId);
+        }
+    });
+}
+
+//加载年级
+function loadGrade(selectId) {
+    $.ajax({
+        url: "/api/grade/list",    //后台webservice里的方法名称
+        type: "get",
+        dataType: "json",
+        contentType: "application/json",
+        traditional: true,
+        success: function (data) {
+            if (data.code == "00") {
+                var options = [];
+                $.each(data.data, function (i, item) {
+                    options.push({id: item.gradeId, text: item.gradeName});
+                })
+                $("#"+selectId).select2({data: options});
+
+            } else {
+                initNullSelect("#"+selectId);
+            }
+        },
+        error: function (msg) {
+            initNullSelect("#"+selectId);
+        }
+    });
+}
 //删除
 function deleteRow(text,url,type,data,table){
     swal({
@@ -338,6 +389,35 @@ function saveOrUpdate(url, type, formId, backHref) {
         }
     }).fail(function () {
         swal({title: "保存失败!", text: "保存失败",type:"error", timer: autoCloseTime});
+    });
+
+}
+
+//ajax提交表单
+function ajaxForm(url, type, formId, backHref) {
+    $(formId).ajaxForm({
+        url: url,
+        type: type,
+        success: function (data) {
+            if (data.code == "00") {
+                if(typeof(backHref) != "undefined"){
+                    swal({title: "保存成功!", text: "保存成功", timer: autoCloseTime, showConfirmButton: true}, function () {
+                        setTimeout(function () {
+                            window.location.href = backHref;
+                        }, 2000);
+                    });
+                }else{
+                    swal({title: "保存成功!", text: "保存成功",type:"success", timer: autoCloseTime, showConfirmButton: true});
+                }
+
+
+            } else {
+                swal({title: "保存失败!", text:  data.msg,type:"error", timer: autoCloseTime});
+            }
+        },
+        error: function (data) {
+            swal({title: "保存失败!", text: "保存失败!", type: "error", timer: autoCloseTime});
+        }
     });
 
 }

@@ -94,6 +94,7 @@
                                 <th>地址</th>
                                 <th width="10%">负责人</th>
                                 <th width="12%">电话</th>
+                                <th width="12%">品牌</th>
                                 <th width="10%">操作</th>
                             </tr>
                             </thead>
@@ -142,15 +143,21 @@
             "aoColumns": [
                 {"mDataProp": "schoolName"},
                 {"mDataProp": function(obj){
-                    return "<img src='"+obj.schoolUrl+"'/>";
+                    if(obj.schoolUrl!=null){
+                        return "<img src='"+obj.schoolUrl+"'/>";
+                    }else{
+                        return "";
+                    }
+
                 }},
                 {"mDataProp": "address"},
                 {"mDataProp": "oUserId"},
-                {"mDataProp": "billId"}
+                {"mDataProp": "billId"},
+                {"mDataProp": "brandName"}
             ],
             "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
                 {
-                    "targets": [5],
+                    "targets": [6],
                     "data": null,
                     "bSortable": false,
                     "defaultContent": "<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
@@ -182,7 +189,7 @@
         $('.data-table tbody').on( 'click', 'button#delrow', function () {
             //var row = table.row( $(this).parents('tr') ).data();
             var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
-            deleteRow("您将删除学生【"+row.studentName+"】", '/api/student/del/'+row.studentId,'DELETE',null,table);
+            deleteRow("您将删除学校【"+row.schoolName+"】", '/api/school/del/'+row.schoolId,'DELETE',null,table);
         });
     });
 

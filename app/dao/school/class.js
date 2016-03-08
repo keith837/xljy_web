@@ -111,7 +111,7 @@ Class.queryNum = function(obj, schoolIds, callback){
     var args = new Array();
     if(obj){
         for(var key in obj){
-            whereSql += " and m." + key + "=?";
+            whereSql += " and A." + key + "=?";
             args.push(obj[key]);
         }
     }

@@ -188,7 +188,7 @@
                     "targets": [7],
                     "data": null,
                     "bSortable": false,
-                    "defaultContent": "<button class='btn'><i class='icon-eye-open'></i> 详情</button>&nbsp;&nbsp;<button class=\"btn btn-primary\" id='editrow'><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
+                    "defaultContent": "<button class='btn' id='viewrow'><i class='icon-eye-open'></i> 详情</button>&nbsp;&nbsp;<button class=\"btn btn-primary\" id='editrow'><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
                 }
             ]
             //"fnServerParams": function (aoData) {
@@ -236,6 +236,12 @@
             //var row = table.row( $(this).parents('tr') ).data();
             var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
             window.location.href="user_add.html?userId="+row.userId;
+
+        });
+        $('.data-table tbody').on( 'click', 'button#viewrow', function () {
+            //var row = table.row( $(this).parents('tr') ).data();
+            var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
+            window.location.href="user_detail.html?userId="+row.userId;
 
         });
         $('.data-table tbody').on( 'click', 'button#delrow', function () {

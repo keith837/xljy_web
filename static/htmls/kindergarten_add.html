@@ -38,7 +38,7 @@
 
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form class="form-horizontal" name="schoolForm" id="schoolForm">
+                                <form class="form-horizontal" name="schoolForm" id="schoolForm" method="post" enctype="multipart/form-data">
                                     <div class="control-group">
                                         <label class="control-label" for="schoolName">名称</label>
                                         <div class="controls">
@@ -55,6 +55,12 @@
                                         <label class="control-label" for="sUserId">负责人</label>
                                         <div class="controls">
                                             <input type="text" id="sUserId" name="sUserId" placeholder="请选择用户" class="span3">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="brandId">品牌</label>
+                                        <div class="controls">
+                                            <input type="text" id="brandId" name="brandId" placeholder="请选择品牌" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -103,6 +109,7 @@
 <script src="js/common.js"></script>
 <script src="js/jquery.ui.custom.js"></script>
 <script src="js/jquery.validate.js"></script>
+<script src="js/jquery.form.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-colorpicker.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
@@ -116,7 +123,9 @@
 
     $(document).ready(function(){
         $("#sUserId").select2({data: [{id: -1, text: "请选择用户"}]});
+        $("#brandId").select2({data: [{id: -1, text: "请选择品牌"}]});
         loadUser(30,"sUserId");
+        loadBrand("brandId");
         initValidator();
         $("#schoolForm").validate({
             ignore: ".ignore",
@@ -149,9 +158,30 @@
             unhighlight: function(element, errorClass, validClass) {
                 $(element).parents('.control-group').removeClass('error');
                 $(element).parents('.control-group').addClass('success');
+            }
+        });
+
+        $("#schoolForm").ajaxForm({
+            url: "/api/school/add",
+            type:"post",
+            success: function (data) {
+                if (data.code == "00") {
+                    swal({
+                        title: "保存成功!",
+                        text: "保存成功",
+                        timer: autoCloseTime,
+                        showConfirmButton: true
+                    }, function () {
+                        setTimeout(function () {
+                            window.location.href = "kindergarten.html";
+                        }, 2000);
+                    });
+                } else {
+                    swal({title: "保存失败!", text: data.msg, type: "error", timer: autoCloseTime});
+                }
             },
-            submitHandler: function(form) {
-                saveOrUpdate("/api/school/add", "post", "#schoolForm","kindergarten.html");
+            error: function (data) {
+                swal({title: "保存失败!", text: "保存失败!", type: "error", timer: autoCloseTime});
             }
         });
     })

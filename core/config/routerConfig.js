@@ -208,6 +208,15 @@ var routerConfig = {
             }
         },
 
+        grade : {
+            "usedModel": ["school/grade", "school/school"],
+            "list": {
+                "url": "/api/grade/list",
+                "method": "get",
+                "description": "查询所有年级"
+            }
+        },
+
         student : {
             "usedModel": ["student/student", "school/class", "school/school", "student/studentLeave"],
             "select": {

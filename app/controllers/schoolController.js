@@ -173,8 +173,8 @@ module.exports = new basicController(__filename).init({
                 return next(new Error("园所地址不能为空"));
             }
             var schoolUrl;
-            if(files && files.schoolPic){
-                schoolUrl = path.normalize(files.schoolPic.path).replace(/\\/g, '/');
+            if(files && files.schoolUrl){
+                schoolUrl = path.normalize(files.schoolUrl.path).replace(/\\/g, '/');
             }else{
                 return next(new Error("学校平面图不能为空"));
             }
