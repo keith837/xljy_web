@@ -100,6 +100,17 @@ Album.create = function(albumArg, albumPicArgs, callback){
                     conn.release();
                     return callback.apply(null, [err, data]);
                 }
+                if(!albumPicArgs || albumPicArgs.length <= 0){
+                    return conn.commit(function(err){
+                        if(err){
+                            conn.rollback();
+                            conn.release();
+                            return callback.apply(null, [err, null]);
+                        }
+                        conn.release();
+                        return callback.apply(null, [null, data]);
+                    });
+                }
                 var albumId = data.insertId;
                 var albumPicSql = "insert into XL_ALBUM_PIC(picUrl,likesNum,createDate,picDesc,state,doneDate,userId,oUserId,albumId) values (";
                 albumPicSql += "?,?,now(),?,?,now(),?,?," + albumId + ")";

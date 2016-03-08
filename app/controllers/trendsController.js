@@ -41,6 +41,9 @@ module.exports = new basicController(__filename).init({
         var custName = req.user.custName;
         form.parse(req, function (err, fields, files) {
             var content = fields.content;
+            if(!content){
+                return next(new Error("动态内容不能为空"));
+            }
             var isTop = fields.isTop || 0;
             var albumArg = [schoolId, schoolName, classId, 3, '动态信息', content, new Date(), isTop, userName, custName, nickName, studentId, studentName, 0, 0, 1, userId, userId];
             var albumPicArgs = new Array();
