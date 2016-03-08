@@ -104,6 +104,10 @@ module.exports = new basicController(__filename).init({
 
     list : function(req, res, next){
         var self = this;
+        var groupId = req.user.groupId;
+        if(groupId == 10 || groupId == 20 || groupId == 30){
+            return next(new Error("当前用户无查询权限"));
+        }
         var start = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);
         var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
         var obj = new Object;
@@ -115,11 +119,32 @@ module.exports = new basicController(__filename).init({
         if(bUserId){
             obj.bUserId = parseInt(bUserId);
         }
-        self.model['brand'].listByPage(obj, start, pageSize, function(err, total, schools){
+        self.model['brand'].listByPage(obj, start, pageSize, function(err, total, brands){
             if(err){
                 return next(err);
             }
-            res.json(self.createPageData("00", total, schools));
+            res.json(self.createPageData("00", total, brands));
+        });
+    },
+
+    mylist : function(req, res, next){
+        var self = this;
+        var userId = req.user.userId;
+        var groupId = req.user.groupId;
+        var obj = new Object();
+        if(groupId == 40){
+            obj.bUserId = userId;
+        }else if(groupId != 50){
+            return next(new Error("当前用户无查询权限"));
+        }
+        self.model['brand'].listall(obj, function(err, brands){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                data : brands ? brands : new Array()
+            })
         });
     }
 

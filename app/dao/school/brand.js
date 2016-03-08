@@ -19,7 +19,7 @@ Brand.queryNum = function(obj, callback){
     if(obj){
         for(var key in obj){
             whereSql += " and A." + key + "=?";
-            args.push(schoolObj[key]);
+            args.push(obj[key]);
         }
     }
     var countSql = "select count(*) as total from XL_SCHOOL_BRAND A, XL_USER B where A.bUserId=B.userId and " + whereSql;
@@ -46,6 +46,19 @@ Brand.queryPage = function(obj, start, pageSize, callback){
     querySql += " limit ?,?";
     args.push(start);
     args.push(pageSize);
+    mysqlUtil.query(querySql, args, callback);
+}
+
+Brand.listall = function(obj, callback){
+    var whereSql = " A.state=1 ";
+    var args = new Array();
+    if(obj){
+        for(var key in obj){
+            whereSql += " and A." + key + "=?";
+            args.push(obj[key]);
+        }
+    }
+    var querySql = "select A.*,B.custName,B.userName,B.nickName from XL_SCHOOL_BRAND A, XL_USER B where A.bUserId=B.userId and " + whereSql;
     mysqlUtil.query(querySql, args, callback);
 }
 
