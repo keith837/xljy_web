@@ -1,4 +1,6 @@
 var basicController = require("../../core/utils/controller/basicController");
+var formidable = require("formidable");
+var path = require("path");
 
 module.exports = new basicController(__filename).init({
 
@@ -145,33 +147,46 @@ module.exports = new basicController(__filename).init({
 
     add : function(req, res, next){
         var self = this;
-        var brandId = req.body.brandId ? parseInt(req.body.brandId) : 0;
-        var schoolName = req.body.schoolName;
-        var sUserId = req.body.sUserId;
-        var address = req.body.address;
-        var billId = req.body.billId;
-        var schoolDesc = req.body.schoolDesc;
-        var schoolUrl = req.body.schoolUrl;
-        var h5Url = req.body.h5Url;
-        var h5Title = req.body.h5Title;
         var oUserId = req.user.userId;
-        if(!schoolName){
-            return next(new Error("园所名称不能为空"));
-        }
-        if(!sUserId){
-            return next(new Error("园长编号不能为空"));
-        }
-        if(!address){
-            return next(new Error("园所地址不能为空"));
-        }
-        self.model['school'].save([brandId, schoolName, sUserId, address, billId, schoolDesc, schoolUrl, h5Url, h5Title, oUserId], function(err, data){
-            if(err){
-                return next(err);
+        var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "SCHOOL_URL");
+        var form = new formidable.IncomingForm();   //创建上传表单
+        form.encoding = 'utf-8';		//设置编辑
+        form.uploadDir = uploadDir;	 //设置上传目录
+        form.keepExtensions = true;	 //保留后缀
+        form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
+        form.parse(req, function (err, fields, files) {
+            var brandId = fields.brandId ? parseInt(fields.brandId) : 0;
+            var schoolName = fields.schoolName;
+            var sUserId = fields.sUserId;
+            var address = fields.address;
+            var billId = fields.billId;
+            var schoolDesc = fields.schoolDesc;
+            var h5Url = fields.h5Url;
+            var h5Title = fields.h5Title;
+            if(!schoolName){
+                return next(new Error("园所名称不能为空"));
             }
-            res.json({
-                code : "00",
-                msg : "园所添加成功"
-            })
+            if(!sUserId){
+                return next(new Error("园长编号不能为空"));
+            }
+            if(!address){
+                return next(new Error("园所地址不能为空"));
+            }
+            var schoolUrl;
+            if(files && files.schoolPic){
+                schoolUrl = path.normalize(files.schoolPic.path).replace(/\\/g, '/');
+            }else{
+                return next(new Error("学校平面图不能为空"));
+            }
+            self.model['school'].save([brandId, schoolName, sUserId, address, billId, schoolDesc, schoolUrl, h5Url, h5Title, oUserId], function(err, data){
+                if(err){
+                    return next(err);
+                }
+                res.json({
+                    code : "00",
+                    msg : "园所添加成功"
+                })
+            });
         });
     },
 
@@ -181,57 +196,67 @@ module.exports = new basicController(__filename).init({
         if(!schoolId && schoolId <= 0){
             return next(new Error("园所编号不能为空"));
         }
-        var obj = new Object();
-        var brandId = req.body.brandId;
-        var schoolName = req.body.schoolName;
-        var sUserId = req.body.sUserId;
-        var address = req.body.address;
-        var billId = req.body.billId;
-        var schoolDesc = req.body.schoolDesc;
-        var schoolUrl = req.body.schoolUrl;
-        var h5Url = req.body.h5Url;
-        var h5Title = req.body.h5Title;
         var oUserId = req.user.userId;
-        if(brandId){
-            obj.brandId = brandId;
-        }
-        if(schoolName){
-            obj.schoolName = schoolName;
-        }
-        if(sUserId){
-            obj.sUserId = sUserId;
-        }
-        if(address){
-            obj.address = address;
-        }
-        if(billId){
-            obj.billId = billId;
-        }
-        if(schoolDesc){
-            obj.schoolDesc = schoolDesc;
-        }
-        if(schoolUrl){
-            obj.schoolUrl = schoolUrl;
-        }
-        if(h5Url){
-            obj.h5Url = h5Url;
-        }
-        if(h5Title){
-            obj.h5Title = h5Title;
-        }
-        obj.oUserId = oUserId;
-        obj.doneDate = new Date();
-        self.model['school'].update(obj, schoolId, function(err, data){
-            if(err){
-                return next(err);
-            }else if(data.affectedRows != 1){
-                return next(new Error("园所修改失败"));
+        var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "SCHOOL_URL");
+        var form = new formidable.IncomingForm();   //创建上传表单
+        form.encoding = 'utf-8';		//设置编辑
+        form.uploadDir = uploadDir;	 //设置上传目录
+        form.keepExtensions = true;	 //保留后缀
+        form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
+        form.parse(req, function (err, fields, files) {
+            var obj = new Object();
+            var brandId = fields.brandId;
+            var schoolName = fields.schoolName;
+            var sUserId = fields.sUserId;
+            var address = fields.address;
+            var billId = fields.billId;
+            var schoolDesc = fields.schoolDesc;
+            var h5Url = fields.h5Url;
+            var h5Title = fields.h5Title;
+            if(brandId){
+                obj.brandId = brandId;
             }
-            res.json({
-                code : "00",
-                msg : "园所修改成功"
+            if(schoolName){
+                obj.schoolName = schoolName;
+            }
+            if(sUserId){
+                obj.sUserId = sUserId;
+            }
+            if(address){
+                obj.address = address;
+            }
+            if(billId){
+                obj.billId = billId;
+            }
+            if(schoolDesc){
+                obj.schoolDesc = schoolDesc;
+            }
+            if(h5Url){
+                obj.h5Url = h5Url;
+            }
+            if(h5Title){
+                obj.h5Title = h5Title;
+            }
+            if(files && files.schoolPic){
+                obj.schoolUrl = path.normalize(files.schoolPic.path).replace(/\\/g, '/');
+            }
+            obj.oUserId = oUserId;
+            obj.doneDate = new Date();
+            self.model['school'].update(obj, schoolId, function(err, data){
+                if(err){
+                    return next(err);
+                }else if(data.affectedRows != 1){
+                    return next(new Error("园所修改失败"));
+                }
+                res.json({
+                    code : "00",
+                    msg : "园所修改成功"
+                });
             });
         });
+
+
+
     },
 
     teachers : function(req, res, next){
