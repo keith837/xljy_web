@@ -181,6 +181,11 @@ var routerConfig = {
                 "method": "get",
                 "description": "查询所有品牌"
             },
+            "mylist": {
+                "url": "/api/brand/mylist",
+                "method": "get",
+                "description": "查询当前用户所有品牌"
+            },
             "show": {
                 "url": "/api/brand/show/:brandId",
                 "method": "get",
