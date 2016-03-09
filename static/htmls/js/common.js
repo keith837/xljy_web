@@ -59,7 +59,7 @@ function initDateTimePicker(){
 
 //初始化datatable
 function initDataTable(){
-   // $.fn.dataTable.ext.errMode = function(s,h,m){};
+    $.fn.dataTable.ext.errMode = function(s,h,m){};
     return {
         "oLanguage": {
             "sLengthMenu": "每页显示 _MENU_ 条记录",
@@ -230,8 +230,9 @@ function getStudentInfo(classId) {
 }
 //加载用户组
 function loadGroup() {
+    var groupId = $.cookie('groupId');
     $.ajax({
-        url: "/api/group/list",    //后台webservice里的方法名称
+        url: "/api/group/mylist/"+groupId,    //后台webservice里的方法名称
         type: "get",
         dataType: "json",
         contentType: "application/json",

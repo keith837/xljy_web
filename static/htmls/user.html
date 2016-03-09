@@ -152,7 +152,7 @@
             "sServerMethod": "GET",
             "aoColumns": [
                 {"mDataProp": "userName"},
-                {"mDataProp": "nickName"},
+                {"mDataProp": "schoolName"},
                 {"mDataProp": function(obj){
                     if(obj.groupId==10){
                         return "家长";
@@ -216,7 +216,7 @@
             var custName = $("#custName").val();
             if (custName != null && custName != "") {
                 paramsCheck = true;
-                params+='&custName='+custName;
+                params+='&custNameOrBillId='+custName;
             }
 //            console.info(params);
 //            console.info(paramsCheck);

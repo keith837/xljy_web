@@ -95,11 +95,12 @@
                             <thead>
                             <tr>
                                 <th width="5%">编号</th>
-                                <th width="8%">姓名</th>
-                                <th width="8%">班级</th>
-                                <th width="10%">学校</th>
+                                <th width="6%">姓名</th>
+                                <th width="6%">班级</th>
+                                <th width="9%">学校</th>
+                                <th width="12%">证件</th>
                                 <th width="5%">性别</th>
-                                <th width="12%">亲属</th>
+                                <th width="9%">亲属</th>
                                 <th width="5%">年龄</th>
                                 <th width="5%">状态</th>
                                 <th >住址</th>
@@ -158,6 +159,7 @@
                 {"mDataProp": "studentName"},
                 {"mDataProp": "className"},
                 {"mDataProp": "schoolName"},
+                {"mDataProp": "cardNum"},
                 {"mDataProp": function(obj){
                     if(obj.gender==0){
                         return "女";
@@ -169,7 +171,7 @@
                 }},
                 {"mDataProp": function(obj){
                     if(typeof(obj.parents) != "undefined") {
-                        var parents = "<ul>";
+                        var parents = "<ul style='margin:0px;list-style:none;'>";
                         $.each(obj.parents, function (i, item) {
                             parents += ("<li>" + item.nickName + "&nbsp;" + item.custName + "</li>");
                         })
@@ -191,12 +193,22 @@
                         return "其他";
                     }
                 }},
-                {"mDataProp": "address"},
+                {"mDataProp": function(obj){
+                    if(obj.address!=null){
+                        if(obj.address.length>3){
+                            return "<span title='"+obj.address+"'>"+obj.address.substr(0,3)+"</span>";
+                        }else{
+                            return obj.address;
+                        }
+                    }else{
+                        return "";
+                    }
+                }},
                 {"mDataProp": "createDate"}
             ],
             "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
                 {
-                    "targets": [10],
+                    "targets": [11],
                     "data": null,
                     "bSortable": false,
                     "defaultContent": "<button class=\"btn btn-primary\" id='editrow'><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"

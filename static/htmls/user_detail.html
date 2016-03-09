@@ -41,76 +41,69 @@
                                 <form class="form-horizontal" name="userForm" id="userForm">
                                     <div class="control-group">
                                         <label class="control-label">登陆名</label>
-                                        <div class="controls">
-                                            <span d="userName" name="userName"></span>
-                                        </div>
-                                        <label class="control-label inline right" for="password">密码</label>
-                                        <div class="controls inline right">
-                                            <input type="text" id="password" name="password" placeholder="密码" class="span3">
-                                        </div>
+                                        <label class="control-label" id="userName" name="userName"></label>
+
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="groupId">所属群组</label>
-                                        <div class="controls">
-                                            <input type="text" id="groupId" name="groupId" placeholder="请选择用户组" class="span3">
-                                        </div>
+                                        <label class="control-label" id="groupId" name="groupId"></label>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="custName">真实姓名</label>
-                                        <div class="controls">
-                                            <input type="text" id="custName" name="custName" placeholder="真实姓名" class="span3">
-                                        </div>
+                                        <label class="control-label" id="custName" name="custName"></label>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="nickName">昵称</label>
-                                        <div class="controls">
-                                            <input type="text" id="nickName" name="nickName" placeholder="昵称" class="span3">
-                                        </div>
+                                        <label class="control-label" id="nickName" name="nickName"></label>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="billId">联系电话</label>
-                                        <div class="controls">
-                                            <input type="text" id="billId" name="billId" placeholder="联系电话" class="span3">
-                                        </div>
+                                        <label class="control-label" id="billId" name="billId"></label>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="email">邮箱</label>
-                                        <div class="controls">
-                                            <input type="text" id="email" name="email" placeholder="邮箱" class="span3">
-                                        </div>
+                                        <label class="control-label" id="email" name="email"></label>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="gender">性别</label>
-                                        <div class="controls">
-                                            <select class="span3" id="gender" name="gender">
-                                                <option value="1">男</option>
-                                                <option value="0">女</option>
-                                            </select>
-                                        </div>
+                                        <label class="control-label" id="gender" name="gender"></label>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="address">联系地址</label>
-                                        <div class="controls">
-                                            <input type="text" id="address" name="address" placeholder="联系地址" class="span3">
-                                        </div>
+                                        <label class="control-label" id="address" name="address"></label>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="birthday">出生年月</label>
-                                        <div class="controls">
-                                            <input type="text" id="birthday" name="birthday" placeholder="出生年月,如：2011-12-27" class="span3">
-                                        </div>
+                                        <label class="control-label" id="birthday" name="birthday"></label>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="pointNum">用户积分</label>
+                                        <label class="control-label" id="pointNum" name="pointNum"></label>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="lastLoginDate">最后登陆时间</label>
+                                        <label class="control-label" id="lastLoginDate" name="lastLoginDate"></label>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="lastLoginIp">最后登陆IP</label>
+                                        <label class="control-label" id="lastLoginIp" name="lastLoginIp"></label>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="createDate">创建时间</label>
+                                        <label class="control-label" id="createDate" name="createDate"></label>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="stateName">状态</label>
+                                        <label class="control-label" id="stateName" name="stateName"></label>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="remark">备注</label>
-                                        <div class="controls">
-                                            <textarea rows="3" id="remark" name="remark" class="span3"></textarea>
-                                        </div>
+                                        <label class="control-label" id="remark" name="remark"></label>
                                     </div>
 
                                     <div class="control-group">
                                         <div class="controls">
-                                            <button type="submit" class="btn">提交</button>
-                                            <button type="reset" class="btn">重置</button>
+                                            <button type="button" class="btn" id="back" onclick="javascript:history.back();">返回</button>
                                         </div>
                                     </div>
                                 </form>
@@ -136,6 +129,7 @@
 <script src="js/common.js"></script>
 <script src="js/jquery.ui.custom.js"></script>
 <script src="js/jquery.validate.js"></script>
+<script src="js/jquery.url.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-colorpicker.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
@@ -148,63 +142,26 @@
 <script>
 
     $(document).ready(function () {
-        $("#groupId").select2({data: [{id: -1, text: "请选择用户组"}]});
-        loadGroup();
-        initValidator();
-        $("#userForm").validate({
-            ignore: ".ignore",
-            rules:{
-                userName:{
-                    required:true,
-                    isMobile:true
-                },
-                password:{
-                    required:true
-                },
-                groupId:{
-                    required:true
-                },
-                custName:{
-                    required:true
-                },
-                nickName:{
-                    required:true
-                },
-                billId:{
-                    required:true,
-                    isMobile:true
-                },
-                email:{
-                    required:true,
-                    email:true
-                },
-                gender:{
-                    required:true
-                },
-                address:{
-                    required:true
-                },
-                birthday:{
-                    required:true,
-                    date:true
-                },
-                remark:{
-                    required:true
-                }
-            },
-            errorClass: "help-inline",
-            errorElement: "span",
-            highlight:function(element, errorClass, validClass) {
-                $(element).parents('.control-group').addClass('error');
-            },
-            unhighlight: function(element, errorClass, validClass) {
-                $(element).parents('.control-group').removeClass('error');
-                $(element).parents('.control-group').addClass('success');
-            },
-            submitHandler: function(form) {
-                saveOrUpdate("/api/user/add", "post", "#userForm","user.html");
+        var userId = $.url.param('userId');
+        $.get("/api/user/show/" + userId, null, function (json) {
+            if (json.code == "00") {
+                $("#userName").text(json.data.userName);
+                $("#groupId").text(json.data.groupName);
+                $("#custName").text(json.data.custName);
+                $("#nickName").text(json.data.nickName);
+                $("#billId").text(json.data.billId);
+                $("#email").text(json.data.email==null?"":json.data.email);
+                $("#gender").text(json.data.genderName==null?"":json.data.genderName);
+                $("#address").text(json.data.address==null?"":json.data.address);
+                $("#birthday").text(json.data.birthday==null?"":json.data.birthday);
+                $("#pointNum").text(json.data.pointNum==null?"0":json.data.pointNum);
+                $("#lastLoginDate").text(json.data.lastLoginDate==null?"":json.data.lastLoginDate);
+                $("#lastLoginIp").text(json.data.lastLoginIp==null?"":json.data.lastLoginIp);
+                $("#createDate").text(json.data.createDate==null?"":json.data.createDate);
+                $("#stateName").text(json.data.stateName==null?"":json.data.stateName);
+                $("#remark").text(json.data.remark==null?"":json.data.remark);
             }
-        });
+        }, 'json');
     });
 
 </script>
