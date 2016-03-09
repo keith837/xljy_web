@@ -2,6 +2,8 @@ var basicController = require("../../core/utils/controller/basicController");
 var SmsSendUtil = require("../../core/utils/sms/SmsSendUtil.js");
 var jwt = require("jwt-simple");
 var moment = require('moment');
+var formidable = require("formidable");
+var path = require("path");
 
 module.exports = new basicController(__filename).init({
 
@@ -123,6 +125,7 @@ module.exports = new basicController(__filename).init({
                                 custName : user.custName,
                                 groupId : user.groupId,
                                 pointNum : user.pointNum,
+                                userUrl : user.userUrl,
                                 token : user.token,
                                 webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
                                 students : retStudents
@@ -153,6 +156,7 @@ module.exports = new basicController(__filename).init({
                         custName : user.custName,
                         groupId : user.groupId,
                         pointNum : user.pointNum,
+                        userUrl : user.userUrl,
                         token : user.token,
                         webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
                         students : retStudents
@@ -198,6 +202,7 @@ module.exports = new basicController(__filename).init({
                         custName : user.custName,
                         groupId : user.groupId,
                         pointNum : user.pointNum,
+                        userUrl : user.userUrl,
                         token : user.token,
                         webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
                         class : {
@@ -258,6 +263,7 @@ module.exports = new basicController(__filename).init({
                     custName : user.custName,
                     groupId : user.groupId,
                     pointNum : user.pointNum,
+                    userUrl : user.userUrl,
                     token : user.token,
                     webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
                     schools : retSchools
@@ -311,6 +317,7 @@ module.exports = new basicController(__filename).init({
                     custName : user.custName,
                     groupId : user.groupId,
                     pointNum : user.pointNum,
+                    userUrl : user.userUrl,
                     token : user.token,
                     webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
                     schools : retSchools
@@ -351,6 +358,7 @@ module.exports = new basicController(__filename).init({
                     custName : user.custName,
                     groupId : user.groupId,
                     pointNum : user.pointNum,
+                    userUrl : user.userUrl,
                     token : user.token,
                     webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
                     schools : retSchools
@@ -397,6 +405,40 @@ module.exports = new basicController(__filename).init({
             }
             var clientId = getClientIp(req);
             self.model['userLogin'].logLogin([user.groupId,user.userId,user.nickName,user.billId,user.custName,4,2,2,clientId,null]);
+        });
+    },
+
+    uppic : function(req, res, next){
+        var self = this;
+        var userId = req.user.userId;
+        var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "USER_HEAD");
+        var form = new formidable.IncomingForm();   //创建上传表单
+        form.encoding = 'utf-8';		//设置编辑
+        form.uploadDir = uploadDir;	 //设置上传目录
+        form.keepExtensions = true;	 //保留后缀
+        form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
+        form.parse(req, function (err, fields, files) {
+            var obj = new Object();
+            if(files && files.userPic){
+                obj.userUrl = path.normalize(files.userPic.path).replace(/\\/g, '/');
+            }else{
+                return next(new Error("用户头像不能为空"));
+            }
+            obj.doneDate = new Date();
+            self.model['user'].update(obj, userId, function(err, data){
+                if(err){
+                    return next(err);
+                }
+                if(data && data.affectedRows == 1){
+                    res.json({
+                        code : "00",
+                        msg : "用户头像上传成功",
+                        data : obj.userUrl
+                    });
+                }else{
+                    return next(new Error("用户头像上传失败"));
+                }
+            });
         });
     },
 
@@ -657,6 +699,7 @@ module.exports = new basicController(__filename).init({
                 nickName = "超级管理员";
             }
         }
+        var userUrl = self.cacheManager.getCacheValue("FILE_DIR", "DEFAULT_USER_HEAD");
         self.model['user'].findByUserName(userName, function(err, user){
             if(err){
                 return next(err);
@@ -664,7 +707,7 @@ module.exports = new basicController(__filename).init({
             if(user && user.userName == userName){
                 return next("用户登录名已存在");
             }
-            self.model['user'].save([groupId,roleId,schoolId,nickName,userName,password,custName,billId,email,gender,birthday,address,4], function(err, data){
+            self.model['user'].save([groupId,roleId,schoolId,nickName,userName,userUrl,password,custName,billId,email,gender,birthday,address,4], function(err, data){
                 if(err){
                     return next(err);
                 }
