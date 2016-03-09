@@ -81,6 +81,11 @@ var routerConfig = {
                 "url": "/api/user/logout",
                 "method": "post",
                 "description": "退出登录"
+            },
+            "uppic" : {
+                "url": "/api/user/uppic",
+                "method": "put",
+                "description": "上传用户头像"
             }
         },
 
