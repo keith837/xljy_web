@@ -177,7 +177,16 @@ Student.queryNum = function(obj, schoolIds, callback){
     var args = new Array();
     if(obj){
         for(var key in obj){
-            whereSql += " and A." + key + "=?";
+            var keyValue = obj[key];
+            whereSql += " and A." + key;
+            if(typeof keyValue == 'string'){
+                if(keyValue.indexOf("%") >= 0){
+                    whereSql += " like ? ";
+                    args.push(obj[key]);
+                    continue;
+                }
+            }
+            whereSql += " = ? ";
             args.push(obj[key]);
         }
     }
@@ -198,7 +207,16 @@ Student.queryPage = function(obj, schoolIds, start, pageSize, callback){
     var args = new Array();
     if(obj){
         for(var key in obj){
-            whereSql += " and A." + key + "=?";
+            var keyValue = obj[key];
+            whereSql += " and A." + key;
+            if(typeof keyValue == 'string'){
+                if(keyValue.indexOf("%") >= 0){
+                    whereSql += " like ? ";
+                    args.push(obj[key]);
+                    continue;
+                }
+            }
+            whereSql += " = ? ";
             args.push(obj[key]);
         }
     }
