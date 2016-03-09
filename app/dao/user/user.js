@@ -56,7 +56,7 @@ User.queryNum = function(obj, custNameOrBillId, schoolIds, callback){
         args.push(custNameOrBillId);
     }
     if(schoolIds){
-        whereSql += " and schoolId in (";
+        whereSql += " and m.schoolId in (";
         for(var i = 0; i < schoolIds.length; i ++){
             whereSql += "?,";
             args.push(schoolIds[i]);
@@ -82,7 +82,7 @@ User.queryPage = function(obj, custNameOrBillId, schoolIds, start, pageSize, cal
         args.push(custNameOrBillId);
     }
     if(schoolIds){
-        whereSql += " and schoolId in (";
+        whereSql += " and m.schoolId in (";
         for(var i = 0; i < schoolIds.length; i ++){
             whereSql += "?,";
             args.push(schoolIds[i]);
