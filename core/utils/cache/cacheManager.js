@@ -33,13 +33,14 @@ cacheManager.init = function (callback) {
 }
 
 function getCache(codeType, codeKey) {
-    if (!codeKey) {
+    if (!codeKey && codeKey !== 0) {
         return cacheObj[codeType];
     }
     var cacheElement = cacheObj[codeType];
     if (!cacheElement) {
         return null;
     }
+    console.log(JSON.stringify(cacheElement));
     for (var i = 0; i < cacheElement.length; i++) {
         if (cacheElement[i].codeKey == codeKey) {
             return cacheElement[i];
