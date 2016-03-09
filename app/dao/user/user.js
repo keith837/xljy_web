@@ -7,7 +7,7 @@ User.findByUserName = function(userName, callback){
 }
 
 User.findByUserId = function(userId, callback){
-    mysqlUtil.queryOne("select A.*,B.groupName from XL_USER A,XL_USER_GROUP B WHERE A.groupId = B.groupId and A.state !=0 and A.userId=?", [userId], callback);
+    mysqlUtil.queryOne("select B.groupName,C.schoolName,m.* from XL_USER m inner join XL_USER_GROUP B on m.groupId=B.groupId left join XL_SCHOOL C on m.schoolId=C.schoolId where m.state != 0 and m.userId=?", [userId], callback);
 }
 
 User.save = function(args, callback){
