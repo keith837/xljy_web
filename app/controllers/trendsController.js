@@ -158,6 +158,14 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    delComment : function(req, res, next){
+        var self = this;
+        var commentId = req.params.commentId;
+        if(!commentId || commentId < 0){
+            return next(new Error("评论编号不能为空"));
+        }
+    },
+
     list : function(req, res, next){
         var self = this;
         var start = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);
@@ -189,6 +197,64 @@ module.exports = new basicController(__filename).init({
                 return res.json(self.createPageData("00", total, trends));
             }
             self.createList(res, next, total, trends, photoLength, commentLength);
+        });
+    },
+
+    moreComment : function(req, res, next){
+        var self = this;
+        var start = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);
+        var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
+        var trendsId = req.params.trendsId;
+        if(!trendsId || trendsId < 0){
+            return next(new Error("动态编号不能为空"));
+        }
+        self.model['album'].moreHandles(trendsId, 2, start, pageSize, function(err, comments){
+            if(err){
+                return next(err);
+            }
+            var commentArray = new Array();
+            if(comments){
+                for(var i = 0; i < comments.length; i ++){
+                    commentArray.push({
+                        handleId: comments[i].handleId,
+                        pHandleId:comments[i].pHandleId,
+                        content: comments[i].content,
+                        nickName: comments[i].nickName,
+                        userId: comments[i].hUserId,
+                        createDate: comments[i].createDate
+                    });
+                }
+            }
+            res.json({
+                code : "00",
+                data : commentArray
+            });
+        });
+    },
+
+    morePic : function(req, res, next){
+        var self = this;
+        var start = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);
+        var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
+        var trendsId = req.params.trendsId;
+        self.model['album'].morePics(trendsId, start, pageSize, function(err, pics){
+            if(err){
+                return next(err);
+            }
+            var picArray = new Array();
+            if(pics){
+                for(var i = 0; i < pics.length; i ++){
+                    picArray.push({
+                        picId: pics[i].picId,
+                        picUrl: pics[i].picUrl,
+                        createDate : pics[i].createDate
+                    });
+                }
+            }
+            res.json({
+                code : "00",
+                data : picArray
+            });
         });
     },
 

@@ -352,6 +352,16 @@ var routerConfig = {
                 "method": "post",
                 "description": "动态评论"
             },
+            "moreComment": {
+                "url": "/api/trends/moreComment/:trendsId",
+                "method": "get",
+                "description": "更多评论"
+            },
+            "morePic": {
+                "url": "/api/trends/morePic/:trendsId",
+                "method": "get",
+                "description": "更多图片"
+            },
             "list": {
                 "url": "/api/trends/list",
                 "method": "get",

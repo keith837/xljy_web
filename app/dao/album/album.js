@@ -271,6 +271,16 @@ Album.findHandles = function(albumIds, obj, callback){
     mysqlUtil.query(sql + " order by createDate", tempArgs, callback);
 }
 
+Album.moreHandles = function(albumId, handleType, start, pageSize, callback){
+    var sql = "select * from XL_ALBUM_HANDLE where state = 1 and albumId = ? and handleType = ? limit ?,?";
+    mysqlUtil.query(sql, [albumId, handleType, start, pageSize], callback);
+}
+
+Album.morePics = function(albumId, start, pageSize, callback){
+    var sql = "select * from XL_ALBUM_PIC where state = 1 and albumId = ? limit ?,?";
+    mysqlUtil.query(sql, [albumId, start, pageSize], callback);
+}
+
 Album.findHandlesByOver = function(albumIds, obj, length, callback){
     var tempArgs = new Array();
     var sql = "SELECT albumId, handleId, pHandleId, content, nickName, hUserId, createDate, rank FROM ( SELECT albumId, handleId, pHandleId, content, nickName, hUserId,";
@@ -288,6 +298,10 @@ Album.findHandlesByOver = function(albumIds, obj, length, callback){
     sql += " ORDER BY albumId, createDate ) b, ( SELECT @NAME := NULL, @rank := 0 ) a ) result WHERE rank <= ?";
     tempArgs.push(length);
     mysqlUtil.query(sql, tempArgs, callback);
+}
+
+Album.delComment = function(commentId, callback){
+    var sql = "select a.*, @pId := a.handleId as pId from XL_ALBUM_HANDLE a, (select @pId := 0) b where handleId = 27 or pHandleId = @pId";
 }
 
 Album.findHandle = function(albumId, handleType, userId, callback){
