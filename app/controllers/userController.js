@@ -665,8 +665,8 @@ module.exports = new basicController(__filename).init({
     add : function(req, res, next){
         var self = this;
         var userName = req.body.userName;
-        var roleId = req.body.roleId ? parseInt(req.body.roleID) : 0;
-        var schoolId = req.body.schoolId ? parseInt(req.body.schoolId) : 0;
+        var roleId = req.body.roleId ? parseInt(req.body.roleId) : 0;
+        var schoolId = req.body.schoolId ? parseInt(req.body.schoolId) : req.user.schools[0].schoolId;
         var password = req.body.password;
         var nickName = req.body.nickName;
         var groupId = req.body.groupId;
