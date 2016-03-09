@@ -646,8 +646,9 @@ module.exports = new basicController(__filename).init({
         if(custName){
             obj.custName = custName;
         }
+        var custNameOrBillId = req.query.custNameOrBillId;
         var schoolIds = req.query.schoolId ? [parseInt(req.query.schoolId)] : req.user.schoolIds;
-        self.model['user'].listByPage(obj, schoolIds, start, pageSize, function(err, total, users){
+        self.model['user'].listByPage(obj, custNameOrBillId, schoolIds, start, pageSize, function(err, total, users){
             if(err){
                 return next(err);
             }
