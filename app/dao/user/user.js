@@ -41,7 +41,7 @@ User.modifyPwd = function(userName, password, callback){
     mysqlUtil.query("update XL_USER set doneDate = now(),password=? where userName = ?", [password, userName], callback);
 }
 
-User.queryNum = function(obj, schoolIds, callback){
+User.queryNum = function(obj, custNameOrBillId, schoolIds, callback){
     var whereSql = " 1=1 ";
     var args = new Array();
     if(obj){
@@ -49,6 +49,11 @@ User.queryNum = function(obj, schoolIds, callback){
             whereSql += " and m." + key + "=?";
             args.push(obj[key]);
         }
+    }
+    if(custNameOrBillId){
+        whereSql += " and (m.custName like ? or m.userName = ?)";
+        args.push("%" + custNameOrBillId + "%");
+        args.push(custNameOrBillId);
     }
     if(schoolIds){
         whereSql += " and schoolId in (";
@@ -58,11 +63,11 @@ User.queryNum = function(obj, schoolIds, callback){
         }
         whereSql = whereSql.substr(0, whereSql.length - 1) + ")";
     }
-    var countSql = "select count(*) AS total from XL_USER m,XL_USER_GROUP B WHERE m.groupId=B.groupId and m.state != 0 and " + whereSql;
+    var countSql = "select count(*) AS total from XL_USER m inner join XL_USER_GROUP B on m.groupId=B.groupId left join XL_SCHOOL C on m.schoolId=C.schoolId where  m.state != 0 and " + whereSql;
     mysqlUtil.queryOne(countSql, args, callback);
 }
 
-User.queryPage = function(obj, schoolIds, start, pageSize, callback){
+User.queryPage = function(obj, custNameOrBillId, schoolIds, start, pageSize, callback){
     var whereSql = " 1=1 ";
     var args = new Array();
     if(obj){
@@ -70,6 +75,11 @@ User.queryPage = function(obj, schoolIds, start, pageSize, callback){
             whereSql += " and m." + key + "=?";
             args.push(obj[key]);
         }
+    }
+    if(custNameOrBillId){
+        whereSql += " and (m.custName like ? or m.userName = ?)";
+        args.push("%" + custNameOrBillId + "%");
+        args.push(custNameOrBillId);
     }
     if(schoolIds){
         whereSql += " and schoolId in (";
@@ -79,15 +89,15 @@ User.queryPage = function(obj, schoolIds, start, pageSize, callback){
         }
         whereSql = whereSql.substr(0, whereSql.length - 1) + ")";
     }
-    var querySql = "select m.*,B.groupName from XL_USER m,XL_USER_GROUP B WHERE m.groupId=B.groupId and m.state!=0 and " + whereSql;
+    var querySql = "select B.groupName,C.schoolName,m.* from XL_USER m inner join XL_USER_GROUP B on m.groupId=B.groupId left join XL_SCHOOL C on m.schoolId=C.schoolId where m.state != 0 and " + whereSql;
     querySql += " limit ?,?";
     args.push(start);
     args.push(pageSize);
     mysqlUtil.query(querySql, args, callback);
 }
 
-User.listByPage = function(obj, schoolIds, start, pageSize, callback){
-    User.queryNum(obj, schoolIds, function(err, data){
+User.listByPage = function(obj, custNameOrBillId, schoolIds, start, pageSize, callback){
+    User.queryNum(obj, custNameOrBillId, schoolIds, function(err, data){
         if(err){
             return callback(err);
         }
@@ -95,7 +105,7 @@ User.listByPage = function(obj, schoolIds, start, pageSize, callback){
         if(data){
             total = data.total;
         }
-        User.queryPage(obj, schoolIds, start, pageSize, function(err, users){
+        User.queryPage(obj, custNameOrBillId, schoolIds, start, pageSize, function(err, users){
             if(err){
                 return callback(err);
             }
