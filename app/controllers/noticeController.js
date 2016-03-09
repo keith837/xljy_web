@@ -136,7 +136,7 @@ module.exports = new basicController(__filename).init({
         var userName = request.user.custName;
         var nickName = request.user.nickName;
         if (groupId == 10 || groupId == 20) {
-            classId == request.user.class.classId;
+            classId =  request.user.class.classId;
             className = request.user.class.className;
         }
         form.parse(request, function (err, fields, files) {
