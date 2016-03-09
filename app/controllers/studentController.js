@@ -282,7 +282,7 @@ module.exports = new basicController(__filename).init({
         }
         var studentName = req.query.studentName;
         if(studentName){
-            obj.studentName = studentName;
+            obj.studentName = "%" + studentName + "%";
         }
         self.model["student"].listByPage(obj, schoolIds, start, pageSize, function(err, total, students){
             if(err){
