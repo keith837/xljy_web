@@ -138,8 +138,8 @@ Student.update = function(obj, userId, studentId, callback){
                     return callback(err);
                 }
                 if(userId){
-                    var updateRelSql = "update XL_USER_STUDENT_REL set userId=?,doneDate=now(),oUserId=? where studentId=?";
-                    conn.query(updateRelSql, [userId,obj.oUserId,studentId], function(err, data){
+                    var insertRelSql = "insert into XL_USER_STUDENT_REL(userId,studentId,state,createDate,doneDate,oUserId) values (?,?,1,now(),now(),?)";
+                    conn.query(insertRelSql, [userId,studentId,obj.oUserId], function(err, data){
                         if(err){
                             conn.rollback();
                             conn.release();
