@@ -165,7 +165,7 @@ module.exports = new basicController(__filename).init({
                         return next(err);
                     }
                     if(!classInfo){
-                        return nrxt("学生关联的班级信息不存在");
+                        return next("学生关联的班级信息不存在");
                     }
                     obj.schoolId = classInfo.schoolId;
                     self.model['student'].update(obj, userId, studentId, function(err, data){
