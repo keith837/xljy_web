@@ -337,6 +337,11 @@ var routerConfig = {
                 "method": "post",
                 "description": "发布动态"
             },
+            "uppic": {
+                "url": "/api/trends/uppic/:trendsId",
+                "method": "post",
+                "description": "上传动态图片"
+            },
             "delete": {
                 "url": "/api/trends/del/:trendsId",
                 "method": "delete",
