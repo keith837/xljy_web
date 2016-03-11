@@ -94,11 +94,11 @@ Album.create = function(albumArg, albumPicArgs, callback){
             }
             var albumSql = "insert into XL_ALBUM(schoolId,schoolName,classId,albumType,albumTitle,content,albumDate,isTop,userName,custName,nickName,studentId";
             albumSql += ",studentName,likesNum,isComment,state,userId,createDate,doneDate,oUserId) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),now(),?)";
-            conn.query(albumSql, albumArg, function(err, data){
+            conn.query(albumSql, albumArg, function(err, trends){
                 if(err){
                     conn.rollback();
                     conn.release();
-                    return callback.apply(null, [err, data]);
+                    return callback.apply(null, [err, null]);
                 }
                 if(!albumPicArgs || albumPicArgs.length <= 0){
                     return conn.commit(function(err){
@@ -108,19 +108,38 @@ Album.create = function(albumArg, albumPicArgs, callback){
                             return callback.apply(null, [err, null]);
                         }
                         conn.release();
-                        return callback.apply(null, [null, data]);
+                        return callback.apply(null, [null, trends]);
                     });
                 }
-                var albumId = data.insertId;
-                var albumPicSql = "insert into XL_ALBUM_PIC(picUrl,likesNum,createDate,picDesc,state,doneDate,userId,oUserId,albumId) values (";
-                albumPicSql += "?,?,now(),?,?,now(),?,?," + albumId + ")";
-                createAlbumPic(conn, albumPicSql, albumPicArgs, 0, callback);
+                var albumId = trends.insertId;
+                var albumPicSql = "insert into XL_ALBUM_PIC(picUrl,likesNum,width,height,createDate,picDesc,state,doneDate,userId,oUserId,albumId) values (";
+                albumPicSql += "?,?,?,?,now(),?,?,now(),?,?,?)";
+                for(var i = 0; i < albumPicArgs.length; i ++){
+                    albumPicArgs[i].push(albumId);
+                }
+                createAlbumPic(conn, albumPicSql, albumPicArgs, 0, callback, trends);
             });
         });
     });
 }
 
-function createAlbumPic(conn, albumPicSql, albumPicArgs, i, callback){
+Album.saveAlbumPic = function(albumPicArgs, callback){
+    mysqlUtil.getConnection(function(err, conn){
+        if(err){
+            return callback.apply(null, [err, null]);
+        }
+        conn.beginTransaction(function(err){
+            if(err){
+                return callback.apply(null, [err, null]);
+            }
+            var albumPicSql = "insert into XL_ALBUM_PIC(picUrl,likesNum,width,height,createDate,picDesc,state,doneDate,userId,oUserId,albumId) values (";
+            albumPicSql += "?,?,?,?,now(),?,?,now(),?,?,?)";
+            createAlbumPic(conn, albumPicSql, albumPicArgs, 0, callback, null);
+        });
+    });
+}
+
+function createAlbumPic(conn, albumPicSql, albumPicArgs, i, callback, trends){
     if(i < (albumPicArgs.length - 1)){
         conn.query(albumPicSql,  albumPicArgs[i], function(err, data){
             if(err){
@@ -129,14 +148,14 @@ function createAlbumPic(conn, albumPicSql, albumPicArgs, i, callback){
                 return callback.apply(null, [err, null]);
             }
             i ++;
-            createAlbumPic(conn, albumPicSql, albumPicArgs, i, callback);
+            createAlbumPic(conn, albumPicSql, albumPicArgs, i, callback, trends);
         });
     }else{
         conn.query(albumPicSql,  albumPicArgs[i], function(err, data){
             if(err){
                 conn.rollback();
                 conn.release();
-                return callback.apply(null, [err, data]);
+                return callback.apply(null, [err, null]);
             }
             conn.commit(function(err){
                 if(err){
@@ -145,7 +164,7 @@ function createAlbumPic(conn, albumPicSql, albumPicArgs, i, callback){
                     return callback.apply(null, [err, null]);
                 }
                 conn.release();
-                return callback.apply(null, [null, data]);
+                return callback.apply(null, [null, trends ? trends : data]);
             });
         });
     }

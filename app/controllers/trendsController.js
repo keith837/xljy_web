@@ -2,6 +2,7 @@ var basicController = require("../../core/utils/controller/basicController");
 var formidable = require("formidable");
 var fs = require("fs");
 var path = require("path");
+var images = require("images");
 
 module.exports = new basicController(__filename).init({
     create: function (req, res, next) {
@@ -48,15 +49,57 @@ module.exports = new basicController(__filename).init({
             var albumArg = [schoolId, schoolName, classId, 3, '动态信息', content, new Date(), isTop, userName, custName, nickName, studentId, studentName, 0, 0, 1, userId, userId];
             var albumPicArgs = new Array();
             for (var photos in files) {
-                albumPicArgs.push([path.normalize(files[photos].path).replace(/\\/g, '/'), 0, null, 1, userId, userId]);
+                var width = images(files[photos].path).width();
+                var height = images(files[photos].path).height();
+                albumPicArgs.push([path.normalize(files[photos].path).replace(/\\/g, '/'), 0, width, height, null, 1, userId, userId]);
             }
-            self.model['album'].create(albumArg, albumPicArgs, function (err, data) {
+            self.model['album'].create(albumArg, albumPicArgs, function (err, trends) {
                 if (err) {
                     return next(err);
                 }
                 res.json({
                     code: "00",
-                    msg: "动态发布成功"
+                    msg: "动态发布成功",
+                    data : trends.insertId
+                });
+            });
+        });
+    },
+
+    uppic : function(req, res, next){
+        var self = this;
+        var trendsId = req.params.trendsId;
+        var userId = req.user.userId;
+        var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "PHOTOS");
+        uploadDir += "user" + userId + "/";
+        if(!fs.existsSync(uploadDir)){
+            fs.mkdirSync(uploadDir);
+        }
+        var groupId = req.user.groupId;
+        var form = new formidable.IncomingForm();   //创建上传表单
+        form.encoding = 'utf-8';		//设置编辑
+        form.uploadDir = uploadDir;	 //设置上传目录
+        form.keepExtensions = true;	 //保留后缀
+        form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
+
+        form.parse(req, function (err, fields, files) {
+            var albumPicArgs = new Array();
+            for (var photos in files) {
+                var width = images(files[photos].path).width();
+                var height = images(files[photos].path).height();
+                albumPicArgs.push([path.normalize(files[photos].path).replace(/\\/g, '/'), 0, width, height, null, 1, userId, userId, trendsId]);
+            }
+            if(albumPicArgs.length <= 0){
+                return next(new Error("上传图片信息不能为空"));
+            }
+            self.model['album'].saveAlbumPic(albumPicArgs, function(err, pic){
+                if(err){
+                    return next(err);
+                }
+                res.json({
+                    code : "00",
+                    msg : "上传图片成功",
+                    data : pic.insertId
                 });
             });
         });
