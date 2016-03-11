@@ -88,9 +88,13 @@ module.exports = new basicController(__filename).init({
         self.model['album'].cancelAlbumLike(trendsId, userId, function(err, data){
             if(err){
                 return next(err);
-            }else if(!data || data.affectedRows != 1){
+            }
+            //去掉当前用户未点赞逻辑
+            /*
+            else if(!data || data.affectedRows != 1){
                 return next(new Error("当前用户未点赞"));
             }
+            */
             res.json({
                 code: "00",
                 msg: "取消点赞成功"
