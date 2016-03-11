@@ -8,7 +8,7 @@ var async = require("async");
 
 Notice.queryByNoticeType = function (start, pageSize, queryCondition, callback) {
 
-    var sql = "select * from XL_NOTICE m where m.state=1 and m.expDate>=date_sub(curdate(),interval 30 day) ";
+    var sql = "select * from XL_NOTICE m where m.state=1 and m.expDate>=curdate() ";
     var params = [];
 
     var sqlCondition = "";
@@ -36,7 +36,7 @@ Notice.queryByNoticeType = function (start, pageSize, queryCondition, callback) 
     sql = sql + sqlCondition;
 
     var countSQL = "select count(*) as total from (" + sql + ") m";
-    sql = "select * from (" + sql + " order by effDate desc) m limit ?,?";
+    sql = "select * from (" + sql + " order by noticeId desc) m limit ?,?";
     mysqlUtil.queryOne(countSQL, params, function (err, res) {
         if (err) {
             return callback(err);
