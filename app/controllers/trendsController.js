@@ -269,6 +269,8 @@ module.exports = new basicController(__filename).init({
             if (err) {
                 return next(err);
             }
+            trends[0].trendsId=trends[0].albumId;
+            delete trends[0].albumId;
             res.json({code: "00",data: trends[0]});
         });
     },
