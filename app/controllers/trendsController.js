@@ -61,8 +61,8 @@ module.exports = new basicController(__filename).init({
                     if (err) {
                         return next(err);
                     }
-                    trends[0].trendsId=trends[0].albumId;
-                    delete trends[0].albumId;
+                    trends[0].likesNum=trends[0].likes.length;
+                    trends[0].commentNum=trends[0].comments.length;
                     res.json({
                         code: "00",
                         msg: "动态发布成功",
@@ -108,8 +108,8 @@ module.exports = new basicController(__filename).init({
                     if (err) {
                         return next(err);
                     }
-                    trends[0].trendsId=trends[0].albumId;
-                    delete trends[0].albumId;
+                    trends[0].likesNum=trends[0].likes.length;
+                    trends[0].commentNum=trends[0].comments.length;
                     res.json({
                         code : "00",
                         msg : "上传图片成功",
@@ -273,8 +273,8 @@ module.exports = new basicController(__filename).init({
             if (err) {
                 return next(err);
             }
-            trends[0].trendsId=trends[0].albumId;
-            delete trends[0].albumId;
+            trends[0].likesNum=trends[0].likes.length;
+            trends[0].commentNum=trends[0].comments.length;
             res.json({code: "00",data: trends[0]});
         });
     },
@@ -474,8 +474,8 @@ module.exports = new basicController(__filename).init({
                     if (err) {
                         return next(err);
                     }
-                    trends[0].trendsId=trends[0].albumId;
-                    delete trends[0].albumId;
+                    trends[0].likesNum=trends[0].likes.length;
+                    trends[0].commentNum=trends[0].comments.length;
                     res.json({
                         code : "00",
                         msg : (isTop == 1 ? "置顶成功" : "下移成功"),

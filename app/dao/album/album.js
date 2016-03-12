@@ -177,7 +177,7 @@ Album.findOne = function(albumType, userId, trendsId, callback){
 
 Album.findOneTrends = function (trendsId, cb) {
     var tasks = [function (callback) {
-        var sql = "select * from XL_ALBUM where state = 1 and albumId=?";
+        var sql = "select albumId as trendsId,content,userId,nickName,userName,custName,schoolName,createDate from XL_ALBUM where state = 1 and albumId=?";
         mysqlUtil.query(sql, [trendsId], function (err, res) {
             if (err) {
                 return callback(err);
@@ -190,7 +190,7 @@ Album.findOneTrends = function (trendsId, cb) {
 
         });
     }, function (trends, callback) {
-        mysqlUtil.query("select * from XL_ALBUM_PIC where state = 1 and albumId = ? order by picId", [trends[0]], function (err, res) {
+        mysqlUtil.query("select picId,picUrl,createDate from XL_ALBUM_PIC where state = 1 and albumId = ? order by picId", [trends[0]], function (err, res) {
             if (err) {
                 return callback(err);
             }
@@ -198,7 +198,7 @@ Album.findOneTrends = function (trendsId, cb) {
             callback(err, trends);
         });
     }, function (trends, callback) {
-        mysqlUtil.query("select * from XL_ALBUM_HANDLE where state = 1 and albumId=? and handleType=2 order by handleId ", [trends[0]], function (err, res) {
+        mysqlUtil.query("select handleId,pHandleId,content,nickName,hUserId as userId,createDate from XL_ALBUM_HANDLE where state = 1 and albumId=? and handleType=2 order by handleId ", [trends[0]], function (err, res) {
             if (err) {
                 return callback(err);
             }
@@ -206,7 +206,7 @@ Album.findOneTrends = function (trendsId, cb) {
             callback(err, trends);
         });
     }, function (trends, callback) {
-        mysqlUtil.query("select * from XL_ALBUM_HANDLE where state = 1 and albumId=? and handleType=1 order by handleId ", [trends[0]], function (err, res) {
+        mysqlUtil.query("select handleId as likeId,nickName,hUserId as userId,createDate from XL_ALBUM_HANDLE where state = 1 and albumId=? and handleType=1 order by handleId ", [trends[0]], function (err, res) {
             if (err) {
                 return callback(err);
             }
