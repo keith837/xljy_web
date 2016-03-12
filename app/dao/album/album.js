@@ -183,7 +183,7 @@ Album.findOneTrends = function (trendsId, cb) {
                 return callback(err);
             }
             if(res.length != 1){
-                return callback(new Error("�Ҳ�����̬[" + trendsId + "]"));
+                return callback(new Error("根据动态编号̬[" + trendsId + "]没找到动态信息"));
             }else{
                 callback(err, [trendsId,res]);
             }
