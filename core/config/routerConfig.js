@@ -351,7 +351,7 @@ var routerConfig = {
         },
 
         trends : {
-            "usedModel": ["album/album"],
+            "usedModel": ["album/album", "user/user"],
             "create": {
                 "url": "/api/trends/create",
                 "method": "post",
@@ -392,6 +392,11 @@ var routerConfig = {
                 "method": "get",
                 "description": "查看动态"
             },
+            "applist": {
+                "url": "/api/trends/applist/:trendsId",
+                "method": "get",
+                "description": "app端查看动态"
+            },
             "show": {
                 "url": "/api/trends/show/:trendsId",
                 "method": "get",
@@ -401,6 +406,11 @@ var routerConfig = {
                 "url": "/api/trends/list/:userId",
                 "method": "get",
                 "description": "查看用户动态"
+            },
+            "appmylist": {
+                "url": "/api/trends/applist/:userId/:trendsId",
+                "method": "get",
+                "description": "app查看用户动态"
             },
             "top": {
                 "url": "/api/trends/top/:trendsId/:isTop",
@@ -596,6 +606,11 @@ var routerConfig = {
                 "url": "/api/batch/import/:bizType",
                 "method": "post",
                 "description": "批量导入"
+            },
+            "template": {
+                "url": "/api/batch/template/:bizType",
+                "method": "get",
+                "description": "模板下载"
             }
         }
     }

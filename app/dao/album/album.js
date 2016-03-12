@@ -4,7 +4,7 @@ var Album = module.exports;
 var async = require("async");
 
 Album.delete = function(albumType, trendsId, userId, callback){
-    mysqlUtil.query("update XL_ALBUM set state = 0, doneDate=now(), userId = ? where albumId = ? and albumType = ?", [userId, trendsId, albumType], callback);
+    mysqlUtil.query("update XL_ALBUM set state = 0, doneDate=now(), oUserId = ? where albumId = ? and albumType = ?", [userId, trendsId, albumType], callback);
 }
 
 Album.cancelAlbumLike = function(albumId, userId, callback){
@@ -183,7 +183,7 @@ Album.findOneTrends = function (trendsId, cb) {
                 return callback(err);
             }
             if(res.length != 1){
-                return callback(new Error("找不到动态[" + trendsId + "]"));
+                return callback(new Error("�Ҳ�����̬[" + trendsId + "]"));
             }else{
                 callback(err, [trendsId,res]);
             }
@@ -224,6 +224,42 @@ Album.findOneTrends = function (trendsId, cb) {
 
 }
 
+
+/**
+ * 动态查询，供APP端调用
+ * @param obj
+ * @param schoolIds
+ * @param trendsId
+ * @param showSize
+ * @param callback
+ */
+Album.listByTrendsId = function(obj, schoolIds, trendsId, showSize, callback){
+    var whereSql = " 1=1 and m.state = 1 ";
+    var args = new Array();
+    if(obj){
+        for(var key in obj){
+            whereSql += " and m." + key + "=?";
+            args.push(obj[key]);
+        }
+    }
+    if(schoolIds){
+        whereSql += " and m.schoolId in (";
+        for(var i = 0; i < schoolIds.length; i ++){
+            whereSql += "?,";
+            args.push(schoolIds[i]);
+        }
+        whereSql = whereSql.substr(0, whereSql.length - 1) + ")";
+    }
+    if(trendsId > 0){
+        whereSql += " and m.albumId < ?";
+        args.push(trendsId);
+    }
+    var querySql = "select m.* from XL_ALBUM m WHERE" + whereSql + " order by m.albumId desc";
+    querySql += " limit 0,?";
+    args.push(showSize);
+    mysqlUtil.query(querySql, args, callback);
+}
+
 Album.queryNum = function(obj, schoolIds, startDate, endDate, callback){
     var whereSql = " 1=1 and m.state = 1 ";
     var args = new Array();
@@ -258,7 +294,7 @@ Album.queryNum = function(obj, schoolIds, startDate, endDate, callback){
         whereSql += " and m.createDate <= ? ";
         args.push(endDate);
     }
-    var countSql = "select count(*) AS total from XL_ALBUM m WHERE " + whereSql + " order by createDate desc";
+    var countSql = "select count(*) AS total from XL_ALBUM m WHERE " + whereSql + " order by m.albumId desc";
     mysqlUtil.queryOne(countSql, args, callback);
 }
 
@@ -296,7 +332,7 @@ Album.queryPage = function(obj, schoolIds, startDate, endDate, start, pageSize, 
         whereSql += " and m.createDate <= ? ";
         args.push(endDate);
     }
-    var querySql = "select m.* from XL_ALBUM m WHERE " + whereSql + " order by createDate desc";
+    var querySql = "select m.* from XL_ALBUM m WHERE " + whereSql + " order by m.albumId desc";
     querySql += " limit ?,?";
     args.push(start);
     args.push(pageSize);
@@ -337,7 +373,7 @@ Album.findHandles = function(albumIds, obj, callback){
         sql += " and " + key + "=?"
         tempArgs.push(obj[key]);
     }
-    mysqlUtil.query(sql + " order by createDate", tempArgs, callback);
+    mysqlUtil.query(sql + " order by handleId", tempArgs, callback);
 }
 
 Album.moreHandles = function(albumId, handleType, start, pageSize, callback){
@@ -364,7 +400,7 @@ Album.findHandlesByOver = function(albumIds, obj, length, callback){
         sql += " and " + key + "=?"
         tempArgs.push(obj[key]);
     }
-    sql += " ORDER BY albumId, createDate ) b, ( SELECT @NAME := NULL, @rank := 0 ) a ) result WHERE rank <= ?";
+    sql += " ORDER BY albumId, handleId ) b, ( SELECT @NAME := NULL, @rank := 0 ) a ) result WHERE rank <= ?";
     tempArgs.push(length);
     mysqlUtil.query(sql, tempArgs, callback);
 }
@@ -389,14 +425,14 @@ Album.findPics = function(albumIds, callback){
 
 Album.findPicsByOver = function(albumIds, length, callback){
     var tempArgs = new Array();
-    var sql = "SELECT albumId, picId, picUrl, createDate FROM ( SELECT albumId, picId, picUrl, createDate, IF ( @albumId = b.albumId, @rank := @rank + 1, @rank := 1 ) AS rank ,";
-    sql += "@albumId := b.albumId FROM ( SELECT albumId, picId, picUrl, createDate FROM XL_ALBUM_PIC WHERE state = 1 AND albumId IN (";
+    var sql = "SELECT albumId, picId, picUrl, width, height, createDate FROM ( SELECT albumId, picId, picUrl, width, height, createDate, IF ( @albumId = b.albumId, @rank := @rank + 1, @rank := 1 ) AS rank ,";
+    sql += "@albumId := b.albumId FROM ( SELECT albumId, picId, picUrl, width, height, createDate FROM XL_ALBUM_PIC WHERE state = 1 AND albumId IN (";
     for(var i = 0; i < albumIds.length; i ++){
         sql += "?,";
         tempArgs.push(albumIds[i]);
     }
     sql = sql.substr(0, sql.length - 1) + ")";
-    sql += " ORDER BY albumId, createDate ) b, (SELECT @NAME := NULL, @rank := 0) a ) result WHERE rank <= ?";
+    sql += " ORDER BY albumId, picId ) b, (SELECT @NAME := NULL, @rank := 0) a ) result WHERE rank <= ?";
     tempArgs.push(length);
     mysqlUtil.query(sql, tempArgs, callback);
 }

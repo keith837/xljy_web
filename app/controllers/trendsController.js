@@ -26,7 +26,7 @@ module.exports = new basicController(__filename).init({
         var studentName = '';
         var nickName = req.user.nickName;
         if (groupId == 10) {
-            classId == req.user.student.classId;
+            classId = req.user.student.classId;
             schoolId = req.user.student.schoolId;
             studentId = req.user.student.studentId;
             studentName = req.user.student.studentName;
@@ -122,7 +122,7 @@ module.exports = new basicController(__filename).init({
 
     delete: function (req, res, next) {
         var self = this;
-        var userId = req.user.uesrId;
+        var userId = req.user.userId;
         var trendsId = req.params.trendsId;
         self.model['album'].delete(3, trendsId, userId, function (err, data) {
             if (err) {
@@ -230,6 +230,29 @@ module.exports = new basicController(__filename).init({
         }
     },
 
+    applist : function(req, res, next){
+        var self = this;
+        var trendsId = parseInt(req.params.trendsId);
+        var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
+        var schoolIds = req.query.schoolId ? [parseInt(req.query.schoolId)] : req.user.schoolIds;
+        var photoLength = parseInt(req.query.iDisplayPhotoLength || this.webConfig.iDisplayPhotoLength);
+        var commentLength = parseInt(req.query.iDisplayCommentLength || this.webConfig.iDisplayCommentLength);
+        var obj = new Object();
+        obj.albumType = 3;
+        self.model['album'].listByTrendsId(obj, schoolIds, trendsId, pageSize, function(err, trends){
+            if(err){
+                return next(err);
+            }
+            if (!trends || trends.length <= 0) {
+                return res.json({
+                    code : "00",
+                    data : []
+                });
+            }
+            self.createList(res, next, -1, trends, photoLength, commentLength);
+        });
+    },
+
     list : function(req, res, next){
         var self = this;
         var start = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);
@@ -273,9 +296,11 @@ module.exports = new basicController(__filename).init({
             if (err) {
                 return next(err);
             }
-            trends[0].likesNum=trends[0].likes.length;
-            trends[0].commentNum=trends[0].comments.length;
-            res.json({code: "00",data: trends[0]});
+            trends[0].commentNum = trends[0].isComment;
+            res.json({
+                code: "00",
+                data: trends[0]
+            });
         });
     },
 
@@ -326,6 +351,8 @@ module.exports = new basicController(__filename).init({
                     picArray.push({
                         picId: pics[i].picId,
                         picUrl: pics[i].picUrl,
+                        width : pics[i].width,
+                        height : pics[i].height,
                         createDate : pics[i].createDate
                     });
                 }
@@ -337,11 +364,35 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    appmylist : function(req, res, next){
+        var self = this;
+        var userId = req.params.userId > 0 ? parseInt(req.params.userId) : req.user.userId;
+        var trendsId = parseInt(req.params.trendsId);
+        var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
+        var photoLength = parseInt(req.query.iDisplayPhotoLength || this.webConfig.iDisplayPhotoLength);
+        var commentLength = parseInt(req.query.iDisplayCommentLength || this.webConfig.iDisplayCommentLength);
+        var obj = new Object();
+        obj.albumType = 3;
+        obj.userId = userId;
+        self.model['album'].listByTrendsId(obj, null, trendsId, pageSize, function(err, trends){
+            if(err){
+                return next(err);
+            }
+            if (!trends || trends.length <= 0) {
+                return res.json({
+                    code : "00",
+                    data : []
+                });
+            }
+            self.createList(res, next, -1, trends, photoLength, commentLength);
+        });
+    },
+
     mylist : function(req, res, next){
         var self = this;
         var start = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);
         var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
-        var userId = parseInt(req.params.userId > 0 ? req.params.userId : req.user.userId);
+        var userId = req.params.userId > 0 ? parseInt(req.params.userId) : req.user.userId;
         var photoLength = parseInt(req.query.iDisplayPhotoLength || this.webConfig.iDisplayPhotoLength);
         var commentLength = parseInt(req.query.iDisplayCommentLength || this.webConfig.iDisplayCommentLength);
         var obj = new Object();
@@ -361,8 +412,10 @@ module.exports = new basicController(__filename).init({
     createList : function(res, next, total, trends, photoLength, commentLength){
         var self = this;
         var trendsIds = new Array();
+        var userObj = new Object();
         for (var i = 0; i < trends.length; i ++) {
             trendsIds.push(trends[i].albumId);
+            userObj[trends[i].userId] = trends[i].userId;
         }
         self.model['album'].findPicsByOver(trendsIds, photoLength, function (err, pics) {
             if (err) {
@@ -379,6 +432,8 @@ module.exports = new basicController(__filename).init({
                     picArray.push({
                         picId: pics[i].picId,
                         picUrl: pics[i].picUrl,
+                        width : pics[i].width,
+                        height : pics[i].height,
                         createDate : pics[i].createDate
                     });
                 }
@@ -389,20 +444,9 @@ module.exports = new basicController(__filename).init({
                 if (err) {
                     return next(err);
                 }
-                var likesObject = new Object();
                 if (likes) {
                     for(var i = 0; i < likes.length; i ++){
-                        var likeArray = likesObject[likes[i].albumId];
-                        if(!likeArray){
-                            likeArray = new Array();
-                            likesObject[likes[i].albumId] = likeArray;
-                        }
-                        likeArray.push({
-                            likeId: likes[i].handleId,
-                            nickName: likes[i].nickName,
-                            userId: likes[i].hUserId,
-                            createDate: likes[i].createDate
-                        });
+                        userObj[likes[i].hUserId] = likes[i].hUserId;
                     }
                 }
                 var commentObj = new Object();
@@ -411,44 +455,102 @@ module.exports = new basicController(__filename).init({
                     if(err){
                         return next(err);
                     }
-                    var commentsObject = new Object();
                     if(comments){
                         for(var i = 0; i < comments.length; i ++){
-                            var commentArray = commentsObject[comments[i].albumId];
-                            if (!commentArray) {
-                                commentArray = new Array();
-                                commentsObject[comments[i].albumId] = commentArray;
-                            }
-                            commentArray.push({
-                                handleId: comments[i].handleId,
-                                pHandleId:comments[i].pHandleId,
-                                content: comments[i].content,
-                                nickName: comments[i].nickName,
-                                userId: comments[i].hUserId,
-                                createDate: comments[i].createDate
-                            });
+                            userObj[comments[i].hUserId] = comments[i].hUserId;
                         }
                     }
-                    var trendsArray = new Array();
-                    for (var i = 0; i < trends.length; i++) {
-                        var currTrends = {
-                            trendsId: trends[i].albumId,
-                            content: trends[i].content,
-                            userId: trends[i].userId,
-                            nickName: trends[i].nickName,
-                            userName: trends[i].userName,
-                            custName: trends[i].custName,
-                            schoolName: trends[i].schoolName,
-                            createDate: trends[i].createDate,
-                            likesNum: trends[i].likesNum,
-                            commentNum: trends[i].isComment,
-                            pics: picsObject[trends[i].albumId] ? picsObject[trends[i].albumId] : new Array(),
-                            comments: commentsObject[trends[i].albumId] ? commentsObject[trends[i].albumId] : new Array(),
-                            likes : likesObject[trends[i].albumId] ? likesObject[trends[i].albumId] : new Array()
-                        };
-                        trendsArray.push(currTrends);
-                    }
-                    res.json(self.createPageData("00", total, trendsArray));
+                    self.model['user'].listByUserIds(userObj, function(err, users){
+                        if(err){
+                            return next(err);
+                        }
+                        if(users){
+                            for(var i = 0; i < users.length; i ++){
+                                userObj[users[i].userId] = users[i];
+                            }
+                        }
+                        var likesObject = new Object();
+                        if (likes) {
+                            for (var i = 0; i < likes.length; i++) {
+                                var likeArray = likesObject[likes[i].albumId];
+                                if (!likeArray) {
+                                    likeArray = new Array();
+                                    likesObject[likes[i].albumId] = likeArray;
+                                }
+                                likeArray.push({
+                                    likeId: likes[i].handleId,
+                                    nickName: likes[i].nickName,
+                                    userId: likes[i].hUserId,
+                                    userUrl: userObj[likes[i].hUserId].userUrl,
+                                    createDate: likes[i].createDate
+                                });
+                            }
+                        }
+                        var trendsObject = new Object();
+                        for (var i = 0; i < trends.length; i++) {
+                            trendsObject[trends[i].albumId] = trends[i];
+                        }
+                        var commentsObject = new Object();
+                        var tempCommentObject = new Object();
+                        if(comments){
+                            for(var i = 0; i < comments.length; i ++){
+                                var commentArray = commentsObject[comments[i].albumId];
+                                if (!commentArray) {
+                                    commentArray = new Array();
+                                    commentsObject[comments[i].albumId] = commentArray;
+                                }
+                                var comment = {
+                                    trendsId: comments[i].albumId,
+                                    handleId: comments[i].handleId,
+                                    pHandleId:comments[i].pHandleId,
+                                    content: comments[i].content,
+                                    nickName: comments[i].nickName,
+                                    userId: comments[i].hUserId,
+                                    userUrl: userObj[comments[i].hUserId].userUrl,
+                                    createDate: comments[i].createDate
+                                }
+                                tempCommentObject[comments[i].handleId] = comment;
+                                if(comments[i].pHandleId == 0){
+                                    comment.cUserId = trendsObject[comment.trendsId].userId;
+                                    comment.cNickName = trendsObject[comment.trendsId].nickName;
+                                    comment.cUserUrl = userObj[comment.cUserId].userUrl;
+                                }else{
+                                    comment.cUserId = tempCommentObject[comment.pHandleId].userId;
+                                    comment.cNickName = tempCommentObject[comment.pHandleId].nickName;
+                                    comment.cUserUrl = tempCommentObject[comment.pHandleId].userUrl;
+                                }
+                                commentArray.push(comment);
+                            }
+                        }
+                        var trendsArray = new Array();
+                        for (var i = 0; i < trends.length; i++) {
+                            var currTrends = {
+                                trendsId: trends[i].albumId,
+                                content: trends[i].content,
+                                userId: trends[i].userId,
+                                userUrl : userObj[trends[i].userId].userUrl,
+                                nickName: trends[i].nickName,
+                                userName: trends[i].userName,
+                                custName: trends[i].custName,
+                                schoolName: trends[i].schoolName,
+                                createDate: trends[i].createDate,
+                                likesNum: trends[i].likesNum,
+                                commentNum: trends[i].isComment,
+                                pics: picsObject[trends[i].albumId] ? picsObject[trends[i].albumId] : new Array(),
+                                comments: commentsObject[trends[i].albumId] ? commentsObject[trends[i].albumId] : new Array(),
+                                likes : likesObject[trends[i].albumId] ? likesObject[trends[i].albumId] : new Array()
+                            };
+                            trendsArray.push(currTrends);
+                        }
+                        if(total <= -1){
+                            res.json({
+                                code : "00",
+                                data : trendsArray
+                            });
+                        }else{
+                            res.json(self.createPageData("00", total, trendsArray));
+                        }
+                    });
                 });
             });
         });
