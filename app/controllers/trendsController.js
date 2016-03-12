@@ -57,7 +57,7 @@ module.exports = new basicController(__filename).init({
                 if (err) {
                     return next(err);
                 }
-                self.model['album'].findOneTrends(trendsId, function(err, total, trends) {
+                self.model['album'].findOneTrends(trends.insertId, function(err, total, trends) {
                     if (err) {
                         return next(err);
                     }
