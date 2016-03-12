@@ -425,8 +425,8 @@ Album.findPics = function(albumIds, callback){
 
 Album.findPicsByOver = function(albumIds, length, callback){
     var tempArgs = new Array();
-    var sql = "SELECT albumId, picId, picUrl, createDate FROM ( SELECT albumId, picId, picUrl, createDate, IF ( @albumId = b.albumId, @rank := @rank + 1, @rank := 1 ) AS rank ,";
-    sql += "@albumId := b.albumId FROM ( SELECT albumId, picId, picUrl, createDate FROM XL_ALBUM_PIC WHERE state = 1 AND albumId IN (";
+    var sql = "SELECT albumId, picId, picUrl, width, height, createDate FROM ( SELECT albumId, picId, picUrl, width, height, createDate, IF ( @albumId = b.albumId, @rank := @rank + 1, @rank := 1 ) AS rank ,";
+    sql += "@albumId := b.albumId FROM ( SELECT albumId, picId, picUrl, width, height, createDate FROM XL_ALBUM_PIC WHERE state = 1 AND albumId IN (";
     for(var i = 0; i < albumIds.length; i ++){
         sql += "?,";
         tempArgs.push(albumIds[i]);
