@@ -351,6 +351,8 @@ module.exports = new basicController(__filename).init({
                     picArray.push({
                         picId: pics[i].picId,
                         picUrl: pics[i].picUrl,
+                        width : pics[i].width,
+                        height : pics[i].height,
                         createDate : pics[i].createDate
                     });
                 }
@@ -430,6 +432,8 @@ module.exports = new basicController(__filename).init({
                     picArray.push({
                         picId: pics[i].picId,
                         picUrl: pics[i].picUrl,
+                        width : pics[i].width,
+                        height : pics[i].height,
                         createDate : pics[i].createDate
                     });
                 }
