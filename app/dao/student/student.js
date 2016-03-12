@@ -48,7 +48,7 @@ Student.save = function(args, userId, oUserId, callback){
             }
             var insertSql = "insert into XL_STUDENT(schoolId,classId,studentName,studentAge,gender,cardNum,address,state,createDate,";
             insertSql += "doneDate,oUserId,remark) values (?,?,?,?,?,?,?,1,now(),now(),?,?)";
-            conn.query(insertSql, args, function(err, classData){
+            conn.query(insertSql, args, function(err, student){
                 if(err){
                     conn.rollback();
                     conn.release();
@@ -56,7 +56,7 @@ Student.save = function(args, userId, oUserId, callback){
                 }
                 var insertRelSql = "insert into XL_USER_STUDENT_REL(userId,studentId,state,createDate,doneDate,oUserId)";
                 insertRelSql += " values (?,?,1,now(),now(),?)";
-                conn.query(insertRelSql, [userId,classData.insertId,oUserId], function(err, data){
+                conn.query(insertRelSql, [userId,student.insertId,oUserId], function(err, data){
                     if(err){
                         conn.rollback();
                         conn.release();
@@ -69,7 +69,7 @@ Student.save = function(args, userId, oUserId, callback){
                             return callback(err);
                         }
                         conn.release();
-                        return callback(err, data);;
+                        return callback(err, student);;
                     });
                 });
             });
@@ -166,7 +166,6 @@ Student.update = function(obj, userId, studentId, callback){
                         return callback(err, studentData);;
                     });
                 }
-
             });
         });
     });

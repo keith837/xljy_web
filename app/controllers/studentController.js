@@ -103,13 +103,14 @@ module.exports = new basicController(__filename).init({
             if(!classInfo){
                 return next("学生关联的班级信息不存在");
             }
-            self.model['student'].save([classInfo.schoolId,classId,studentName,studentAge,gender,cardNum,address,oUserId,remark], userId, oUserId, function(err, data){
+            self.model['student'].save([classInfo.schoolId,classId,studentName,studentAge,gender,cardNum,address,oUserId,remark], userId, oUserId, function(err, student){
                 if(err){
                     return next(err);
                 }
                 res.json({
                     code : "00",
-                    msg : "学生添加成功"
+                    msg : "学生添加成功",
+                    data : student.insertId
                 });
             });
         });
@@ -331,7 +332,7 @@ module.exports = new basicController(__filename).init({
         var remark = req.body.remark;
         var groupId = req.user.groupId;
         if(groupId != 10){
-            return next(new Error("非家长永不允许提交请假申请单"));
+            return next(new Error("非家长用户不允许提交请假申请"));
         }
         if(!startDate){
             return next(new Error("请输入请假开始时间"));
@@ -353,10 +354,142 @@ module.exports = new basicController(__filename).init({
             }
             res.json({
                 code : "00",
-                msg : "请假申请提交成功"
+                msg : "请假申请提交成功",
+                data : data.insertId
             });
         });
+    },
 
+    cancelLeave : function(req, res, next){
+        var self = this;
+        var leaveId = req.params.leaveId;
+        var userId = req.user.userId;
+        var studentId = req.user.student.studentId;
+        var groupId = req.user.groupId;
+        if(groupId != 10){
+            return next(new Error("非家长用户不允许取消请假申请"));
+        }
+        if(!leaveId || leaveId <= 0){
+            return next(new Error("请假申请编号不能为空"));
+        }
+        self.model['studentLeave'].findByLeaveId(leaveId, function(err, leave){
+            if(err){
+                return next(err);
+            }
+            if(!leave){
+                return next(new Error("请假申请记录不存在"));
+            }
+            if(leave.state == 2){
+                return next(new Error("请假申请记录已审批，不能取消"));
+            }
+            if(leave.state != 1){
+                return next(new Error("请假申请记录已取消，不能再次取消"));
+            }
+            if(leave.studentId != studentId){
+                return next(new Error("不能为其他家长名下的学生取消请假申请"));
+            }
+            self.model['studentLeave'].cancel(userId, leaveId, function(err, data){
+                if(err){
+                    return next(err);
+                }
+                res.json({
+                    code : "00",
+                    msg : "取消请假申请成功"
+                });
+            });
+        });
+    },
+
+    approveLeave : function(req, res, next){
+        var self = this;
+        var leaveId = req.params.leaveId;
+        var groupId = req.user.groupId;
+        var userId = req.user.userId;
+        var classId = req.user.class.classId;
+        if(groupId != 20){
+            return next(new Error("非老师用户不允许审批请假申请"));
+        }
+        if(!leaveId || leaveId <= 0){
+            return next(new Error("请假申请编号不能为空"));
+        }
+        self.model['studentLeave'].findByLeaveId(leaveId, function(err, leave){
+            if(err){
+                return next(err);
+            }
+            if(!leave){
+                return next(new Error("请假申请记录不存在"));
+            }
+            if(leave.state == 2){
+                return next(new Error("请假申请记录已审批，不能再次审批"));
+            }
+            if(leave.state != 1){
+                return next(new Error("请假申请记录已取消，不能审批"));
+            }
+            if(leave.classId != classId){
+                return next(new Error("不能审批其他班级的请假申请"));
+            }
+            self.model['studentLeave'].approve(userId, leaveId, function(err, data){
+                if(err){
+                    return next(err);
+                }
+                res.json({
+                    code : "00",
+                    msg : "审批请假申请成功"
+                });
+            });
+        });
+    },
+
+    showLeave : function(req, res, next){
+        var self = this;
+        var leaveId = req.params.leaveId;
+        self.model['studentLeave'].findByLeaveId(leaveId, function(err, leave){
+            if(err){
+                return next(err);
+            }
+            if(leave){
+                leave.stateName = self.cacheManager.getCacheValue("LEAVE_STATE", leave.state);
+            }
+            res.json({
+                code : "00",
+                data : leave
+            });
+        });
+    },
+
+    listLeaves : function(req, res, next){
+        var self = this;
+        var groupId = req.user.groupId;
+        var state = req.query.state ? parseInt(req.query.state) : -1;
+        var obj = new Object();
+        var classId = req.query.classId;
+        if(classId){
+            obj.classId = parseInt(classId);
+        }
+        if(groupId == 10){
+            obj.studentId = req.user.student.studentId;
+        }else if(groupId == 20){
+            obj.classId = req.user.class.classId;
+        }else if(groupId == 30 || groupId == 40 || groupId == 50){
+            obj.schoolId = req.user.schools[0].schoolId;
+        }
+        var startDate = req.query.startDate;
+        var endDate = req.query.endDate;
+        var leaveDate = req.query.leaveDate;
+        self.model['studentLeave'].list(obj, startDate, endDate, leaveDate, function(err, leaves){
+            if(err){
+                return next(err);
+            }
+            if(leaves){
+                for(var i = 0; i < leaves.length; i ++){
+                    leaves[i].stateName = self.cacheManager.getCacheValue("LEAVE_STATE", leaves[i].state);
+                }
+            }
+            res.json({
+                code : "00",
+                data : leaves
+            });
+        });
     }
 
 });

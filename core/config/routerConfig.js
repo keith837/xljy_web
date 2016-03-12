@@ -264,6 +264,26 @@ var routerConfig = {
                 "method": "post",
                 "description": "请假申请"
             },
+            "cancelLeave": {
+                "url": "/api/student/cancelLeave/:leaveId",
+                "method": "put",
+                "description": "取消请假申请"
+            },
+            "approveLeave": {
+                "url": "/api/student/approveLeave/:leaveId",
+                "method": "put",
+                "description": "审批请假申请"
+            },
+            "showLeave": {
+                "url": "/api/student/showLeave/:leaveId",
+                "method": "get",
+                "description": "请假申请查询(单)"
+            },
+            "listLeaves": {
+                "url": "/api/student/listLeaves",
+                "method": "get",
+                "description": "当前请假申请查询"
+            },
             "parents": {
                 "url": "/api/student/parents/:studentId",
                 "method": "get",
