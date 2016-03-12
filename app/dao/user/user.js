@@ -96,6 +96,21 @@ User.queryPage = function(obj, custNameOrBillId, schoolIds, start, pageSize, cal
     mysqlUtil.query(querySql, args, callback);
 }
 
+User.listByUserIds = function(userObj, callback){
+    var sql = "select * from XL_USER where 1=1 ";
+    var tempArgs = new Array();
+    if(userObj){
+        sql += "and userId in (";
+        for(var key in userObj){
+            sql += "?,";
+            tempArgs.push(userObj[key]);
+        }
+        sql = sql.substr(0, sql.length - 1);
+        sql += ")";
+    }
+    mysqlUtil.query(sql, tempArgs, callback);
+}
+
 User.listByPage = function(obj, custNameOrBillId, schoolIds, start, pageSize, callback){
     User.queryNum(obj, custNameOrBillId, schoolIds, function(err, data){
         if(err){
