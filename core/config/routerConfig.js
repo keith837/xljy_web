@@ -606,6 +606,11 @@ var routerConfig = {
                 "url": "/api/batch/import/:bizType",
                 "method": "post",
                 "description": "批量导入"
+            },
+            "template": {
+                "url": "/api/batch/template/:bizType",
+                "method": "get",
+                "description": "模板下载"
             }
         }
     }

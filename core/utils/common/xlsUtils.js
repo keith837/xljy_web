@@ -10,7 +10,7 @@ var util = require("utility");
 var timeUtils = require("./timeUtils");
 
 
-var input = module.exports.input = function (filter, result, tablename, cb) {
+var input = module.exports.input = function (filter, result, tablename, userObj, cb) {
     var title = [];
 
     var mapi2 = {}
@@ -28,20 +28,38 @@ var input = module.exports.input = function (filter, result, tablename, cb) {
                     title.push(filter[mapi2[xxx]].name);
                 }
             }
+            //
+            title.push("userId");
+            title.push("classId");
+            title.push("schoolId");
+            title.push("batchId");
+
             title = title.join(",");
             continue;
         }
 
 
         var temparr = [];
+        var hasData = false;
         for (var i in result[x]) {
+            if (result[x][0] == "") {
+                break;
+            }
             if (typeof filter[mapi2[i]] == "string") {
                 temparr.push(result[x][i])
             } else if (typeof filter[mapi2[i]] == "object") {
                 temparr.push(filter[mapi2[i]].oper(result[x][i]))
             }
+            hasData = true;
         }
-        valdata.push(temparr);
+        if (hasData) {
+            temparr.push(userObj.userId);
+            temparr.push(userObj.classId);
+            temparr.push(userObj.schoolId);
+            temparr.push(userObj.batchId);
+            valdata.push(temparr);
+        }
+
     }
     var sql1 = "insert into ?? (" + title + ") values ?";
     var values = [tablename, valdata];
