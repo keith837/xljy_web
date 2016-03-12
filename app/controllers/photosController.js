@@ -123,7 +123,7 @@ module.exports = new basicController(__filename).init({
                 if (err) {
                     return next(err);
                 }
-                res.json({code: "00", msg: "相册点赞成功"});
+                res.json({code: "00", msg: "相册点赞成功",data: data.insertId});
             });
         });
     },
@@ -172,7 +172,7 @@ module.exports = new basicController(__filename).init({
                 if (err) {
                     return next(err);
                 }
-                res.json({code: "00", msg: "相册评论成功"});
+                res.json({code: "00", msg: "相册评论成功",data: data.insertId});
             }
         );
     },
@@ -297,7 +297,13 @@ module.exports = new basicController(__filename).init({
                 if (err) {
                     return next(err);
                 }
-                res.json({code: "00", msg: "编辑相册成功"});
+                self.model['photos'].findOne(albumId, function (err, data) {
+                    if (err) {
+                        return next(err);
+                    }
+                    //  console.info(data);
+                    res.json({code: "00",msg: "编辑相册成功",data: data[0]});
+                });
             });
         });
     },
@@ -391,7 +397,7 @@ module.exports = new basicController(__filename).init({
                 if (err) {
                     return next(err);
                 }
-                res.json({code: "00", msg: "添加照片成功"});
+                res.json({code: "00", msg: "添加照片成功",data: data.insertId});
             });
         });
     }
