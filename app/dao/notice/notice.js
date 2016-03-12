@@ -76,6 +76,7 @@ Notice.publishNotice = function (noticeParam, noticePic, callback) {
                     return callback.apply(null, [err, null]);
                 }
 
+                var noticeId = res.insertId;
                 if (noticePic.length === 0) {
                     conn.commit(function (err) {
                         if (err) {
@@ -84,10 +85,9 @@ Notice.publishNotice = function (noticeParam, noticePic, callback) {
                             return callback.apply(null, [err, null]);
                         }
                         conn.release();
-                        return callback.apply(null, [null, res]);
+                        return callback.apply(null, [null, noticeId]);
                     });
                 } else {
-                    var noticeId = res.insertId;
                     var noticePicSQL = "insert into XL_NOTICE_PIC(noticeId,picUrl,picDesc,state,userId,createDate,doneDate) values ?";
                     var noticePicParam = new Array();
                     var now = new Date();
@@ -107,7 +107,7 @@ Notice.publishNotice = function (noticeParam, noticePic, callback) {
                                 return callback.apply(null, [err, null]);
                             }
                             conn.release();
-                            callback.apply(null, [null, res]);
+                            callback.apply(null, [null, noticeId]);
                         });
                     });
                 }

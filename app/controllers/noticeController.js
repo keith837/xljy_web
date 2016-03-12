@@ -149,15 +149,15 @@ module.exports = new basicController(__filename).init({
             for (var photos in files) {
                 noticePics.push([path.normalize(files[photos].path).replace(/\\/g, '/'), userId]);
             }
-            self.model['notice'].publishNotice(noticeParam, noticePics, function (err, data) {
+            self.model['notice'].publishNotice(noticeParam, noticePics, function (err, noticeId) {
                 if (err) {
                     return next(err);
                 }
-                this.model['notice'].queryDetail(noticeId, function (err, res) {
+                self.model['notice'].queryDetail(noticeId, function (err, res) {
                     if (err) {
                         return next(err);
                     }
-                    response.json({code: "00", msg: "通知发布成功", data: res.insertId});
+                    response.json({code: "00", msg: "通知发布成功", data: res});
                 });
             });
         });
