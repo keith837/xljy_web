@@ -3,6 +3,7 @@
  */
 var exportUtils = module.exports;
 var db = require("../pool/mysql/mysqlPool");
+var logger = require("../logger/logger")(__filename);
 var async = require("async");
 
 exportUtils.getConfig = function (bizType, operation, cb) {
@@ -38,14 +39,20 @@ exportUtils.getConfig = function (bizType, operation, cb) {
             config.table = query.tableName;
             config.exportSQL = query.exportSQL;
             var filter = [];
+            var sql = [];
             for (var i in results) {
                 if (operation == "export") {
                     filter[results[i].columnName] = results[i].columnDesc;
                 } else {
-                    filter[results[i].columnDesc] = results[i].columnName;
+                    if (results[i].isImportSQL == 1) {
+                        sql.push(results[i].importSQL);
+                    } else {
+                        filter[results[i].columnDesc] = results[i].columnName;
+                    }
                 }
             }
             config.filter = filter;
+            config.importSQL = sql;
             callback(err, config);
         });
     }];
@@ -56,4 +63,69 @@ exportUtils.getConfig = function (bizType, operation, cb) {
         }
         cb.apply(null, [null, results]);
     });
+}
+
+exportUtils.execImportSQL = function (sqls, userObj, done) {
+    var batchId = userObj.batchId;
+    if (sqls && sqls.length > 0) {
+        db.getConnection(function (err, conn) {
+            if (err) {
+                return done.apply(null, [err, null]);
+            }
+
+            var tasks = [function (callback) {
+                conn.beginTransaction(function (err) {
+                    callback(err);
+                });
+            }, function (callback) {
+                // insert log
+                var insertSQL = "insert into XL_BATCH_OPR_LOG(batchId,fileName,oprDate,oUserId) values(?,?,now(),?)";
+                conn.query(insertSQL, [batchId, userObj.file, userObj.userId], function (err, res) {
+                    if (err) {
+                        return callback(err);
+                    }
+                    callback(err, res.affectedRows);
+                });
+            }, function (res, callback) {
+                multipleStatements(sqls, batchId, 0, conn, callback);
+            }, function (res, callback) {
+                conn.commit(function (err) {
+                    callback(err, res);
+                });
+            }];
+
+            async.waterfall(tasks, function (err, results) {
+                if (err) {
+                    conn.rollback();
+                    conn.release();
+                    return done(err);
+                }
+                conn.release();
+                done.apply(null, [null, results]);
+            });
+        });
+    } else {
+        done(null, 0);
+    }
+}
+
+function multipleStatements(sqls, batchId, i, conn, callback) {
+    if (i < sqls.length - 1) {
+        logger.info(sqls[i]);
+        conn.query(sqls[i], [batchId], function (err, res) {
+            if (err) {
+                return callback(err);
+            }
+            i++;
+            multipleStatements(sqls, batchId, i, conn, callback);
+        });
+    } else {
+        logger.info(sqls[i]);
+        conn.query(sqls[i], [batchId], function (err, res) {
+            if (err) {
+                return callback(err);
+            }
+            callback(err, res.affectedRows);
+        });
+    }
 }

@@ -12,6 +12,11 @@ var webConfig = {
             webpath: "/xljy/static/photos",
             filepath: "static/photos",
             option: {}
+        },
+        {
+            webpath: "/xljy/static/download",
+            filepath: "static/download",
+            option: {}
         }],
     contextPath: "/xljy",
     PRINT_ACCESS_LOG: false,
