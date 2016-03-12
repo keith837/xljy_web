@@ -183,7 +183,7 @@ Album.findOneTrends = function (trendsId, cb) {
                 return callback(err);
             }
             if(res.length != 1){
-                return callback(new Error("ÕÒ²»µ½¶¯Ì¬[" + trendsId + "]"));
+                return callback(new Error("æ‰¾ä¸åˆ°åŠ¨æ€[" + trendsId + "]"));
             }else{
                 callback(err, [trendsId,res]);
             }
