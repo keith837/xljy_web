@@ -40,7 +40,6 @@ function getCache(codeType, codeKey) {
     if (!cacheElement) {
         return null;
     }
-    console.log(JSON.stringify(cacheElement));
     for (var i = 0; i < cacheElement.length; i++) {
         if (cacheElement[i].codeKey == codeKey) {
             return cacheElement[i];
