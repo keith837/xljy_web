@@ -102,10 +102,15 @@ module.exports = new basicController(__filename).init({
                 if(err){
                     return next(err);
                 }
-                res.json({
-                    code : "00",
-                    msg : "上传图片成功",
-                    data : pic.insertId
+                self.model['album'].findOneTrends(trendsId, function(err, trends) {
+                    if (err) {
+                        return next(err);
+                    }
+                    res.json({
+                        code : "00",
+                        msg : "上传图片成功",
+                        data : trends[0]
+                    });
                 });
             });
         });
@@ -178,7 +183,8 @@ module.exports = new basicController(__filename).init({
                 }
                 res.json({
                     code: "00",
-                    msg: "点赞成功"
+                    msg: "点赞成功",
+                    data: data.insertId
                 });
             });
         });
@@ -206,7 +212,8 @@ module.exports = new basicController(__filename).init({
             }
             res.json({
                 code: "00",
-                msg: "评论成功"
+                msg: "评论成功",
+                data: data.insertId
             });
         });
     },
@@ -457,9 +464,15 @@ module.exports = new basicController(__filename).init({
                 if(err){
                     return next(err);
                 }
-                res.json({
-                    code : "00",
-                    msg : (isTop == 1 ? "置顶成功" : "下移成功")
+                self.model['album'].findOneTrends(trendsId, function(err, trends) {
+                    if (err) {
+                        return next(err);
+                    }
+                    res.json({
+                        code : "00",
+                        msg : (isTop == 1 ? "置顶成功" : "下移成功"),
+                        data : trends[0]
+                    });
                 });
             });
         });

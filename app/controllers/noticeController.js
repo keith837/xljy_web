@@ -153,7 +153,12 @@ module.exports = new basicController(__filename).init({
                 if (err) {
                     return next(err);
                 }
-                response.json({code: "00", msg: "通知发布成功"});
+                this.model['notice'].queryDetail(noticeId, function (err, res) {
+                    if (err) {
+                        return next(err);
+                    }
+                    response.json({code: "00", msg: "通知发布成功", data: res.insertId});
+                });
             });
         });
 
@@ -216,7 +221,13 @@ module.exports = new basicController(__filename).init({
                 if (err) {
                     return next(err);
                 }
-                response.json({code: "00", msg: "更新通知成功"});
+                this.model['notice'].queryDetail(noticeId, function (err, res) {
+                    if (err) {
+                        return next(err);
+                    }
+                    response.json({code: "00", msg: "更新通知成功", data: res});
+                });
+
             });
         });
 
