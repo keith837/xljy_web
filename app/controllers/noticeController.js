@@ -221,7 +221,7 @@ module.exports = new basicController(__filename).init({
                 if (err) {
                     return next(err);
                 }
-                this.model['notice'].queryDetail(noticeId, function (err, res) {
+                self.model['notice'].queryDetail(noticeId, function (err, res) {
                     if (err) {
                         return next(err);
                     }
