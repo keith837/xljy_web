@@ -452,7 +452,7 @@ module.exports = new basicController(__filename).init({
             }
             res.json({
                 code : "00",
-                data : leave ? leave : new Object()
+                data : leave
             });
         });
     },
