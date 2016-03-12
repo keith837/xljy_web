@@ -57,11 +57,17 @@ module.exports = new basicController(__filename).init({
                 if (err) {
                     return next(err);
                 }
-                res.json({
-                    code: "00",
-                    msg: "动态发布成功",
-                    data : trends.insertId
+                self.model['album'].findOneTrends(trendsId, function(err, total, trends) {
+                    if (err) {
+                        return next(err);
+                    }
+                    res.json({
+                        code: "00",
+                        msg: "动态发布成功",
+                        data : data[0]
+                    });
                 });
+
             });
         });
     },
@@ -244,6 +250,19 @@ module.exports = new basicController(__filename).init({
                 return res.json(self.createPageData("00", total, trends));
             }
             self.createList(res, next, total, trends, photoLength, commentLength);
+        });
+    },
+
+    show : function(req, res, next){
+        var self = this;
+
+        var trendsId = parseInt(req.params.trendsId);
+
+        self.model['album'].findOneTrends(trendsId, function(err, trends) {
+            if (err) {
+                return next(err);
+            }
+            res.json({code: "00",data: trends[0]});
         });
     },
 

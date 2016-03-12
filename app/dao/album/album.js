@@ -1,6 +1,7 @@
 var mysqlUtil = require("../../../core/utils/pool/mysql/mysqlPool");
 
 var Album = module.exports;
+var async = require("async");
 
 Album.delete = function(albumType, trendsId, userId, callback){
     mysqlUtil.query("update XL_ALBUM set state = 0, doneDate=now(), userId = ? where albumId = ? and albumType = ?", [userId, trendsId, albumType], callback);
@@ -172,6 +173,55 @@ function createAlbumPic(conn, albumPicSql, albumPicArgs, i, callback, trends){
 
 Album.findOne = function(albumType, userId, trendsId, callback){
     mysqlUtil.query("select * from XL_ALBUM where state = 1 and albumType=? and userId=? and albumId=?", [albumType, userId, trendsId], callback);
+}
+
+Album.findOneTrends = function (trendsId, cb) {
+    var tasks = [function (callback) {
+        var sql = "select * from XL_ALBUM where state = 1 and albumId=?";
+        mysqlUtil.query(sql, [trendsId], function (err, res) {
+            if (err) {
+                return callback(err);
+            }
+            if(res.length != 1){
+                return callback(new Error("ÕÒ²»µ½¶¯Ì¬[" + trendsId + "]"));
+            }else{
+                callback(err, [trendsId,res]);
+            }
+
+        });
+    }, function (trends, callback) {
+        mysqlUtil.query("select * from XL_ALBUM_PIC where state = 1 and albumId = ? order by picId", [trends[0]], function (err, res) {
+            if (err) {
+                return callback(err);
+            }
+            trends[1][0].pics = res;
+            callback(err, trends);
+        });
+    }, function (trends, callback) {
+        mysqlUtil.query("select * from XL_ALBUM_HANDLE where state = 1 and albumId=? and handleType=2 order by handleId ", [trends[0]], function (err, res) {
+            if (err) {
+                return callback(err);
+            }
+            trends[1][0].comments = res;
+            callback(err, trends);
+        });
+    }, function (trends, callback) {
+        mysqlUtil.query("select * from XL_ALBUM_HANDLE where state = 1 and albumId=? and handleType=1 order by handleId ", [trends[0]], function (err, res) {
+            if (err) {
+                return callback(err);
+            }
+            trends[1][0].likes = res;
+            callback(err, trends);
+        });
+    }];
+
+    async.waterfall(tasks, function (err, results) {
+        if (err) {
+            return cb(err);
+        }
+        cb.apply(null, [null, results[1], null]);
+    });
+
 }
 
 Album.queryNum = function(obj, schoolIds, startDate, endDate, callback){

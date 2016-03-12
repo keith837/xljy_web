@@ -372,6 +372,11 @@ var routerConfig = {
                 "method": "get",
                 "description": "查看动态"
             },
+            "show": {
+                "url": "/api/trends/show/:trendsId",
+                "method": "get",
+                "description": "查询动态详情"
+            },
             "mylist": {
                 "url": "/api/trends/list/:userId",
                 "method": "get",
@@ -488,6 +493,11 @@ var routerConfig = {
                 "url": "/api/photos/like/:id",
                 "method": "put",
                 "description": "相册点赞"
+            },
+            "show": {
+                "url": "/api/photos/show/:albumId",
+                "method": "get",
+                "description": "查询相册详情"
             },
             "addPhoto": {
                 "url": "/api/photos/:albumId/add",

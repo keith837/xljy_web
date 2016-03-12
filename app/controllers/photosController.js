@@ -70,7 +70,14 @@ module.exports = new basicController(__filename).init({
                 if (err) {
                     return next(err);
                 }
-                res.json({code: "00", msg: "发布相册成功"});
+                self.model['photos'].findOne(data.albumId, function (err, data) {
+                    if (err) {
+                        return next(err);
+                    }
+                    //  console.info(data);
+                    res.json({code: "00",msg: "相册发布成功",data: data[0]});
+                });
+
             });
         });
     },
@@ -292,6 +299,20 @@ module.exports = new basicController(__filename).init({
                 }
                 res.json({code: "00", msg: "编辑相册成功"});
             });
+        });
+    },
+
+    show: function (req, res, next) {
+        var self = this;
+
+        var albumId = parseInt(req.params.albumId);
+
+        self.model['photos'].findOne(albumId, function (err, data) {
+            if (err) {
+                return next(err);
+            }
+          //  console.info(data);
+            res.json({code: "00",data: data[0]});
         });
     },
     moreComment: function (req, res, next) {

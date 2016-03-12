@@ -24,7 +24,7 @@ Photos.publish = function (albumParam, albumPics, callback) {
                     conn.release();
                     return callback.apply(null, [err, null]);
                 }
-
+                var albumId = res.insertId;
                 if (albumPics.length === 0) {
                     conn.commit(function (err) {
                         if (err) {
@@ -33,10 +33,11 @@ Photos.publish = function (albumParam, albumPics, callback) {
                             return callback.apply(null, [err, null]);
                         }
                         conn.release();
+                        res.albumId = albumId;
                         return callback.apply(null, [null, res]);
                     });
                 } else {
-                    var albumId = res.insertId;
+
                     var albumPicSQL = "insert into XL_CLASS_ALBUM_PIC(albumId,picUrl,picDesc,state,createDate,doneDate,userId) values ?";
                     var albumPicParam = new Array();
                     var now = new Date();
@@ -56,7 +57,8 @@ Photos.publish = function (albumParam, albumPics, callback) {
                                 return callback.apply(null, [err, null]);
                             }
                             conn.release();
-                            callback.apply(null, [null, res]);
+                            res.albumId = albumId;
+                            return callback.apply(null, [null, res]);
                         });
                     });
                 }
@@ -475,6 +477,57 @@ Photos.queryByAlbumType = function (start, pageSize, photoLength, commentLength,
             return cb(err);
         }
         cb.apply(null, [null, results[0], results[1]]);
+    });
+
+}
+
+Photos.findOne = function (albumId, cb) {
+    var tasks = [function (callback) {
+        var sql = "select * from XL_CLASS_ALBUM m where state=1 ";
+        sql = sql + " and albumId=?";
+        sql =  sql + " order by albumId desc  ";
+        mysqlUtil.query(sql, [albumId], function (err, res) {
+            if (err) {
+                return callback(err);
+            }
+            if(res.length != 1){
+                return callback(new Error("找不到相册[" + albumId + "]"));
+            }else{
+                callback(err, [albumId,res]);
+            }
+
+        });
+    }, function (album, callback) {
+        mysqlUtil.query("select * from XL_CLASS_ALBUM_PIC where albumId=? and state=1 order by picId", [album[0]], function (err, res) {
+            if (err) {
+                return callback(err);
+            }
+            album[1][0].picPaths = res;
+            callback(err, album);
+        });
+    }, function (album, callback) {
+        mysqlUtil.query("select * from XL_CLASS_ALBUM_HANDLE where albumId=? and handleType=2 and state=1 order by handleId ", [album[0]], function (err, res) {
+            if (err) {
+                return callback(err);
+            }
+            album[1][0].comments = res;
+            callback(err, album);
+        });
+    }, function (album, callback) {
+        mysqlUtil.query("select * from XL_CLASS_ALBUM_HANDLE where albumId=? and handleType=1 and state=1 order by handleId ", [album[0]], function (err, res) {
+            if (err) {
+                return callback(err);
+            }
+            album[1][0].likes = res;
+            callback(err, album);
+        });
+    }];
+
+    async.waterfall(tasks, function (err, results) {
+        if (err) {
+            return cb(err);
+        }
+        cb.apply(null, [null, results[1], null]);
     });
 
 }
