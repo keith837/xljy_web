@@ -64,7 +64,7 @@ module.exports = new basicController(__filename).init({
                     res.json({
                         code: "00",
                         msg: "动态发布成功",
-                        data : data[0]
+                        data : trends[0]
                     });
                 });
 
