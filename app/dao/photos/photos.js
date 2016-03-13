@@ -247,7 +247,10 @@ Photos.addPhoto = function (userId, albumId, albumPics, cb) {
             });
         }, function (res, callback) {
             conn.commit(function (err) {
-                callback(err);
+                if (err) {
+                    return callback(err);
+                }
+                callback(null, res);
             });
         }];
 
@@ -485,15 +488,15 @@ Photos.findOne = function (albumId, cb) {
     var tasks = [function (callback) {
         var sql = "select * from XL_CLASS_ALBUM m where state=1 ";
         sql = sql + " and albumId=?";
-        sql =  sql + " order by albumId desc  ";
+        sql = sql + " order by albumId desc  ";
         mysqlUtil.query(sql, [albumId], function (err, res) {
             if (err) {
                 return callback(err);
             }
-            if(res.length != 1){
+            if (res.length != 1) {
                 return callback(new Error("找不到相册[" + albumId + "]"));
-            }else{
-                callback(err, [albumId,res]);
+            } else {
+                callback(err, [albumId, res]);
             }
 
         });
