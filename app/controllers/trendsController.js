@@ -61,7 +61,6 @@ module.exports = new basicController(__filename).init({
                     if (err) {
                         return next(err);
                     }
-                    trends[0].commentNum=trends[0].isComment;
                     res.json({
                         code: "00",
                         msg: "动态发布成功",
@@ -110,7 +109,6 @@ module.exports = new basicController(__filename).init({
                     if (err) {
                         return next(err);
                     }
-                    trends[0].commentNum=trends[0].isComment;
                     res.json({
                         code : "00",
                         msg : "上传图片成功",
@@ -297,7 +295,6 @@ module.exports = new basicController(__filename).init({
             if (err) {
                 return next(err);
             }
-            trends[0].commentNum = trends[0].isComment;
             res.json({
                 code: "00",
                 data: trends[0]

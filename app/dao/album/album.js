@@ -177,7 +177,7 @@ Album.findOne = function(albumType, userId, trendsId, callback){
 
 Album.findOneTrends = function (trendsId, cb) {
     var tasks = [function (callback) {
-        var sql = "select albumId as trendsId,content,userId,nickName,userName,custName,schoolName,createDate from XL_ALBUM where state = 1 and albumId=?";
+        var sql = "select albumId as trendsId,content,userId,nickName,userName,custName,schoolName,createDate,likesNum,isComment as commentNum from XL_ALBUM where state = 1 and albumId=?";
         mysqlUtil.query(sql, [trendsId], function (err, res) {
             if (err) {
                 return callback(err);
