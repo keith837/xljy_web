@@ -61,8 +61,7 @@ module.exports = new basicController(__filename).init({
                     if (err) {
                         return next(err);
                     }
-                    trends[0].likesNum=trends[0].likes.length;
-                    trends[0].commentNum=trends[0].comments.length;
+                    trends[0].commentNum=trends[0].isComment;
                     res.json({
                         code: "00",
                         msg: "动态发布成功",
@@ -76,7 +75,10 @@ module.exports = new basicController(__filename).init({
 
     uppic : function(req, res, next){
         var self = this;
-        var trendsId = req.params.trendsId;
+        var trendsId = parseInt(req.params.trendsId);
+        if(trendsId <= 0){
+            return next(new Error("动态编号不能为空"));
+        }
         var userId = req.user.userId;
         var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "PHOTOS");
         uploadDir += "user" + userId + "/";
@@ -108,8 +110,7 @@ module.exports = new basicController(__filename).init({
                     if (err) {
                         return next(err);
                     }
-                    trends[0].likesNum=trends[0].likes.length;
-                    trends[0].commentNum=trends[0].comments.length;
+                    trends[0].commentNum=trends[0].isComment;
                     res.json({
                         code : "00",
                         msg : "上传图片成功",
