@@ -129,3 +129,30 @@ function multipleStatements(sqls, batchId, i, conn, callback) {
         });
     }
 }
+
+
+exportUtils.getResults = function (bizType, batchId, start, pageSize, callback) {
+    db.queryOne("select * from XL_EXPORT_CONFIG where bizType=? and state=1", [bizType], function (err, data) {
+        if (err) {
+            return callback(err);
+        }
+        if (!data) {
+            return callback(new Error("根据业务类型[" + bizType + "]找不到配置数据"));
+        } else {
+            var batchTable = data.tableName;
+            var sql = "select count(*) AS total from ?? where batchId=?";
+            db.queryOne(sql, [batchTable, batchId], function (err, count) {
+                if (err) {
+                    return callback(err);
+                }
+                if (count.total == 0) {
+                    return callback(err, 0, []);
+                }
+                sql = "select * from ?? where batchId=? limit ?,?";
+                db.query(sql, [batchTable, batchId, start, pageSize], function (err, res) {
+                    callback(err, count.total, res);
+                });
+            });
+        }
+    });
+}

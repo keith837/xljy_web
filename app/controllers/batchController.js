@@ -73,7 +73,7 @@ module.exports = new basicController(__filename).init({
         var userId = req.user.userId;
         var groupId = req.user.groupId;
         if (groupId != 30) {
-            return next(this.Error("用户没有权限导入数据"));
+            //return next(this.Error("用户没有权限导入数据"));
         }
         var classId = 0;
         var schoolId = req.user.schools[0].schoolId;
@@ -138,7 +138,7 @@ module.exports = new basicController(__filename).init({
             if (err) {
                 return next(err);
             }
-            res.json({code: "00", msg: "上传成功."});
+            res.json({code: "00", msg: "上传成功.", data: batchId});
             log.info("batchId=[" + batchId + "],用户[" + userId + "]批量上传成功.");
         });
     },
@@ -155,8 +155,22 @@ module.exports = new basicController(__filename).init({
         }
 
         res.download(filePath, bizType + "_template.xls");
+    },
+
+    results: function (request, response, next) {
+        var self = this;
+        var start = parseInt(request.query.iDisplayStart || this.webConfig.iDisplayStart);
+        var pageSize = parseInt(request.query.iDisplayLength || this.webConfig.iDisplayLength);
+        var batchId = request.params.batchId;
+        var bizType = request.query.bizType;
+
+        exportUtils.getResults(bizType, batchId, start, pageSize, function (err, totalCount, res) {
+            if (err) {
+                return next(err);
+            }
+            response.json(self.createPageData("00", totalCount, res));
+        });
     }
 
 
-})
-;
+});

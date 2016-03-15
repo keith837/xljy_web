@@ -611,6 +611,11 @@ var routerConfig = {
                 "url": "/api/batch/template/:bizType",
                 "method": "get",
                 "description": "模板下载"
+            },
+            "results": {
+                "url": "/api/batch/results/:batchId",
+                "method": "get",
+                "description": "显示导入结果"
             }
         }
     }

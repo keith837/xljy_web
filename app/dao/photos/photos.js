@@ -304,7 +304,10 @@ Photos.addAlbumLike = function (albumId, userId, nickName, studentId, studentNam
             });
         }, function (res, callback) {
             conn.commit(function (err) {
-                callback(err);
+                if (err) {
+                    return callback(err);
+                }
+                callback(null, res);
             });
         }];
 
@@ -404,7 +407,10 @@ Photos.addAlbumComment = function (albumId, userId, nickName, parentHandleId, co
             });
         }, function (res, callback) {
             conn.commit(function (err) {
-                callback(err);
+                if (err) {
+                    return callback(err);
+                }
+                callback(null, res);
             });
         }];
 
