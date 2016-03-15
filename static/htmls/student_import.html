@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>响亮教育管理平台</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="css/fullcalendar.css" />
+    <link rel="stylesheet" href="css/colorpicker.css" />
+    <link rel="stylesheet" href="css/datepicker.css" />
+    <link rel="stylesheet" href="css/uniform.css" />
+    <link rel="stylesheet" href="css/select2.css" />
+    <link rel="stylesheet" href="css/unicorn.main.css" />
+    <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <link rel="stylesheet" href="css/sweetalert.css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+</head>
+<body>
+
+
+<div id="content">
+    <div id="breadcrumb">
+        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 学生管理</a>
+        <a href="#" class="current">批量导入</a>
+    </div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-box">
+                    <div class="widget-title">
+								<span class="icon">
+									<i class="icon-th"></i>
+								</span>
+                        <h5>文件导入</h5>
+                    </div>
+                    <div class="widget-content nopadding">
+                        <div class="widget-content nopadding">
+                            <form class="form-horizontal" id="uploadForm" method="post" enctype="multipart/form-data">
+                                <div class="control-group">
+                                    <label class="control-label" for="xls">请选择文件</label>
+                                    <div class="controls">
+                                        <input type="file" id="xls" name="xls" class="span3"/>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">请下载模板</label>
+                                    <div class="controls">
+                                        <a href="#" class="btn" id="downloadBtn">下载</a>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <button type="button" class="btn" id="submitBtn">导入</button>
+                                        <button type="button" class="btn" onclick="window.location.href='student.html';">返回</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-fluid" id="importResults" style="display:none;">
+            <div class="span12">
+                <div class="widget-box">
+                    <div class="widget-title">
+								<span class="icon">
+									<i class="icon-th"></i>
+								</span>
+                        <h5>导入结果</h5>
+                    </div>
+                    <div class="widget-content nopadding">
+                        <table class="table table-bordered data-table">
+                            <thead>
+                            <tr>
+                                <th width="15%">学校</th>
+                                <th width="15%">班级</th>
+                                <th width="15%">姓名</th>
+                                <th width="15%">家长账号(手机号)</th>
+                                <th width="10%">状态</th>
+                                <th width="30%">描述</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <div id="footer" class="span12">
+                Copyright 浙江响亮教育科技股份有限公司 © 2015 <a href="https://wrapbootstrap.com/user/diablo9983">响亮教育</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery.cookie.js" charset="utf-8"></script>
+<script src="js/common.js"></script>
+<script src="js/jquery.ui.custom.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-colorpicker.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/jquery.uniform.js"></script>
+<script src="js/jquery.validate.js"></script>
+<script src="js/select2.min.js"></script>
+<script src="js/jquery.dataTables.js"></script>
+<script src="js/jquery.form.min.js"></script>
+<script src="js/jquery.url.js"></script>
+<script src="js/unicorn.js"></script>
+<script src="js/unicorn.form_common.js" charset="utf-8"></script>
+<script src="js/sweetalert.min.js" charset="utf-8"></script>
+
+<script>
+    $(document).ready(function () {
+
+        function initResults(batchId) {
+            var initTableParams = initDataTable();
+            var extendParams = {
+                "bServerSide": true,
+                "sAjaxSource": "/api/batch/results/" + batchId + "?bizType=student",
+                "sServerMethod": "GET",
+                "aoColumns": [
+                    {"mDataProp": "schoolName"},
+                    {"mDataProp": "className"},
+                    {"mDataProp": "studentName"},
+                    {"mDataProp": "billId"},
+                    {
+                        "mDataProp": function (obj) {
+                            if (obj.state == 0) {
+                                return "上传成功";
+                            } else if (obj.state == 99) {
+                                return "上传失败";
+                            } else {
+                                return "未知状态";
+                            }
+                        }
+                    },
+                    {"mDataProp": "remark"}
+                ]
+            }
+            var table = $('.data-table').dataTable(extend(extendParams, initTableParams));
+        }
+
+        $('#downloadBtn').on('click', function () {
+            ajax_download("/api/batch/template/student", {"token": $.cookie("token")});
+        });
+
+
+
+        $("#submitBtn").on('click', function () {
+            var xls = $("#xls").val();
+            if (!xls || xls == "") {
+                alert("请选择导入文件!");
+            } else {
+                var ext = xls.split('.').pop().toLowerCase();
+                if ($.inArray(ext, ['xls', 'xlsx']) == -1) {
+                    alert("请上传Excel文件!");
+                } else {
+                    $("#importResults").hide();
+                    $("#uploadForm").ajaxSubmit({
+                        url: "/api/batch/import/student",
+                        success: function (data) {
+                            if (data.code == "00") {
+                                swal({
+                                    title: "批量导入完成!",
+                                    text: "导入完成!",
+                                    timer: autoCloseTime,
+                                    showConfirmButton: true
+                                });
+                                $("#importResults").show();
+                                initResults(data.data);
+                            } else {
+                                swal({title: "批量导入失败!", text: data.msg, type: "error", timer: autoCloseTime});
+                            }
+                        },
+                        error: function (data) {
+                            swal({title: "批量导入失败!", text: "导入失败!", type: "error", timer: autoCloseTime});
+                        }
+                    });
+                }
+            }
+        });
+
+
+
+
+
+    });
+</script>
+</body>
+</html>
