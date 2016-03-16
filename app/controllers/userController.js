@@ -290,9 +290,6 @@ module.exports = new basicController(__filename).init({
             if(callback){
                 callback();
             }
-            if(callback){
-                callback();
-            }
             res.json({
                 code : "00",
                 data : {
@@ -644,30 +641,61 @@ module.exports = new basicController(__filename).init({
             if(user.state == 1){
                 return next(new Error("该手机号码已注册"));
             }
-            self.model['smsLog'].findOne(userName, securityCode, function (err, smsLog) {
+            var groupId = user.groupId;
+            if(groupId == 10){
+                self.model['student'].listByUserId(user.userId, function(err, students){
+                    if(err){
+                        return next(err);
+                    }
+                    if(!students || students.length <= 0){
+                        return next(new Error("该家长未关联宝贝，不能注册"));
+                    }
+                    self.active(userName, securityCode, password, res, next);
+                });
+            }else if(groupId == 20){
+                self.model['class'].listByTeacherId(user.userId, function(err, classes){
+                    if(err){
+                        return next(err);
+                    }
+                    if(!classes || classes.length <= 0){
+                        return next(new Error("该老师未带班"));
+                    }
+                    if(classes.length > 1){
+                        return next(new Error("该老师带班数量不唯一"));
+                    }
+                    self.active(userName, securityCode, password, res, next);
+                });
+            }else{
+                self.active(userName, securityCode, password, res, next);
+            }
+
+        });
+    },
+
+    active : function(userName, securityCode, password, res, next){
+        var self = this;
+        self.model['smsLog'].findOne(userName, securityCode, function (err, smsLog) {
+            if (err) {
+                return next(err);
+            }
+            if (!smsLog) {
+                return next(new Error("短信验证码错误"));
+            }
+            var date = new Date();
+            date.setMinutes(date.getMinutes() - 5);
+            if (smsLog.sendDate < moment(date).format("YYYY-MM-DD HH:mm:ss")) {
+                return next(new Error("短信验证码已过期"));
+            }
+            self.model['user'].active(userName, password, function (err, data) {
                 if (err) {
                     return next(err);
                 }
-                if (!smsLog) {
-                    return next(new Error("短信验证码错误"));
-                }
-                var date = new Date();
-                date.setMinutes(date.getMinutes() - 5);
-                if (smsLog.sendDate < moment(date).format("YYYY-MM-DD HH:mm:ss")) {
-                    return next(new Error("短信验证码已过期"));
-                }
-                self.model['user'].active(userName, password, function (err, data) {
-                    if (err) {
-                        return next(err);
-                    }
-                    res.json({
-                        code: "00",
-                        msg: "注册成功"
-                    });
+                res.json({
+                    code: "00",
+                    msg: "注册成功"
                 });
             });
         });
-
     },
 
     list : function(req, res, next){
