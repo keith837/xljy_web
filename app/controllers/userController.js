@@ -12,6 +12,15 @@ module.exports = new basicController(__filename).init({
         var self = this;
         var token = req.user.token;
         self.redis.del(token);
+        var userObj = new Object();
+        userObj.doneDate = new Date();
+        userObj.installationId = null;
+        var userId = req.user.userId;
+        self.model['user'].update(userObj, userId, function(err, data){
+            if(err){
+                self.logger.error("修改installationId失败", err);
+            }
+        });
         res.json({
             code : "00",
             msg : '退出登录成功'
@@ -26,6 +35,7 @@ module.exports = new basicController(__filename).init({
         var source = req.body.source;
         var channel = req.body.channel;
         var groupId = req.body.groupId;
+        var installationId = req.body.installationId;
         if(!userName){
             return next(new Error("登录用户名不能为空"));
         }
@@ -34,6 +44,9 @@ module.exports = new basicController(__filename).init({
         }
         if(!source){
             return next(new Error("登入来源不能为空"));
+        }
+        if(!installationId){
+            return next(new Error("手机实例标识不能为空"));
         }
         var clientId = getClientIp(req);
         if(!groupId){
@@ -57,16 +70,27 @@ module.exports = new basicController(__filename).init({
             }
             user.source = source;
             user.channel = channel;
+            user.installationId = installationId;
+            var callback = function(){
+                var userObj = new Object();
+                userObj.doneDate = new Date();
+                userObj.installationId = installationId;
+                self.model['user'].update(userObj, user.userId, function(err, data){
+                    if(err){
+                        self.logger.error("修改installationId失败", err);
+                    }
+                });
+            }
             if(groupId == 10){
-                self.parentLogin(user, res, next);
+                self.parentLogin(user, res, next, callback);
             }else if(groupId == 20){
-                self.teacherLogin(user, res, next);
+                self.teacherLogin(user, res, next, callback);
             }else if(groupId == 30){
-                self.principalLogin(false, user, res, next);
+                self.principalLogin(false, user, res, next, callback);
             }else if(groupId == 40){
-                self.groupLogin(false, user, res, next);
+                self.groupLogin(false, user, res, next, callback);
             }else if(groupId == 50){
-                self.adminLogin(false, user, res, next);
+                self.adminLogin(false, user, res, next, callback);
             }else{
                 return next(new Error("用户组" + groupId + "信息未定义"));
             }
@@ -75,7 +99,7 @@ module.exports = new basicController(__filename).init({
     },
 
     //家长登录
-    parentLogin : function(user, res, next){
+    parentLogin : function(user, res, next, callback){
         var self = this;
         self.model['student'].listByUserId(user.userId, function(err, students){
             if(err){
@@ -116,6 +140,9 @@ module.exports = new basicController(__filename).init({
                                 classId : students[i].classId
                             });
                         }
+                        if(callback){
+                            callback();
+                        }
                         res.json({
                             code : "00",
                             data : {
@@ -147,6 +174,9 @@ module.exports = new basicController(__filename).init({
                         classId : students[i].classId
                     });
                 }
+                if(callback){
+                    callback();
+                }
                 res.json({
                     code : "00",
                     data : {
@@ -167,7 +197,7 @@ module.exports = new basicController(__filename).init({
     },
 
     //老师登录
-    teacherLogin : function(user, res, next){
+    teacherLogin : function(user, res, next, callback){
         var self = this;
         self.model['class'].listByTeacherId(user.userId, function(err, classes){
             if(err){
@@ -193,6 +223,9 @@ module.exports = new basicController(__filename).init({
                 date.setDate(date.getDate() + 7);
                 user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
                 self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
+                if(callback){
+                    callback();
+                }
                 res.json({
                     code : "00",
                     data : {
@@ -219,7 +252,7 @@ module.exports = new basicController(__filename).init({
     },
 
     //园长登录
-    principalLogin : function(isWeb, user, res, next){
+    principalLogin : function(isWeb, user, res, next, callback){
         var self = this;
         self.model['school'].listByPrincipalId(user.userId, function(err, schools){
             if(err){
@@ -254,6 +287,12 @@ module.exports = new basicController(__filename).init({
                     schoolUrl : schools[i].schoolUrl
                 });
             }
+            if(callback){
+                callback();
+            }
+            if(callback){
+                callback();
+            }
             res.json({
                 code : "00",
                 data : {
@@ -273,7 +312,7 @@ module.exports = new basicController(__filename).init({
     },
 
     //集团园长登录
-    groupLogin : function(isWeb, user, res, next){
+    groupLogin : function(isWeb, user, res, next, callback){
         var self = this;
         self.model['school'].listByGroupId(user.userId, function(err, schools){
             if(err){
@@ -308,6 +347,9 @@ module.exports = new basicController(__filename).init({
                     schoolUrl : schools[i].schoolUrl
                 });
             }
+            if(callback){
+                callback();
+            }
             res.json({
                 code : "00",
                 data : {
@@ -327,7 +369,7 @@ module.exports = new basicController(__filename).init({
     },
 
     //超级园长登录
-    adminLogin : function(isWeb, user, res, next) {
+    adminLogin : function(isWeb, user, res, next, callback) {
         var self = this;
         self.model['school'].listAllSchool(function(err, schools){
             if(err){
@@ -349,6 +391,9 @@ module.exports = new basicController(__filename).init({
             date.setDate(date.getDate() + 7);
             user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
             self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
+            if(callback){
+                callback();
+            }
             res.json({
                 code : "00",
                 data : {
