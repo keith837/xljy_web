@@ -72,17 +72,15 @@ module.exports = new basicController(__filename).init({
         var log = this.logger;
         var userId = req.user.userId;
         var groupId = req.user.groupId;
-        if (groupId != 30) {
-            //return next(this.Error("用户没有权限导入数据"));
-        }
         var classId = 0;
-        var schoolId = req.user.schools[0].schoolId;
+        var schoolId = 0;
         var bizType = req.params.bizType;
         if (!bizType) {
             return next(this.Error("没有传入业务类型参数[bizType]"));
         }
         var batchId = uuid.v4();
         var userObj = {};
+        userObj.groupId = groupId;
         userObj.userId = userId;
         userObj.classId = classId;
         userObj.schoolId = schoolId;
