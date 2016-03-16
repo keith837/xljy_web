@@ -62,7 +62,7 @@
             </div>
         </div>
 
-        <div class="row-fluid" id="importResults" style="display:none;">
+        <div class="row-fluid" id="importResults">
             <div class="span12">
                 <div class="widget-box">
                     <div class="widget-title">
@@ -120,38 +120,41 @@
 <script>
     $(document).ready(function () {
 
-        function initResults(batchId) {
-            var initTableParams = initDataTable();
-            var extendParams = {
-                "bServerSide": true,
-                "sAjaxSource": "/api/batch/results/" + batchId + "?bizType=student",
-                "sServerMethod": "GET",
-                "aoColumns": [
-                    {"mDataProp": "schoolName"},
-                    {"mDataProp": "className"},
-                    {"mDataProp": "studentName"},
-                    {"mDataProp": "billId"},
-                    {
-                        "mDataProp": function (obj) {
-                            if (obj.state == 0) {
-                                return "上传成功";
-                            } else if (obj.state == 99) {
-                                return "上传失败";
-                            } else {
-                                return "未知状态";
-                            }
+        var initTableParams = initDataTable();
+        var extendParams = {
+            "bServerSide": true,
+            "sAjaxSource": "/api/batch/results/0?bizType=student",
+            "sServerMethod": "GET",
+            "aoColumns": [
+                {"mDataProp": "schoolName"},
+                {"mDataProp": "className"},
+                {"mDataProp": "studentName"},
+                {"mDataProp": "billId"},
+                {
+                    "mDataProp": function (obj) {
+                        if (obj.state == 0) {
+                            return "上传成功";
+                        } else if (obj.state == 99) {
+                            return "上传失败";
+                        } else {
+                            return "未知状态";
                         }
-                    },
-                    {"mDataProp": "remark"}
-                ]
-            }
-            var table = $('.data-table').dataTable(extend(extendParams, initTableParams));
+                    }
+                },
+                {"mDataProp": "remark"}
+            ]
+        }
+        var table = $('.data-table').dataTable(extend(extendParams, initTableParams));
+
+
+        function resRefresh(batchId) {
+            table.fnSettings().sAjaxSource = "/api/batch/results/" + batchId + "?bizType=student";
+            table.fnDraw();
         }
 
         $('#downloadBtn').on('click', function () {
             ajax_download("/api/batch/template/student", {"token": $.cookie("token")});
         });
-
 
 
         $("#submitBtn").on('click', function () {
@@ -163,7 +166,7 @@
                 if ($.inArray(ext, ['xls', 'xlsx']) == -1) {
                     alert("请上传Excel文件!");
                 } else {
-                    $("#importResults").hide();
+                    //$("#importResults").hide();
                     $("#uploadForm").ajaxSubmit({
                         url: "/api/batch/import/student",
                         success: function (data) {
@@ -174,8 +177,8 @@
                                     timer: autoCloseTime,
                                     showConfirmButton: true
                                 });
-                                $("#importResults").show();
-                                initResults(data.data);
+                                //$("#importResults").show();
+                                resRefresh(data.data);
                             } else {
                                 swal({title: "批量导入失败!", text: data.msg, type: "error", timer: autoCloseTime});
                             }
@@ -187,9 +190,6 @@
                 }
             }
         });
-
-
-
 
 
     });

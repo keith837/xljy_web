@@ -21,7 +21,7 @@
 
 <div id="content">
     <div id="breadcrumb">
-        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 用户管理</a>
+        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 手环管理</a>
         <a href="#" class="current">批量导入</a>
     </div>
     <div class="container-fluid">
@@ -52,7 +52,7 @@
                                 <div class="control-group">
                                     <div class="controls">
                                         <button type="button" class="btn" id="submitBtn">导入</button>
-                                        <button type="button" class="btn" onclick="window.location.href='user.html';">返回</button>
+                                        <button type="button" class="btn" onclick="window.location.href='student.html';">返回</button>
                                     </div>
                                 </div>
                             </form>
@@ -76,11 +76,12 @@
                             <thead>
                             <tr>
                                 <th width="15%">学校</th>
+                                <th width="15%">班级</th>
                                 <th width="15%">姓名</th>
-                                <th width="15%">用户组</th>
-                                <th width="15%">联系电话</th>
+                                <th width="10%">手环ID</th>
+                                <th width="15%">手环名称</th>
                                 <th width="10%">状态</th>
-                                <th width="30%">描述</th>
+                                <th width="20%">描述</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -120,17 +121,17 @@
 <script>
     $(document).ready(function () {
 
-
         var initTableParams = initDataTable();
         var extendParams = {
             "bServerSide": true,
-            "sAjaxSource": "/api/batch/results/0?bizType=user",
+            "sAjaxSource": "/api/batch/results/0?bizType=device",
             "sServerMethod": "GET",
             "aoColumns": [
                 {"mDataProp": "schoolName"},
-                {"mDataProp": "userName"},
-                {"mDataProp": "groupName"},
-                {"mDataProp": "billId"},
+                {"mDataProp": "className"},
+                {"mDataProp": "studentName"},
+                {"mDataProp": "deviceSign"},
+                {"mDataProp": "deviceName"},
                 {
                     "mDataProp": function (obj) {
                         if (obj.state == 0) {
@@ -142,18 +143,19 @@
                         }
                     }
                 },
-                {"mDataProp": "desc"}
+                {"mDataProp": "remark"}
             ]
         }
         var table = $('.data-table').dataTable(extend(extendParams, initTableParams));
 
-        function refreshResults(batchId) {
-            table.fnSettings().sAjaxSource = "/api/batch/results/" + batchId + "?bizType=user";
+
+        function resRefresh(batchId) {
+            table.fnSettings().sAjaxSource = "/api/batch/results/" + batchId + "?bizType=device";
             table.fnDraw();
         }
 
         $('#downloadBtn').on('click', function () {
-            ajax_download("/api/batch/template/user", {"token": $.cookie("token")});
+            ajax_download("/api/batch/template/device", {"token": $.cookie("token")});
         });
 
 
@@ -166,8 +168,9 @@
                 if ($.inArray(ext, ['xls', 'xlsx']) == -1) {
                     alert("请上传Excel文件!");
                 } else {
+                    //$("#importResults").hide();
                     $("#uploadForm").ajaxSubmit({
-                        url: "/api/batch/import/user",
+                        url: "/api/batch/import/device",
                         success: function (data) {
                             if (data.code == "00") {
                                 swal({
@@ -176,8 +179,8 @@
                                     timer: autoCloseTime,
                                     showConfirmButton: true
                                 });
-                                // $("#importResults").show();
-                                refreshResults(data.data);
+                                //$("#importResults").show();
+                                resRefresh(data.data);
                             } else {
                                 swal({title: "批量导入失败!", text: data.msg, type: "error", timer: autoCloseTime});
                             }
@@ -189,6 +192,7 @@
                 }
             }
         });
+
 
     });
 </script>
