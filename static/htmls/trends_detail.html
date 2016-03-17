@@ -66,15 +66,44 @@
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">评论信息</label>
-                                        <label class="control-label" id="comments" name="comments"></label>
+                                        <div class="widget-content nopadding controls">
+                                            <table class="table table-bordered data-table" id="commentsTable" style="width: auto">
+                                                <thead>
+                                                <tr>
+                                                    <th width="5%">评论编号</th>
+                                                    <th width="8%">评论者</th>
+                                                    <th width="8%">评论内容</th>
+                                                    <th width="14%">评论时间</th>
+                                                    <th width="14%">父评论编号</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">图片信息</label>
-                                        <label class="control-label" id="pics" name="pics"></label>
+                                        <div class="widget-content nopadding controls" id="picsDiv">
+                                        </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">点赞信息</label>
-                                        <label class="control-label" id="likes" name="likes"></label>
+                                        <div class="widget-content nopadding controls">
+                                            <table class="table table-bordered data-table" id="likesTable" style="width: auto">
+                                                <thead>
+                                                <tr>
+                                                    <th width="5%">编号</th>
+                                                    <th width="8%">点赞者</th>
+                                                    <th width="14%">点赞时间</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
 
                                     <div class="control-group">
@@ -119,6 +148,8 @@
 
     $(document).ready(function () {
         var trendsId = $.url.param('trendsId');
+        var initTableParams = initDataTable();
+
         $.get("/api/trends/show/" + trendsId, null, function (json) {
             if (json.code == "00") {
                 $("#trendsId").text(json.data.trendsId);
@@ -127,6 +158,30 @@
                 $("#createDate").text(json.data.createDate);
                 $("#schoolName").text(json.data.schoolName);
                 $("#className").text(json.data.className);
+                var likesParams = {
+                    "data": json.data.likes,
+                    "aoColumns": [
+                        {"mDataProp": "likeId"},
+                        {"mDataProp": "nickName"},
+                        {"mDataProp": "createDate"}
+                    ]
+                };
+                var table = $('#likesTable').dataTable(extend(likesParams,initTableParams));
+                var commentsParams = {
+                    "data": json.data.comments,
+                    "aoColumns": [
+                        {"mDataProp": "handleId"},
+                        {"mDataProp": "nickName"},
+                        {"mDataProp": "content"},
+                        {"mDataProp": "createDate"},
+                        {"mDataProp": "handleId"}
+                    ]
+                };
+                $.each(json.data.pics,function(i,item){
+                    $("#picsDiv").html("<img src='"+item.picUrl+"'/>");
+                    //注意分页和layer弹窗
+                })
+                var table = $('#commentsTable').dataTable(extend(commentsParams,initTableParams));
             }
         }, 'json');
     });

@@ -54,7 +54,26 @@ function initDateTimePicker(){
         language: 'zh-CN',
         autoclose:true //选择日期后自动关闭
     });
-    $.fn.dataTable.ext.errMode = function(s,h,m){};
+}
+
+function initDatePicker(){
+    $.fn.datetimepicker.dates['zh-CN'] = {
+        days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+        daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+        daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
+        months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+        monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+        today: "今日",
+        suffix: [],
+        meridiem: ["上午", "下午"]
+    };
+    $(".form_datetime").datetimepicker({
+        //minView: "month", //选择日期后，不会再跳转去选择时分秒
+        format: 'yyyy-mm-dd',
+        language: 'zh-CN',
+        minView:2,
+        autoclose:true //选择日期后自动关闭
+    });
 }
 
 //初始化datatable

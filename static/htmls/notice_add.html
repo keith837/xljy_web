@@ -41,7 +41,7 @@
                             <div class="row-fluid">
                                 <form class="form-horizontal" id="noticeForm" method="post" enctype="multipart/form-data">
                                     <div class="control-group">
-                                        <label class="control-label" for="noticeTitle">标题</label>
+                                        <label class="control-label" for="noticeTitle">标题<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <input type="text" id="noticeTitle" name="noticeTitle" placeholder="标题" class="span3">
                                         </div>
@@ -53,7 +53,7 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="noticeTypeId">通知类型</label>
+                                        <label class="control-label" for="noticeTypeId">通知类型<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <select class="span3" id="noticeTypeId" name="noticeTypeId">
                                                 <option value="6">紧急通知</option>
@@ -61,19 +61,19 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="noticeContext">通知内容</label>
+                                        <label class="control-label" for="noticeContext">通知内容<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <textarea rows="3" id="noticeContext" name="noticeContext" class="span3"></textarea>
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="effDate">生效时间</label>
+                                        <label class="control-label" for="effDate">生效时间<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <input type="text" id="effDate" name="effDate" placeholder="生效时间" class="form_datetime span5">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="expDate">失效时间</label>
+                                        <label class="control-label" for="expDate">失效时间<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <input type="text" id="expDate" name="expDate" placeholder="失效时间" class="form_datetime span5">
                                         </div>

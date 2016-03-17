@@ -40,25 +40,25 @@
                             <div class="row-fluid">
                                 <form class="form-horizontal" name="schoolForm" id="classForm">
                                     <div class="control-group">
-                                        <label class="control-label" for="className">名称</label>
+                                        <label class="control-label" for="className">名称<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <input type="text" id="className" name="className" placeholder="班级名称" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="schoolId">学校</label>
+                                        <label class="control-label" for="schoolId">学校<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <input type="text" id="schoolId" name="schoolId" placeholder="请选择学校" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="tUserId">班主任</label>
+                                        <label class="control-label" for="tUserId">班主任<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <input type="text" id="tUserId" name="tUserId" placeholder="请选择用户" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="gradeId">年级</label>
+                                        <label class="control-label" for="gradeId">年级<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <input type="text" id="gradeId" name="gradeId" placeholder="请选择年级" class="span3">
                                         </div>
@@ -135,12 +135,6 @@
                     required:true
                 },
                 gradeId:{
-                    required:true
-                },
-                classUrl:{
-                    required:true
-                },
-                classDesc:{
                     required:true
                 }
             },

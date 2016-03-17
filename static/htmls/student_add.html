@@ -40,14 +40,14 @@
                             <div class="row-fluid">
                                 <form class="form-horizontal" name="studentForm" id="studentForm">
                                     <div class="control-group">
-                                        <label class="control-label" for="studentName">真实姓名</label>
+                                        <label class="control-label" for="studentName">真实姓名<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <input type="hidden" id="editType" name="editType" value="add" />
                                             <input type="text" id="studentName" name="studentName" placeholder="真实姓名" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="schoolId">所属学校</label>
+                                        <label class="control-label" for="schoolId">所属学校<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <input type="text" id="schoolId" name="schoolId" placeholder="请选择学校" class="span3">
                                             <input type="text" style="display: none;" disabled="disabled" id="schoolName" class="span3">
@@ -55,33 +55,33 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="classId">所属班级</label>
+                                        <label class="control-label" for="classId">所属班级<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <input type="text" id="classId" name="classId" placeholder="请选择班级" class="span3">
                                             <input type="text" style="display: none;" disabled="disabled" id="className" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="userId">绑定家长</label>
+                                        <label class="control-label" for="userId">绑定家长<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <input type="text" id="userId" name="userId" placeholder="请选择家长" class="span3">
                                         </div>
                                     </div>
 
                                     <div class="control-group">
-                                        <label class="control-label" for="cardNum">身份证号</label>
+                                        <label class="control-label" for="cardNum">身份证号<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <input type="text" id="cardNum" name="cardNum" placeholder="身份证号" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="studentAge">学生年龄</label>
+                                        <label class="control-label" for="studentAge">学生年龄<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <input type="text" id="studentAge" name="studentAge" placeholder="学生年龄" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="gender">性别</label>
+                                        <label class="control-label" for="gender">性别<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <select class="span3" id="gender" name="gender">
                                                 <option value="1">男</option>
@@ -212,12 +212,6 @@
                     max:18
                 },
                 gender:{
-                    required:true
-                },
-                address:{
-                    required:true
-                },
-                remark:{
                     required:true
                 }
             },
