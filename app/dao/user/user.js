@@ -12,7 +12,7 @@ User.findByUserId = function(userId, callback){
 
 User.save = function(args, callback){
     var sql = "insert into XL_USER(groupId,roleId,schoolId,nickName,userName,userUrl,password,custName,pointNum,billId,email,gender,"
-    sql += "birthday,address,token,state,createDate,doneDate,channelId) values (?,?,?,?,?,?,?,?,0,?,?,?,?,?,null,2,now(),now(),?)";
+    sql += "birthday,address,installationId,state,createDate,doneDate,channelId) values (?,?,?,?,?,?,?,?,0,?,?,?,?,?,null,2,now(),now(),?)";
     mysqlUtil.query(sql, args, callback);
 }
 
