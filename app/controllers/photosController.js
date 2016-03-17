@@ -6,6 +6,7 @@ var basicController = require("../../core/utils/controller/basicController");
 var formidable = require("formidable");
 var fs = require("fs");
 var path = require("path");
+var images = require("images");
 
 module.exports = new basicController(__filename).init({
 
@@ -60,7 +61,9 @@ module.exports = new basicController(__filename).init({
             var albumTitle = fields.albumTitle;
             var albumPics = new Array();
             for (var photos in files) {
-                albumPics.push([path.normalize(files[photos].path).replace(/\\/g, '/'), userId]);
+                var width = images(files[photos].path).width();
+                var height = images(files[photos].path).height();
+                albumPics.push([path.normalize(files[photos].path).replace(/\\/g, '/'), userId, width, height]);
             }
             if (albumPics.length === 0) {
                 return next(self.Error("没有上传照片."));
@@ -75,7 +78,7 @@ module.exports = new basicController(__filename).init({
                         return next(err);
                     }
                     //  console.info(data);
-                    res.json({code: "00",msg: "相册发布成功",data: data[0]});
+                    res.json({code: "00", msg: "相册发布成功", data: data[0]});
                 });
 
             });
@@ -123,7 +126,7 @@ module.exports = new basicController(__filename).init({
                 if (err) {
                     return next(err);
                 }
-                res.json({code: "00", msg: "相册点赞成功",data: data.insertId});
+                res.json({code: "00", msg: "相册点赞成功", data: data.insertId});
             });
         });
     },
@@ -172,7 +175,7 @@ module.exports = new basicController(__filename).init({
                 if (err) {
                     return next(err);
                 }
-                res.json({code: "00", msg: "相册评论成功",data: data.insertId});
+                res.json({code: "00", msg: "相册评论成功", data: data.insertId});
             }
         );
     },
@@ -238,11 +241,14 @@ module.exports = new basicController(__filename).init({
             }
         }
 
-        this.model['photos'].queryByAlbumType(start, pageSize, photoLength, commentLength, queryCondition, function (err, totalCount, results) {
+        this.model['photos'].queryPhotosByType(start, pageSize, queryCondition, function (err, totalCount, results) {
             if (err) {
                 return next(err);
             }
-            res.json(self.createPageData("00", totalCount, results));
+            if (!results || results.length <= 0) {
+                return res.json(self.createPageData("00", totalCount, results));
+            }
+            self.createAlbumList(res, next, totalCount, results, photoLength, commentLength);
         });
     },
 
@@ -288,7 +294,9 @@ module.exports = new basicController(__filename).init({
             var albumParam = [albumTitle, content, schoolId, classId, userId, nickName, studentId, studentName, albumId];
             var albumPics = new Array();
             for (var photos in files) {
-                albumPics.push([path.normalize(files[photos].path).replace(/\\/g, '/'), userId]);
+                var width = images(files[photos].path).width();
+                var height = images(files[photos].path).height();
+                albumPics.push([path.normalize(files[photos].path).replace(/\\/g, '/'), userId, width, height]);
             }
             if (albumPics.length === 0) {
                 return next(self.Error("没有上传照片."));
@@ -302,7 +310,7 @@ module.exports = new basicController(__filename).init({
                         return next(err);
                     }
                     //  console.info(data);
-                    res.json({code: "00",msg: "编辑相册成功",data: data[0]});
+                    res.json({code: "00", msg: "编辑相册成功", data: data[0]});
                 });
             });
         });
@@ -317,8 +325,8 @@ module.exports = new basicController(__filename).init({
             if (err) {
                 return next(err);
             }
-          //  console.info(data);
-            res.json({code: "00",data: data[0]});
+            //  console.info(data);
+            res.json({code: "00", data: data[0]});
         });
     },
     moreComment: function (req, res, next) {
@@ -388,7 +396,9 @@ module.exports = new basicController(__filename).init({
         form.parse(req, function (err, fields, files) {
             var albumPics = new Array();
             for (var photos in files) {
-                albumPics.push([path.normalize(files[photos].path).replace(/\\/g, '/'), userId]);
+                var width = images(files[photos].path).width();
+                var height = images(files[photos].path).height();
+                albumPics.push([path.normalize(files[photos].path).replace(/\\/g, '/'), userId, width, height]);
             }
             if (albumPics.length === 0) {
                 return next(self.Error("没有上传照片."));
@@ -397,10 +407,160 @@ module.exports = new basicController(__filename).init({
                 if (err) {
                     return next(err);
                 }
-                res.json({code: "00", msg: "添加照片成功",data: data.insertId});
+                res.json({code: "00", msg: "添加照片成功", data: data.insertId});
             });
         });
-    }
+    },
+
+    createAlbumList: function (res, next, total, albums, photoLength, commentLength) {
+        var self = this;
+        var albumIds = new Array();
+        var userObj = new Object();
+        for (var i = 0; i < albums.length; i++) {
+            albumIds.push(albums[i].albumId);
+            userObj[albums[i].userId] = albums[i].userId;
+        }
+        self.model['photos'].findPicsByOver(albumIds, photoLength, function (err, pics) {
+            if (err) {
+                return next(err);
+            }
+            var picsObject = new Object();
+            if (pics) {
+                for (var i = 0; i < pics.length; i++) {
+                    var picArray = picsObject[pics[i].albumId];
+                    if (!picArray) {
+                        picArray = new Array();
+                        picsObject[pics[i].albumId] = picArray;
+                    }
+                    picArray.push({
+                        picId: pics[i].picId,
+                        picUrl: pics[i].picUrl,
+                        width: pics[i].width,
+                        height: pics[i].height,
+                        createDate: pics[i].createDate
+                    });
+                }
+            }
+            var likeObj = new Object();
+            likeObj.handleType = 1;
+            self.model['photos'].findHandles(albumIds, likeObj, function (err, likes) {
+                if (err) {
+                    return next(err);
+                }
+                if (likes) {
+                    for (var i = 0; i < likes.length; i++) {
+                        userObj[likes[i].oUserId] = likes[i].oUserId;
+                    }
+                }
+                var commentObj = new Object();
+                commentObj.handleType = 2;
+                self.model['photos'].findHandlesByOver(albumIds, commentObj, commentLength, function (err, comments) {
+                    if (err) {
+                        return next(err);
+                    }
+                    if (comments) {
+                        for (var i = 0; i < comments.length; i++) {
+                            userObj[comments[i].oUserId] = comments[i].oUserId;
+                        }
+                    }
+                    self.model['user'].listByUserIds(userObj, function (err, users) {
+                        if (err) {
+                            return next(err);
+                        }
+                        if (users) {
+                            for (var i = 0; i < users.length; i++) {
+                                userObj[users[i].userId] = users[i];
+                            }
+                        }
+                        var likesObject = new Object();
+                        if (likes) {
+                            for (var i = 0; i < likes.length; i++) {
+                                var likeArray = likesObject[likes[i].albumId];
+                                if (!likeArray) {
+                                    likeArray = new Array();
+                                    likesObject[likes[i].albumId] = likeArray;
+                                }
+                                likeArray.push({
+                                    likeId: likes[i].handleId,
+                                    nickName: likes[i].nickName,
+                                    userId: likes[i].oUserId,
+                                    userUrl: userObj[likes[i].oUserId].userUrl,
+                                    createDate: likes[i].createDate
+                                });
+                            }
+                        }
+                        var ablumsObject = new Object();
+                        for (var i = 0; i < albums.length; i++) {
+                            ablumsObject[albums[i].albumId] = albums[i];
+                        }
+                        var commentsObject = new Object();
+                        var tempCommentObject = new Object();
+                        if (comments) {
+                            for (var i = 0; i < comments.length; i++) {
+                                var commentArray = commentsObject[comments[i].albumId];
+                                if (!commentArray) {
+                                    commentArray = new Array();
+                                    commentsObject[comments[i].albumId] = commentArray;
+                                }
+                                var comment = {
+                                    albumId: comments[i].albumId,
+                                    handleId: comments[i].handleId,
+                                    pHandleId: comments[i].pHandleId,
+                                    content: comments[i].content,
+                                    nickName: comments[i].nickName,
+                                    userId: comments[i].oUserId,
+                                    userUrl: userObj[comments[i].oUserId].userUrl,
+                                    createDate: comments[i].createDate
+                                }
+                                tempCommentObject[comments[i].handleId] = comment;
+                                if (!comments[i].pHandleId || comments[i].pHandleId == 0) {
+                                    comment.cUserId = ablumsObject[comment.albumId].userId;
+                                    comment.cNickName = ablumsObject[comment.albumId].nickName;
+                                    comment.cUserUrl = userObj[comment.cUserId].userUrl;
+                                } else {
+                                    comment.cUserId = tempCommentObject[comment.pHandleId].userId;
+                                    comment.cNickName = tempCommentObject[comment.pHandleId].nickName;
+                                    comment.cUserUrl = tempCommentObject[comment.pHandleId].userUrl;
+                                }
+                                commentArray.push(comment);
+                            }
+                        }
+                        var albumsArray = new Array();
+                        for (var i = 0; i < albums.length; i++) {
+                            var currTrends = {
+                                albumId: albums[i].albumId,
+                                albumType: albums[i].albumType,
+                                albumTitle: albums[i].albumTitle,
+                                content: albums[i].content,
+                                userId: albums[i].userId,
+                                userUrl: userObj[albums[i].userId].userUrl,
+                                nickName: albums[i].nickName,
+                                userName: albums[i].userName,
+                                schoolName: albums[i].schoolName,
+                                className: albums[i].className,
+                                createDate: albums[i].createDate,
+                                likesNum: albums[i].likesNum,
+                                commentNum: albums[i].isComment,
+                                photoCount: albums[i].photoCount,
+                                picPaths: picsObject[albums[i].albumId] ? picsObject[albums[i].albumId] : new Array(),
+                                comments: commentsObject[albums[i].albumId] ? commentsObject[albums[i].albumId] : new Array(),
+                                likes: likesObject[albums[i].albumId] ? likesObject[albums[i].albumId] : new Array()
+                            };
+                            albumsArray.push(currTrends);
+                        }
+                        if (total <= -1) {
+                            res.json({
+                                code: "00",
+                                data: albumsArray
+                            });
+                        } else {
+                            res.json(self.createPageData("00", total, albumsArray));
+                        }
+                    });
+                });
+            });
+        });
+    },
 
 
 });

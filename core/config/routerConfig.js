@@ -508,7 +508,7 @@ var routerConfig = {
             }
         },
         photos: {
-            "usedModel": ["photos/photos"],
+            "usedModel": ["photos/photos", "user/user"],
             "publish": {
                 "url": "/api/photos",
                 "method": "post",

@@ -38,11 +38,11 @@ Photos.publish = function (albumParam, albumPics, callback) {
                     });
                 } else {
 
-                    var albumPicSQL = "insert into XL_CLASS_ALBUM_PIC(albumId,picUrl,picDesc,state,createDate,doneDate,userId) values ?";
+                    var albumPicSQL = "insert into XL_CLASS_ALBUM_PIC(albumId,picUrl,picDesc,state,createDate,doneDate,userId,width,height) values ?";
                     var albumPicParam = new Array();
                     var now = new Date();
                     for (var pic in albumPics) {
-                        albumPicParam.push([albumId, albumPics[pic][0], null, 1, now, now, albumPics[pic][1]]);
+                        albumPicParam.push([albumId, albumPics[pic][0], null, 1, now, now, albumPics[pic][1], albumPics[pic][2], albumPics[pic][3]]);
                     }
                     conn.query(albumPicSQL, [albumPicParam], function (err, res) {
                         if (err) {
@@ -136,11 +136,11 @@ Photos.edit = function (albumParam, albumPics, cb) {
                 callback(err, results);
             });
         }, function (res, callback) {
-            var albumPicSQL = "insert into XL_CLASS_ALBUM_PIC(albumId,picUrl,picDesc,state,createDate,doneDate,userId) values ?";
+            var albumPicSQL = "insert into XL_CLASS_ALBUM_PIC(albumId,picUrl,picDesc,state,createDate,doneDate,userId,width,height) values ?";
             var albumPicParam = new Array();
             var now = new Date();
             for (var pic in albumPics) {
-                albumPicParam.push([albumParam[8], albumPics[pic][0], null, 1, now, now, albumPics[pic][1]]);
+                albumPicParam.push([albumParam[8], albumPics[pic][0], null, 1, now, now, albumPics[pic][1], albumPics[pic][2], albumPics[pic][3]]);
             }
             conn.query(albumPicSQL, [albumPicParam], function (err, results) {
                 callback(err, results);
@@ -236,11 +236,11 @@ Photos.addPhoto = function (userId, albumId, albumPics, cb) {
                 callback(err, results);
             });
         }, function (res, callback) {
-            var albumPicSQL = "insert into XL_CLASS_ALBUM_PIC(albumId,picUrl,picDesc,state,createDate,doneDate,userId) values ?";
+            var albumPicSQL = "insert into XL_CLASS_ALBUM_PIC(albumId,picUrl,picDesc,state,createDate,doneDate,userId,width,height) values ?";
             var albumPicParam = new Array();
             var now = new Date();
             for (var pic in albumPics) {
-                albumPicParam.push([albumId, albumPics[pic][0], null, 1, now, now, albumPics[pic][1]]);
+                albumPicParam.push([albumId, albumPics[pic][0], null, 1, now, now, albumPics[pic][1], albumPics[pic][2], albumPics[pic][3]]);
             }
             conn.query(albumPicSQL, [albumPicParam], function (err, results) {
                 callback(err, results);
@@ -426,6 +426,105 @@ Photos.addAlbumComment = function (albumId, userId, nickName, parentHandleId, co
     });
 }
 
+
+Photos.queryPhotosByType = function (start, pageSize, queryCondition, callback) {
+    var sql = "select * from XL_CLASS_ALBUM m where state=1 ";
+    var params = [];
+    var sqlCondition = "";
+    if (queryCondition || queryCondition.length > 0) {
+        for (var i in queryCondition) {
+            var opr = queryCondition[i].opr;
+            if (opr == "like") {
+                sqlCondition += "and m." + queryCondition[i].key + " " + opr + " ? ";
+                params.push("%" + queryCondition[i].val + "%");
+            } else if (opr == "in") {
+                var ids = queryCondition[i].val;
+                var appenderId = "";
+                for (var k in ids) {
+                    appenderId += "?,";
+                    params.push(ids[k]);
+                }
+                appenderId = appenderId.substr(0, appenderId.length - 1);
+                sqlCondition += "and m." + queryCondition[i].key + " " + opr + " (" + appenderId + ") ";
+            } else {
+                sqlCondition += "and m." + queryCondition[i].key + " " + opr + " ? ";
+                params.push(queryCondition[i].val);
+            }
+        }
+    }
+    sql = sql + sqlCondition;
+
+    var countSQL = "select count(*) as total from (" + sql + ") m";
+    sql = "select * from (" + sql + " order by albumId desc) m limit ?,?";
+    mysqlUtil.queryOne(countSQL, params, function (err, res) {
+        if (err) {
+            return callback(err);
+        }
+        var totalNum = res.total;
+        if (totalNum === 0) {
+            return callback(err, 0, []);
+        }
+        params.push(start);
+        params.push(pageSize);
+        mysqlUtil.query(sql, params, function (err, res) {
+            if (err) {
+                return callback(err);
+            }
+            callback(err, totalNum, res);
+        });
+    });
+}
+
+
+Photos.findPicsByOver = function (albumIds, length, callback) {
+    var tempArgs = new Array();
+    var sql = "SELECT albumId, picId, picUrl, width, height, createDate FROM ( SELECT albumId, picId, picUrl, width, height, createDate, IF ( @albumId = b.albumId, @rank := @rank + 1, @rank := 1 ) AS rank ,";
+    sql += "@albumId := b.albumId FROM ( SELECT albumId, picId, picUrl, width, height, createDate FROM XL_CLASS_ALBUM_PIC WHERE state = 1 AND albumId IN (";
+    for (var i = 0; i < albumIds.length; i++) {
+        sql += "?,";
+        tempArgs.push(albumIds[i]);
+    }
+    sql = sql.substr(0, sql.length - 1) + ")";
+    sql += " ORDER BY albumId, picId ) b, (SELECT @NAME := NULL, @rank := 0) a ) result WHERE rank <= ?";
+    tempArgs.push(length);
+    mysqlUtil.query(sql, tempArgs, callback);
+}
+
+
+Photos.findHandles = function (albumIds, obj, callback) {
+    var tempArgs = new Array();
+    var sql = "select * from XL_CLASS_ALBUM_HANDLE where state = 1 and albumId in(";
+    for (var i = 0; i < albumIds.length; i++) {
+        sql += "?,";
+        tempArgs.push(albumIds[i]);
+    }
+    sql = sql.substr(0, sql.length - 1) + ") ";
+    for (var key in obj) {
+        sql += " and " + key + "=?"
+        tempArgs.push(obj[key]);
+    }
+    mysqlUtil.query(sql + " order by handleId", tempArgs, callback);
+}
+
+Photos.findHandlesByOver = function (albumIds, obj, length, callback) {
+    var tempArgs = new Array();
+    var sql = "SELECT albumId, handleId, parentHandleId as pHandleId, content, nickName, oUserId, createDate, rank FROM ( SELECT albumId, handleId, parentHandleId, content, nickName, oUserId,";
+    sql += "createDate, IF ( @albumId = b.albumId, @rank := @rank + 1, @rank := 1 ) AS rank ,@albumId := b.albumId FROM ( SELECT albumId, handleId, parentHandleId, content, ";
+    sql += "nickName, oUserId, createDate FROM XL_CLASS_ALBUM_HANDLE WHERE state = 1 AND albumId in(";
+    for (var i = 0; i < albumIds.length; i++) {
+        sql += "?,";
+        tempArgs.push(albumIds[i]);
+    }
+    sql = sql.substr(0, sql.length - 1) + ") ";
+    for (var key in obj) {
+        sql += " and " + key + "=?"
+        tempArgs.push(obj[key]);
+    }
+    sql += " ORDER BY albumId, handleId ) b, ( SELECT @NAME := NULL, @rank := 0 ) a ) result WHERE rank <= ?";
+    tempArgs.push(length);
+    mysqlUtil.query(sql, tempArgs, callback);
+}
+
 Photos.queryByAlbumType = function (start, pageSize, photoLength, commentLength, queryCondition, cb) {
     var tasks = [function (callback) {
         var sql = "select * from XL_CLASS_ALBUM m where state=1 ";
@@ -507,7 +606,7 @@ Photos.findOne = function (albumId, cb) {
 
         });
     }, function (album, callback) {
-        mysqlUtil.query("select * from XL_CLASS_ALBUM_PIC where albumId=? and state=1 order by picId", [album[0]], function (err, res) {
+        mysqlUtil.query("select picId,picUrl,createDate from XL_CLASS_ALBUM_PIC where albumId=? and state=1 order by picId", [album[0]], function (err, res) {
             if (err) {
                 return callback(err);
             }
@@ -515,7 +614,7 @@ Photos.findOne = function (albumId, cb) {
             callback(err, album);
         });
     }, function (album, callback) {
-        mysqlUtil.query("select * from XL_CLASS_ALBUM_HANDLE where albumId=? and handleType=2 and state=1 order by handleId ", [album[0]], function (err, res) {
+        mysqlUtil.query("select handleId,parentHandleId as pHandleId,content,nickName,oUserId as userId,createDate from XL_CLASS_ALBUM_HANDLE where albumId=? and handleType=2 and state=1 order by handleId ", [album[0]], function (err, res) {
             if (err) {
                 return callback(err);
             }
@@ -523,7 +622,7 @@ Photos.findOne = function (albumId, cb) {
             callback(err, album);
         });
     }, function (album, callback) {
-        mysqlUtil.query("select * from XL_CLASS_ALBUM_HANDLE where albumId=? and handleType=1 and state=1 order by handleId ", [album[0]], function (err, res) {
+        mysqlUtil.query("select handleId as likeId,nickName,oUserId as userId,createDate from XL_CLASS_ALBUM_HANDLE where albumId=? and handleType=1 and state=1 order by handleId ", [album[0]], function (err, res) {
             if (err) {
                 return callback(err);
             }
