@@ -23,7 +23,7 @@ Class.listAllByTeacherId = function(teacherId, callback){
  * @param callback
  */
 Class.listTeacherByClassId = function(classId, callback){
-    mysqlUtil.query("select A.classId,A.isMaster,A.jobType,B.nickName,B.userName,B.custName,B.userId from XL_CLASS_TEACHER_REL A,XL_USER B where A.tUserId=B.userId and A.state=1 and A.classId=?", [classId], callback);
+    mysqlUtil.query("select A.classId,A.isMaster,A.jobType,B.nickName,B.userName,B.custName,B.userId,B.yunAccout from XL_CLASS_TEACHER_REL A,XL_USER B where A.tUserId=B.userId and A.state=1 and A.classId=?", [classId], callback);
 }
 
 /**
@@ -32,7 +32,7 @@ Class.listTeacherByClassId = function(classId, callback){
  * @param callback
  */
 Class.findPrincipalBySchoolId = function(classId, callback){
-    var sql = "select C.userId,C.userName,C.custName,C.nickName,A.schoolId,A.schoolName from XL_SCHOOL A, XL_CLASS B, XL_USER C where A.schoolId=B.schoolId and A.sUserId=C.userId and B.classId=?";
+    var sql = "select C.userId,C.userName,C.custName,C.nickName,A.schoolId,A.schoolName,C.yunAccout from XL_SCHOOL A, XL_CLASS B, XL_USER C where A.schoolId=B.schoolId and A.sUserId=C.userId and B.classId=?";
     mysqlUtil.queryOne(sql, [classId], callback);
 }
 
@@ -42,7 +42,7 @@ Class.findPrincipalBySchoolId = function(classId, callback){
  * @param callback
  */
 Class.listParentsByClassId = function(classId, callback){
-    var sql = "select A.studentId,A.studentName,C.userId,C.userName,C.nickName,C.custName from XL_STUDENT A,XL_USER_STUDENT_REL B,XL_USER C where A.studentId=B.studentId and B.userId=C.userId and A.state=1 and B.state=1 and classId=? order by B.studentId";
+    var sql = "select A.studentId,A.studentName,C.userId,C.userName,C.nickName,C.custName,C.yunAccout from XL_STUDENT A,XL_USER_STUDENT_REL B,XL_USER C where A.studentId=B.studentId and B.userId=C.userId and A.state=1 and B.state=1 and classId=? order by B.studentId";
     mysqlUtil.query(sql, [classId], callback);
 }
 
