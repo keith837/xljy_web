@@ -33,8 +33,8 @@ User.update = function(obj, userId, callback){
     mysqlUtil.query(sql, args, callback);
 }
 
-User.active = function(userName, password, callback){
-    mysqlUtil.query("update XL_USER set state = 1,doneDate = now(),password=? where userName = ?", [password, userName], callback);
+User.active = function(userName, password, yunAccout, callback){
+    mysqlUtil.query("update XL_USER set state = 1,doneDate = now(),password=?,yunAccout=? where userName = ?", [password, yunAccout, userName], callback);
 }
 
 User.modifyPwd = function(userName, password, callback){

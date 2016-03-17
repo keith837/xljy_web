@@ -4,6 +4,7 @@ var jwt = require("jwt-simple");
 var moment = require('moment');
 var formidable = require("formidable");
 var path = require("path");
+var imCore = require("../../core/utils/alim/imCore.js");
 
 module.exports = new basicController(__filename).init({
 
@@ -154,6 +155,8 @@ module.exports = new basicController(__filename).init({
                                 pointNum : user.pointNum,
                                 userUrl : user.userUrl,
                                 token : user.token,
+                                yunAccout : user.yunAccout,
+                                yunPassword : imCore.getPasswordHash(user.yunAccout),
                                 webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
                                 students : retStudents
                             }
@@ -188,6 +191,8 @@ module.exports = new basicController(__filename).init({
                         pointNum : user.pointNum,
                         userUrl : user.userUrl,
                         token : user.token,
+                        yunAccout : user.yunAccout,
+                        yunPassword : imCore.getPasswordHash(user.yunAccout),
                         webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
                         students : retStudents
                     }
@@ -237,6 +242,8 @@ module.exports = new basicController(__filename).init({
                         pointNum : user.pointNum,
                         userUrl : user.userUrl,
                         token : user.token,
+                        yunAccout : user.yunAccout,
+                        yunPassword : imCore.getPasswordHash(user.yunAccout),
                         webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
                         class : {
                             classId : classes[0].classId,
@@ -301,6 +308,8 @@ module.exports = new basicController(__filename).init({
                     pointNum : user.pointNum,
                     userUrl : user.userUrl,
                     token : user.token,
+                    yunAccout : user.yunAccout,
+                    yunPassword : imCore.getPasswordHash(user.yunAccout),
                     webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
                     schools : retSchools
                 }
@@ -358,6 +367,8 @@ module.exports = new basicController(__filename).init({
                     pointNum : user.pointNum,
                     userUrl : user.userUrl,
                     token : user.token,
+                    yunAccout : user.yunAccout,
+                    yunPassword : imCore.getPasswordHash(user.yunAccout),
                     webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
                     schools : retSchools
                 }
@@ -402,6 +413,8 @@ module.exports = new basicController(__filename).init({
                     pointNum : user.pointNum,
                     userUrl : user.userUrl,
                     token : user.token,
+                    yunAccout : user.yunAccout,
+                    yunPassword : imCore.getPasswordHash(user.yunAccout),
                     webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
                     schools : retSchools
                 }
@@ -650,10 +663,10 @@ module.exports = new basicController(__filename).init({
                     if(!students || students.length <= 0){
                         return next(new Error("该家长未关联宝贝，不能注册"));
                     }
-                    self.active(userName, securityCode, password, res, next);
+                    self.active(user, userName, securityCode, password, res, next);
                 });
             }else if(groupId == 20){
-                self.model['class'].listByTeacherId(user.userId, function(err, classes){
+                self.model['class'].listByTeacherId(user, function(err, classes){
                     if(err){
                         return next(err);
                     }
@@ -663,16 +676,16 @@ module.exports = new basicController(__filename).init({
                     if(classes.length > 1){
                         return next(new Error("该老师带班数量不唯一"));
                     }
-                    self.active(userName, securityCode, password, res, next);
+                    self.active(user, userName, securityCode, password, res, next);
                 });
             }else{
-                self.active(userName, securityCode, password, res, next);
+                self.active(user, userName, securityCode, password, res, next);
             }
 
         });
     },
 
-    active : function(userName, securityCode, password, res, next){
+    active : function(user, userName, securityCode, password, res, next){
         var self = this;
         self.model['smsLog'].findOne(userName, securityCode, function (err, smsLog) {
             if (err) {
@@ -686,13 +699,20 @@ module.exports = new basicController(__filename).init({
             if (smsLog.sendDate < moment(date).format("YYYY-MM-DD HH:mm:ss")) {
                 return next(new Error("短信验证码已过期"));
             }
-            self.model['user'].active(userName, password, function (err, data) {
-                if (err) {
+            var yunUser = "yunuser_" + user.userId;
+            var yunPassword = imCore.getPasswordHash(yunUser);
+            imCore.regUser(yunUser, yunPassword, user.custName, function(err, yunRes){
+                if(err){
                     return next(err);
                 }
-                res.json({
-                    code: "00",
-                    msg: "注册成功"
+                self.model['user'].active(userName, password, yunUser, function (err, data) {
+                    if (err) {
+                        return next(err);
+                    }
+                    res.json({
+                        code: "00",
+                        msg: "注册成功"
+                    });
                 });
             });
         });
