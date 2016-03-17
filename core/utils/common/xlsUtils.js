@@ -15,11 +15,13 @@ var input = module.exports.input = function (filter, result, tablename, userObj,
 
     var mapi2 = {}
     var valdata = [];
+    var maxLength = 0;
     for (var x in result) {
         if (x == 0) {
             //做出对应map
             for (var xxx in result[0]) {
                 mapi2[xxx] = result[0][xxx];
+                maxLength++;
             }
             for (var xxx in mapi2) {
                 if (typeof filter[mapi2[xxx]] == "string") {
@@ -43,7 +45,7 @@ var input = module.exports.input = function (filter, result, tablename, userObj,
 
         var temparr = [];
         var hasData = false;
-        for (var i in result[x]) {
+        for (var i = 0; i < maxLength; i++) {
             if (result[x][0] == "") {
                 break;
             }
@@ -51,6 +53,8 @@ var input = module.exports.input = function (filter, result, tablename, userObj,
                 temparr.push(result[x][i])
             } else if (typeof filter[mapi2[i]] == "object") {
                 temparr.push(filter[mapi2[i]].oper(result[x][i]))
+            } else {
+                temparr.push("");
             }
             hasData = true;
         }

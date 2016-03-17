@@ -117,7 +117,8 @@ module.exports = new basicController(__filename).init({
         }, function importFile(data, callback) {
             xlsUtils.input(data[1].filter, data[0], data[1].table, userObj, function (err, res) {
                 if (err) {
-                    return callback(err);
+                    log.error(err);
+                    return callback(new Error("数据导入临时表出错."));
                 }
                 log.info("batchId=[" + batchId + "],导入临时表数条数" + res.affectedRows);
                 callback(err, data[1].importSQL);
