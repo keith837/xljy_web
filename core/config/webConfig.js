@@ -24,6 +24,8 @@ var webConfig = {
     iDisplayStart: 0,
     iDisplayPhotoLength: 9,
     iDisplayCommentLength: 6,
-    VIEWSPATH: 'app/views'
+    VIEWSPATH: 'app/views',
+    IM_APPKEY: '23311805',
+    IM_APPSECRET: '659744536d30b755129311932aab92d7'
 }
 module.exports = webConfig;
