@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>响亮教育管理平台</title>
@@ -42,6 +42,7 @@
                                     <div class="control-group">
                                         <label class="control-label" for="className">名称<span style="color: red;">*</span></label>
                                         <div class="controls">
+                                            <input type="hidden" id="editType" name="editType" value="add" />
                                             <input type="text" id="className" name="className" placeholder="班级名称" class="span3">
                                         </div>
                                     </div>
@@ -49,6 +50,7 @@
                                         <label class="control-label" for="schoolId">学校<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <input type="text" id="schoolId" name="schoolId" placeholder="请选择学校" class="span3">
+                                            <input type="text" style="display: none;" disabled="disabled" id="schoolName" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -61,6 +63,7 @@
                                         <label class="control-label" for="gradeId">年级<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <input type="text" id="gradeId" name="gradeId" placeholder="请选择年级" class="span3">
+                                            <input type="text" style="display: none;" disabled="disabled" id="gradeName" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -79,6 +82,7 @@
                                         <div class="controls">
                                             <button type="submit" class="btn">提交</button>
                                             <button type="reset" class="btn">重置</button>
+                                            <button type="button" id="backBtn" style="display: none;" class="btn" onclick="javascript:history.back();">返回</button>
                                         </div>
                                     </div>
                                 </form>
@@ -90,12 +94,12 @@
         </div>
     </div>
 
-        <div class="row-fluid">
-            <div id="footer" class="span12">
-                Copyright 浙江响亮教育科技股份有限公司 © 2015 <a href="https://wrapbootstrap.com/user/diablo9983">响亮教育</a>
-            </div>
+    <div class="row-fluid">
+        <div id="footer" class="span12">
+            Copyright 浙江响亮教育科技股份有限公司 © 2015 <a href="https://wrapbootstrap.com/user/diablo9983">响亮教育</a>
         </div>
     </div>
+</div>
 
 
 <script src="js/jquery.min.js"></script>
@@ -115,13 +119,41 @@
 <script>
 
     $(document).ready(function(){
-        $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
-        $("#tUserId").select2({data: [{id: -1, text: "请选择用户"}]});
-        $("#gradeId").select2({data: [{id: -1, text: "请选择用户"}]});
-        loadSchool();
-        loadUser(30,"tUserId");
-        loadGrade("gradeId");
-        initValidator();
+
+        var classId = $.url.param('classId');
+        if (classId) {
+            $('#backBtn').css("display", "");
+            $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>更新班级</a>");
+
+
+            $.get("/api/class/show/" + classId, null, function (json) {
+                if (json.code == "00") {
+                    $("#className").val(json.data.className);
+                    $("#editType").val("edit");
+                    $("#schoolName").val(json.data.schoolName);
+                    $("#tUserId").val(json.data.tUserId);
+                    $("#gradeName").val(json.data.gradeName);
+
+                    $("#tUserId").css("display", "none");
+                    $("#schoolId").css("display", "none");
+                    $("#gradeId").css("display", "none");
+                    $("#schoolName").css("display", "");
+                    $("#gradeName").css("display", "");
+
+                }
+            }, 'json');
+        } else {
+            $('#resetBtn').css("display", "");
+            $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>新增班级</a>");
+
+            $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
+            $("#tUserId").select2({data: [{id: -1, text: "请选择用户"}]});
+            $("#gradeId").select2({data: [{id: -1, text: "请选择用户"}]});
+            loadSchool();
+            loadUser(30,"tUserId");
+            loadGrade("gradeId");
+            initValidator();
+        }
         $("#classForm").validate({
             ignore: ".ignore",
             rules:{
@@ -148,7 +180,14 @@
                 $(element).parents('.control-group').addClass('success');
             },
             submitHandler: function(form) {
-                saveOrUpdate("/api/class/add", "post", "#classForm","class.html");
+                var editType = $("#editType").val();
+                var url = "/api/class/add";
+                var type = "post";
+                if ("edit" == editType) {
+                    url = "/api/class/modify/" + classId;
+                    type = "put";
+                }
+                saveOrUpdate(url, type, "#classForm","class.html");
             }
         });
     })

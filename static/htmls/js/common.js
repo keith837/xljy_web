@@ -273,6 +273,31 @@ function loadGroup() {
         }
     });
 }
+
+function loadGroupByGroupId(groupId) {
+    $.ajax({
+        url: "/api/group/mylist/"+groupId,    //后台webservice里的方法名称
+        type: "get",
+        dataType: "json",
+        contentType: "application/json",
+        traditional: true,
+        success: function (data) {
+            if (data.code == "00") {
+                var jsonObj = data.data;
+                var options = [];
+                for (var j = 0; j < jsonObj.length; j++) {
+                    options.push({id: jsonObj[j].groupId, text: jsonObj[j].groupName});
+                }
+                $("#groupId").select2({data: options});
+            } else {
+                $("#groupId").select2({data: [{id: -1, text: "请选择用户组"}]});
+            }
+        },
+        error: function (msg) {
+            $("#groupId").select2({data: [{id: -1, text: "请选择用户组"}]});
+        }
+    });
+}
 //加载用户
 function loadUser(groupId,selectId) {
     $.ajax({

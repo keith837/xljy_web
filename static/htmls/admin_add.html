@@ -58,10 +58,10 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="groupId">学校<span style="color: red;">*</span></label>
+                                        <label class="control-label" for="roleId">角色<span style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <input type="text" id="schoolId" name="schoolId" placeholder="请选择学校" class="span3">
-                                            <input type="text" style="display: none;" disabled="disabled" id="schoolName" class="span3">
+                                            <input type="text" id="roleId" name="roleId" placeholder="请选择角色" class="span3">
+                                            <input type="text" style="display: none;" disabled="disabled" id="roleName" name="roleName" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -163,17 +163,26 @@
         var userId = $.url.param('userId');
         if (userId) {
             $('#backBtn').css("display", "");
-            $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>更新用户</a>");
+            $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>更新管理员</a>");
 
 
             $.get("/api/user/show/" + userId, null, function (json) {
                 if (json.code == "00") {
+                    console.info(json.data);
                     $("#userName").val(json.data.userName);
                     $("#editType").val("edit");
-                    $("#schoolName").val(json.data.schoolName);
-                    $("#schoolId").val(json.data.schoolId);
                     $("#groupName").val(json.data.groupName);
                     $("#groupId").val(json.data.groupId);
+                    if(json.data.roleId==30){
+                        $("#roleName").val("园长");
+                    }
+                    if(json.data.roleId==40){
+                        $("#roleName").val("集团园长");
+                    }
+                    if(json.data.roleId==50){
+                        $("#roleName").val("超级园长");
+                    }
+                    $("#roleId").val(json.data.roleId);
                     $("#custName").val(json.data.custName);
                     $("#nickName").val(json.data.nickName);
                     $("#billId").val(json.data.billId);
@@ -183,21 +192,35 @@
                     $("#birthday").val(json.data.birthday==null?"":json.data.birthday);
                     $("#remark").val(json.data.remark==null?"":json.data.remark);
 
-                    $("#schoolId").css("display", "none");
                     $("#groupId").css("display", "none");
+                    $("#roleId").css("display", "none");
                     $("#schoolName").css("display", "");
                     $("#groupName").css("display", "");
+                    $("#roleName").css("display", "");
 
                 }
             }, 'json');
         } else {
             $('#resetBtn').css("display", "");
-            $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>新增用户</a>");
+            $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>新增管理员</a>");
+            //$("#roleId").select2({data: [{id: -1, text: "请选择角色"}]});
+            var groupSelect = $("#groupId").select2({data: [{id: -1, text: "请选择用户组"}]});
+            $("#roleId").css("display", "none");
+            $("#roleName").css("display", "")
+            groupSelect.on("change", function (e) {
+                //initNullSelect("#roleId");
+//                var roles = [];
+//                roles.push({id: $(this).val(), text: $("#groupId").select2("data").text});
 
-            $("#groupId").select2({data: [{id: -1, text: "请选择用户组"}]});
-            $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
-            loadGroupByGroupId(30);
-            loadSchool();
+                $("#roleId").val($(this).val());
+                $("#roleName").val($("#groupId").select2("data").text);
+            });
+            var options = [];
+            options.push({id: 50, text: "超级园长"});
+            options.push({id: 40, text: "集团园长"});
+            options.push({id: 30, text: "园长"});
+            $("#groupId").select2({data: options});
+
 
         }
         initValidator();
@@ -211,9 +234,6 @@
                 password:{
                     required:true
                 },
-                groupId:{
-                    required:true
-                },
                 custName:{
                     required:true
                 },
@@ -223,6 +243,9 @@
                 billId:{
                     required:true,
                     isMobile:true
+                },
+                roleId:{
+                    required:true
                 },
                 gender:{
                     required:true
@@ -249,7 +272,27 @@
                     url = "/api/user/modify/" + userId;
                     type = "put";
                 }
-                saveOrUpdate(url, type, "#userForm","user.html");
+                //saveOrUpdate(url, type, "#userForm","user.html");
+                $.ajax({
+                    url: url,
+                    type: type,
+                    data: $("#userForm").serialize()
+
+                }).done(function (data) {
+                    if (data.code == "00") {
+                        console.info(data);
+                        swal({title: "保存成功!", text: "保存成功", timer: autoCloseTime, showConfirmButton: true}, function () {
+                            setTimeout(function () {
+                                window.location.href = "user.html";
+                            }, 2000);
+                        });
+                    } else {
+                        swal({title: "保存失败!", text:  data.msg,type:"error", timer: autoCloseTime});
+                    }
+                }).fail(function () {
+                    swal({title: "保存失败!", text: "保存失败",type:"error", timer: autoCloseTime});
+                });
+
             }
         });
     });

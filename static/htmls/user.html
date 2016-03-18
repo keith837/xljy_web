@@ -235,7 +235,13 @@
         $('.data-table tbody').on( 'click', 'button#editrow', function () {
             //var row = table.row( $(this).parents('tr') ).data();
             var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
-            window.location.href="user_add.html?userId="+row.userId;
+            var groupId = row.groupId;
+            if(groupId == 40 || groupId==50 ){
+                window.location.href="admin_add.html?userId="+row.userId;
+            }else{
+                window.location.href="user_add.html?userId="+row.userId;
+            }
+
 
         });
         $('.data-table tbody').on( 'click', 'button#viewrow', function () {
