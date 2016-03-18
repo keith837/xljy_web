@@ -39,50 +39,54 @@
 
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form class="form-horizontal" id="noticeForm" method="post">
+                                <form class="form-horizontal" name="userForm" id="userForm">
                                     <div class="control-group">
-                                        <label class="control-label" for="noticeTitle">标题</label>
-                                        <div class="controls">
-                                            <input type="text" id="noticeTitle" name="noticeTitle" placeholder="标题" class="span3">
+                                        <label class="control-label">通知编号</label>
+                                        <label class="control-label" id="noticeId" name="noticeId"></label>
+
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">通知类型</label>
+                                        <label class="control-label" id="noticeTypeId" name="noticeTypeId"></label>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">标题</label>
+                                        <label class="control-label" id="noticeTitle" name="noticeTitle"></label>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">通知内容</label>
+                                        <label class="control-label" id="noticeContext" name="noticeContext"></label>
+                                    </div>
+                                    <div class="control-group" id="hiddenPic" style="display: none;">
+                                        <label class="control-label">图片信息</label>
+                                        <div class="widget-content nopadding controls" id="picsDiv">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="picUrl">缩略图</label>
-                                        <div class="controls">
-                                            <input type="file" id="picUrl" name="picUrl" class="span3"/>
-                                        </div>
+                                        <label class="control-label">发布人</label>
+                                        <label class="control-label" id="userName" name="userName"></label>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="noticeTypeId">通知类型</label>
-                                        <div class="controls">
-                                            <select class="span3" id="noticeTypeId" name="noticeTypeId">
-                                                <option value="6">紧急通知</option>
-                                            </select>
-                                        </div>
+                                        <label class="control-label">生效时间</label>
+                                        <label class="control-label" id="effDate" name="effDate"></label>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="noticeContext">通知内容</label>
-                                        <div class="controls">
-                                            <textarea rows="3" id="noticeContext" name="noticeContext" class="span3"></textarea>
-                                        </div>
+                                        <label class="control-label">失效时间</label>
+                                        <label class="control-label" id="expDate" name="expDate"></label>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="effDate">生效时间</label>
-                                        <div class="controls">
-                                            <input type="text" id="effDate" name="effDate" placeholder="生效时间" class="form_datetime span5">
-                                        </div>
+                                        <label class="control-label">学校</label>
+                                        <label class="control-label" id="schoolName" name="schoolName"></label>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="expDate">失效时间</label>
-                                        <div class="controls">
-                                            <input type="text" id="expDate" name="expDate" placeholder="失效时间" class="form_datetime span5">
-                                        </div>
+                                        <label class="control-label">班级</label>
+                                        <label class="control-label" id="className" name="className"></label>
                                     </div>
+
 
                                     <div class="control-group">
                                         <div class="controls">
-                                            <button type="submit" class="btn">提交</button>
-                                            <button type="reset" class="btn">重置</button>
+                                            <button type="button" class="btn" id="back" onclick="javascript:history.back();">返回</button>
                                         </div>
                                     </div>
                                 </form>
@@ -114,6 +118,7 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/jquery.validate.js"></script>
 <script src="js/unicorn.js"></script>
+<script src="js/jquery.url.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
 <script src="js/sweetalert.min.js" charset="utf-8"></script>
 <script src="js/bootstrap-datetimepicker.min.js"></script>
@@ -124,41 +129,54 @@
      * tables
      **/
     $(document).ready(function () {
-        initDateTimePicker();
+        var noticeId = $.url.param('noticeId');
 
-        $("#noticeForm").validate({
-            ignore: ".ignore",
-            rules:{
-                noticeTitle:{
-                    required:true
-                },
-                noticeTypeId:{
-                    required:true
-                },
-                noticeContext:{
-                    required:true
-                },
-                effDate:{
-                    required:true
-                },
-                expDate:{
-                    required:true
+        $.get("/api/notices/" + noticeId, null, function (json) {
+            if (json.code == "00") {
+                $("#noticeId").text(json.data[0].noticeId);
+                var noticeTypeId = json.data[0].noticeTypeId;
+                var noticeType = "";
+                switch (noticeTypeId) {
+                    case 1:
+                        noticeType = "班级通知";
+                        break;
+                    case 2:
+                        noticeType = "教师通知";
+                        break;
+                    case 3:
+                        noticeType = "家长通知";
+                        break;
+                    case 4:
+                        noticeType = "今日食谱";
+                        break;
+                    case 5:
+                        noticeType = "工作计划";
+                        break;
+                    case 6:
+                        noticeType = "紧急通知";
+                        break;
+                    case 7:
+                        noticeType = "今日作业";
+                        break;
+                    default:
+                        noticeType = "未知类型";
                 }
-            },
-            errorClass: "help-inline",
-            errorElement: "span",
-            highlight:function(element, errorClass, validClass) {
-                $(element).parents('.control-group').addClass('error');
-            },
-            unhighlight: function(element, errorClass, validClass) {
-                $(element).parents('.control-group').removeClass('error');
-                $(element).parents('.control-group').addClass('success');
-            },
-            submitHandler: function(form) {
-                var noticeTypeId = $("#noticeTypeId").val();
-                saveOrUpdate("/api/notices?noticeTypeId="+noticeTypeId, "post", "#noticeForm", "notice.html");
+                $("#noticeTypeId").text(noticeType);
+                $("#noticeTitle").text(json.data[0].noticeTitle);
+                $("#noticeContext").text(json.data[0].noticeContext);
+                $("#userName").text(json.data[0].userName);
+                $("#effDate").text(json.data[0].effDate);
+                $("#expDate").text(json.data[0].expDate);
+                $("#schoolName").text(json.data[0].schoolName);
+                $("#className").text(json.data[0].className);
+
+                var pic = json.data[0].picPaths;
+                if (typeof(pic) != "undefined" && pic.length > 0) {
+                    $("#picsDiv").html("<img src=" + pic[0].picUrl + " height='100' width='100'/>");
+                    $("#hiddenPic").show();
+                }
             }
-        });
+        }, 'json');
 
     });
 

@@ -181,7 +181,7 @@
                     "targets": [10],
                     "data": null,
                     "bSortable": false,
-                    "defaultContent": "<button class='btn'><i class='icon-eye-open'></i> 详情</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
+                    "defaultContent": "<button class='btn' id='detailrow'><i class='icon-eye-open'></i> 详情</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
                 }
             ]
         };
@@ -215,6 +215,13 @@
             //var row = table.row( $(this).parents('tr') ).data();
             var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
             deleteRow("您将删除相册编号【"+row.albumId+"】",'/api/photos/'+row.albumId,'DELETE',null,table);
+        });
+
+        $('.data-table tbody').on( 'click', 'button#detailrow', function () {
+            //var row = table.row( $(this).parents('tr') ).data();
+            var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
+            window.location.href="album_detail.html?albumId="+row.albumId;
+
         });
 
 
