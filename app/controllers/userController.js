@@ -759,7 +759,7 @@ module.exports = new basicController(__filename).init({
         var self = this;
         var userName = req.body.userName;
         var roleId = req.body.roleId ? parseInt(req.body.roleId) : 0;
-        var schoolId = req.body.schoolId ? parseInt(req.body.schoolId) : req.user.schools[0].schoolId;
+        var schoolId = req.body.schoolId;
         var password = req.body.password;
         var nickName = req.body.nickName;
         var groupId = req.body.groupId;
@@ -770,6 +770,14 @@ module.exports = new basicController(__filename).init({
         var address = req.body.address;
         var birthday = req.body.birthday;
         var remark = req.body.remark;
+        if(groupId == 30 || groupId == 40 || groupId == 50){
+            schoolId = null;
+        }else{
+            if(!schoolId){
+                return next(new Error("学校编号不能为空"));
+            }
+            schoolId = parseInt(schoolId);
+        }
         if(!userName){
             return next(new Error("登录名不能为空"));
         }
