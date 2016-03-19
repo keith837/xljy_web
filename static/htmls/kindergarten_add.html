@@ -124,7 +124,7 @@
     $(document).ready(function(){
         $("#sUserId").select2({data: [{id: -1, text: "请选择用户"}]});
         $("#brandId").select2({data: [{id: -1, text: "请选择品牌"}]});
-        loadUser(30,"sUserId");
+        loadSuser(30,"sUserId");
         loadBrand("brandId");
         initValidator();
         $("#schoolForm").validate({
@@ -161,6 +161,12 @@
         $("#schoolForm").ajaxForm({
             url: "/api/school/add",
             type:"post",
+//            beforeSubmit:function(data){
+//                var sUserIdVal = $("#sUserId").val();
+//                if(sUserIdVal==null || sUserIdVal=="-1"){
+//                    swal({title: "提交失败!", text: "请选择用户", type: "error", timer: autoCloseTime});
+//                }
+//            },
             success: function (data) {
                 if (data.code == "00") {
                     swal({

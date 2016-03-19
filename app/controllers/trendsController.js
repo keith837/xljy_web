@@ -227,7 +227,7 @@ module.exports = new basicController(__filename).init({
         if(!commentId || commentId < 0){
             return next(new Error("评论编号不能为空"));
         }
-        self.model['album'].delComment(commentId, function (err, data) {
+        self.model['album'].deleteComment(commentId, function (err, data) {
             if (err) {
                 return next(err);
             }

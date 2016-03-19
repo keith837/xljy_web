@@ -33,6 +33,11 @@ function initValidator(){
         var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
         return this.optional(element) || (length == 11 && mobile.test(value));
     }, "请正确填写您的手机号码");
+    jQuery.validator.addMethod("checkValue",function(value,element) {
+        if (value == "-1") {
+            return false;
+        }
+    }, "请选择下拉框值");
 }
 
 
@@ -305,6 +310,32 @@ function loadUser(groupId,selectId) {
         type: "get",
         dataType: "json",
         data: {groupId:groupId},
+        contentType: "application/json",
+        traditional: true,
+        success: function (data) {
+            if (data.code == "00") {
+                var options = [];
+                $.each(data.data, function (i, item) {
+                    options.push({id: item.userId, text: item.custName});
+                })
+                $("#"+selectId).select2({data: options});
+
+            } else {
+                initNullSelect("#"+selectId);
+            }
+        },
+        error: function (msg) {
+            initNullSelect("#"+selectId);
+        }
+    });
+}
+
+//加载园长
+function loadSuser(groupId,selectId) {
+    $.ajax({
+        url: "/api/user/principals/"+groupId,    //后台webservice里的方法名称
+        type: "get",
+        dataType: "json",
         contentType: "application/json",
         traditional: true,
         success: function (data) {

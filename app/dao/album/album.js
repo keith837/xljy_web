@@ -7,8 +7,8 @@ Album.delete = function(albumType, trendsId, userId, callback){
     mysqlUtil.query("update XL_ALBUM set state = 0, doneDate=now(), oUserId = ? where albumId = ? and albumType = ?", [userId, trendsId, albumType], callback);
 }
 
-Album.delComment = function(handleId, callback){
-    mysqlUtil.query("delete from XL_ALBUM_HANDLE where handleId = ? or pHandleId = ?", [handleId, handleId], callback);
+Album.deleteComment = function(commentId, callback){
+    mysqlUtil.query("delete from XL_ALBUM_HANDLE where handleId = ? or pHandleId = ?", [commentId, commentId], callback);
 }
 
 Album.cancelAlbumLike = function(albumId, userId, callback){
