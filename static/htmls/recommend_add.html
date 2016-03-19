@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/select2.css" />
     <link rel="stylesheet" href="css/unicorn.main.css" />
     <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <link rel="stylesheet" href="css/sweetalert.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
 <body>
@@ -21,7 +22,6 @@
 <div id="content">
     <div id="breadcrumb">
         <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 推荐管理</a>
-        <a href="#" class="current">新增推广信息</a>
     </div>
     <div class="container-fluid">
         <div class="row-fluid">
@@ -37,23 +37,32 @@
 
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form class="form-horizontal">
-                                    <div class="control-group">
+                                <form class="form-horizontal" name="recomForm" id="recomForm">
+                                    <!--<div class="control-group">-->
+                                        <!--<label class="control-label" for="schoolId">学校<span style="color: red;">*</span></label>-->
+                                        <!--<div class="controls">-->
+                                            <!--<input type="text" id="schoolId" name="schoolId" placeholder="请选择学校" class="span5">-->
+                                            <!--<input type="text" style="display: none;" disabled="disabled" id="schoolName" class="span5">-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <div class="control-group control-inline">
                                         <label class="control-label" for="consultTitle">标题<span style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <input type="text" id="consultTitle" placeholder="标题" class="span3">
+                                            <input type="hidden" id="editType" name="editType" value="add" />
+                                            <input type="hidden" id="consultContent" name="consultContent" value="" />
+                                            <input type="text" id="consultTitle" name="consultTitle" placeholder="标题" class="span5"> <input type="checkbox" id="isMain" name="isMain">是否头条
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="consultUrl">缩略图<span style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <input type="file" id="consultUrl" class="span3"/>
+                                            <input type="file" id="consultUrl" name="consultUrl" class="span5"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="consultLink">链接<span style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <input type="text" id="consultLink" placeholder="链接" class="span3">
+                                            <input type="text" id="consultLink" name="consultLink" placeholder="链接" class="span5">
                                         </div>
                                     </div>
 
@@ -61,6 +70,7 @@
                                         <div class="controls">
                                             <button type="submit" class="btn">提交</button>
                                             <button type="reset" class="btn">重置</button>
+                                            <button type="button" id="backBtn" style="display: none;" class="btn" onclick="javascript:history.back();">返回</button>
                                         </div>
                                     </div>
                                 </form>
@@ -84,15 +94,74 @@
 <script src="js/jquery.cookie.js" charset="utf-8"></script>
 <script src="js/common.js"></script>
 <script src="js/jquery.ui.custom.js"></script>
+<script src="js/jquery.validate.js"></script>
+<script src="js/jquery.form.min.js"></script>
+<script src="js/jquery.url.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-colorpicker.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
 <script src="js/jquery.uniform.js"></script>
 <script src="js/select2.min.js"></script>
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
+<script src="js/sweetalert.min.js" charset="utf-8"></script>
 
+<script>
 
+    $(document).ready(function () {
+        $('#resetBtn').css("display", "");
+        $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>新增推荐</a>");
+
+        initValidator();
+        $("#recomForm").validate({
+            ignore: ".ignore",
+            rules:{
+                consultTitle:{
+                    required:true
+                },
+                consultUrl:{
+                    required:true
+                },
+                consultLink: {
+                    required: true,
+                    url:true
+                }
+            },
+            errorClass: "help-inline",
+            errorElement: "span",
+            highlight:function(element, errorClass, validClass) {
+                $(element).parents('.control-group').addClass('error');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).parents('.control-group').removeClass('error');
+                $(element).parents('.control-group').addClass('success');
+            }
+        });
+        $("#recomForm").ajaxForm({
+            url: "/api/recom",
+            "type":"post",
+            success: function (data) {
+                if (data.code == "00") {
+                    swal({
+                        title: "保存成功!",
+                        text: "保存成功",
+                        timer: autoCloseTime,
+                        showConfirmButton: true
+                    }, function () {
+                        setTimeout(function () {
+                            window.location.href = "recommend.html";
+                        }, 2000);
+                    });
+                } else {
+                    swal({title: "保存失败!", text: data.msg, type: "error", timer: autoCloseTime});
+                }
+            },
+            error: function (data) {
+                swal({title: "保存失败!", text: "保存失败!", type: "error", timer: autoCloseTime});
+            }
+        });
+    });
+
+</script>
 </body>
 </html>
