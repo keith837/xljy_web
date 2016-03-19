@@ -377,6 +377,11 @@ var routerConfig = {
                 "method": "post",
                 "description": "动态评论"
             },
+            "delComment": {
+                "url": "/api/trends/comment/:commentId",
+                "method": "delete",
+                "description": "评论删除"
+            },
             "moreComment": {
                 "url": "/api/trends/moreComment/:trendsId",
                 "method": "get",
