@@ -178,7 +178,7 @@ module.exports = new basicController(__filename).init({
             }else{
                 return next(new Error("学校平面图不能为空"));
             }
-            self.model['school'].save([brandId, schoolName, sUserId, address, billId, schoolDesc, schoolUrl, h5Url, h5Title, oUserId], function(err, data){
+            self.model['school'].save([brandId, schoolName, sUserId, address, billId, schoolDesc, schoolUrl, h5Url, h5Title, oUserId], sUserId, function(err, data){
                 if(err){
                     return next(err);
                 }

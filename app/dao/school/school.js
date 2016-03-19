@@ -214,8 +214,47 @@ School.del = function(schoolId, callback){
  * @param args 参数
  * @param callback
  */
-School.save = function(args, callback){
-    var sql = "insert into XL_SCHOOL(brandId,schoolName,sUserId,address,billId,schoolDesc,schoolUrl,h5Url,h5Title,state,";
-    sql += "createDate,doneDate,oUserId) values (?,?,?,?,?,?,?,?,?,1,now(),now(),?)";
-    mysqlUtil.query(sql, args, callback);
+School.save = function(args, userId, callback){
+    mysqlUtil.getConnection(function(err, conn){
+        if(err){
+            return callback(err, null);
+        }
+        conn.beginTransaction(function(err){
+            if(err){
+                return callback.apply(null, [err, null]);
+            }
+            var sql = "insert into XL_SCHOOL(brandId,schoolName,sUserId,address,billId,schoolDesc,schoolUrl,h5Url,h5Title,state,";
+            sql += "createDate,doneDate,oUserId) values (?,?,?,?,?,?,?,?,?,1,now(),now(),?)";
+            conn.query(sql, args, function(err, school){
+                if(err){
+                    conn.rollback();
+                    conn.release();
+                    return callback(err, null);
+                }
+                if(!school){
+                    conn.rollback();
+                    conn.release();
+                    return callback(new Error("学校新增失败"), null);
+                }
+                var schoolId = school.insertId;
+                var updateSql = "update XL_USER set schoolId = ?,doneDate=now() where userId = ?";
+                conn.query(updateSql, [schoolId, userId], function(err, data){
+                    if(err){
+                        conn.rollback();
+                        conn.release();
+                        return callback(err, null);
+                    }
+                    conn.commit(function(err){
+                        if(err){
+                            conn.rollback();
+                            conn.release();
+                            return callback(err, null);
+                        }
+                        conn.release();
+                        return callback(null, school);
+                    });
+                });
+            });
+        });
+    });
 }
