@@ -6,6 +6,10 @@ User.findByUserName = function(userName, callback){
     mysqlUtil.queryOne("select * from XL_USER where state !=0 and userName=?", [userName], callback);
 }
 
+User.findByGroupIdAndNullSchoolId = function(groupId, callback){
+    mysqlUtil.query("select * from XL_USER WHERE state!=0 and groupId=? and schoolId is null", [groupId], callback);
+}
+
 User.findByUserId = function(userId, callback){
     mysqlUtil.queryOne("select B.groupName,IFNULL(C.schoolName,'无学校') schoolName,m.* from XL_USER m inner join XL_USER_GROUP B on m.groupId=B.groupId left join XL_SCHOOL C on m.schoolId=C.schoolId where m.state != 0 and m.userId=?", [userId], callback);
 }
