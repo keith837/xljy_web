@@ -63,7 +63,7 @@ User.queryNum = function(obj, custNameOrBillId, schoolIds, callback){
         }
         whereSql = whereSql.substr(0, whereSql.length - 1) + ")";
     }
-    var countSql = "select count(*) AS total from XL_USER m inner join XL_USER_GROUP B on m.groupId=B.groupId left join XL_SCHOOL C on m.userId=C.sUserId where  m.state != 0 and " + whereSql;
+    var countSql = "select count(*) AS total from XL_USER m inner join XL_USER_GROUP B on m.groupId=B.groupId left join XL_SCHOOL C on m.schoolId=C.schoolId where  m.state != 0 and " + whereSql;
     mysqlUtil.queryOne(countSql, args, callback);
 }
 
@@ -89,7 +89,7 @@ User.queryPage = function(obj, custNameOrBillId, schoolIds, start, pageSize, cal
         }
         whereSql = whereSql.substr(0, whereSql.length - 1) + ")";
     }
-    var querySql = "select B.groupName,IFNULL(C.schoolName,'无学校'),m.* from XL_USER m inner join XL_USER_GROUP B on m.groupId=B.groupId left join XL_SCHOOL C on m.schoolId=C.schoolId where m.state != 0 and " + whereSql;
+    var querySql = "select B.groupName,IFNULL(C.schoolName,'无学校') schoolName,m.* from XL_USER m inner join XL_USER_GROUP B on m.groupId=B.groupId left join XL_SCHOOL C on m.schoolId=C.schoolId where m.state != 0 and " + whereSql;
     querySql += " limit ?,?";
     args.push(start);
     args.push(pageSize);
