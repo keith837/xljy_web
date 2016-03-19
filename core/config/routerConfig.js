@@ -564,6 +564,11 @@ var routerConfig = {
                 "method": "get",
                 "description": "更多相册评论"
             },
+            "delComment": {
+                "url": "/api/photos/comment/:commentId/del",
+                "method": "delete",
+                "description": "评论删除"
+            },
             "morePhoto": {
                 "url": "/api/photos/:albumId/photo",
                 "method": "get",
