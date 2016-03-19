@@ -821,6 +821,20 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    principals : function(req, res, next){
+        var self = this;
+        var groupId = req.params.groupId;
+        self.model['user'].findByGroupIdAndNullSchoolId(groupId, function(err, users){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                data : users
+            });
+        });
+    },
+
     modify : function(req, res, next){
         var self = this;
         var userId = parseInt(req.params.userId);

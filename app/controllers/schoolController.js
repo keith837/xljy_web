@@ -295,6 +295,7 @@ module.exports = new basicController(__filename).init({
     del : function(req, res, next){
         var self = this;
         var schoolId = parseInt(req.params.schoolId);
+        var oUserId = req.user.userId;
         self.model['class'].listBySchoolId(schoolId, function(err, classes){
             if(err){
                 return next(err);
@@ -302,7 +303,7 @@ module.exports = new basicController(__filename).init({
             if(classes && classes.length > 0){
                 return next(new Error("当前学校已关联班级，不允许删除"));
             }
-            self.model['school'].del(schoolId, function(err, data){
+            self.model['school'].del(oUserId, schoolId, function(err, data){
                 if(err){
                     return next(err);
                 }else if(data.affectedRows != 1){

@@ -86,7 +86,12 @@ var routerConfig = {
                 "url": "/api/user/uppic",
                 "method": "put",
                 "description": "上传用户头像"
-            }
+            },
+            principals : {
+                "url": "/api/user/principals/:groupId",
+                "method": "get",
+                "description": "获取学校编号为空的用户信息"
+            },
         },
 
         menu : {

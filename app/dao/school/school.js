@@ -205,8 +205,42 @@ School.update = function(obj, schoolId, callback){
  * @param schoolId 学校编号
  * @param callback
  */
-School.del = function(schoolId, callback){
-    mysqlUtil.query("update XL_SCHOOL set state=0 where schoolId=?", [schoolId], callback);
+School.del = function(oUserId, schoolId, callback){
+    mysqlUtil.getConnection(function(err, conn){
+        if(err){
+            return callback(err, null);
+        }
+        conn.beginTransaction(function(err){
+            if(err){
+                return callback.apply(null, [err, null]);
+            }
+            var sql = "update XL_SCHOOL set state=0,doneDate=now(),oUserId=? where schoolId=?";
+            conn.query(sql, [oUserId, schoolId], function(err, data){
+                if(err){
+                    conn.rollback();
+                    conn.release();
+                    return callback(err, null);
+                }
+                var updateSql = "update XL_USER set schoolId = null,doneDate=now() where schoolId = ? and groupId=30";
+                conn.query(updateSql, [schoolId], function(err, data){
+                    if(err){
+                        conn.rollback();
+                        conn.release();
+                        return callback(err, null);
+                    }
+                    conn.commit(function(err){
+                        if(err){
+                            conn.rollback();
+                            conn.release();
+                            return callback(err, null);
+                        }
+                        conn.release();
+                        return callback(null, data);
+                    });
+                });
+            });
+        });
+    });
 }
 
 /**
