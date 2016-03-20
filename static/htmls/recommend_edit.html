@@ -38,7 +38,7 @@
 
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form class="form-horizontal">
+                                <form class="form-horizontal" name="recomForm" id="recomForm">
                                     <!--<div class="control-group">-->
                                         <!--<label class="control-label" for="schoolId">学校<span style="color: red;">*</span></label>-->
                                         <!--<div class="controls">-->
@@ -58,13 +58,14 @@
                                         <div class="controls">
                                             <input type="hidden" id="editType" name="editType" value="add" />
                                             <input type="hidden" id="consultLink" name="consultLink" value="" />
-                                            <input type="text" id="consultTitle" placeholder="标题" class="span5"> <input type="checkbox" id="isMain" name="isMain">是否头条
+                                            <input type="text" id="consultTitle" name="consultTitle" placeholder="标题"
+                                                   class="span5"> <input type="checkbox" id="isMain" name="isMain">是否头条
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="consultUrl">缩略图<span style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <input type="file" id="consultUrl" class="span6"/>
+                                            <input type="file" id="consultUrl" name="consultUrl" class="span6"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
