@@ -38,7 +38,7 @@
 
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form class="form-horizontal" name="recomForm" id="recomForm">
+                                <form class="form-horizontal" id="recomForm" name="recomForm">
                                     <!--<div class="control-group">-->
                                         <!--<label class="control-label" for="schoolId">学校<span style="color: red;">*</span></label>-->
                                         <!--<div class="controls">-->
@@ -58,8 +58,7 @@
                                         <div class="controls">
                                             <input type="hidden" id="editType" name="editType" value="add" />
                                             <input type="hidden" id="consultLink" name="consultLink" value="" />
-                                            <input type="text" id="consultTitle" name="consultTitle" placeholder="标题"
-                                                   class="span5"> <input type="checkbox" id="isMain" name="isMain">是否头条
+                                            <input type="text" id="consultTitle" name="consultTitle" placeholder="标题" class="span5"> <input type="checkbox" id="isMain" name="isMain">是否头条
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -121,13 +120,20 @@
 
     $(document).ready(function () {
         var ue = UE.getEditor('consultContent');
+        ue.addListener('contentchange',function(){
+            this.sync();
+            //1.2.4+以后可以直接给textarea的id名字就行了
+            $('textarea').valid();
+        });
         var options = [];
         options.push({id: 1, text: "资讯推荐"});
         options.push({id: 2, text: "校园风采"});
         options.push({id: 3, text: "精彩活动"});
         $("#consultType").select2({data: options});
         initValidator();
-        $("#recomForm").validate({
+        $("#recomForm").submit(function() {
+            ue.sync();
+        }).validate({
             ignore: ".ignore",
             rules:{
                 consultTitle:{
@@ -137,6 +143,9 @@
                     required:true
                 },
                 consultUrl:{
+                    required:true
+                },
+                consultContent:{
                     required:true
                 }
             },

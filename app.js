@@ -6,6 +6,7 @@ var ejs = require('ejs');
 var tplFilter = require("./app/filter/tplFilter");
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
+var busboy = require('connect-busboy');
 
 var loginFilter = require("./core/filter/loginFilter");
 var webConfig = require("./core/config/webConfig");
@@ -38,6 +39,7 @@ new tplFilter(ejs.filters);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
+app.use(busboy());
 
 webConfig.PRINT_ACCESS_LOG && app.use(log4js.connectLogger(loggerCall('normal'), {
     level: log4js.levels.INFO,

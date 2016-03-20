@@ -6,17 +6,41 @@ var http = require('http');
 var fs = require('fs');
 var path = require('path');
 var url = require('url');
-var uploadsPath = path.resolve('uploads') + '/';//存储图片的路径
+var timeUtils = require("../../core/utils/common/timeUtils");
 
 module.exports= new basicController(__filename).init({
+    get: function (req, res) {
+        var action = req.query.action;
+        if (action == "config") {
+            return this.config(req, res);
+        }else if(action=="listimage"){
+            return this.listimage(req,res);
+        }
+    },
+    post: function (req, res) {
+        var action = req.query.action;
+        if (action == "uploadimage") {
+            return this.uploadimage(req, res);
+        }else if(action=="catchimage"){
+            return this.catchimage(req,res);
+        }
+    },
+
+
     uploadimage: function (req, res) {
+        var self = this;
         var fstream;
         req.pipe(req.busboy);
         req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
             var filesize = 0;
             var ext = path.extname(filename);
             var newFilename = (new Date() - 0) + ext;
-            fstream = fs.createWriteStream(uploadsPath + newFilename);
+            var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "UE_UPLOAD");
+            uploadDir += timeUtils.Format("yyyy_MM_dd") + "/";
+            if (!fs.existsSync(uploadDir)) {
+                fs.mkdirSync(uploadDir);
+            }
+            fstream = fs.createWriteStream(uploadDir + newFilename);
             file.on('data', function (data) {
                 filesize = data.length;
             });
@@ -24,7 +48,7 @@ module.exports= new basicController(__filename).init({
                 res.send(JSON.stringify({
                     "originalName": filename,
                     "name": newFilename,
-                    "url": '/uploads/' + newFilename,
+                    "url": uploadDir + newFilename,
                     "type": ext,
                     "size": filesize,
                     "state": "SUCCESS"
