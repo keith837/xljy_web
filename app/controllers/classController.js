@@ -28,6 +28,52 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    weblist : function(req, res, next){
+        var self = this;
+        var start = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);
+        var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
+        var obj = new Object;
+        var className = req.query.className;
+        var gradeId = req.query.gradeId;
+        var tUserId = req.query.tUserId;
+        if(tUserId){
+            obj.tUserId = parseInt(tUserId);
+        }
+        if(gradeId){
+            obj.gradeId = parseInt(gradeId);
+        }
+        if(className){
+            obj.className = className;
+        }
+        var schoolIds = req.query.schoolId ? [req.query.schoolId] : req.user.schoolIds;
+        self.model['class'].listByPage(obj, schoolIds, start, pageSize, function(err, total, classes){
+            if(err){
+                return next(err);
+            }
+            if(!classes || classes.length <= 0){
+                return res.json(self.createPageData("00", total, classes));
+            }
+            var classIds = new Array();
+            for(var i = 0; i < classes.length; i ++){
+                classIds.push(classes[i].classId);
+            }
+            var teacherObject = new Object();
+            self.model['class'].listTeacherByClassIds(classIds, function(err, teachers){
+                for(var i = 0; i < teachers.length; i ++){
+                    var teacherArray = teacherObject[teachers[i].classId];
+                    if(!teacherArray){
+                        teacherArray = teacherObject[teachers[i].classId] = new Array();
+                    }
+                    teacherArray.push(teachers[i]);
+                }
+                for(var i = 0; i < classes.length; i ++){
+                    classes[i].teachers = teacherObject[classes[i].classId];
+                }
+                res.json(self.createPageData("00", total, classes));
+            });
+        });
+    },
+
     show : function(req, res, next){
         var self = this;
         var classId = parseInt(req.params.classId);

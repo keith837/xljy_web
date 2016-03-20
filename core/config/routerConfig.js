@@ -369,6 +369,11 @@ var routerConfig = {
                 "method": "get",
                 "description": "查询所有班级"
             },
+            "weblist": {
+                "url": "/api/class/weblist",
+                "method": "get",
+                "description": "查询所有班级(WEB端)"
+            },
             "show": {
                 "url": "/api/class/show/:classId",
                 "method": "get",

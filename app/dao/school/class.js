@@ -26,6 +26,17 @@ Class.listTeacherByClassId = function(classId, callback){
     mysqlUtil.query("select A.classId,A.isMaster,A.jobType,B.nickName,B.userName,B.custName,B.userId,B.yunAccout from XL_CLASS_TEACHER_REL A,XL_USER B where A.tUserId=B.userId and A.state=1 and A.classId=?", [classId], callback);
 }
 
+Class.listTeacherByClassIds = function(classIds, callback){
+    var sql = "select A.classId,A.isMaster,A.jobType,B.nickName,B.userName,B.custName,B.userId from XL_CLASS_TEACHER_REL A,XL_USER B where A.tUserId=B.userId and A.state=1 and A.classId in (-1";
+    var tempArgs = new Array();
+    for(var i = 0; i < classIds.length; i ++){
+        sql += ",?";
+        tempArgs.push(classIds[i]);
+    }
+    sql += ") order by A.classId,A.isMaster";
+    mysqlUtil.query(sql, tempArgs, callback);
+}
+
 /**
  * 班级园长查询
  * @param classId
