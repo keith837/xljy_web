@@ -63,11 +63,11 @@ module.exports = new basicController(__filename).init({
 
         var effDateStart = request.query.startDate;
         if (effDateStart) {
-            queryCondition.push({"key": "effDate", "opr": ">=", "val": effDateStart});
+            queryCondition.push({"key": "createDate", "opr": ">=", "val": effDateStart});
         }
         var effDateEnd = request.query.endDate;
         if (effDateEnd) {
-            queryCondition.push({"key": "effDate", "opr": "<=", "val": effDateEnd});
+            queryCondition.push({"key": "createDate", "opr": "<=", "val": effDateEnd});
         }
         var queryUserName = request.query.custName;
         if (queryUserName) {
@@ -136,15 +136,13 @@ module.exports = new basicController(__filename).init({
         var userName = request.user.custName;
         var nickName = request.user.nickName;
         if (groupId == 10 || groupId == 20) {
-            classId =  request.user.class.classId;
+            classId = request.user.class.classId;
             className = request.user.class.className;
         }
         form.parse(request, function (err, fields, files) {
             var content = fields.noticeContext;
             var title = fields.noticeTitle;
-            var effDate = fields.effDate;
-            var expDate = fields.expDate;
-            var noticeParam = [noticeTypeId, title, content, effDate, expDate, schoolId, classId, userId, schoolName, className, userName, nickName];
+            var noticeParam = [noticeTypeId, title, content, schoolId, classId, userId, schoolName, className, userName, nickName];
             var noticePics = new Array();
             for (var photos in files) {
                 noticePics.push([path.normalize(files[photos].path).replace(/\\/g, '/'), userId]);
@@ -210,9 +208,7 @@ module.exports = new basicController(__filename).init({
         form.parse(request, function (err, fields, files) {
             var content = fields.noticeContext;
             var title = fields.noticeTitle;
-            var effDate = fields.effDate;
-            var expDate = fields.expDate;
-            var noticeParam = [userId, title, content, effDate, expDate, noticeId];
+            var noticeParam = [userId, title, content, noticeId];
             var noticePics = new Array();
             for (var photos in files) {
                 noticePics.push([path.normalize(files[photos].path).replace(/\\/g, '/'), userId]);

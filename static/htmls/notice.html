@@ -69,7 +69,7 @@
                                         </tr>
                                         <tr>
                                             <td align="center" width="8%">
-                                                生效时间
+                                                创建时间
                                             </td>
                                             <td align="left">
                                                 <div class="span12" style="margin-top:5px; margin-bottom:5px">
@@ -120,8 +120,7 @@
                                 <th>标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;题</th>
                                 <th>通知内容</th>
                                 <th>发布人</th>
-                                <th>生效时间</th>
-                                <th>失效时间</th>
+                                <th>创建时间</th>
                                 <th>学校</th>
                                 <th>班级</th>
                                 <th width="16%">操作</th>
@@ -203,8 +202,7 @@
                     }
                 },
                 {"mDataProp": "userName"},
-                {"mDataProp": "effDate"},
-                {"mDataProp": "expDate"},
+                {"mDataProp": "createDate"},
                 {"mDataProp": "schoolName"},
                 {"mDataProp": "className",
                     "render": function (data) {
@@ -214,7 +212,7 @@
             ],
             "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
                 {
-                    "targets": [8],
+                    "targets": [7],
                     "data": null,
                     "bSortable": false,
                     "defaultContent": "<button class=\"btn btn-primary\" id='detailrow'><i class=\"icon-pencil icon-white\"></i>详情</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"

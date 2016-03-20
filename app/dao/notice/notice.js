@@ -8,7 +8,7 @@ var async = require("async");
 
 Notice.queryByNoticeType = function (start, pageSize, queryCondition, callback) {
 
-    var sql = "select * from XL_NOTICE m where m.state=1 and m.expDate>=curdate() ";
+    var sql = "select * from XL_NOTICE m where m.state=1 ";
     var params = [];
 
     var sqlCondition = "";
@@ -66,8 +66,8 @@ Notice.publishNotice = function (noticeParam, noticePic, callback) {
             if (err) {
                 return callback.apply(null, [err, null]);
             }
-            var sql = "insert into XL_NOTICE(noticeTypeId,noticeTitle,noticeContext,effDate,expDate,state,createDate,doneDate,schoolId,classId,userId,schoolName,className,userName,nickName)";
-            sql += "values(?,?,?,?,?,1,now(),now(),?,?,?,?,?,?,?)";
+            var sql = "insert into XL_NOTICE(noticeTypeId,noticeTitle,noticeContext,state,createDate,doneDate,schoolId,classId,userId,schoolName,className,userName,nickName)";
+            sql += "values(?,?,?,1,now(),now(),?,?,?,?,?,?,?)";
 
             conn.query(sql, noticeParam, function (err, res) {
                 if (err) {
@@ -167,7 +167,7 @@ Notice.editNotice = function (noticeParam, noticePic, callback) {
                     callback(err);
                 });
             }, function (callback) {
-                var updateSql = "update XL_NOTICE set noticeTitle=?,noticeContext=?,effDate=?,expDate=?,doneDate=now() where noticeId=?";
+                var updateSql = "update XL_NOTICE set noticeTitle=?,noticeContext=?,doneDate=now() where noticeId=?";
                 conn.query(updateSql, noticeParam.slice(1), function (err, upd) {
                     callback(err, upd);
                 });
