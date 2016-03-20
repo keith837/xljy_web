@@ -16,6 +16,8 @@ var input = module.exports.input = function (filter, result, tablename, userObj,
     var mapi2 = {}
     var valdata = [];
     var maxLength = 0;
+    var sysDate = new Date();
+    var doneCode = sysDate.getTime();
     for (var x in result) {
         if (x == 0) {
             //做出对应map
@@ -65,7 +67,7 @@ var input = module.exports.input = function (filter, result, tablename, userObj,
             temparr.push(userObj.schoolId);
             temparr.push(userObj.groupId);
             temparr.push(userObj.batchId);
-            temparr.push(x);
+            temparr.push(doneCode + x);
             valdata.push(temparr);
         }
 
