@@ -166,7 +166,15 @@
                     }
 
                 }},
-                {"mDataProp": "consultLink"},
+                {"mDataProp": function(obj){
+                    if(obj.consultLink!=null && obj.consultLink!=""){
+                        return "<a href='"+obj.consultLink+"'>"+obj.consultLink+"</a>";
+                    }else{
+                        //recom.html?consultId="+obj.consultId+"
+                        return "<a href='recom.html?consultId="+obj.consultId+"'>recom.html</a>";
+                    }
+
+                }},
                 {"mDataProp": "createDate"}
             ],
             "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮

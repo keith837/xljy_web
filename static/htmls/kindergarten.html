@@ -92,8 +92,8 @@
                                 <th width="15%">学校</th>
                                 <th width="20%">平面图</th>
                                 <th>地址</th>
-                                <th width="10%">负责人</th>
-                                <th width="12%">电话</th>
+                                <th width="15%">负责人</th>
+                                <th width="12%">学校电话</th>
                                 <th width="12%">品牌</th>
                                 <th width="10%">操作</th>
                             </tr>
@@ -151,7 +151,10 @@
 
                 }},
                 {"mDataProp": "address"},
-                {"mDataProp": "oUserId"},
+                {"mDataProp": function(obj){
+                    return obj.custName+"("+obj.userName+")";
+
+                }},
                 {"mDataProp": "billId"},
                 {"mDataProp": "brandName"}
             ],
