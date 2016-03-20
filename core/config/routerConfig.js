@@ -14,6 +14,30 @@ var routerConfig = {
                 "description": "用户登录"
             }
         },
+        upload: {
+            "usedModel": [],
+            "uploadimage": {
+                "url": "/upload/uploadimage",
+                "method": "post",
+                "description": "上传图片"
+            },
+            "config": {
+                "url": "/upload/config",
+                "method": "get",
+                "description": "获取配置文件"
+            },
+            "listimage": {
+                "url": "/upload/listimage",
+                "method": "get",
+                "description": "在线管理"
+            },
+            "catchimage": {
+                "url": "/upload/catchimage",
+                "method": "post",
+                "description": "抓取图片"
+            }
+
+        },
 
         user: {
             "usedModel": ["user/user", "user/smsLog", "user/userLogin", "school/school", "student/student", "school/class", "user/userAttr"],
