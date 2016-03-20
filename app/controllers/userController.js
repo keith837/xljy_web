@@ -204,7 +204,7 @@ module.exports = new basicController(__filename).init({
     //老师登录
     teacherLogin : function(user, res, next, callback){
         var self = this;
-        self.model['class'].listByTeacherId(user.userId, function(err, classes){
+        self.model['class'].listAllByTeacherId(user.userId, function(err, classes){
             if(err){
                 return next(err);
             }
