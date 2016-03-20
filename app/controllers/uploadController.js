@@ -6,7 +6,7 @@ var http = require('http');
 var fs = require('fs');
 var path = require('path');
 var url = require('url');
-var uploadsPath = path.resolve('uploads') + '/';//´æ´¢Í¼Æ¬µÄÂ·¾¶
+var uploadsPath = path.resolve('uploads') + '/';//å­˜å‚¨å›¾ç‰‡çš„è·¯å¾„
 
 module.exports= new basicController(__filename).init({
     uploadimage: function (req, res) {
@@ -33,11 +33,11 @@ module.exports= new basicController(__filename).init({
             file.pipe(fstream);
         });
     },
-    /// »ñÈ¡ÅäÖÃÎÄ¼ş
+    /// è·å–é…ç½®æ–‡ä»¶
     config: function (req, res) {
         return res.json(require('../../static/htmls/js/ueditor/nodejs/config.json'));
     },
-    /// ÔÚÏß¹ÜÀí
+    /// åœ¨çº¿ç®¡ç†
     listimage: function (req, res) {
         fs.readdir(uploadsPath, function (err, files) {
             var total = 0, list = [];
@@ -52,7 +52,7 @@ module.exports= new basicController(__filename).init({
             res.json({state: total === 0 ? 'no match file' : 'SUCCESS', list: list, total: total, start: req.query.start});
         });
     },
-    /// ×¥È¡Í¼Æ¬£¨Õ³ÌùÊ±½«Í¼Æ¬±£´æµ½·şÎñ¶Ë£©
+    /// æŠ“å–å›¾ç‰‡ï¼ˆç²˜è´´æ—¶å°†å›¾ç‰‡ä¿å­˜åˆ°æœåŠ¡ç«¯ï¼‰
     catchimage: function (req, res) {
         var list = [];
         req.body.source.forEach(function (src, index) {

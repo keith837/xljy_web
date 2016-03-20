@@ -68,9 +68,9 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="editor">内容<span style="color: red;">*</span></label>
+                                        <label class="control-label" for="consultContent">内容<span style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <script id="editor" name="editor" type="text/plain"  style="width:340px;height:400px"></script>
+                                            <script id="consultContent" name="consultContent" type="text/plain"  style="width:340px;height:400px"></script>
                                         </div>
                                     </div>
 
@@ -117,8 +117,9 @@
 <script type="text/javascript" charset="utf-8" src="js/ueditor/ueditor.all.js"> </script>
 <script type="text/javascript" charset="utf-8" src="js/ueditor/lang/zh-cn/zh-cn.js"> </script>
 <script type="text/javascript">
-    var ue = UE.getEditor('editor');
+
     $(document).ready(function () {
+        var ue = UE.getEditor('consultContent');
         var options = [];
         options.push({id: 1, text: "资讯推荐"});
         options.push({id: 2, text: "校园风采"});
@@ -147,11 +148,22 @@
                 $(element).parents('.control-group').removeClass('error');
                 $(element).parents('.control-group').addClass('success');
             }
+//            },
+//            submitHandler: function(form) {
+//                var editType = $("#editType").val();
+//                var url = "/api/student/add";
+//                var type = "post";
+//                if ("edit" == editType) {
+//                    url = "/api/student/modify/" + studentId;
+//                    type = "put";
+//                }
+//                saveOrUpdate(url, type, "#studentForm","student.html");
+//            }
         });
         $("#recomForm").ajaxForm({
             url: "/api/recom",
             type:"post",
-            extParam: {consultContent : UE.getEditor('editor').getContent()},
+//            extParam: {consultContent : UE.getEditor('editor').getContent()},
             success: function (data) {
                 if (data.code == "00") {
                     swal({
