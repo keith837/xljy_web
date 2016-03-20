@@ -14,7 +14,7 @@ Class.findOne = function(classId, callback){
 }
 
 Class.listAllByTeacherId = function(teacherId, callback){
-    mysqlUtil.query("select B.* from XL_CLASS_TEACHER_REL A,XL_CLASS B where A.classId=B.classId and A.state=1 and B.state=1 and A.userId=?", [teacherId], callback);
+    mysqlUtil.query("select B.* from XL_CLASS_TEACHER_REL A,XL_CLASS B where A.classId=B.classId and A.state=1 and B.state=1 and A.tUserId=?", [teacherId], callback);
 }
 
 /**
