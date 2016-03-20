@@ -35,7 +35,7 @@ module.exports= new basicController(__filename).init({
     },
     /// 获取配置文件
     config: function (req, res) {
-        return res.json(require('../../static/htmls/js/ueditor/nodejs/config.json'));
+        return res.json(require('../../static/htmls/js/ueditor/nodejs/config.js'));
     },
     /// 在线管理
     listimage: function (req, res) {
