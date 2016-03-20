@@ -770,6 +770,11 @@ module.exports = new basicController(__filename).init({
         var address = req.body.address;
         var birthday = req.body.birthday;
         var remark = req.body.remark;
+        var nation = req.body.nation;
+        var provName = req.body.provName;
+        var cityName = req.body.cityName;
+        var region = req.body.region;
+        var gradSchool = req.body.gradSchool;
         if(groupId == 30 || groupId == 40 || groupId == 50){
             schoolId = null;
         }else{
@@ -809,7 +814,8 @@ module.exports = new basicController(__filename).init({
             if(user && user.userName == userName){
                 return next("用户登录名已存在");
             }
-            self.model['user'].save([groupId,roleId,schoolId,nickName,userName,userUrl,password,custName,billId,email,gender,birthday,address,4], function(err, data){
+            var tempArgs = [groupId,roleId,schoolId,nickName,userName,userUrl,password,custName,billId,email,gender,birthday,address,nation,provName,cityName,region,gradSchool,4,remark];
+            self.model['user'].save(tempArgs, function(err, data){
                 if(err){
                     return next(err);
                 }
@@ -861,6 +867,11 @@ module.exports = new basicController(__filename).init({
             var address = req.body.address;
             var birthday = req.body.birthday;
             var remark = req.body.remark;
+            var nation = req.body.nation;
+            var provName = req.body.provName;
+            var cityName = req.body.cityName;
+            var region = req.body.region;
+            var gradSchool = req.body.gradSchool;
             var obj = new Object();
             if(userName){
                 obj.userName = userName;
@@ -917,6 +928,21 @@ module.exports = new basicController(__filename).init({
             if(remark){
                 obj.remark = remark;
             }
+            if(nation){
+                obj.nation = nation;
+            }
+            if(provName){
+                obj.provName = provName;
+            }
+            if(cityName){
+                obj.cityName = cityName;
+            }
+            if(region){
+                obj.region = region;
+            }
+            if(gradSchool){
+                obj.gradSchool = gradSchool;
+            }
             obj.doneDate = new Date();
             self.model['user'].update(obj, userId, function(err, data){
                 if(err){
@@ -965,6 +991,100 @@ module.exports = new basicController(__filename).init({
                 code: "00",
                 data : user
             })
+        });
+    },
+
+    addAttr : function(req, res, next){
+        var self = this;
+        var sysDate = new Date();
+        var doneCode = sysDate.getTime();
+        var userId = parseInt(req.params.userId);
+        var attrType = req.params.attrType;
+        var oUserId = req.user.userId;
+        var body = req.body;
+        var tempArray = new Array();
+        for(var key in body){
+            tempArray.push([userId, attrType, key, body[key], doneCode, 1, sysDate, sysDate, oUserId]);
+        }
+        if(tempArray.length <= 0){
+            return next(new Error("属性信息不能为空"));
+        }
+        self.model['userAttr'].save(tempArray, function(err, data){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                msg : "用户属性添加成功"
+            });
+        });
+    },
+
+    delAttr : function(req, res, next){
+        var self = this;
+        var userId = req.params.userId;
+        var attrType = req.params.attrType;
+        var doneCode = req.params.doneCode;
+        var oUserId = req.user.userId;
+        self.model['userAttr'].delete(userId, attrType, doneCode, oUserId, function(err, data){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                msg : "用户属性删除成功"
+            });
+        });
+    },
+
+    showTeacher : function(req, res, next){
+        var self = this;
+        var teacherId = parseInt(req.params.userId);
+        self.model['user'].findByTeacherId(teacherId, function(err, teacher){
+            if(err){
+                return next(err);
+            }
+            if(!teacher){
+                return res.json({
+                    code : "00",
+                    data : null
+                });
+            }
+            self.model['userAttr'].list(teacherId, null, function(err, attrs){
+                if(err){
+                    return next(err);
+                }
+                if(attrs && attrs.length > 0){
+                    for(var i = 0; i < attrs.length; i ++){
+                        var attrType = attrs[i].attrType;
+                        var attrArray = teacher[attrType];
+                        if(!attrArray){
+                            attrArray = teacher[attrType] = new Array();
+                        }
+                        var doneCode = attrs[i].doneCode;
+                        var attrObj = null;
+                        if(attrArray.length == 0){
+                            attrObj = attrArray[0] = new Object();
+                            attrObj.doneCode = attrs[i].doneCode;
+                            attrObj[attrs[i].attrCode] = attrs[i].attrValue;
+                            continue;
+                        }
+                        attrObj = attrArray[attrArray.length - 1];
+                        if(attrObj.doneCode == doneCode){
+                            attrObj[attrs[i].attrCode] = attrs[i].attrValue;
+                            continue;
+                        }
+                        attrObj = attrArray[attrArray.length] = new Object();
+                        attrObj.doneCode = attrs[i].doneCode;
+                        attrObj[attrs[i].attrCode] = attrs[i].attrValue;
+                    }
+                }
+                teacher.genderName = self.cacheManager.getCacheValue("USER_GENDER", teacher.gender);
+                res.json({
+                    code : "00",
+                    data : teacher
+                });
+            });
         });
     }
 });

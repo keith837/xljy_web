@@ -16,7 +16,7 @@ var routerConfig = {
         },
 
         user: {
-            "usedModel": ["user/user", "user/smsLog", "user/userLogin", "school/school", "student/student", "school/class"],
+            "usedModel": ["user/user", "user/smsLog", "user/userLogin", "school/school", "student/student", "school/class", "user/userAttr"],
             "login": {
                 "url": "/api/user/login",
                 "method": "post",
@@ -92,6 +92,21 @@ var routerConfig = {
                 "method": "get",
                 "description": "获取学校编号为空的用户信息"
             },
+            addAttr : {
+                "url": "/api/user/addAttr/:userId/:attrType",
+                "method": "post",
+                "description": "添加用户属性"
+            },
+            delAttr : {
+                "url": "/api/user/delAttr/:userId/:attrType/:doneCode",
+                "method": "delete",
+                "description": "删除用户属性"
+            },
+            showTeacher : {
+                "url": "/api/user/showTeacher/:userId",
+                "method": "get",
+                "description": "教师档案"
+            }
         },
 
         menu : {

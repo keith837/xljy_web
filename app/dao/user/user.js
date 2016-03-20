@@ -14,9 +14,16 @@ User.findByUserId = function(userId, callback){
     mysqlUtil.queryOne("select B.groupName,IFNULL(C.schoolName,'无学校') schoolName,m.* from XL_USER m inner join XL_USER_GROUP B on m.groupId=B.groupId left join XL_SCHOOL C on m.schoolId=C.schoolId where m.state != 0 and m.userId=?", [userId], callback);
 }
 
+User.findByTeacherId = function(userId, callback){
+    var sql = "select C.classId,C.className,B.jobType,A.userId,A.nickName,A.userName,A.custName,A.gender,A.birthday,A.address,A.nation,A.provName,A.cityName,A.region,A.gradSchool from XL_USER A, ";
+    sql += "XL_CLASS_TEACHER_REL B, XL_CLASS C WHERE A.userId=B.tUserId AND A.state=1 AND B.classId=C.classId and A.groupId=20 and userId=?";
+    mysqlUtil.queryOne(sql, [userId], callback);
+}
+
 User.save = function(args, callback){
     var sql = "insert into XL_USER(groupId,roleId,schoolId,nickName,userName,userUrl,password,custName,pointNum,billId,email,gender,"
-    sql += "birthday,address,installationId,state,createDate,doneDate,channelId) values (?,?,?,?,?,?,?,?,0,?,?,?,?,?,null,2,now(),now(),?)";
+    sql += "birthday,address,installationId,nation,provName,cityName,region,gradSchool,state,createDate,doneDate,channelId,remark)"
+    sql += " values (?,?,?,?,?,?,?,?,0,?,?,?,?,?,null,?,?,?,?,?,2,now(),now(),?,?)";
     mysqlUtil.query(sql, args, callback);
 }
 
