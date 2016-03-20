@@ -33,7 +33,7 @@ Class.listTeacherByClassIds = function(classIds, callback){
         sql += ",?";
         tempArgs.push(classIds[i]);
     }
-    sql += ") order by A.classId,A.isMaster";
+    sql += ") order by A.classId,A.isMaster desc";
     mysqlUtil.query(sql, tempArgs, callback);
 }
 
