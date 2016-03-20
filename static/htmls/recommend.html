@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" href="css/fullcalendar.css" />
     <link rel="stylesheet" href="css/colorpicker.css" />
     <link rel="stylesheet" href="css/datepicker.css" />
@@ -13,6 +14,7 @@
     <link rel="stylesheet" href="css/select2.css" />
     <link rel="stylesheet" href="css/unicorn.main.css" />
     <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <link rel="stylesheet" href="css/sweetalert.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
 <body>
@@ -40,15 +42,22 @@
 
                                 <table width="100%" >
                                     <tr>
-                                        <td align="center">
+                                        <td align="center" width="10%">
+                                            推荐日期
+                                        </td>
+                                        <td width="20%">
                                             <div class="input-append span12" style="margin-top:5px; margin-bottom:5px">
-                                                <input type="text" class="span4 search-query" placeholder="请输入推荐内容">
-                                                <button type="submit" class="btn">搜索</button>
+                                                <input type="text" id="consultDate" name="consultDate" class="form_datetime span10">
                                             </div>
                                         </td>
                                         <td>
-                                            <a href="recommend_edit.html" class="btn">新增推荐</a>
-                                            <a href="#" class="btn">导出</a>
+                                            <div class="input-append span12" style="margin-top:5px; margin-bottom:5px">
+                                                <input type="text" id="consultTitle" name="consultTitle" class="span8 search-query" placeholder="请输入推荐标题" >
+                                                <button type="button" id="searchBtn" class="btn">搜索</button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a href="recommend_add.html" class="btn">新增推荐</a>
                                         </td>
                                     </tr>
                                 </table>
@@ -74,29 +83,15 @@
                         <table class="table table-bordered data-table">
                             <thead>
                             <tr>
-                                <th>编号</th>
-                                <th>内容</th>
+                                <th width="5%">编号</th>
+                                <th width="10%">标题</th>
                                 <th>图片</th>
                                 <th>链接</th>
-                                <th>发布人</th>
-                                <th>发布时间</th>
-                                <th width="25%">操作</th>
+                                <th width="14%">发布时间</th>
+                                <th width="10%">操作</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>N301</td>
-                                <td>推荐内容</td>
-                                <td><img src="./img/demo/av3.jpg"/></td>
-                                <td><a href="#">教育网首页</a></td>
-                                <td>王老师</td>
-                                <td>2016-01-15 07:58:31</td>
-                                <td>
-                                    <button class="btn"><i class="icon-eye-open"></i> 详情</button>
-                                    <button class="btn btn-primary"><i class="icon-pencil icon-white"></i> 编辑</button>
-                                    <button class="btn btn-danger"><i class="icon-remove icon-white"></i> 删除</button>
-                                </td>
-                            </tr>
 
                             </tbody>
                         </table>
@@ -119,11 +114,79 @@
 <script src="js/jquery.ui.custom.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-colorpicker.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/bootstrap-datetimepicker.min.js"></script>
 <script src="js/jquery.uniform.js"></script>
 <script src="js/select2.min.js"></script>
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
+<script src="js/sweetalert.min.js" charset="utf-8"></script>
+<script>
+
+    $(document).ready(function () {
+        initDatePicker();
+        initDateTimePicker();
+        var initTableParams = initDataTable();
+        var extendParams = {
+            "bServerSide": true,
+            "sAjaxSource": "/api/recom",
+            "sServerMethod": "GET",
+            "aoColumns": [
+                {"mDataProp": "consultId"},
+                {"mDataProp": "consultTitle"},
+                {"mDataProp": function(obj){
+                    if(obj.schoolUrl!=null){
+                        return "<img src='"+obj.consultUrl+"'/>";
+                    }else{
+                        return "";
+                    }
+
+                }},
+                {"mDataProp": "consultLink"},
+                {"mDataProp": "createDate"}
+            ],
+            "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
+                {
+                    "targets": [5],
+                    "data": null,
+                    "bSortable": false,
+                    "defaultContent": "<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
+                }
+            ]
+        };
+        var table = $('.data-table').dataTable(extend(extendParams,initTableParams));
+        $('#searchBtn').on( 'click', function () {
+            var paramsCheck = false;
+            var consultDate = $("#consultDate").val();
+            var params = "";
+            if (consultDate != null && consultDate != "") {
+                paramsCheck = true;
+                params = '&consultDate='+consultDate;
+            }
+            var consultTitle = $("#consultTitle").val();
+            if (consultTitle != null && consultTitle != "") {
+                paramsCheck = true;
+                params+='&consultTitle='+consultTitle;
+            }
+            if(paramsCheck==true){
+                //table.fnClearTable(); //清空一下table，不能设置
+                table.fnSettings().sAjaxSource='/api/recom?'+params;
+//              table.fnSettings().sServerMethod='GET';
+                table.fnDraw();
+            }else{
+                table.fnSettings().sAjaxSource='/api/recom';
+                table.fnDraw();
+            }
+
+        });
+        $('.data-table tbody').on( 'click', 'button#delrow', function () {
+            //var row = table.row( $(this).parents('tr') ).data();
+            var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
+            deleteRow("您将推荐【"+row.consultTitle+"】",'/api/recom/'+row.consultId,'DELETE',null,table);
+
+        });
+    });
+
+</script>
 </body>
 </html>

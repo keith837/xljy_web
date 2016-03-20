@@ -180,6 +180,20 @@ module.exports = new basicController(__filename).init({
         );
     },
 
+    delComment: function (req, res, next) {
+        var self = this;
+        var commentId = req.params.commentId;
+        if (!commentId || commentId < 0) {
+            return next(new Error("评论编号不能为空"));
+        }
+        self.model['photos'].deleteComment(commentId, function (err, data) {
+            if (err) {
+                return next(err);
+            }
+            res.json({code: "00", msg: "评论删除成功"});
+        });
+    },
+
     list: function (req, res, next) {
         var self = this;
         var start = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);

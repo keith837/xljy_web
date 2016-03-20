@@ -7,8 +7,65 @@ Album.delete = function(albumType, trendsId, userId, callback){
     mysqlUtil.query("update XL_ALBUM set state = 0, doneDate=now(), oUserId = ? where albumId = ? and albumType = ?", [userId, trendsId, albumType], callback);
 }
 
-Album.deleteComment = function(commentId, callback){
-    mysqlUtil.query("delete from XL_ALBUM_HANDLE where handleId = ? or pHandleId = ?", [commentId, commentId], callback);
+Album.deleteComment = function (commentId, done) {
+    mysqlUtil.getConnection(function (err, conn) {
+        if (err) {
+            return done.apply(null, [err, null]);
+        }
+
+        var tasks = [function (callback) {
+            conn.beginTransaction(function (err) {
+                callback(err);
+            });
+        }, function (callback) {
+            conn.query("select handleId,albumId from XL_ALBUM_HANDLE where FIND_IN_SET(handleId, getTrendsCommentLst(?))", [commentId], function (err, handles) {
+                if (err) {
+                    return callback(err);
+                }
+                if (!handles || handles.length <= 0) {
+                    return callback(new Error("根据评论Id[" + commentId + "]无法查询到评论信息"));
+                } else {
+                    callback(err, handles);
+                }
+            });
+        }, function (handles, callback) {
+            var updateSql = "delete from XL_ALBUM_HANDLE where state=1 and handleId in (";
+            var handleIds = [];
+            for (var i in handles) {
+                updateSql += "?,";
+                handleIds.push(handles[i].handleId);
+            }
+            updateSql += "-1)";
+            conn.query(updateSql, handleIds, function (err, upd) {
+                if (err) {
+                    return callback(err);
+                }
+                callback(err, [upd.affectedRows, handles[0].albumId]);
+            });
+        }, function (upd, callback) {
+            var countSQL = "update XL_ALBUM set isComment=isComment-?,doneDate=now() where albumId=?";
+            conn.query(countSQL, upd, function (err, res) {
+                if (res.affectedRows !== 1) {
+                    return callback(new Error("没有找到动态[" + upd[1] + "]"));
+                }
+                callback(err, res);
+            });
+        }, function (res, callback) {
+            conn.commit(function (err) {
+                callback(err);
+            });
+        }];
+
+        async.waterfall(tasks, function (err, results) {
+            if (err) {
+                conn.rollback();
+                conn.release();
+                return done(err);
+            }
+            conn.release();
+            done.apply(null, [null, results]);
+        });
+    });
 }
 
 Album.cancelAlbumLike = function(albumId, userId, callback){

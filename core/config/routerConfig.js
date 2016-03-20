@@ -198,7 +198,34 @@ var routerConfig = {
                 "description": "学校班级查询"
             }
         },
-
+        recom: {
+            "usedModel": ['recom/recom'],
+            "list": {
+                "url": "/api/recom",
+                "method": "get",
+                "description": "当日推荐列表"
+            },
+            "add": {
+                "url": "/api/recom",
+                "method": "post",
+                "description": "添加推荐"
+            },
+            "del": {
+                "url": "/api/recom/:consultId",
+                "method": "delete",
+                "description": "删除推荐"
+            },
+            "update": {
+                "url": "/api/recom/:consultId",
+                "method": "put",
+                "description": "更新推荐"
+            },
+            "show": {
+                "url": "/api/recom/show/:consultId",
+                "method": "get",
+                "description": "查询推荐"
+            }
+        },
         brand : {
             "usedModel": ["school/brand", "school/school"],
             "list": {
@@ -578,6 +605,11 @@ var routerConfig = {
                 "url": "/api/photos/:albumId/comments",
                 "method": "get",
                 "description": "更多相册评论"
+            },
+            "delComment": {
+                "url": "/api/photos/comment/:commentId/del",
+                "method": "delete",
+                "description": "评论删除"
             },
             "morePhoto": {
                 "url": "/api/photos/:albumId/photo",
