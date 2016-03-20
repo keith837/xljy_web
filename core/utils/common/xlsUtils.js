@@ -36,6 +36,7 @@ var input = module.exports.input = function (filter, result, tablename, userObj,
             title.push("schoolId");
             title.push("groupId");
             title.push("batchId");
+            title.push("rowId");
 
 
             title = title.join(",");
@@ -64,6 +65,7 @@ var input = module.exports.input = function (filter, result, tablename, userObj,
             temparr.push(userObj.schoolId);
             temparr.push(userObj.groupId);
             temparr.push(userObj.batchId);
+            temparr.push(x);
             valdata.push(temparr);
         }
 
