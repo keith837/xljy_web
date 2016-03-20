@@ -43,16 +43,22 @@
                                 <table width="100%" >
                                     <tr>
                                         <td align="center" width="10%">
+                                            推荐类型
+                                        </td>
+                                        <td width="15%">
+                                            <input type="text" id="consultType" name="consultType" class="span10">
+                                        </td>
+                                        <td align="center" width="10%">
                                             推荐日期
                                         </td>
-                                        <td width="20%">
+                                        <td width="15%">
                                             <div class="input-append span12" style="margin-top:5px; margin-bottom:5px">
                                                 <input type="text" id="consultDate" name="consultDate" class="form_datetime span10">
                                             </div>
                                         </td>
-                                        <td>
+                                        <td width="40%">
                                             <div class="input-append span12" style="margin-top:5px; margin-bottom:5px">
-                                                <input type="text" id="consultTitle" name="consultTitle" class="span8 search-query" placeholder="请输入推荐标题" >
+                                                <input type="text" id="consultTitle" name="consultTitle" class="span9 search-query" placeholder="请输入推荐标题" >
                                                 <button type="button" id="searchBtn" class="btn">搜索</button>
                                             </div>
                                         </td>
@@ -85,6 +91,7 @@
                             <tr>
                                 <th width="5%">编号</th>
                                 <th width="10%">标题</th>
+                                <th width="10%">推荐类型</th>
                                 <th>图片</th>
                                 <th>链接</th>
                                 <th width="14%">发布时间</th>
@@ -124,6 +131,11 @@
 <script>
 
     $(document).ready(function () {
+        var options = [];
+        options.push({id: 1, text: "资讯推荐"});
+        options.push({id: 2, text: "校园风采"});
+        options.push({id: 3, text: "精彩活动"});
+        $("#consultType").select2({data: options});
         initDatePicker();
         initDateTimePicker();
         var initTableParams = initDataTable();
@@ -135,7 +147,19 @@
                 {"mDataProp": "consultId"},
                 {"mDataProp": "consultTitle"},
                 {"mDataProp": function(obj){
-                    if(obj.schoolUrl!=null){
+                    if(obj.consultType == "1"){
+                        return "资讯推荐";
+                    }else if(obj.consultType == "2"){
+                        return "校园风采";
+                    }else if(obj.consultType == "3"){
+                        return "精彩活动";
+                    }else{
+                        return "";
+                    }
+
+                }},
+                {"mDataProp": function(obj){
+                    if(obj.consultUrl!=null){
                         return "<img src='"+obj.consultUrl+"'/>";
                     }else{
                         return "";
@@ -147,7 +171,7 @@
             ],
             "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
                 {
-                    "targets": [5],
+                    "targets": [6],
                     "data": null,
                     "bSortable": false,
                     "defaultContent": "<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
@@ -162,6 +186,11 @@
             if (consultDate != null && consultDate != "") {
                 paramsCheck = true;
                 params = '&consultDate='+consultDate;
+            }
+            var consultType = $("#consultType").val();
+            if (consultType != null && consultType != "") {
+                paramsCheck = true;
+                params = '&consultType='+consultType;
             }
             var consultTitle = $("#consultTitle").val();
             if (consultTitle != null && consultTitle != "") {

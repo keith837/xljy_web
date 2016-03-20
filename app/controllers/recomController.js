@@ -13,7 +13,8 @@ module.exports = new basicController(__filename).init({
         var pageSize = parseInt(request.query.iDisplayLength || this.webConfig.iDisplayLength);
         var consultDate = request.query.consultDate;
         var consultTitle = request.query.consultTitle;
-        this.model['recom'].queryPage(start, pageSize,consultDate,consultTitle, function (err, totalCount, res) {
+        var consultType = request.query.consultType;
+        this.model['recom'].queryPage(start, pageSize,consultDate,consultTitle,consultType, function (err, totalCount, res) {
             if (err) {
                 return next(err);
             }
@@ -42,6 +43,7 @@ module.exports = new basicController(__filename).init({
             param.consultUrl = consultUrl;
             param.consultLink = fields.consultLink;
             param.content = fields.consultContent;
+            param.consultType = fields.consultType;
             if(fields.isMain == null){
                 param.isMain = "1";
             }else{
@@ -112,6 +114,7 @@ module.exports = new basicController(__filename).init({
             param.consultUrl = consultUrl;
             param.consultLink = fields.consultLink;
             param.content = fields.consultContent;
+            param.consultType = fields.consultType;
             param.consultId = consultId;
             this.model['recom'].update(param, function (err, data) {
                 if (err) {

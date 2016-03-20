@@ -46,6 +46,13 @@
                                             <!--<input type="text" style="display: none;" disabled="disabled" id="schoolName" class="span5">-->
                                         <!--</div>-->
                                     <!--</div>-->
+                                    <div class="control-group">
+                                        <label class="control-label" for="consultType">推荐类型<span style="color: red;">*</span></label>
+                                        <div class="controls">
+                                            <input type="text" id="consultType" name="consultType" placeholder="请选择推荐类型" class="span5">
+                                            <input type="text" style="display: none;" disabled="disabled" id="consultTypeName" class="span5">
+                                        </div>
+                                    </div>
                                     <div class="control-group control-inline">
                                         <label class="control-label" for="consultTitle">标题<span style="color: red;">*</span></label>
                                         <div class="controls">
@@ -112,12 +119,19 @@
 <script type="text/javascript">
     var ue = UE.getEditor('editor');
     $(document).ready(function () {
-
+        var options = [];
+        options.push({id: 1, text: "资讯推荐"});
+        options.push({id: 2, text: "校园风采"});
+        options.push({id: 3, text: "精彩活动"});
+        $("#consultType").select2({data: options});
         initValidator();
         $("#recomForm").validate({
             ignore: ".ignore",
             rules:{
                 consultTitle:{
+                    required:true
+                },
+                consultType:{
                     required:true
                 },
                 consultUrl:{

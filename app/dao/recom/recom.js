@@ -11,7 +11,7 @@ Recom.queryAllNum = function (condition, params, callback) {
     });
 }
 
-Recom.queryPage = function (start, pageSize,consultDate, consultTitle, callback) {
+Recom.queryPage = function (start, pageSize,consultDate,consultTitle, consultType, callback) {
     var sqlCondition = " 1=1 ";
     var sqlParams = [];
     if(consultDate){
@@ -22,6 +22,10 @@ Recom.queryPage = function (start, pageSize,consultDate, consultTitle, callback)
     if(consultTitle){
         sqlCondition += "  and consultTitle like ? "
         sqlParams.push("%"+consultTitle+"%");
+    }
+    if(consultType){
+        sqlCondition += "  and consultType = ? "
+        sqlParams.push(consultType);
     }
 
     Recom.queryAllNum(sqlCondition, sqlParams, function (err, totalCount) {
@@ -49,9 +53,10 @@ Recom.add = function (recom, callback) {
     params.push(recom.consultUrl);
     params.push(recom.consultLink);
     params.push(recom.content);
+    params.push(recom.consultType);
     params.push(recom.isMain);
     params.push(recom.userId);
-    mysqlUtil.query("insert into XL_CONSULT(schoolId,consultTitle,consultUrl,consultDate,consultLink,content,isMain,createDate,doneDate,userId) values(null,?,?,now(),?,?,?,now(),now(),?)", params, function (err, res) {
+    mysqlUtil.query("insert into XL_CONSULT(schoolId,consultTitle,consultUrl,consultDate,consultLink,content,consultType,isMain,createDate,doneDate,userId) values(null,?,?,now(),?,?,?,?,now(),now(),?)", params, function (err, res) {
         if (err) {
             return callback(err);
         }
