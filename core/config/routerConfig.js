@@ -16,26 +16,17 @@ var routerConfig = {
         },
         upload: {
             "usedModel": [],
-            "uploadimage": {
-                "url": "/upload/uploadimage",
+            "post": {
+                "url": "/api/ue/upload",
                 "method": "post",
-                "description": "上传图片"
+                "description": "POST请求"
             },
-            "config": {
-                "url": "/upload/config",
+            "get": {
+                "url": "/api/ue/upload",
                 "method": "get",
-                "description": "获取配置文件"
-            },
-            "listimage": {
-                "url": "/upload/listimage",
-                "method": "get",
-                "description": "在线管理"
-            },
-            "catchimage": {
-                "url": "/upload/catchimage",
-                "method": "post",
-                "description": "抓取图片"
+                "description": "GET请求"
             }
+
 
         },
 

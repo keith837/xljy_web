@@ -30,6 +30,7 @@
     "thumbd": "^2.18.0",
     "utility": "^1.6.0",
     "moment": "^2.11.2",
-    "node-uuid": "^1.4.6"
+    "node-uuid": "^1.4.6",
+    "connect-busboy": "^0.0.2"
   }
 }
