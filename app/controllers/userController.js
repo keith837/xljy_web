@@ -5,6 +5,7 @@ var moment = require('moment');
 var formidable = require("formidable");
 var path = require("path");
 var imCore = require("../../core/utils/alim/imCore.js");
+var pushCore = require("../../core/utils/alim/pushCore");
 
 module.exports = new basicController(__filename).init({
 
@@ -16,6 +17,7 @@ module.exports = new basicController(__filename).init({
         var userObj = new Object();
         userObj.doneDate = new Date();
         userObj.installationId = null;
+        userObj.deviceType = null;
         var userId = req.user.userId;
         self.model['user'].update(userObj, userId, function(err, data){
             if(err){
@@ -31,12 +33,14 @@ module.exports = new basicController(__filename).init({
     //app端登录
     login : function(req, res, next){
         var self = this;
+        var log = this.logger;
         var userName = req.body.userName;
         var password = req.body.password;
         var source = req.body.source;
         var channel = req.body.channel;
         var groupId = req.body.groupId;
         var installationId = req.body.installationId;
+        var deviceType = req.body.deviceType;
         if(!userName){
             return next(new Error("登录用户名不能为空"));
         }
@@ -48,6 +52,9 @@ module.exports = new basicController(__filename).init({
         }
         if(!installationId){
             return next(new Error("手机实例标识不能为空"));
+        }
+        if (!deviceType) {
+            return next(new Error("手机设备类型不能为空"));
         }
         var clientId = getClientIp(req);
         if(!groupId){
@@ -72,14 +79,31 @@ module.exports = new basicController(__filename).init({
             user.source = source;
             user.channel = channel;
             user.installationId = installationId;
+            user.deviceType = deviceType;
             var callback = function(){
                 var userObj = new Object();
                 userObj.doneDate = new Date();
                 userObj.installationId = installationId;
-                self.model['user'].update(userObj, user.userId, function(err, data){
-                    if(err){
+                userObj.deviceType = deviceType;
+                self.model['user'].update(userObj, user.userId, function (err, data) {
+                    if (err) {
                         self.logger.error("修改installationId失败", err);
                     }
+
+
+                    if (groupId == 20) {
+                        var channels = [];
+                        channels.push("school_" + user.schools[0].schoolId + "_teacher");
+                        channels.push("class_" + user.class.classId);
+                        pushCore.regDevice(deviceType, installationId, channels, function (err, objectId) {
+                            if (err) {
+                                log.error("注册设备[" + installationId + "]出错");
+                                log.error(err);
+                            }
+                            log.info("注册设备[" + installationId + "]成功，objectId=" + objectId);
+                        });
+                    }
+
                 });
             }
             if(groupId == 10){

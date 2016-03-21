@@ -1,6 +1,7 @@
 var basicController = require("../../core/utils/controller/basicController");
 var formidable = require("formidable");
 var path = require("path");
+var pushCore = require("../../core/utils/alim/pushCore");
 
 module.exports = new basicController(__filename).init({
 
@@ -38,6 +39,15 @@ module.exports = new basicController(__filename).init({
         user.schools = [school];
         user.schoolIds = [school.schoolId];
         self.redis.set(user.token, JSON.stringify(user));
+
+        pushCore.regDevice(user.deviceType, user.installationId, ["school_" + user.schools[0].schoolId], function (err, objectId) {
+            if (err) {
+                log.error("注册设备[" + installationId + "]出错");
+                log.error(err);
+            }
+            log.info("注册设备[" + installationId + "]成功，objectId=" + objectId);
+        });
+
         res.json({
             code: "00",
             msg: "园所选择成功"

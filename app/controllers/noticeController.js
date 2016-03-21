@@ -4,6 +4,7 @@
 var formidable = require("formidable");
 var fs = require("fs");
 var path = require("path");
+var pushCore = require("../../core/utils/alim/pushCore");
 
 var basicController = require("../../core/utils/controller/basicController");
 module.exports = new basicController(__filename).init({
@@ -108,6 +109,7 @@ module.exports = new basicController(__filename).init({
 
     publish: function (request, response, next) {
         var self = this;
+        var log = this.logger;
         var userId = request.user.userId;
         var groupId = request.user.groupId;
 
@@ -131,6 +133,7 @@ module.exports = new basicController(__filename).init({
 
         var classId = 0;
         var className = "";
+        var channels = [];
         var schoolId = request.user.schools[0].schoolId;
         var schoolName = request.user.schools[0].schoolName;
         var userName = request.user.custName;
@@ -138,6 +141,15 @@ module.exports = new basicController(__filename).init({
         if (groupId == 10 || groupId == 20) {
             classId = request.user.class.classId;
             className = request.user.class.className;
+        }
+        channels.push("school_" + schoolId);
+        if (noticeTypeId == 1 || noticeTypeId == 7) {
+            channels.push("class_" + classId);
+        } else if (noticeTypeId == 2 || noticeTypeId == 5) {
+            channels.push("school_" + schoolId + "_teacher");
+        } else if (noticeTypeId == 3 || noticeTypeId == 4 || noticeTypeId == 6) {
+            channels.push("school_" + schoolId + "_teacher");
+            channels.push("school_" + schoolId + "_parent");
         }
         form.parse(request, function (err, fields, files) {
             var content = fields.noticeContext;
@@ -156,6 +168,24 @@ module.exports = new basicController(__filename).init({
                         return next(err);
                     }
                     response.json({code: "00", msg: "通知发布成功", data: res});
+
+                    var inData = {
+                        "ios": {
+                            "alert": content
+                        },
+                        "android": {
+                            "alert": content,
+                            "title": title
+                        }
+                    };
+                    log.info("开始推送通知。");
+                    pushCore.pushToChannels(inData, channels, function (err, objectId) {
+                        if (err) {
+                            log.error("推送通知出错");
+                            log.error(err);
+                        }
+                        log.info("通知的推送objectId=" + objectId);
+                    });
                 });
             });
         });
@@ -259,3 +289,4 @@ function checkPermission(groupId, noticeTypeId) {
 
 
 }
+

@@ -1,4 +1,5 @@
 var basicController = require("../../core/utils/controller/basicController");
+var pushCore = require("../../core/utils/alim/pushCore");
 
 module.exports = new basicController(__filename).init({
     select : function(req, res, next){
@@ -32,6 +33,18 @@ module.exports = new basicController(__filename).init({
                     user.schools = [school];
                     user.schoolIds = [school.schoolId];
                     self.redis.set(user.token, JSON.stringify(user));
+
+                    var channels = [];
+                    channels.push("school_" + user.schools[0].schoolId + "_parent");
+                    channels.push("class_" + user.class.classId);
+                    pushCore.regDevice(user.deviceType, user.installationId, channels, function (err, objectId) {
+                        if (err) {
+                            log.error("注册设备[" + installationId + "]出错");
+                            log.error(err);
+                        }
+                        log.info("注册设备[" + installationId + "]成功，objectId=" + objectId);
+                    });
+
                     res.json({
                         code : "00",
                         msg : "宝贝选择成功"
