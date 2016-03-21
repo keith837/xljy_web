@@ -247,7 +247,11 @@
         $('.data-table tbody').on( 'click', 'button#viewrow', function () {
             //var row = table.row( $(this).parents('tr') ).data();
             var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
-            window.location.href="user_detail.html?userId="+row.userId;
+            if (row.groupId == 20) {
+                window.location.href = "teacher_detail.html?userId=" + row.userId;
+            } else {
+                window.location.href = "user_detail.html?userId=" + row.userId;
+            }
 
         });
         $('.data-table tbody').on( 'click', 'button#delrow', function () {

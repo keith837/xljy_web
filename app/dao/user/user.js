@@ -15,8 +15,8 @@ User.findByUserId = function(userId, callback){
 }
 
 User.findByTeacherId = function(userId, callback){
-    var sql = "select C.classId,C.className,B.jobType,A.userId,A.nickName,A.userName,A.custName,A.gender,A.birthday,A.address,A.nation,A.provName,A.cityName,A.region,A.gradSchool from XL_USER A, ";
-    sql += "XL_CLASS_TEACHER_REL B, XL_CLASS C WHERE A.userId=B.tUserId AND A.state=1 AND B.classId=C.classId and A.groupId=20 and userId=?";
+    var sql = "select C.classId,C.className,B.jobType,A.userId,A.nickName,A.userName,A.billId,A.lastLoginDate,A.lastLoginIp,A.state,A.custName,A.gender,A.birthday,A.address,A.nation,A.provName,A.cityName,A.region,A.gradSchool from XL_USER A, ";
+    sql += "XL_CLASS_TEACHER_REL B, XL_CLASS C WHERE A.userId=B.tUserId AND A.state>=1 AND B.classId=C.classId and A.groupId=20 and userId=?";
     mysqlUtil.queryOne(sql, [userId], callback);
 }
 
