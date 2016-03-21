@@ -31,6 +31,11 @@ var webConfig = {
     iDisplayCommentLength: 6,
     VIEWSPATH: 'app/views',
     IM_APPKEY: '23311805',
-    IM_APPSECRET: '659744536d30b755129311932aab92d7'
+    IM_APPSECRET: '659744536d30b755129311932aab92d7',
+    PUSH_CONFIG: {
+        PUSH_ID: "iGUAhRUsALJCmhg6qtrvagRb-gzGzoHsz",
+        PUSH_KEY: "JDU4Ezny3IVmQPPh7TNs80Cg"
+    }
+
 }
 module.exports = webConfig;
