@@ -70,7 +70,7 @@
                     <div class="widget-content nopadding">
 
                         <div class="container-fluid">
-                            <div class="row-fluid">
+                            <div class="row-fluid" id="limit-clone">
                                 <form class="form-horizontal" name="recomForm" id="recomForm">
                                     <!--<div class="control-group">-->
                                         <!--<label class="control-label" for="schoolId">学校<span style="color: red;">*</span></label>-->
@@ -79,45 +79,45 @@
                                             <!--<input type="text" style="display: none;" disabled="disabled" id="schoolName" class="span5">-->
                                         <!--</div>-->
                                     <!--</div>-->
-                                    <fieldset id="additional">
+                                    <div class="toclone">
                                     <div class="control-group">
                                         <label class="control-label" for="consultType">推荐类型<span style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <input type="text" id="consultType" name="consultType" placeholder="请选择推荐类型" class="span5">
-                                            <input type="text" style="display: none;" disabled="disabled" id="consultTypeName" class="span5">
+                                            <input type="text" id="consultType" name="consultType[]" placeholder="请选择推荐类型" class="span5">
+                                            <input type="text" style="display: none;" disabled="disabled" id="consultTypeName" name="consultTypeName[]" class="span5">
                                         </div>
                                     </div>
                                     <div class="control-group control-inline">
                                         <label class="control-label" for="consultTitle">标题<span style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <input type="hidden" id="editType" name="editType" value="add" />
-                                            <input type="hidden" id="consultContent" name="consultContent" value="" />
-                                            <input type="text" id="consultTitle" name="consultTitle" placeholder="标题" class="span5"> <input type="checkbox" id="isMain" name="isMain">是否头条
+                                            <input type="hidden" id="editType" name="editType[]" value="add" />
+                                            <input type="hidden" id="consultContent" name="consultContent[]" value="" />
+                                            <input type="text" id="consultTitle" name="consultTitle[]" placeholder="标题" class="span5"> <input type="checkbox" name="isMain[]">是否头条
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="consultUrl">缩略图<span style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <input type="file" id="consultUrl" name="consultUrl" class="span5"/>
+                                            <input type="file" id="consultUrl" name="consultUrl[]" class="span5"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="consultLink">链接<span style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <input type="text" id="consultLink" name="consultLink" placeholder="链接" class="span5">
+                                            <input type="text" id="consultLink" name="consultLink[]" placeholder="链接" class="span5">
                                         </div>
                                     </div>
-                                    </fieldset>
-                                    <div class="control-group">
+
+                                    <div class="control-group" id="buttons" name="buttons">
                                         <div class="controls">
-                                            <a href="javascript:void(0);"  class="btn create">添加</a>
-                                            <!--<a href="javascript:void(0);"  class="btn remove">移除</a>-->
+                                            <a href="#"  class="btn clone">添加</a>
+                                            <a href="#"  class="btn delete">移除</a>
                                             <button type="submit" class="btn">提交</button>
                                             <button type="reset" class="btn">重置</button>
                                             <button type="button" id="backBtn" style="display: none;" class="btn" onclick="javascript:history.back();">返回</button>
                                         </div>
                                     </div>
-
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -142,6 +142,7 @@
 <script src="js/jquery.validate.js"></script>
 <script src="js/jquery.form.min.js"></script>
 <script src="js/jquery.url.js"></script>
+<script src="js/jquery-cloneya.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-colorpicker.js"></script>
 <script src="js/jquery.uniform.js"></script>
@@ -152,14 +153,29 @@
 <script src="js/sweetalert.min.js" charset="utf-8"></script>
 
 <script>
+    var options = [];
+    options.push({id: 1, text: "资讯推荐"});
+    options.push({id: 2, text: "校园风采"});
+    options.push({id: 3, text: "精彩活动"});
+    $('#limit-clone').cloneya({
+        valueClone      : true,
+        dataClone       : true,
+        clonePosition: 'before', // or 'before'
+        limit: 4
+    }).on('clone_limit', function(e, limit, toclone) {
+        limitmsg = '最多只允许增加 ' + limit + ' 次!'
+        swal({title: "增加失败!", text: limitmsg, type: "warning", timer: autoCloseTime});
+    }).on('clone_after_clone', function(event, toclone, newclone) {
+        // do something
+        newclone.find("[name='buttons']").remove();
+        console.info(newclone.find("[name='consultType[]']").attr("id"));
+        newclone.find("#consultType").select2({data: options});
+    });
 
     $(document).ready(function () {
         $('#resetBtn').css("display", "");
         $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>新增推荐</a>");
-        var options = [];
-        options.push({id: 1, text: "资讯推荐"});
-        options.push({id: 2, text: "校园风采"});
-        options.push({id: 3, text: "精彩活动"});
+
         $("#consultType").select2({data: options});
 
         initValidator();
