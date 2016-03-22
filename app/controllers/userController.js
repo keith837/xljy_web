@@ -84,6 +84,7 @@ module.exports = new basicController(__filename).init({
                 if(userToken){
                     log.info("用户编号【" + user.userId + "】已登录，token：" + userToken);
                     self.redis.del(userToken);
+                    self.redis.del(user.userId);
                 }
             });
             user.source = source;
