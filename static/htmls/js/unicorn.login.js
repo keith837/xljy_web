@@ -39,7 +39,7 @@ $(document).ready(function () {
         },
         submitHandler: function(form) {
             var tmpPassword = $("#password").val();
-            $("#password").val(hex_md5(tmpPassword));
+            $("#password").val(hex_md5(tmpPassword).toUpperCase( ));
             $.ajax({
                 url: "/api/user/weblogin",
                 type: "POST",
