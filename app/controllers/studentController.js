@@ -4,6 +4,7 @@ var pushCore = require("../../core/utils/alim/pushCore");
 module.exports = new basicController(__filename).init({
     select : function(req, res, next){
         var self = this;
+        var log = this.logger;
         var userId = req.user.userId;
         var studentId = req.params.studentId;
         self.model['student'].findOne(userId, studentId, function(err, student){

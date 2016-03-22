@@ -23,12 +23,15 @@ module.exports = new basicController(__filename).init({
             self.model['school'].findBySchoolId(schoolId, function (err, school) {
                 self.selectSchool(err, school, req, res, next);
             });
+        }else{
+            return next(new Error("非园长用户不允许选择学校"));
         }
 
     },
 
     selectSchool : function(err, school, req, res, next){
         var self = this;
+        var log = this.logger;
         if (err) {
             return next(err);
         }

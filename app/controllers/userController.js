@@ -12,6 +12,7 @@ module.exports = new basicController(__filename).init({
     //退出登录
     logout : function(req, res, next){
         var self = this;
+        var log = this.logger;
         var token = req.user.token;
         self.redis.del(token);
         self.redis.del(req.user.userId);
@@ -24,6 +25,13 @@ module.exports = new basicController(__filename).init({
             if(err){
                 self.logger.error("修改installationId失败", err);
             }
+            pushCore.regDevice(req.user.deviceType, req.user.installationId, [], function (err, objectId) {
+                if (err) {
+                    log.error("删除设备[" + req.user.installationId + "]云端token出错");
+                    log.error(err);
+                }
+                log.info("删除设备[" + req.user.installationId + "]云端token成功，objectId=" + objectId);
+            });
         });
         res.json({
             code : "00",
