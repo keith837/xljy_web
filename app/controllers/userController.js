@@ -14,6 +14,7 @@ module.exports = new basicController(__filename).init({
         var self = this;
         var token = req.user.token;
         self.redis.del(token);
+        self.redis.del(req.user.userId);
         var userObj = new Object();
         userObj.doneDate = new Date();
         userObj.installationId = null;
@@ -76,6 +77,15 @@ module.exports = new basicController(__filename).init({
             if(user.password != password){
                 return next(new Error("登录密码错误"));
             }
+            self.redis.get(user.userId, function(err, userToken){
+                if(err){
+                    return err;
+                }
+                if(userToken){
+                    log.info("用户编号【" + user.userId + "】已登录，token：" + userToken);
+                    self.redis.del(userToken);
+                }
+            });
             user.source = source;
             user.channel = channel;
             user.installationId = installationId;
@@ -89,8 +99,6 @@ module.exports = new basicController(__filename).init({
                     if (err) {
                         self.logger.error("修改installationId失败", err);
                     }
-
-
                     if (groupId == 20) {
                         var channels = [];
                         channels.push("school_" + user.schools[0].schoolId + "_teacher");
@@ -155,7 +163,9 @@ module.exports = new basicController(__filename).init({
                         var date = new Date();
                         date.setDate(date.getDate() + 7);
                         user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
-                        self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
+                        var expireDate = self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60;
+                        self.redis.set(user.token, JSON.stringify(user), "EX", expireDate);
+                        self.redis.set(user.userId, user.token, "EX", expireDate);
                         var retStudents = new Array();
                         for(var i = 0; i < students.length; i ++){
                             retStudents.push({
@@ -191,7 +201,9 @@ module.exports = new basicController(__filename).init({
                 var date = new Date();
                 date.setDate(date.getDate() + 7);
                 user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
-                self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
+                var expireDate = self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60;
+                self.redis.set(user.token, JSON.stringify(user), "EX", expireDate);
+                self.redis.set(user.userId, user.token, "EX", expireDate);
                 var retStudents = new Array();
                 for(var i = 0; i < students.length; i ++){
                     retStudents.push({
@@ -251,7 +263,9 @@ module.exports = new basicController(__filename).init({
                 var date = new Date();
                 date.setDate(date.getDate() + 7);
                 user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
-                self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
+                var expireDate = self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60;
+                self.redis.set(user.token, JSON.stringify(user), "EX", expireDate);
+                self.redis.set(user.userId, user.token, "EX", expireDate);
                 if(callback){
                     callback();
                 }
@@ -308,7 +322,9 @@ module.exports = new basicController(__filename).init({
             var date = new Date();
             date.setDate(date.getDate() + 7);
             user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
-            self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
+            var expireDate = self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60;
+            self.redis.set(user.token, JSON.stringify(user), "EX", expireDate);
+            self.redis.set(user.userId, user.token, "EX", expireDate);
             var retSchools = new Array();
             for(var i = 0; i < schools.length; i ++){
                 retSchools.push({
@@ -367,7 +383,9 @@ module.exports = new basicController(__filename).init({
             var date = new Date();
             date.setDate(date.getDate() + 7);
             user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
-            self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
+            var expireDate = self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60;
+            self.redis.set(user.token, JSON.stringify(user), "EX", expireDate);
+            self.redis.set(user.userId, user.token, "EX", expireDate);
             var retSchools = new Array();
             for(var i = 0; i < schools.length; i ++){
                 retSchools.push({
@@ -422,7 +440,9 @@ module.exports = new basicController(__filename).init({
             var date = new Date();
             date.setDate(date.getDate() + 7);
             user.token = jwt.encode({iss : user.userId, exp : date}, self.cacheManager.getCacheValue("JWT", "SECRET"));
-            self.redis.set(user.token, JSON.stringify(user), "EX", self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60);
+            var expireDate = self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60;
+            self.redis.set(user.token, JSON.stringify(user), "EX", expireDate);
+            self.redis.set(user.userId, user.token, "EX", expireDate);
             if(callback){
                 callback();
             }
