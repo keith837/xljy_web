@@ -30,8 +30,8 @@ var webConfig = {
     iDisplayPhotoLength: 9,
     iDisplayCommentLength: 6,
     VIEWSPATH: 'app/views',
-    IM_APPKEY: '23311805',
-    IM_APPSECRET: '659744536d30b755129311932aab92d7',
+    IM_APPKEY: '23329639',
+    IM_APPSECRET: '77ef7d1146dd5890bb381855fd598344',
     PUSH_CONFIG: {
         PUSH_ID: "iGUAhRUsALJCmhg6qtrvagRb-gzGzoHsz",
         PUSH_KEY: "JDU4Ezny3IVmQPPh7TNs80Cg"
