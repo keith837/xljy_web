@@ -34,6 +34,15 @@ module.exports = new basicController(__filename).init({
                     user.schoolIds = [school.schoolId];
                     self.redis.set(user.token, JSON.stringify(user));
 
+
+                    pushCore.regDevice(user.deviceType, user.installationId, [], function (err, objectId) {
+                        if (err) {
+                            log.error("删除设备[" + installationId + "]云端token出错");
+                            log.error(err);
+                        }
+                        log.info("删除设备[" + installationId + "]云端token成功，objectId=" + objectId);
+                    });
+
                     var channels = [];
                     channels.push("school_" + user.schools[0].schoolId + "_parent");
                     channels.push("class_" + user.class.classId);

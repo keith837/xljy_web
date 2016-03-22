@@ -85,6 +85,13 @@ module.exports = new basicController(__filename).init({
                     log.info("用户编号【" + user.userId + "】已登录，token：" + userToken);
                     self.redis.del(userToken);
                     self.redis.del(user.userId);
+                    pushCore.regDevice(user.deviceType, user.installationId, [], function (err, objectId) {
+                        if (err) {
+                            log.error("删除设备[" + user.installationId + "]云端token出错");
+                            log.error(err);
+                        }
+                        log.info("删除设备[" + user.installationId + "]云端token成功，objectId=" + objectId);
+                    });
                 }
             });
             user.source = source;

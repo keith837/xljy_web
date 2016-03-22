@@ -170,6 +170,7 @@ module.exports = new basicController(__filename).init({
                     response.json({code: "00", msg: "通知发布成功", data: res});
 
                     var inData = {
+                        "action": self.cacheManager.getCacheValue("REST_NOTICE_ACTION", noticeTypeId),
                         "ios": {
                             "alert": content
                         },

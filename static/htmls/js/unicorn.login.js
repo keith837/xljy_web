@@ -38,6 +38,8 @@ $(document).ready(function () {
             $(element).parents('.control-group').addClass('success');
         },
         submitHandler: function(form) {
+            var tmpPassword = $("#password").val();
+            $("#password").val(hex_md5(tmpPassword));
             $.ajax({
                 url: "/api/user/weblogin",
                 type: "POST",
