@@ -31,6 +31,7 @@ module.exports = new basicController(__filename).init({
 
     selectSchool : function(err, school, req, res, next){
         var self = this;
+        var log = this.logger;
         if (err) {
             return next(err);
         }

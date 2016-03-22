@@ -282,6 +282,14 @@ module.exports = new basicController(__filename).init({
         if(content){
             qryObj.content = "%" + content + "%";
         }
+        var groupId = req.user.groupId;
+        if(groupId == 10){
+            qryObj.classId = req.user.student.classId;
+            schoolIds = null;
+        }else if(groupId == 20){
+            qryObj.classId = req.user.class.classId;
+            schoolIds = null;
+        }
         var startDate = req.query.startDate;
         var endDate = req.query.endDate;
         self.model['album'].listByPage(qryObj, schoolIds, startDate, endDate, start, pageSize, function(err, total, trends) {
