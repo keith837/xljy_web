@@ -71,8 +71,8 @@ Class.findRelByClassAndTeacherId = function(classId, tUserId, callback){
 }
 
 Class.findByClassId = function(classId, callback){
-    var sql = "select A.*,B.nickName,B.custName,C.schoolName from XL_CLASS A,XL_USER B, XL_SCHOOL C where "
-    sql += "A.schoolId=C.schoolId AND A.tUserId=B.userId AND A.state=1 and classId=?";
+    var sql = "select A.*,B.nickName,B.custName,C.schoolName,D.gradeName from XL_CLASS A,XL_USER B, XL_SCHOOL C, XL_GRADE D where "
+    sql += "A.schoolId=C.schoolId AND A.tUserId=B.userId AND A.gradeId=D.gradeId AND A.state=1 and classId=?";
     mysqlUtil.queryOne(sql, [classId], callback);
 }
 
@@ -134,7 +134,7 @@ Class.queryNum = function(obj, schoolIds, callback){
         }
         whereSql = whereSql.substr(0, whereSql.length - 1) + ")";
     }
-    var countSql = "select count(*) as total from XL_CLASS A,XL_USER B, XL_SCHOOL C where A.schoolId=C.schoolId AND A.tUserId=B.userId AND " + whereSql;
+    var countSql = "select count(*) as total from XL_CLASS A,XL_USER B, XL_SCHOOL C, XL_GRADE D where A.schoolId=C.schoolId AND A.tUserId=B.userId AND A.gradeId=D.gradeId AND " + whereSql;
     mysqlUtil.queryOne(countSql, args, callback);
 }
 
@@ -155,7 +155,7 @@ Class.queryPage = function(obj, schoolIds, start, pageSize, callback){
         }
         whereSql = whereSql.substr(0, whereSql.length - 1) + ")";
     }
-    var querySql = "select A.*,B.nickName,B.custName,C.schoolName from XL_CLASS A,XL_USER B, XL_SCHOOL C where A.schoolId=C.schoolId AND A.tUserId=B.userId AND " + whereSql;
+    var querySql = "select A.*,B.nickName,B.custName,C.schoolName,D.gradeName from XL_CLASS A,XL_USER B, XL_SCHOOL C,XL_GRADE D where A.schoolId=C.schoolId AND A.tUserId=B.userId AND A.gradeId=D.gradeId AND " + whereSql;
     querySql += " limit ?,?";
     args.push(start);
     args.push(pageSize);
