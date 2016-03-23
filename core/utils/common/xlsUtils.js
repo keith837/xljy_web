@@ -49,7 +49,7 @@ var input = module.exports.input = function (filter, result, tablename, userObj,
         var temparr = [];
         var hasData = false;
         for (var i = 0; i < maxLength; i++) {
-            if (result[x][0] == "") {
+            if (!result[x][0] || result[x][0] == "") {
                 break;
             }
             if (typeof filter[mapi2[i]] == "string") {

@@ -120,6 +120,7 @@ module.exports = new basicController(__filename).init({
                     log.error(err);
                     return callback(new Error("数据导入临时表出错."));
                 }
+                userObj.importTbl = data[1].table;
                 log.info("batchId=[" + batchId + "],导入临时表数条数" + res.affectedRows);
                 callback(err, data[1].importSQL);
             });

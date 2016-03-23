@@ -79,8 +79,8 @@ exportUtils.execImportSQL = function (sqls, userObj, done) {
                 });
             }, function (callback) {
                 // insert log
-                var insertSQL = "insert into XL_BATCH_OPR_LOG(batchId,fileName,oprDate,oUserId) values(?,?,now(),?)";
-                conn.query(insertSQL, [batchId, userObj.file, userObj.userId], function (err, res) {
+                var insertSQL = "insert into XL_BATCH_OPR_LOG(batchId,fileName,oprDate,oUserId,ext1) values(?,?,now(),?,?)";
+                conn.query(insertSQL, [batchId, userObj.file, userObj.userId, userObj.importTbl], function (err, res) {
                     if (err) {
                         return callback(err);
                     }
