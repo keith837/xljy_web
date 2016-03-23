@@ -162,6 +162,7 @@ function loadSchool(){
         type: "get",
         dataType: "json",
         contentType: "application/json",
+        data: {iDisplayStart:0,iDisplayLength:10000000},
         traditional: true,
         success: function (data) {
             if (data.code == "00") {
@@ -199,6 +200,7 @@ function getClassInfo(schoolId) {
         type: "get",
         dataType: "json",
         contentType: "application/json",
+        data: {iDisplayStart:0,iDisplayLength:10000000},
         traditional: true,
         success: function (data) {
             if (data.code == "00") {
@@ -234,6 +236,7 @@ function getStudentInfo(classId) {
         type: "get",
         dataType: "json",
         contentType: "application/json",
+        data: {iDisplayStart:0,iDisplayLength:10000000},
         traditional: true,
         success: function (data) {
             if (data.code == "00") {
@@ -260,6 +263,7 @@ function loadGroup() {
         type: "get",
         dataType: "json",
         contentType: "application/json",
+        data: {iDisplayStart:0,iDisplayLength:10000000},
         traditional: true,
         success: function (data) {
             if (data.code == "00") {
@@ -285,6 +289,7 @@ function loadGroupByGroupId(groupId) {
         type: "get",
         dataType: "json",
         contentType: "application/json",
+        data: {iDisplayStart:0,iDisplayLength:10000000},
         traditional: true,
         success: function (data) {
             if (data.code == "00") {
@@ -337,6 +342,7 @@ function loadSuser(groupId,selectId) {
         type: "get",
         dataType: "json",
         contentType: "application/json",
+        data: {iDisplayStart:0,iDisplayLength:10000000},
         traditional: true,
         success: function (data) {
             if (data.code == "00") {
@@ -363,6 +369,7 @@ function loadBrand(selectId) {
         type: "get",
         dataType: "json",
         contentType: "application/json",
+        data: {iDisplayStart:0,iDisplayLength:10000000},
         traditional: true,
         success: function (data) {
             if (data.code == "00") {
@@ -389,6 +396,7 @@ function loadGrade(selectId) {
         type: "get",
         dataType: "json",
         contentType: "application/json",
+        data: {iDisplayStart:0,iDisplayLength:10000000},
         traditional: true,
         success: function (data) {
             if (data.code == "00") {
