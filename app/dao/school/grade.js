@@ -7,11 +7,11 @@ var Grade = module.exports;
  * @param obj 查询条件
  * @param callback
  */
-Grade.queryNum = function(obj, callback){
+Grade.queryNum = function (obj, callback) {
     var whereSql = " A.state=1 ";
     var args = new Array();
-    if(obj){
-        for(var key in obj){
+    if (obj) {
+        for (var key in obj) {
             whereSql += " and A." + key + "=?";
             args.push(obj[key]);
         }
@@ -27,11 +27,11 @@ Grade.queryNum = function(obj, callback){
  * @param pageSize 每页条数
  * @param callback
  */
-Grade.queryPage = function(obj, start, pageSize, callback){
+Grade.queryPage = function (obj, start, pageSize, callback) {
     var whereSql = " A.state=1 ";
     var args = new Array();
-    if(obj){
-        for(var key in obj){
+    if (obj) {
+        for (var key in obj) {
             whereSql += " and A." + key + "=?";
             args.push(obj[key]);
         }
@@ -43,17 +43,17 @@ Grade.queryPage = function(obj, start, pageSize, callback){
     mysqlUtil.query(querySql, args, callback);
 }
 
-Grade.listByPage = function(obj, start, pageSize, callback){
-    Grade.queryNum(obj, function(err, data){
-        if(err){
+Grade.listByPage = function (obj, start, pageSize, callback) {
+    Grade.queryNum(obj, function (err, data) {
+        if (err) {
             return callback(err);
         }
         var total = 0;
-        if(data){
+        if (data) {
             total = data.total;
         }
-        Grade.queryPage(obj, start, pageSize, function(err, users){
-            if(err){
+        Grade.queryPage(obj, start, pageSize, function (err, users) {
+            if (err) {
                 return callback(err);
             }
             return callback(err, total, users);
@@ -61,5 +61,57 @@ Grade.listByPage = function(obj, start, pageSize, callback){
     });
 }
 
+Grade.queryDetail = function (id, callback) {
+    var sql = "select A.*,B.schoolName from XL_GRADE A, XL_SCHOOL B where A.schoolId=B.schoolId and A.gradeId=? and A.state=1";
+    mysqlUtil.query(sql, [id], callback);
+}
+
+
+Grade.update = function (grade, callback) {
+    mysqlUtil.queryOne("select count(*) as total from XL_GRADE where gradeId=? and state=1", [grade.gradeId], function (err, res) {
+        if (err) {
+            return callback(err);
+        } else if (res.total !== 1) {
+            return callback(new Error("无法查询到年级信息[" + grade.gradeId + "]."));
+        }
+
+        var sql = "update XL_GRADE set gradeName=?,sComeDate=?,sLeaveDate=?,tComeDate=?,tLeaveDate=?,doneDate=now(),oUserId=? where gradeId=? and state=1";
+        var params = [];
+        params.push(grade.gradeName);
+        params.push(grade.sComeDate);
+        params.push(grade.sLeaveDate);
+        params.push(grade.tComeDate);
+        params.push(grade.tLeaveDate);
+        params.push(grade.oUserId);
+        params.push(grade.gradeId);
+        mysqlUtil.query(sql, params, callback);
+    });
+}
+
+Grade.del = function (id, userId, callback) {
+    mysqlUtil.query("update XL_GRADE set state=0,doneDate=now(),oUserId=? where gradeId=? ", [userId, id], callback);
+}
+
+
+Grade.add = function (grade, callback) {
+    mysqlUtil.queryOne("select count(*) as total from XL_GRADE where gradeName=? and schoolId=? and state=1", [grade.gradeName, grade.schoolId], function (err, res) {
+        if (err) {
+            return callback(err);
+        } else if (res.total >= 1) {
+            return callback(new Error("年级[" + grade.gradeName + "]已存在，无法新建."));
+        }
+
+        var sql = "insert into XL_GRADE(schoolId,gradeName,sComeDate,sLeaveDate,tComeDate,tLeaveDate,state,createDate,doneDate,oUserId) values(?,?,?,?,?,?,1,now(),now(),?)";
+        var params = [];
+        params.push(grade.schoolId);
+        params.push(grade.gradeName);
+        params.push(grade.sComeDate);
+        params.push(grade.sLeaveDate);
+        params.push(grade.tComeDate);
+        params.push(grade.tLeaveDate);
+        params.push(grade.oUserId);
+        mysqlUtil.query(sql, params, callback);
+    });
+}
 
 

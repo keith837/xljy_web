@@ -281,6 +281,26 @@ var routerConfig = {
                 "url": "/api/grade/list",
                 "method": "get",
                 "description": "查询所有年级"
+            },
+            "detail": {
+                "url": "/api/grade/detail/:id",
+                "method": "get",
+                "description": "查询年级"
+            },
+            "add": {
+                "url": "/api/grade/add",
+                "method": "post",
+                "description": "新增年级"
+            },
+            "update": {
+                "url": "/api/grade/update/:id",
+                "method": "put",
+                "description": "更新年级"
+            },
+            "del": {
+                "url": "/api/grade/:id",
+                "method": "delete",
+                "description": "删除年级"
             }
         },
 

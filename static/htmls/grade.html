@@ -47,6 +47,9 @@
                                                     <button type="button" class="btn" id="searchBtn">搜索</button>
                                                 </div>
                                             </td>
+                                            <td align="center">
+                                                <a href="grade_add.html" class="btn">新增年级</a>
+                                            </td>
                                         </tr>
                                     </table>
                                 </form>
@@ -74,6 +77,7 @@
                                 <th >离园时间</th>
                                 <th >上班时间</th>
                                 <th >下班时间</th>
+                                <th width="20%">操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -161,6 +165,14 @@
                 {"mDataProp": "sLeaveDate"},
                 {"mDataProp": "tComeDate"},
                 {"mDataProp": "tLeaveDate"}
+            ],
+            "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
+                {
+                    "targets": [6],
+                    "data": null,
+                    "bSortable": false,
+                    "defaultContent": "<button class=\"btn btn-primary\" id='editrow'><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
+                }
             ]
 
         };
@@ -181,12 +193,20 @@
 
         });
 
+        $('.data-table tbody').on( 'click', 'button#editrow', function () {
+            //var row = table.row( $(this).parents('tr') ).data();
+            var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
+            window.location.href="grade_add.html?gradeId="+row.gradeId;
+
+        });
+
         $('.data-table tbody').on( 'click', 'button#delrow', function () {
             //var row = table.row( $(this).parents('tr') ).data();
             var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
-            deleteRow("您将删除年级【"+row.gradeName+"】", '/api/grade/remove/'+row.gradeId,'DELETE',null,table);
-
+            deleteRow("您将删除班级【"+row.gradeName+"】", '/api/grade/'+row.gradeId,'DELETE',null,table);
         });
+
+
     });
 
 </script>
