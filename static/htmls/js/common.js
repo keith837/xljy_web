@@ -371,11 +371,11 @@ function loadSuser(groupId,selectId) {
 //加载老师
 function loadTuser(schoolId,selectId) {
     $.ajax({
-        url: "/api/school/teachers/"+schoolId,    //后台webservice里的方法名称
+        url: "/api/user/list",    //后台webservice里的方法名称
         type: "get",
         dataType: "json",
         contentType: "application/json",
-        data: {iDisplayStart:0,iDisplayLength:10000000},
+        data: {schoolId:schoolId,groupId:20,iDisplayStart:0,iDisplayLength:10000000},
         traditional: true,
         success: function (data) {
             if (data.code == "00") {
