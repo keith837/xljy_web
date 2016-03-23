@@ -181,6 +181,12 @@ function loadSchool(){
                         getClassInfo($(this).val());
                     });
                 }
+                if($("#tUserId").length==1) {
+                    schoolSelect.on("change", function (e) {
+                        initNullSelect("#tUserId");
+                        loadTuser($(this).val(),"tUserId");
+                    });
+                }
             } else {
                 initNullSelect("#schoolId");
             }
@@ -339,6 +345,33 @@ function loadUser(groupId,selectId) {
 function loadSuser(groupId,selectId) {
     $.ajax({
         url: "/api/user/principals/"+groupId,    //后台webservice里的方法名称
+        type: "get",
+        dataType: "json",
+        contentType: "application/json",
+        data: {iDisplayStart:0,iDisplayLength:10000000},
+        traditional: true,
+        success: function (data) {
+            if (data.code == "00") {
+                var options = [];
+                $.each(data.data, function (i, item) {
+                    options.push({id: item.userId, text: item.custName});
+                })
+                $("#"+selectId).select2({data: options});
+
+            } else {
+                initNullSelect("#"+selectId);
+            }
+        },
+        error: function (msg) {
+            initNullSelect("#"+selectId);
+        }
+    });
+}
+
+//加载老师
+function loadTuser(schoolId,selectId) {
+    $.ajax({
+        url: "/api/school/teachers/"+schoolId,    //后台webservice里的方法名称
         type: "get",
         dataType: "json",
         contentType: "application/json",
