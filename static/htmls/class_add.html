@@ -22,7 +22,6 @@
 <div id="content">
     <div id="breadcrumb">
         <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 园所管理</a>
-        <a href="#" class="current">新增班级</a>
     </div>
     <div class="container-fluid">
         <div class="row-fluid">
@@ -57,6 +56,7 @@
                                         <label class="control-label" for="tUserId">班主任<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <input type="text" id="tUserId" name="tUserId" placeholder="请选择用户" class="span3">
+                                            <input type="text" style="display: none;" disabled="disabled" id="tUserName" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -129,16 +129,19 @@
 
             $.get("/api/class/show/" + classId, null, function (json) {
                 if (json.code == "00") {
+                    console.info(json.data);
                     $("#className").val(json.data.className);
                     $("#editType").val("edit");
                     $("#schoolName").val(json.data.schoolName);
                     $("#tUserId").val(json.data.tUserId);
+                    $("#tUserName").val(json.data.custName);
                     $("#gradeName").val(json.data.gradeName);
 
                     $("#tUserId").css("display", "none");
                     $("#schoolId").css("display", "none");
                     $("#gradeId").css("display", "none");
                     $("#schoolName").css("display", "");
+                    $("#tUserName").css("display", "");
                     $("#gradeName").css("display", "");
 
                 }
