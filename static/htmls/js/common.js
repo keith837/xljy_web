@@ -162,6 +162,7 @@ function loadSchool(){
         type: "get",
         dataType: "json",
         contentType: "application/json",
+        data: {iDisplayStart:0,iDisplayLength:10000000},
         traditional: true,
         success: function (data) {
             if (data.code == "00") {
@@ -178,6 +179,12 @@ function loadSchool(){
                             initNullSelect("#studentId");
                         }
                         getClassInfo($(this).val());
+                    });
+                }
+                if($("#tUserId").length==1) {
+                    schoolSelect.on("change", function (e) {
+                        initNullSelect("#tUserId");
+                        loadTuser($(this).val(),"tUserId");
                     });
                 }
             } else {
@@ -199,6 +206,7 @@ function getClassInfo(schoolId) {
         type: "get",
         dataType: "json",
         contentType: "application/json",
+        data: {iDisplayStart:0,iDisplayLength:10000000},
         traditional: true,
         success: function (data) {
             if (data.code == "00") {
@@ -234,6 +242,7 @@ function getStudentInfo(classId) {
         type: "get",
         dataType: "json",
         contentType: "application/json",
+        data: {iDisplayStart:0,iDisplayLength:10000000},
         traditional: true,
         success: function (data) {
             if (data.code == "00") {
@@ -260,6 +269,7 @@ function loadGroup() {
         type: "get",
         dataType: "json",
         contentType: "application/json",
+        data: {iDisplayStart:0,iDisplayLength:10000000},
         traditional: true,
         success: function (data) {
             if (data.code == "00") {
@@ -285,6 +295,7 @@ function loadGroupByGroupId(groupId) {
         type: "get",
         dataType: "json",
         contentType: "application/json",
+        data: {iDisplayStart:0,iDisplayLength:10000000},
         traditional: true,
         success: function (data) {
             if (data.code == "00") {
@@ -337,6 +348,34 @@ function loadSuser(groupId,selectId) {
         type: "get",
         dataType: "json",
         contentType: "application/json",
+        data: {iDisplayStart:0,iDisplayLength:10000000},
+        traditional: true,
+        success: function (data) {
+            if (data.code == "00") {
+                var options = [];
+                $.each(data.data, function (i, item) {
+                    options.push({id: item.userId, text: item.custName});
+                })
+                $("#"+selectId).select2({data: options});
+
+            } else {
+                initNullSelect("#"+selectId);
+            }
+        },
+        error: function (msg) {
+            initNullSelect("#"+selectId);
+        }
+    });
+}
+
+//加载老师
+function loadTuser(schoolId,selectId) {
+    $.ajax({
+        url: "/api/user/list",    //后台webservice里的方法名称
+        type: "get",
+        dataType: "json",
+        contentType: "application/json",
+        data: {schoolId:schoolId,groupId:20,iDisplayStart:0,iDisplayLength:10000000},
         traditional: true,
         success: function (data) {
             if (data.code == "00") {
@@ -363,6 +402,7 @@ function loadBrand(selectId) {
         type: "get",
         dataType: "json",
         contentType: "application/json",
+        data: {iDisplayStart:0,iDisplayLength:10000000},
         traditional: true,
         success: function (data) {
             if (data.code == "00") {
@@ -389,6 +429,7 @@ function loadGrade(selectId) {
         type: "get",
         dataType: "json",
         contentType: "application/json",
+        data: {iDisplayStart:0,iDisplayLength:10000000},
         traditional: true,
         success: function (data) {
             if (data.code == "00") {
