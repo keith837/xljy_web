@@ -309,7 +309,7 @@ function loadUser(groupId,selectId) {
         url: "/api/user/list",    //后台webservice里的方法名称
         type: "get",
         dataType: "json",
-        data: {groupId:groupId},
+        data: {groupId:groupId,iDisplayStart:0,iDisplayLength:10000000},
         contentType: "application/json",
         traditional: true,
         success: function (data) {
