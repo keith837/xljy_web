@@ -79,9 +79,10 @@ module.exports = new basicController(__filename).init({
             if(user.state != 1){
                 return next(new Error("该手机号码为白名单用户，未注册"));
             }
-            if(user.groupId != groupId){
+            if(!((groupId == 30 && (user.groupId == 40 || user.groupId == 50)) || user.groupId == groupId)){
                 return next(new Error("用户组不一致，不允许登录"));
             }
+            groupId = user.groupId;
             if(user.password != password){
                 return next(new Error("登录密码错误"));
             }
