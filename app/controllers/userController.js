@@ -647,24 +647,22 @@ module.exports = new basicController(__filename).init({
             }
             SmsSendUtil.sendSms(billId, securityCode, function (data) {
                 var error = data.error;
-                self.model['smsLog'].saveSmsLog([billId, securityCode, new Date(), 0, data.msg], function (err, info) {
+                self.model['smsLog'].saveSmsLog([billId, securityCode, new Date(), error, data.msg], function (err, info) {
                     if (err) {
                         return next(err);
                     }
-                    self.model['smsLog'].findSms(billId, function (err, smsLog) {
-                        if (err) {
-                            return next(err);
-                        }
-                        if (!smsLog) {
-                            return next(new Error("短信验证码错误"));
-                        }
-                        res.json({
+                    if(error == 0 || error == "0"){
+                        return res.json({
                             code: "00",
                             msg: "短信下发成功",
-                            data: smsLog
+                            data: securityCode
                         });
-                    });
-
+                    }else{
+                        return res.json({
+                            code: "00",
+                            msg: "短信下发失败：" + data.msg
+                        });
+                    }
                 });
             });
         });

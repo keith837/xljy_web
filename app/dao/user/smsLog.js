@@ -8,7 +8,3 @@ SmsLog.saveSmsLog = function(args, callback){
 SmsLog.findOne = function(billId, securityCode, callback){
     mysqlUtil.queryOne("select * from XL_SMS_LOG where billId=? and securityCode=? and sendFlag=0", [billId, securityCode], callback);
 }
-
-SmsLog.findSms = function(billId, callback){
-    mysqlUtil.queryOne("select securityCode from XL_SMS_LOG where TIMESTAMPDIFF(MINUTE,sendDate,now())<=5 and billId=? and sendFlag=0 order by sendDate desc", [billId], callback);
-}

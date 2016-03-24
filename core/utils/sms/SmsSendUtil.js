@@ -4,14 +4,14 @@ var querystring = require('querystring');
 module.exports.sendSms = function(billId, securityCode, callback){
     var postData = {
         mobile:billId,
-        message:'随机码：' + securityCode + '。【响亮教育】'
+        message:'验证码：' + securityCode + '。【响亮教育】'
     };
     var content = querystring.stringify(postData);
     var options = {
         host:'sms-api.luosimao.com',
         path:'/v1/send.json',
         method:'POST',
-        auth:'api:key-e0f0daae8758e7db68ae162e5941cb58',
+        auth:'api:key-0503f5817effbcdd46ccb3dbd4ac0719',
         agent:false,
         rejectUnauthorized : false,
         headers:{
