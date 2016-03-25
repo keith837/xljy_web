@@ -42,17 +42,18 @@ module.exports = new basicController(__filename).init({
                             log.error(err);
                         }
                         log.info("删除设备[" + installationId + "]云端token成功，objectId=" + objectId);
-                    });
 
-                    var channels = [];
-                    channels.push("school_" + user.schools[0].schoolId + "_parent");
-                    channels.push("class_" + user.class.classId);
-                    pushCore.regDevice(user.deviceType, user.installationId, channels, function (err, objectId) {
-                        if (err) {
-                            log.error("注册设备[" + installationId + "]出错");
-                            log.error(err);
-                        }
-                        log.info("注册设备[" + installationId + "]成功，objectId=" + objectId);
+
+                        var channels = [];
+                        channels.push("school_" + user.schools[0].schoolId + "_parent");
+                        channels.push("class_" + user.class.classId);
+                        pushCore.regDevice(user.deviceType, user.installationId, channels, function (err, objectId) {
+                            if (err) {
+                                log.error("注册设备[" + installationId + "]出错");
+                                log.error(err);
+                            }
+                            log.info("注册设备[" + installationId + "]成功，objectId=" + objectId);
+                        });
                     });
 
                     res.json({

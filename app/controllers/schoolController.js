@@ -49,14 +49,14 @@ module.exports = new basicController(__filename).init({
                 log.error(err);
             }
             log.info("删除设备[" + installationId + "]云端token成功，objectId=" + objectId);
-        });
 
-        pushCore.regDevice(user.deviceType, user.installationId, ["school_" + user.schools[0].schoolId], function (err, objectId) {
-            if (err) {
-                log.error("注册设备[" + installationId + "]出错");
-                log.error(err);
-            }
-            log.info("注册设备[" + installationId + "]成功，objectId=" + objectId);
+            pushCore.regDevice(user.deviceType, user.installationId, ["school_" + user.schools[0].schoolId], function (err, objectId) {
+                if (err) {
+                    log.error("注册设备[" + installationId + "]出错");
+                    log.error(err);
+                }
+                log.info("注册设备[" + installationId + "]成功，objectId=" + objectId);
+            });
         });
 
         res.json({
