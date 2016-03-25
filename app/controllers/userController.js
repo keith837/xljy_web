@@ -110,7 +110,7 @@ module.exports = new basicController(__filename).init({
                                     log.error("删除设备[" + user.installationId + "]云端token出错");
                                     return next(err);
                                 }
-                                log.debug("删除设备[" + user.installationId + "]云端token成功，objectId=" + objectId);
+                                log.info("删除设备[" + user.installationId + "]云端token成功，objectId=" + objectId);
                                 self.appLogin(groupId, user, req, res, next);
                             });
                         });
