@@ -65,7 +65,6 @@ module.exports = new basicController(__filename).init({
         if (!deviceType) {
             return next(new Error("手机设备类型不能为空"));
         }
-        var clientId = getClientIp(req);
         if(!groupId){
             return next(new Error("用户组信息不能为空"));
         }
@@ -86,66 +85,84 @@ module.exports = new basicController(__filename).init({
             if(user.password != password){
                 return next(new Error("登录密码错误"));
             }
-            self.redis.get(user.userId, function(err, userToken){
-                if(err){
-                    return err;
-                }
-                if(userToken){
-                    log.info("用户编号【" + user.userId + "】已登录，token：" + userToken);
-                    self.redis.del(userToken);
-                    self.redis.del(user.userId);
-                    pushCore.regDevice(user.deviceType, user.installationId, [], function (err, objectId) {
-                        if (err) {
-                            log.error("删除设备[" + user.installationId + "]云端token出错");
-                            log.error(err);
-                        }
-                        log.info("删除设备[" + user.installationId + "]云端token成功，objectId=" + objectId);
-                    });
-                }
-            });
             user.source = source;
             user.channel = channel;
             user.installationId = installationId;
             user.deviceType = deviceType;
-            var callback = function(){
-                var userObj = new Object();
-                userObj.doneDate = new Date();
-                userObj.installationId = installationId;
-                userObj.deviceType = deviceType;
-                self.model['user'].update(userObj, user.userId, function (err, data) {
-                    if (err) {
-                        self.logger.error("修改installationId失败", err);
-                    }
-                    if (groupId == 20) {
-                        var channels = [];
-                        channels.push("school_" + user.schools[0].schoolId + "_teacher");
-                        channels.push("class_" + user.class.classId);
-                        pushCore.regDevice(deviceType, installationId, channels, function (err, objectId) {
-                            if (err) {
-                                log.error("注册设备[" + installationId + "]出错");
-                                log.error(err);
+            self.redis.get(user.userId, function(err, userToken){
+                if(err){
+                    return next(err);
+                }
+                if(userToken){
+                    log.info("用户编号【" + user.userId + "】已登录，token：" + userToken);
+                    self.redis.del(userToken, function(err, data){
+                        if(err){
+                            return next(err);
+                        }
+                        log.debug("已登录token【" + userToken + "】关联session信息删除成功");
+                        self.redis.del(user.userId, function(err, data){
+                            if(err){
+                                return next(err);
                             }
-                            log.info("注册设备[" + installationId + "]成功，objectId=" + objectId);
+                            log.debug("用户编号【" + user.userId + "】对应已登录token【" + userToken + "】删除成功");
+                            pushCore.regDevice(user.deviceType, user.installationId, [], function (err, objectId) {
+                                if (err) {
+                                    log.error("删除设备[" + user.installationId + "]云端token出错");
+                                    return next(err);
+                                }
+                                log.debug("删除设备[" + user.installationId + "]云端token成功，objectId=" + objectId);
+                                self.appLogin(groupId, user, req, res, next);
+                            });
                         });
-                    }
-
-                });
-            }
-            if(groupId == 10){
-                self.parentLogin(user, res, next, callback);
-            }else if(groupId == 20){
-                self.teacherLogin(user, res, next, callback);
-            }else if(groupId == 30){
-                self.principalLogin(false, user, res, next, callback);
-            }else if(groupId == 40){
-                self.groupLogin(false, user, res, next, callback);
-            }else if(groupId == 50){
-                self.adminLogin(false, user, res, next, callback);
-            }else{
-                return next(new Error("用户组" + groupId + "信息未定义"));
-            }
-            self.model['userLogin'].logLogin([user.groupId,user.userId,user.nickName,user.billId,user.custName,channel,source,source,clientId,null]);
+                    });
+                }else{
+                    self.appLogin(groupId, user, req, res, next);
+                }
+            });
         });
+    },
+
+    appLogin : function(groupId, user, req, res, next){
+        var self = this;
+        var log = this.logger;
+        var clientId = getClientIp(req);
+        var callback = function(){
+            var userObj = new Object();
+            userObj.doneDate = new Date();
+            userObj.installationId = user.installationId;
+            userObj.deviceType = user.deviceType;
+            self.model['user'].update(userObj, user.userId, function (err, data) {
+                if (err) {
+                    log.error("修改installationId失败", err);
+                }
+                if (groupId == 20) {
+                    var channels = [];
+                    channels.push("school_" + user.schools[0].schoolId + "_teacher");
+                    channels.push("class_" + user.class.classId);
+                    pushCore.regDevice(user.deviceType, user.installationId, channels, function (err, objectId) {
+                        if (err) {
+                            log.error("注册设备[" + user.installationId + "]出错");
+                            log.error(err);
+                        }
+                        log.info("注册设备[" + user.installationId + "]成功，objectId=" + objectId);
+                    });
+                }
+            });
+        }
+        if(groupId == 10){
+            self.parentLogin(user, res, next, callback);
+        }else if(groupId == 20){
+            self.teacherLogin(user, res, next, callback);
+        }else if(groupId == 30){
+            self.principalLogin(false, user, res, next, callback);
+        }else if(groupId == 40){
+            self.groupLogin(false, user, res, next, callback);
+        }else if(groupId == 50){
+            self.adminLogin(false, user, res, next, callback);
+        }else{
+            return next(new Error("用户组" + groupId + "信息未定义"));
+        }
+        self.model['userLogin'].logLogin([user.groupId,user.userId,user.nickName,user.billId,user.custName,user.channel,user.source,user.source,clientId,null]);
     },
 
     //家长登录
