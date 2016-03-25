@@ -142,14 +142,14 @@ module.exports = new basicController(__filename).init({
             classId = request.user.class.classId;
             className = request.user.class.className;
         }
-        channels.push("school_" + schoolId);
+        channels.push("school" + schoolId);
         if (noticeTypeId == 1 || noticeTypeId == 7) {
-            channels.push("class_" + classId);
+            channels.push("class" + classId);
         } else if (noticeTypeId == 2 || noticeTypeId == 5) {
-            channels.push("school_" + schoolId + "_teacher");
+            channels.push("school" + schoolId + "teacher");
         } else if (noticeTypeId == 3 || noticeTypeId == 4 || noticeTypeId == 6) {
-            channels.push("school_" + schoolId + "_teacher");
-            channels.push("school_" + schoolId + "_parent");
+            channels.push("school" + schoolId + "teacher");
+            channels.push("school" + schoolId + "parent");
         }
         form.parse(request, function (err, fields, files) {
             var content = fields.noticeContext;

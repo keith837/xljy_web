@@ -46,8 +46,8 @@ module.exports = new basicController(__filename).init({
 
 
                         var channels = [];
-                        channels.push("school_" + user.schools[0].schoolId + "_parent");
-                        channels.push("class_" + user.class.classId);
+                        channels.push("school" + user.schools[0].schoolId + "parent");
+                        channels.push("class" + user.class.classId);
                         pushCore.regDevice(user.deviceType, user.installationId, channels, function (err, objectId) {
                             if (err) {
                                 log.error("注册设备[" + user.installationId + "]出错");
