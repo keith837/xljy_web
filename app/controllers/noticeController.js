@@ -173,7 +173,7 @@ module.exports = new basicController(__filename).init({
                     var inData = {
                         "ios": {
                             "alert": content,
-                            "type": alertType
+                            "category": alertType
                         },
                         "android": {
                             "alert": content,
