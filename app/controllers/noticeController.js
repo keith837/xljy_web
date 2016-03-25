@@ -169,14 +169,16 @@ module.exports = new basicController(__filename).init({
                     }
                     response.json({code: "00", msg: "通知发布成功", data: res});
 
+                    var alertType = self.cacheManager.getCacheValue("REST_NOTICE_ACTION", noticeTypeId);
                     var inData = {
-                        "action": self.cacheManager.getCacheValue("REST_NOTICE_ACTION", noticeTypeId),
                         "ios": {
-                            "alert": content
+                            "alert": content,
+                            "type": alertType
                         },
                         "android": {
                             "alert": content,
-                            "title": title
+                            "title": title,
+                            "action": alertType
                         }
                     };
                     log.info("开始推送通知。");
