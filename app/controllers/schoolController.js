@@ -47,6 +47,7 @@ module.exports = new basicController(__filename).init({
             if (err) {
                 log.error("删除设备[" + installationId + "]云端token出错");
                 log.error(err);
+                return;
             }
             log.info("删除设备[" + installationId + "]云端token成功，objectId=" + objectId);
 
@@ -54,6 +55,7 @@ module.exports = new basicController(__filename).init({
                 if (err) {
                     log.error("注册设备[" + installationId + "]出错");
                     log.error(err);
+                    return;
                 }
                 log.info("注册设备[" + installationId + "]成功，objectId=" + objectId);
             });
