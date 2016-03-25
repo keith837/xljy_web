@@ -4,7 +4,7 @@ var querystring = require('querystring');
 module.exports.sendSms = function(billId, securityCode, callback){
     var postData = {
         mobile:billId,
-        message:'【响亮教育】您的验证码是：' + securityCode + '。'
+        message:'您的验证码是：' + securityCode + '。【响亮教育】'
     };
     var content = querystring.stringify(postData);
     var options = {
