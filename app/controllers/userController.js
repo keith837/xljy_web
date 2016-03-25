@@ -659,10 +659,7 @@ module.exports = new basicController(__filename).init({
                             data: securityCode
                         });
                     }else{
-                        return res.json({
-                            code: "00",
-                            msg: "短信下发失败：" + data.msg
-                        });
+                        return next(new Error("短信下发失败：" + data.msg));
                     }
                 });
             });
