@@ -38,23 +38,23 @@ module.exports = new basicController(__filename).init({
 
                     pushCore.regDevice(user.deviceType, user.installationId, [], function (err, objectId) {
                         if (err) {
-                            log.error("删除设备[" + installationId + "]云端token出错");
+                            log.error("删除设备[" + user.installationId + "]云端token出错");
                             log.error(err);
                             return;
                         }
-                        log.info("删除设备[" + installationId + "]云端token成功，objectId=" + objectId);
+                        log.info("删除设备[" + user.installationId + "]云端token成功，objectId=" + objectId);
 
 
                         var channels = [];
-                        channels.push("school" + user.schools[0].schoolId + "parent");
-                        channels.push("class" + user.class.classId);
+                        channels.push("school_" + user.schools[0].schoolId + "_parent");
+                        channels.push("class_" + user.class.classId);
                         pushCore.regDevice(user.deviceType, user.installationId, channels, function (err, objectId) {
                             if (err) {
-                                log.error("注册设备[" + installationId + "]出错");
+                                log.error("注册设备[" + user.installationId + "]出错");
                                 log.error(err);
                                 return;
                             }
-                            log.info("注册设备[" + installationId + "]成功，objectId=" + objectId);
+                            log.info("注册设备[" + user.installationId + "]成功，objectId=" + objectId);
                         });
                     });
 
