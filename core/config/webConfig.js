@@ -33,8 +33,8 @@ var webConfig = {
     IM_APPKEY: '23329639',
     IM_APPSECRET: '77ef7d1146dd5890bb381855fd598344',
     PUSH_CONFIG: {
-        PUSH_ID: "iGUAhRUsALJCmhg6qtrvagRb-gzGzoHsz",
-        PUSH_KEY: "JDU4Ezny3IVmQPPh7TNs80Cg"
+        PUSH_ID: "ICwVedGLEOQG2jjwUkDSWnq8-gzGzoHsz",
+        PUSH_KEY: "nwAGgKwMtvpOMJEGBgykfnqR"
     }
 
 }
