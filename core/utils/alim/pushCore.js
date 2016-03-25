@@ -49,7 +49,7 @@ pushCore.prototype.pushToAll = function (indata, cb) {
 pushCore.prototype.pushToChannels = function (indata, channel, cb) {
     var data = {
         data: indata,
-        channels: ["public"]
+        channels: channel
     }
     this.basicCall(data, pushCore.PUSH, function (jsondata) {
         console.log(jsondata);
