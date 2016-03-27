@@ -714,6 +714,34 @@ var routerConfig = {
                 "method": "get",
                 "description": "显示导入结果"
             }
+        },
+        weight: {
+            "usedModel": ["student/weight"],
+            "list": {
+                "url": "/api/weight/list",
+                "method": "get",
+                "description": "学生身高体重列表"
+            },
+            "del": {
+                "url": "/api/weight/:recordId",
+                "method": "delete",
+                "description": "删除记录"
+            },
+            "add": {
+                "url": "/api/weight",
+                "method": "post",
+                "description": "新增身高体重数据"
+            },
+            "modify": {
+                "url": "/api/weight/:recordId",
+                "method": "put",
+                "description": "更新记录"
+            },
+            "show": {
+                "url": "/api/weight/:recordId",
+                "method": "get",
+                "description": "查询记录详情"
+            }
         }
     }
 }

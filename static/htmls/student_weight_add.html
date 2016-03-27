@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/select2.css" />
     <link rel="stylesheet" href="css/unicorn.main.css" />
     <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" href="css/sweetalert.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 </head>
@@ -31,26 +32,19 @@
 								<span class="icon">
 									<i class="icon-th"></i>
 								</span>
-                        <h5>学生信息</h5>
+                        <h5>数据信息</h5>
                     </div>
                     <div class="widget-content nopadding">
 
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form class="form-horizontal" name="studentForm" id="studentForm">
+                                <form class="form-horizontal" name="recordForm" id="recordForm">
                                     <div class="control-group">
-                                        <label class="control-label" for="studentName">真实姓名<span style="color: red;">*</span></label>
-                                        <div class="controls">
-                                            <input type="hidden" id="editType" name="editType" value="add" />
-                                            <input type="text" id="studentName" name="studentName" placeholder="真实姓名" class="span3">
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
+                                        <input type="hidden" id="editType" name="editType" value="add" />
                                         <label class="control-label" for="schoolId">所属学校<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <input type="text" id="schoolId" name="schoolId" placeholder="请选择学校" class="span3">
                                             <input type="text" style="display: none;" disabled="disabled" id="schoolName" class="span3">
-
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -61,46 +55,31 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="userId">绑定家长<span style="color: red;">*</span></label>
+                                        <label class="control-label" for="studentId">学生姓名<span style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <input type="text" id="userId" name="userId" placeholder="请选择家长" class="span3">
+                                            <input type="text" id="studentId" name="studentId" placeholder="请选择学生" class="span3">
+                                            <input type="text" style="display: none;" disabled="disabled" id="studentName" class="span3">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="recordDate">测量日期<span style="color: red;">*</span></label>
+                                        <div class="controls">
+                                            <input type="text" id="recordDate" name="recordDate" placeholder="测量日期" class="form_datetime span3">
                                         </div>
                                     </div>
 
                                     <div class="control-group">
-                                        <label class="control-label" for="cardNum">身份证号<span style="color: red;">*</span></label>
+                                        <label class="control-label" for="height">身高(cm)<span style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <input type="text" id="cardNum" name="cardNum" placeholder="身份证号" class="span3">
+                                            <input type="text" id="height" name="height" placeholder="身高(cm)" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="studentAge">学生年龄<span style="color: red;">*</span></label>
+                                        <label class="control-label" for="weight">体重(kg)<span style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <input type="text" id="studentAge" name="studentAge" placeholder="学生年龄" class="span3">
+                                            <input type="text" id="weight" name="weight" placeholder="体重(kg)" class="span3">
                                         </div>
                                     </div>
-                                    <div class="control-group">
-                                        <label class="control-label" for="gender">性别<span style="color: red;">*</span></label>
-                                        <div class="controls">
-                                            <select class="span3" id="gender" name="gender">
-                                                <option value="1">男</option>
-                                                <option value="0">女</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label" for="address">联系地址</label>
-                                        <div class="controls">
-                                            <input type="text" id="address" name="address" placeholder="联系地址" class="span3">
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label" for="remark">备注</label>
-                                        <div class="controls">
-                                            <textarea rows="3" id="remark" name="remark" class="span3"></textarea>
-                                        </div>
-                                    </div>
-
                                     <div class="control-group">
                                         <div class="controls">
                                             <button type="submit" class="btn">提交</button>
@@ -141,55 +120,57 @@
 <script src="js/unicorn.js"></script>
 <script src="js/unicorn.form_common.js" charset="utf-8"></script>
 <script src="js/sweetalert.min.js" charset="utf-8"></script>
+<script src="js/bootstrap-datetimepicker.min.js"></script>
 <script>
     /**
      * tables
      **/
     $(document).ready(function () {
-        var studentId = $.url.param('studentId');
-        if (studentId) {
+        initDatePicker();
+
+        var recordId = $.url.param('recordId');
+        if (recordId) {
             $('#backBtn').css("display", "");
             $('#resetBtn').css("display", "none");
-            $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>更新学生</a>");
+            $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>更新身高体重数据</a>");
 
-            $.get("/api/student/show/" + studentId, null, function (json) {
+            $.get("/api/weight/" + recordId, null, function (json) {
                 if (json.code == "00") {
                     $("#studentName").val(json.data.studentName);
                     $("#editType").val("edit");
                     $("#schoolName").val(json.data.schoolName);
                     $("#schoolId").val(json.data.schoolId);
+                    $("#studentId").val(json.data.studentId);
                     $("#className").val(json.data.className);
                     $("#classId").val(json.data.classId);
-                    $("#cardNum").val(json.data.cardNum);
-                    $("#studentAge").val(json.data.studentAge);
-                    $("#address").val(json.data.address==null?"":json.data.address);
-                    $("#remark").val(json.data.remark==null?"":json.data.remark);
+                    $("#recordDate").val(json.data.recordDate);
+                    $("#weight").val(json.data.weight);
+                    $("#height").val(json.data.height);
 
                     $("#schoolId").css("display", "none");
                     $("#classId").css("display", "none");
+                    $("#studentId").css("display", "none");
                     $("#schoolName").css("display", "");
                     $("#className").css("display", "");
+                    $("#studentName").css("display", "");
 
                 }
             }, 'json');
         } else {
             $('#resetBtn').css("display", "");
-            $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>新增学生</a>");
+            $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>新增身高体重数据</a>");
 
             $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
             $("#classId").select2({data: [{id: -1, text: "请选择班级"}]});
-
+            $("#studentId").select2({data: [{id: -1, text: "请选择学生"}]});
             loadSchool();
-
-
         }
-        $("#userId").select2({data: [{id: -1, text: "请选择家长"}]});
-        loadUser(10,"userId");
+
         initValidator();
-        $("#studentForm").validate({
+        $("#recordForm").validate({
             ignore: ".ignore",
             rules:{
-                studentName:{
+                studentId:{
                     required:true
                 },
                 schoolId:{
@@ -198,21 +179,16 @@
                 classId:{
                     required:true
                 },
-                userId:{
+                recordDate:{
                     required:true
                 },
-                cardNum:{
+                weight:{
                     required:true,
-                    number:true,
-                    maxlength:18
+                    number:true
                 },
-                studentAge:{
+                height:{
                     required:true,
-                    number:true,
-                    max:18
-                },
-                gender:{
-                    required:true
+                    number:true
                 }
             },
             errorClass: "help-inline",
@@ -226,13 +202,13 @@
             },
             submitHandler: function(form) {
                 var editType = $("#editType").val();
-                var url = "/api/student/add";
+                var url = "/api/weight";
                 var type = "post";
                 if ("edit" == editType) {
-                    url = "/api/student/modify/" + studentId;
+                    url = "/api/weight/" + recordId;
                     type = "put";
                 }
-                saveOrUpdate(url, type, "#studentForm","student.html");
+                saveOrUpdate(url, type, "#recordForm","student_weight.html");
             }
         });
     });
