@@ -239,6 +239,11 @@ var routerConfig = {
                 "url": "/api/recom/show/:consultId",
                 "method": "get",
                 "description": "查询推荐"
+            },
+            "weblist": {
+                "url": "/api/recom/showall",
+                "method": "get",
+                "description": "web推荐列表"
             }
         },
         brand : {

@@ -141,7 +141,7 @@
         var initTableParams = initDataTable();
         var extendParams = {
             "bServerSide": true,
-            "sAjaxSource": "/api/recom",
+            "sAjaxSource": "/api/recom/showall",
             "sServerMethod": "GET",
             "aoColumns": [
                 {"mDataProp": "consultId"},
@@ -198,7 +198,7 @@
             var consultType = $("#consultType").val();
             if (consultType != null && consultType != "") {
                 paramsCheck = true;
-                params = '&consultType='+consultType;
+                params += '&consultType='+consultType;
             }
             var consultTitle = $("#consultTitle").val();
             if (consultTitle != null && consultTitle != "") {
@@ -207,11 +207,11 @@
             }
             if(paramsCheck==true){
                 //table.fnClearTable(); //清空一下table，不能设置
-                table.fnSettings().sAjaxSource='/api/recom?'+params;
+                table.fnSettings().sAjaxSource='/api/recom/showall?'+params;
 //              table.fnSettings().sServerMethod='GET';
                 table.fnDraw();
             }else{
-                table.fnSettings().sAjaxSource='/api/recom';
+                table.fnSettings().sAjaxSource='/api/recom/showall';
                 table.fnDraw();
             }
 

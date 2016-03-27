@@ -11,13 +11,16 @@ Recom.queryAllNum = function (condition, params, callback) {
     });
 }
 
-Recom.queryPage = function (start, pageSize,consultDate,consultTitle, consultType, callback) {
+Recom.queryPage = function (start, pageSize, consultId,consultDate,consultTitle, consultType, callback) {
     var sqlCondition = " 1=1 ";
     var sqlParams = [];
+    if (consultId && consultId > 0) {
+        sqlCondition += " and consultId < ? ";
+        sqlParams.push(consultId);
+    }
     if(consultDate){
         sqlCondition += " and consultDate = ? ";
-
-            sqlParams.push(consultDate);
+        sqlParams.push(consultDate);
     }
     if(consultTitle){
         sqlCondition += "  and consultTitle like ? "

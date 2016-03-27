@@ -224,7 +224,7 @@
             });
 
             var firstType = -1;
-            var consultTypes = $("[name='consultType']");
+            var consultTypes = $("[name^='consultType']");
             for (var x = 0; x < consultTypes.length; x++) {
                 if (x == 0) {
                     firstType = $(consultTypes[x]).val();
@@ -237,7 +237,7 @@
                 }
             }
 
-            var consultTitles = $("[name='consultTitle']");
+            var consultTitles = $("[name^='consultTitle']");
             for (var x = 0; x < consultTitles.length; x++) {
                 if ($(consultTitles[x]).val() == "") {
                     $(consultTitles[x]).parents('.control-group').addClass('error');
@@ -245,7 +245,7 @@
                 }
             }
 
-            var consultUrls = $("[name='consultUrl']");
+            var consultUrls = $("[name^='consultUrl']");
             for (var x = 0; x < consultUrls.length; x++) {
                 if ($(consultUrls[x]).val() == "") {
                     $(consultUrls[x]).parents('.control-group').addClass('error');
@@ -253,7 +253,7 @@
                 }
             }
 
-            var consultLinks = $("[name='consultLink']");
+            var consultLinks = $("[name^='consultLink']");
             for (var x = 0; x < consultLinks.length; x++) {
                 if ($(consultLinks[x]).val() == "") {
                     $(consultLinks[x]).parents('.control-group').addClass('error');
@@ -269,9 +269,7 @@
                     }
                 }
             }
-            console.log($("#recomForm").serialize());
             var multiple = $('#clonedItem').children().length;
-            console.log(multiple)
             $("#recomForm").ajaxSubmit({
                 url: "/api/recom?multiple=" + multiple,
                 type: "post",

@@ -7,18 +7,64 @@ var basicController = require("../../core/utils/controller/basicController");
 var formidable = require("formidable");
 var path = require("path");
 module.exports = new basicController(__filename).init({
-    list: function (request, response, next) {
+    weblist: function (request, response, next) {
         var self = this;
         var start = parseInt(request.query.iDisplayStart || this.webConfig.iDisplayStart);
         var pageSize = parseInt(request.query.iDisplayLength || this.webConfig.iDisplayLength);
         var consultDate = request.query.consultDate;
         var consultTitle = request.query.consultTitle;
         var consultType = request.query.consultType;
-        this.model['recom'].queryPage(start, pageSize,consultDate,consultTitle,consultType, function (err, totalCount, res) {
+        this.model['recom'].queryPage(start, pageSize,null,consultDate,consultTitle,consultType, function (err, totalCount, res) {
             if (err) {
                 return next(err);
             }
             response.json(self.createPageData("00", totalCount, res));
+        });
+    },
+
+    list: function (request, response, next) {
+        var self = this;
+        var log = this.logger;
+        var pageSize = parseInt(request.query.iDisplayLength || this.webConfig.iDisplayLength);
+        var consultDate = request.query.consultDate;
+        var consultType = request.query.consultType;
+        var consultId = parseInt(request.query.consultId || "0");
+        this.model['recom'].queryPage(0, pageSize * 4, consultId, consultDate, null, consultType, function (err, totalCount, data) {
+            if (err) {
+                return next(err);
+            }
+            if (totalCount == 0) {
+                return response.json({code: "00", data: []});
+            }
+            try {
+                var recomms = new Array();
+                var doneCodeArr = new Array();
+                var groupObject = new Object();
+                for (var x in data) {
+                    doneCodeArr.push(data[x].doneCode);
+                    var recomm = groupObject[data[x].doneCode];
+                    if (!recomm) {
+                        recomm = new Array();
+                        groupObject[data[x].doneCode] = recomm;
+                    }
+                    recomm.push(data[x]);
+                }
+                var preDoneCode = doneCodeArr[0];
+                recomms.push(groupObject[preDoneCode]);
+                for (var i = 1; i < doneCodeArr.length && recomms.length < pageSize; i++) {
+                    if (preDoneCode == doneCodeArr[i]) {
+                        continue;
+                    } else {
+                        preDoneCode = doneCodeArr[i];
+                        recomms.push(groupObject[preDoneCode]);
+                    }
+                }
+                response.json({code: "00", data: recomms});
+            } catch (e) {
+                log.error(e);
+                return next(self.Error("查询信息出错"));
+            }
+
         });
     },
 
