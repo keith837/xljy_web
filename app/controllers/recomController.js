@@ -24,6 +24,10 @@ module.exports = new basicController(__filename).init({
 
     add: function (request, response, next) {
         var self = this;
+        var multiple = request.query.multiple;
+        if (multiple && multiple >= 1) {
+            return self.multipleAdd(request, response, next);
+        }
         var userId = request.user.userId;
         var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "SCHOOL_URL");
         var form = new formidable.IncomingForm();   //创建上传表单
@@ -45,17 +49,70 @@ module.exports = new basicController(__filename).init({
             param.content = fields.consultContent;
             param.consultType = fields.consultType;
             if(fields.isMain == null){
-                param.isMain = "1";
+                param.isMain = "0";
             }else{
-                param.isMain = fields.isMain;
+                param.isMain = "1";
             }
             param.userId = userId;
-
-            //param = parseRecom(request);
-            //param.schoolId = parseInt(request.body.schoolId);
-
-            console.info(param);
             self.model['recom'].add(param, function (err, insertId) {
+                if (err) {
+                    return next(err);
+                } else if (!insertId) {
+                    return next(self.Error("添加失败."));
+                } else {
+                    response.json({code: "00", msg: "添加成功."});
+                }
+            });
+        });
+
+    },
+
+    multipleAdd: function (request, response, next) {
+        var self = this;
+        var multiple = request.query.multiple;
+        var userId = request.user.userId;
+        var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "SCHOOL_URL");
+        var form = new formidable.IncomingForm();   //创建上传表单
+        form.encoding = 'utf-8';		//设置编辑
+        form.uploadDir = uploadDir;	 //设置上传目录
+        form.keepExtensions = true;	 //保留后缀
+        form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
+        form.parse(request, function (err, fields, files) {
+            var params = new Array();
+            var consultUrl;
+            if (files && files.consultUrl) {
+                consultUrl = path.normalize(files.consultUrl.path).replace(/\\/g, '/');
+            } else {
+                return next(new Error("推荐缩略图不能为空"));
+            }
+            var isMain = "1";
+            if (fields.isMain == null) {
+                isMain = "0";
+            } else {
+                isMain = "1";
+            }
+            params.push([fields.consultTitle, consultUrl, fields.consultLink, fields.consultContent, fields.consultType, isMain, userId]);
+
+            for (var i = 0; i < multiple; i++) {
+                if (files && files["consultUrl" + i]) {
+                    consultUrl = path.normalize(files["consultUrl" + i].path).replace(/\\/g, '/');
+                } else {
+                    return next(new Error("推荐缩略图不能为空"));
+                }
+                var isMain = "1";
+                if (fields["isMain" + i] == null) {
+                    isMain = "0";
+                } else {
+                    isMain = "1";
+                }
+                var consultContent = null;
+                if (fields["consultContent" + i]) {
+                    consultContent = fields["consultContent" + i];
+                }
+                params.push([fields["consultTitle" + i], consultUrl, fields["consultLink" + i], consultContent, fields["consultType" + i], isMain, userId]);
+            }
+
+            self.model['recom'].batchAdd(params, function (err, insertId) {
                 if (err) {
                     return next(err);
                 } else if (!insertId) {

@@ -71,53 +71,51 @@
 
                         <div class="container-fluid">
                             <div class="row-fluid" id="limit-clone">
-                                <form class="form-horizontal" name="recomForm" id="recomForm">
-                                    <!--<div class="control-group">-->
-                                        <!--<label class="control-label" for="schoolId">学校<span style="color: red;">*</span></label>-->
-                                        <!--<div class="controls">-->
-                                            <!--<input type="text" id="schoolId" name="schoolId" placeholder="请选择学校" class="span5">-->
-                                            <!--<input type="text" style="display: none;" disabled="disabled" id="schoolName" class="span5">-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                    <div class="toclone">
+
+                                <form class="form-horizontal" name="recomForm" id="recomForm" enctype="multipart/form-data">
+                                    <div id="toCloneItem">
+                                    <div class="groupItems">
                                     <div class="control-group">
-                                        <label class="control-label" for="consultType">推荐类型<span style="color: red;">*</span></label>
+                                        <label class="control-label" >推荐类型<span style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <input type="text" id="consultType" name="consultType[]" placeholder="请选择推荐类型" class="span5">
-                                            <input type="text" style="display: none;" disabled="disabled" id="consultTypeName" name="consultTypeName[]" class="span5">
+                                            <select class="span3" name="consultType">
+                                                <option value="1">资讯推荐</option>
+                                                <option value="2">校园风采</option>
+                                                <option value="3">精彩活动</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="control-group control-inline">
-                                        <label class="control-label" for="consultTitle">标题<span style="color: red;">*</span></label>
+                                        <label class="control-label">标题<span style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <input type="hidden" id="editType" name="editType[]" value="add" />
-                                            <input type="hidden" id="consultContent" name="consultContent[]" value="" />
-                                            <input type="text" id="consultTitle" name="consultTitle[]" placeholder="标题" class="span5"> <input type="checkbox" name="isMain[]">是否头条
+                                            <input type="text" name="consultTitle" placeholder="标题" class="span5"> <input type="checkbox" name="isMain">是否头条
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="consultUrl">缩略图<span style="color: red;">*</span></label>
+                                        <label class="control-label">缩略图<span style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <input type="file" id="consultUrl" name="consultUrl[]" class="span5"/>
+                                            <input type="file" name="consultUrl" class="span5"/>
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="consultLink">链接<span style="color: red;">*</span></label>
+                                        <label class="control-label">链接<span style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <input type="text" id="consultLink" name="consultLink[]" placeholder="链接" class="span5">
+                                            <input type="text" name="consultLink" placeholder="链接" class="span5">
                                         </div>
                                     </div>
-
+                                    </div>
+                                    </div>
+                                    <div id="clonedItem"></div>
                                     <div class="control-group" id="buttons" name="buttons">
                                         <div class="controls">
-                                            <a href="#"  class="btn clone">添加</a>
-                                            <a href="#"  class="btn delete">移除</a>
-                                            <button type="submit" class="btn">提交</button>
+                                            <button type="button" class="btn" id="addCloneBtn">添加</button>
+                                            <button type="button" class="btn" id="delCloneBtn">移除</button>
+                                            <button type="button" class="btn" id="submitBtn">提交</button>
                                             <button type="reset" class="btn">重置</button>
                                             <button type="button" id="backBtn" style="display: none;" class="btn" onclick="javascript:history.back();">返回</button>
                                         </div>
                                     </div>
-                                    </div>
+
                                 </form>
                             </div>
                         </div>
@@ -157,78 +155,151 @@
     options.push({id: 1, text: "资讯推荐"});
     options.push({id: 2, text: "校园风采"});
     options.push({id: 3, text: "精彩活动"});
-    $('#limit-clone').cloneya({
-        valueClone      : true,
-        dataClone       : true,
-        clonePosition: 'before', // or 'before'
-        limit: 4
-    }).on('clone_limit', function(e, limit, toclone) {
-        limitmsg = '最多只允许增加 ' + limit + ' 次!'
-        swal({title: "增加失败!", text: limitmsg, type: "warning", timer: autoCloseTime});
-    }).on('clone_after_clone', function(event, toclone, newclone) {
-        // do something
-        newclone.find("[name='buttons']").remove();
-        console.info(newclone.find("[name='consultType[]']").attr("id"));
-        newclone.find("#consultType").select2({data: options});
-    });
+
+    function urlValidate(value){
+        return /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
+    }
 
     $(document).ready(function () {
         $('#resetBtn').css("display", "");
         $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>新增推荐</a>");
 
-        $("#consultType").select2({data: options});
-
         initValidator();
-        $("#recomForm").validate({
-            ignore: ".ignore",
-            rules:{
-                consultTitle:{
-                    required:true
-                },
-                consultType:{
-                    required:true
-                },
-                consultUrl:{
-                    required:true
-                },
-                consultLink: {
-                    required: true,
-                    url:true
-                }
-            },
-            errorClass: "help-inline",
-            errorElement: "span",
-            highlight:function(element, errorClass, validClass) {
-                $(element).parents('.control-group').addClass('error');
-            },
-            unhighlight: function(element, errorClass, validClass) {
-                $(element).parents('.control-group').removeClass('error');
-                $(element).parents('.control-group').addClass('success');
+        //$("#consultType").select2({data: options});
+
+        $('#delCloneBtn').on('click', function (e) {
+            var items = $('#clonedItem').children();
+            if (items.length >= 1) {
+                $(items).last().remove();
+                e.preventDefault();
             }
         });
-        $("#recomForm").ajaxForm({
-            url: "/api/recom",
-            "type":"post",
-            success: function (data) {
-                if (data.code == "00") {
-                    swal({
-                        title: "保存成功!",
-                        text: "保存成功",
-                        timer: autoCloseTime,
-                        showConfirmButton: true
-                    }, function () {
-                        setTimeout(function () {
-                            window.location.href = "recommend.html";
-                        }, 2000);
-                    });
+
+
+        $('#addCloneBtn').on('click', function () {
+            var items = $('#clonedItem').children();
+            var itemsLength = items.length;
+            if (itemsLength >= 3) {
+                swal({title: "添加失败!", text: "最多只允许增加4次!", type: "error", timer: autoCloseTime});
+                return;
+            }
+            var $original = $('#toCloneItem');
+            var $cloned = $original.clone();
+
+            $cloned.find("#s2id_autogen1").remove();
+            $cloned.find('select').each(function (index, item) {
+                //set new select to value of old select
+                $(item).select2();
+                $(item).attr("name", "consultType" + itemsLength);
+            });
+            var p = $cloned.find(".controls")[1];
+            var u = $cloned.find(".controls")[2];
+            $(p).find('.checker').remove();
+            $(p).find('input').after("<input style='margin-left: 5px; width: 15px; height: 15px;' type='checkbox' name='isMain'>");
+
+            $(u).find("input[type='file']").each(function (index, item) {
+                $(item).on('change',function(){
+                    var fileName = $(this).val().split('\\').pop();
+                    $(this).next(".filename").text(fileName);
+                });
+            });
+
+            $cloned.find("[name='consultUrl']").attr("name", "consultUrl" + itemsLength);
+            $cloned.find("[name='consultTitle']").attr("name", "consultTitle" + itemsLength);
+            $cloned.find("[name='isMain']").attr("name", "isMain" + itemsLength);
+            $cloned.find("[name='consultLink']").attr("name", "consultLink" + itemsLength);
+            $cloned.find("input[type='file']").next(".filename").text("未选择文件");
+
+            $cloned.appendTo('#clonedItem');
+        });
+
+
+
+        $('#submitBtn').on('click', function () {
+            $('#recomForm').find(".control-group").each(function(index,item){
+                $(item).removeClass("error");
+            });
+            $('#recomForm').find("#errMsg").each(function(index,item){
+                $(item).remove();
+            });
+
+            var firstType = -1;
+            var consultTypes = $("[name='consultType']");
+            for (var x = 0; x < consultTypes.length; x++) {
+                if (x == 0) {
+                    firstType = $(consultTypes[x]).val();
                 } else {
-                    swal({title: "保存失败!", text: data.msg, type: "error", timer: autoCloseTime});
+                    if (firstType != $(consultTypes[x]).val()) {
+                        $(consultTypes[x]).parents('.control-group').addClass('error');
+                        swal({title: "提交失败!", text: "推荐类型必须一致!", type: "error", timer: autoCloseTime});
+                        return;
+                    }
                 }
-            },
-            error: function (data) {
-                swal({title: "保存失败!", text: "保存失败!", type: "error", timer: autoCloseTime});
             }
+
+            var consultTitles = $("[name='consultTitle']");
+            for (var x = 0; x < consultTitles.length; x++) {
+                if ($(consultTitles[x]).val() == "") {
+                    $(consultTitles[x]).parents('.control-group').addClass('error');
+                    return;
+                }
+            }
+
+            var consultUrls = $("[name='consultUrl']");
+            for (var x = 0; x < consultUrls.length; x++) {
+                if ($(consultUrls[x]).val() == "") {
+                    $(consultUrls[x]).parents('.control-group').addClass('error');
+                    return;
+                }
+            }
+
+            var consultLinks = $("[name='consultLink']");
+            for (var x = 0; x < consultLinks.length; x++) {
+                if ($(consultLinks[x]).val() == "") {
+                    $(consultLinks[x]).parents('.control-group').addClass('error');
+                    return;
+                } else {
+                    if (!urlValidate($(consultLinks[x]).val())) {
+                        $(consultLinks[x]).parents('.control-group').addClass('error');
+                        if ($(consultLinks[x]).parents('.control-group').find("#errMsg").length >= 1) {
+                        } else {
+                            $(consultLinks[x]).after("<span id='errMsg' style='color:indianred'>Please enter a valid URL</span>");
+                        }
+                        return;
+                    }
+                }
+            }
+            console.log($("#recomForm").serialize());
+            var multiple = $('#clonedItem').children().length;
+            console.log(multiple)
+            $("#recomForm").ajaxSubmit({
+                url: "/api/recom?multiple=" + multiple,
+                type: "post",
+                success: function (data) {
+                    if (data.code == "00") {
+                        swal({
+                            title: "保存成功!",
+                            text: "保存成功",
+                            timer: autoCloseTime,
+                            showConfirmButton: true
+                        }, function () {
+                            setTimeout(function () {
+                                window.location.href = "recommend.html";
+                            }, 2000);
+                        });
+                    } else {
+                        swal({title: "保存失败!", text: data.msg, type: "error", timer: autoCloseTime});
+                    }
+                },
+                error: function (data) {
+                    swal({title: "保存失败!", text: "保存失败!", type: "error", timer: autoCloseTime});
+                }
+            });
+
         });
+
+
+
 
     });
 

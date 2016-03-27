@@ -36,7 +36,7 @@ Recom.queryPage = function (start, pageSize,consultDate,consultTitle, consultTyp
             return callback(err, 0, []);
         }
 
-        sqlCondition += "limit ?,?";
+        sqlCondition += " order by consultId desc,isMain desc limit ?,?";
         sqlParams.push(start);
         sqlParams.push(pageSize);
 
@@ -56,7 +56,27 @@ Recom.add = function (recom, callback) {
     params.push(recom.consultType);
     params.push(recom.isMain);
     params.push(recom.userId);
-    mysqlUtil.query("insert into XL_CONSULT(schoolId,consultTitle,consultUrl,consultDate,consultLink,content,consultType,isMain,createDate,doneDate,userId) values(null,?,?,now(),?,?,?,?,now(),now(),?)", params, function (err, res) {
+    var sysDate = new Date();
+    var doneCode = sysDate.getTime();
+    params.push(doneCode);
+    mysqlUtil.query("insert into XL_CONSULT(schoolId,consultTitle,consultUrl,consultDate,consultLink,content,consultType,isMain,createDate,doneDate,userId,doneCode) values(null,?,?,now(),?,?,?,?,now(),now(),?,?)", params, function (err, res) {
+        if (err) {
+            return callback(err);
+        }
+        callback(err, res.insertId);
+    });
+}
+
+Recom.batchAdd = function (recoms, callback) {
+    var params = new Array()
+    var sysDate = new Date();
+    var doneCode = sysDate.getTime();
+    var insertSql = "insert into XL_CONSULT(schoolId,consultTitle,consultUrl,consultDate,consultLink,content,consultType,isMain,createDate,doneDate,userId,doneCode) values ?";
+    for (var i in recoms) {
+        params.push([null, recoms[i][0], recoms[i][1], sysDate, recoms[i][2], recoms[i][3], recoms[i][4], recoms[i][5], sysDate, sysDate, recoms[i][6], doneCode]);
+    }
+
+    mysqlUtil.query(insertSql, [params], function (err, res) {
         if (err) {
             return callback(err);
         }
