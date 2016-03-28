@@ -80,7 +80,7 @@ School.listClassBySchoolId = function(schoolId, callback){
  * @param callback
  */
 School.listTeacherBySchoolId = function(schoolId, callback){
-    var sql = "select A.classId,A.className,C.userId,C.userName,C.nickName,C.custName from XL_CLASS A,XL_CLASS_TEACHER_REL B,XL_USER C where A.classId=B.classId and B.tUserId=C.userId and A.state=1 and B.state=1 and A.schoolId=? order by classId";
+    var sql = "select A.classId,A.className,B.jobType,C.userId,C.userName,C.nickName,C.custName from XL_CLASS A,XL_CLASS_TEACHER_REL B,XL_USER C where A.classId=B.classId and B.tUserId=C.userId and A.state=1 and B.state=1 and A.schoolId=? order by classId";
     mysqlUtil.query(sql, [schoolId], callback);
 }
 
