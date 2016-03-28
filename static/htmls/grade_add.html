@@ -80,7 +80,7 @@
                                     <div class="control-group">
                                         <div class="controls">
                                             <button type="submit" class="btn">提交</button>
-                                            <button type="reset" class="btn">重置</button>
+                                            <button type="reset" id="resetBtn" class="btn">重置</button>
                                             <button type="button" id="backBtn" style="display: none;" class="btn" onclick="javascript:history.back();">返回</button>
                                         </div>
                                     </div>
@@ -120,16 +120,11 @@
 <script>
 
     $(document).ready(function(){
-
-        $(".form_datetime").datetimepicker({
-            format: 'hh:ii:00',
-            pickDate: false,
-            startView:1,
-            autoclose:true //选择日期后自动关闭
-        });
+        initTimePicker();
         var gradeId = $.url.param('gradeId');
         if (gradeId) {
             $('#backBtn').css("display", "");
+            $('#resetBtn').css("display", "none");
             $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>更新年级</a>");
 
 

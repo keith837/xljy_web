@@ -23,6 +23,10 @@ module.exports = new basicController(__filename).init({
         if (deviceSign) {
             queryCondition.push({"key": "deviceSign", "opr": "like", "val": deviceSign});
         }
+        var studentName = request.query.studentName;
+        if (studentName) {
+            queryCondition.push({"key": "studentName", "opr": "like", "val": studentName});
+        }
         this.model['device'].queryPage(start, pageSize, queryCondition, function (err, totalCount, res) {
             if (err) {
                 return next(err);

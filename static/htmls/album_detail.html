@@ -165,7 +165,7 @@
         $.get("/api/photos/show/" + albumId, null, function (json) {
             if (json.code == "00") {
                 $("#albumId").text(json.data.albumId);
-                var albumTypeId = json.data.albumTypeId;
+                var albumTypeId = json.data.albumType;
                 var albumType = "";
                 //1:班级相册;2:成长点滴;3:精彩瞬间
                 switch (albumTypeId) {

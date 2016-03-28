@@ -131,7 +131,7 @@ School.queryPage = function(schoolObj, brandObj, schoolIds, start, pageSize, cal
     if(schoolObj){
         for(var key in schoolObj){
             whereSql += " and A." + key + "=?";
-            args.push(schoolBbj[key]);
+            args.push(schoolObj[key]);
         }
     }
     if(brandObj){

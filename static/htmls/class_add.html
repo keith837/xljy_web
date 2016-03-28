@@ -81,7 +81,7 @@
                                     <div class="control-group">
                                         <div class="controls">
                                             <button type="submit" class="btn">提交</button>
-                                            <button type="reset" class="btn">重置</button>
+                                            <button type="reset" id="resetBtn" class="btn">重置</button>
                                             <button type="button" id="backBtn" style="display: none;" class="btn" onclick="javascript:history.back();">返回</button>
                                         </div>
                                     </div>
@@ -124,6 +124,7 @@
         var classId = $.url.param('classId');
         if (classId) {
             $('#backBtn').css("display", "");
+            $('#resetBtn').css("display", "none");
             $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>更新班级</a>");
 
 
@@ -133,6 +134,8 @@
                     $("#className").val(json.data.className);
                     $("#editType").val("edit");
                     $("#schoolName").val(json.data.schoolName);
+                    $("#schoolId").val(json.data.schoolId);
+                    $("#gradeId").val(json.data.gradeId);
                     $("#tUserId").val(json.data.tUserId);
                     $("#tUserName").val(json.data.custName);
                     $("#gradeName").val(json.data.gradeName);

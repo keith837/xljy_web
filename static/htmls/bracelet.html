@@ -67,9 +67,20 @@
 
                                 <table width="100%" >
                                     <tr>
-                                        <td align="center">
+                                        <td align="center" width="8%">
+                                            学生姓名
+                                        </td>
+                                        <td align="left" width="15%">
+                                            <div class="span12" style="margin-top:5px; margin-bottom:5px">
+                                                <input type="text" id="studentName" name="studentName" placeholder="学生姓名" class="span12">
+                                            </div>
+                                        </td>
+                                        <td align="center" width="12%">
+                                            请输入设备ID
+                                        </td>
+                                        <td align="left" width="35%">
                                             <div class="input-append span12" style="margin-top:5px; margin-bottom:5px">
-                                                <input type="text" class="span4 search-query" id="braceletName" placeholder="请输入设备ID">
+                                                <input type="text" class="span8 search-query" id="braceletName" name="braceletName" placeholder="请输入设备ID">
                                                 <button type="button" class="btn" id="searchBtn">搜索</button>
                                             </div>
                                         </td>
@@ -175,6 +186,10 @@
             var queryCondition = "";
             if (braceletName != "") {
                 queryCondition += "deviceSign=" + braceletName;
+            }
+            var studentName = $("#studentName").val();
+            if (studentName != "") {
+                queryCondition += "&studentName=" + studentName;
             }
             //table.fnClearTable(); //清空一下table，不能设置
             table.fnSettings().sAjaxSource = '/api/devices?' + queryCondition;
