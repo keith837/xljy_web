@@ -181,6 +181,11 @@ School.listByPage = function(schoolObj, brandObj, schoolIds, start, pageSize, ca
     });
 }
 
+School.listTeachers = function(schoolId, callback){
+    var sql = "select * from XL_USER t where t.groupId=20 and t.schoolId=? and t.state!=0 and not EXISTS (select m.tUserId from XL_CLASS_TEACHER_REL m WHERE m.tUserId=t.userId and m.state=1)";
+    mysqlUtil.query(sql, [schoolId], callback);
+}
+
 /**
  * 修改学校
  * @param obj 修改内容

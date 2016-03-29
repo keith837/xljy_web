@@ -296,6 +296,20 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    webTeachers : function(req, res, next){
+        var self = this;
+        var schoolId = parseInt(req.params.schoolId);
+        self.model['school'].listTeachers(schoolId, function(err, teachers){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                data : teachers ? teachers : new Array()
+            });
+        });
+    },
+
     classes : function(req, res, next){
         var self = this;
         var schoolId = req.query.schoolId;

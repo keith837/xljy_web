@@ -207,6 +207,11 @@ var routerConfig = {
                 "method": "get",
                 "description": "学校老师查询"
             },
+            "webTeachers" : {
+                "url": "/api/school/webTeachers/:schoolId",
+                "method": "get",
+                "description": "学校老师查询"
+            },
             "classes" : {
                 "url": "/api/school/classes",
                 "method": "get",
