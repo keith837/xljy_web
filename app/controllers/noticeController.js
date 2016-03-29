@@ -45,10 +45,14 @@ module.exports = new basicController(__filename).init({
             } else {
                 queryCondition.push(schoolId);
             }
+            queryCondition.push({"key": "noticeTypeId", "opr": "!=", "val": 8});
         } else {
             noticeTypeId = parseInt(request.query.noticeTypeId);
             if (!noticeTypeId || isNaN(noticeTypeId)) {
                 return next(this.Error("没有输入通知类型."));
+            }
+            if (noticeTypeId == 8) {
+                return next(this.Error("次接口不支持查询工作日记[noticeTypeId=8]"));
             }
             queryCondition.push({"key": "noticeTypeId", "opr": "=", "val": noticeTypeId});
             if (noticeTypeId == 1 || noticeTypeId == 7) {
