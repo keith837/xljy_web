@@ -52,7 +52,7 @@ module.exports = new basicController(__filename).init({
                 return next(this.Error("没有输入通知类型."));
             }
             if (noticeTypeId == 8) {
-                return next(this.Error("次接口不支持查询工作日记[noticeTypeId=8]"));
+                return next(this.Error("此接口不支持查询工作日记[noticeTypeId=8]"));
             }
             queryCondition.push({"key": "noticeTypeId", "opr": "=", "val": noticeTypeId});
             if (noticeTypeId == 1 || noticeTypeId == 7) {
