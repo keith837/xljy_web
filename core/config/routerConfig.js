@@ -607,6 +607,11 @@ var routerConfig = {
                 "url": "/api/notices/:id",
                 "method": "put",
                 "description": "编辑通知"
+            },
+            "userList": {
+                "url": "/api/notices/user/:userId",
+                "method": "get",
+                "description": "用户发布的通知列表"
             }
         },
         photos: {
