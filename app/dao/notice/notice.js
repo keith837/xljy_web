@@ -146,12 +146,12 @@ Notice.queryDetail = function (noticeId, callback) {
 
 
 Notice.editNotice = function (noticeParam, noticePic, callback) {
-    mysqlUtil.query("select * from XL_NOTICE where noticeId=? and state=1", [noticeParam[5]], function (err, data) {
+    mysqlUtil.query("select * from XL_NOTICE where noticeId=? and state=1", [noticeParam[3]], function (err, data) {
         if (err) {
             return callback(err);
         }
         if (!data || data.length !== 1) {
-            return callback(new Error("查询不到通知[" + noticeParam[5] + "]"));
+            return callback(new Error("查询不到通知[" + noticeParam[3] + "]"));
         } else {
             if (data[0].userId !== noticeParam[0]) {
                 return callback(new Error("通知必须由创建者修改."));
@@ -173,11 +173,11 @@ Notice.editNotice = function (noticeParam, noticePic, callback) {
                 });
             }, function (upd, callback) {
                 var delSql = "delete from XL_NOTICE_PIC where noticeId=?";
-                conn.query(delSql, noticeParam[5], function (err, res) {
+                conn.query(delSql, noticeParam[3], function (err, res) {
                     callback(err, res);
                 });
             }, function (res, callback) {
-                var noticeId = noticeParam[5];
+                var noticeId = noticeParam[3];
                 var noticePicSQL = "insert into XL_NOTICE_PIC(noticeId,picUrl,picDesc,state,userId,createDate,doneDate) values ?";
                 var noticePicParam = new Array();
                 var now = new Date();
