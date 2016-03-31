@@ -269,6 +269,20 @@
                     }
                 }
             }
+
+
+            var isMains = $("[name^='isMain']");
+            var checkCount = 0;
+            for (var x = 0; x < isMains.length; x++) {
+                if ($(isMains[x]).is(":checked") == true) {
+                    checkCount = checkCount + 1;
+                }
+            }
+            if (checkCount != 1) {
+                swal({title: "提交失败!", text: "必须设置一条推荐为头条!", type: "error", timer: autoCloseTime});
+                return;
+            }
+
             var multiple = $('#clonedItem').children().length;
             $("#recomForm").ajaxSubmit({
                 url: "/api/recom?multiple=" + multiple,

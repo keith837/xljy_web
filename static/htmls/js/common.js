@@ -392,7 +392,7 @@ function loadSuser(groupId,selectId) {
 //加载老师
 function loadTuser(schoolId,selectId) {
     $.ajax({
-        url: "/api/user/list",    //后台webservice里的方法名称
+        url: "/api/school/webTeachers/"+schoolId,    //后台webservice里的方法名称
         type: "get",
         dataType: "json",
         contentType: "application/json",
