@@ -49,7 +49,7 @@ User.active = function(userName, password, yunAccout, callback){
 }
 
 User.modifyPwd = function(userName, password, callback){
-    mysqlUtil.query("update XL_USER set doneDate = now(),password=? where userName = ?", [password, userName], callback);
+    mysqlUtil.query("update XL_USER set doneDate = now(),password=? where userName = ? and state!=0", [password, userName], callback);
 }
 
 User.queryNum = function(obj, custNameOrBillId, schoolIds, callback){
