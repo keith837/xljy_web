@@ -612,6 +612,39 @@ var routerConfig = {
                 "url": "/api/notices/user/:userId",
                 "method": "get",
                 "description": "用户发布的通知列表"
+            },
+            "classList": {
+                "url": "/api/notices/class/:classId",
+                "method": "get",
+                "description": "班级的所有通知列表"
+            }
+        },
+        notes: {
+            "usedModel": ['notes/notes'],
+            "list": {
+                "url": "/api/notes",
+                "method": "get",
+                "description": "查询工作日记列表"
+            },
+            "publish": {
+                "url": "/api/notes",
+                "method": "post",
+                "description": "发布工作日记"
+            },
+            "del": {
+                "url": "/api/notes/:id",
+                "method": "delete",
+                "description": "删除工作日记"
+            },
+            "details": {
+                "url": "/api/notes/:id",
+                "method": "get",
+                "description": "查看工作日记详情"
+            },
+            "edit": {
+                "url": "/api/notes/:id",
+                "method": "put",
+                "description": "编辑工作日记"
             }
         },
         photos: {

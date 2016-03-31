@@ -45,14 +45,10 @@ module.exports = new basicController(__filename).init({
             } else {
                 queryCondition.push(schoolId);
             }
-            queryCondition.push({"key": "noticeTypeId", "opr": "!=", "val": 8});
         } else {
             noticeTypeId = parseInt(request.query.noticeTypeId);
             if (!noticeTypeId || isNaN(noticeTypeId)) {
                 return next(this.Error("没有输入通知类型."));
-            }
-            if (noticeTypeId == 8) {
-                return next(this.Error("此接口不支持查询工作日记[noticeTypeId=8]"));
             }
             queryCondition.push({"key": "noticeTypeId", "opr": "=", "val": noticeTypeId});
             if (noticeTypeId == 1 || noticeTypeId == 7) {
@@ -119,15 +115,37 @@ module.exports = new basicController(__filename).init({
         var queryCondition = [];
         var userId = parseInt(request.params.userId);
         if (!userId || isNaN(userId)) {
-            return next(this.Error("没有输用户ID."));
+            return next(this.Error("没有输入用户ID."));
         }
         queryCondition.push({"key": "userId", "opr": "=", "val": userId});
         var noticeTypeId = parseInt(request.query.noticeTypeId);
         if (noticeTypeId) {
             queryCondition.push({"key": "noticeTypeId", "opr": "=", "val": noticeTypeId});
-        } else {
-            //不查工作日记
-            queryCondition.push({"key": "noticeTypeId", "opr": "!=", "val": 8});
+        }
+
+        this.model['notice'].queryByNoticeType(start, pageSize, queryCondition, function (err, totalCount, res) {
+            if (err) {
+                return next(err);
+            }
+            response.json(self.createPageData("00", totalCount, res));
+        });
+
+    },
+
+    classList: function (request, response, next) {
+        var self = this;
+        var start = parseInt(request.query.iDisplayStart || this.webConfig.iDisplayStart);
+        var pageSize = parseInt(request.query.iDisplayLength || this.webConfig.iDisplayLength);
+
+        var queryCondition = [];
+        var classId = parseInt(request.params.classId);
+        if (!classId || isNaN(classId)) {
+            return next(this.Error("没有输入班级ID."));
+        }
+        queryCondition.push({"key": "classId", "opr": "=", "val": classId});
+        var noticeTypeId = parseInt(request.query.noticeTypeId);
+        if (noticeTypeId) {
+            queryCondition.push({"key": "noticeTypeId", "opr": "=", "val": noticeTypeId});
         }
 
         this.model['notice'].queryByNoticeType(start, pageSize, queryCondition, function (err, totalCount, res) {
@@ -201,9 +219,6 @@ module.exports = new basicController(__filename).init({
                     }
                     response.json({code: "00", msg: "通知发布成功", data: res});
 
-                    if (noticeTypeId == 8) {
-                        return;
-                    }
                     var alertType = self.cacheManager.getCacheValue("REST_NOTICE_ACTION", noticeTypeId);
                     var inData = {
                         "ios": {
@@ -318,7 +333,7 @@ function checkPermission(groupId, noticeTypeId) {
 
     if (groupId === 30) {
         // 园长可以发布 教师通知、家长通知、今日食谱、工作计划、紧急通知
-        if (noticeTypeId === 2 || noticeTypeId === 3 || noticeTypeId === 4 || noticeTypeId === 5 || noticeTypeId === 6 || noticeTypeId == 8) {
+        if (noticeTypeId === 2 || noticeTypeId === 3 || noticeTypeId === 4 || noticeTypeId === 5 || noticeTypeId === 6) {
             return true;
         } else {
             return false;
