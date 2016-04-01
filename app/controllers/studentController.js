@@ -1,5 +1,6 @@
 var basicController = require("../../core/utils/controller/basicController");
 var pushCore = require("../../core/utils/alim/pushCore");
+var moment = require("moment");
 
 module.exports = new basicController(__filename).init({
     select : function(req, res, next){
@@ -374,7 +375,23 @@ module.exports = new basicController(__filename).init({
         var schoolId = req.user.schools[0].schoolId;
         var userId = req.user.userId;
         var tUserId = req.user.class.tUserId;
-        self.model['studentLeave'].save([schoolId, classId, userId, studentId, tUserId, startDate, endDate, reason, userId, remark], function(err, data){
+
+        //计算请假天数
+        var sDate = moment(startDate, "YYYY-MM-DD");
+        var eDate = moment(endDate, "YYYY-MM-DD");
+        var leaveDays = 0;
+        while(sDate <= eDate){
+            var week = sDate.day();
+            if(week > 0 && week < 6){
+                leaveDays += 1;
+            }
+            sDate.date(sDate.date() + 1);
+        }
+        if(leaveDays <= 0){
+            return next(new Error("请假天数不能小于0"));
+        }
+
+        self.model['studentLeave'].save([schoolId, classId, userId, studentId, tUserId, startDate, endDate, leaveDays, reason, userId, remark], function(err, data){
             if(err){
                 return next(err);
             }
@@ -514,6 +531,67 @@ module.exports = new basicController(__filename).init({
             res.json({
                 code : "00",
                 data : leaves
+            });
+        });
+    },
+
+    listAttendance : function(req, res, next){
+        var self = this;
+        var studentId = parseInt(req.params.studentId);
+        var start = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);
+        var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
+        if(studentId <= 0){
+            var groupId = req.user.groupId;
+            if(groupId == 10){
+                studentId = req.user.student.studentId;
+            }
+        }
+        if(studentId <= 0){
+            return next(new Error("学生编号不能为空"));
+        }
+        var startDate = req.query.startDate;
+        if(!startDate){
+            startDate = self.cacheManager.getCacheValue("TERM_INFO", "DEFAULT_START_DATE");
+        }
+        self.model['student'].listByStudentId(studentId, startDate, start, pageSize, function(err, total, attendances){
+            if(err){
+                return next(err);
+            }
+            res.json(self.createPageData("00", total, attendances));
+        });
+    },
+
+    countAttendance : function(req, res, next){
+        var self = this;
+        var studentId = parseInt(req.params.studentId);
+        if(studentId <= 0){
+            var groupId = req.user.groupId;
+            if(groupId == 10){
+                studentId = req.user.student.studentId;
+            }
+        }
+        if(studentId <= 0){
+            return next(new Error("学生编号不能为空"));
+        }
+        var startDate = req.query.startDate;
+        if(!startDate){
+            startDate = self.cacheManager.getCacheValue("TERM_INFO", "DEFAULT_START_DATE");
+        }
+        self.model["studentLeave"].countByStudentId(studentId, startDate, function(err, leaveData){
+            if(err){
+                return next(err);
+            }
+            self.model['attendance'].countByObjId(1, studentId, startDate, function(err, attendanceData){
+                if(err){
+                    return next(err);
+                }
+                res.json({
+                    code : 00,
+                    data : {
+                        leaveDays : (leaveData ? leaveData.total : 0),
+                        attendanceDays : (attendanceData ? attendanceData.total : 0)
+                    }
+                });
             });
         });
     }

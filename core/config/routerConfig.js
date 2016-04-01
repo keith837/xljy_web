@@ -315,7 +315,7 @@ var routerConfig = {
         },
 
         student : {
-            "usedModel": ["student/student", "school/class", "school/school", "student/studentLeave"],
+            "usedModel": ["student/student", "school/class", "school/school", "student/studentLeave", "attendance/attendance"],
             "select": {
                 "url": "/api/student/select/:studentId",
                 "method": "post",
@@ -380,11 +380,21 @@ var routerConfig = {
                 "url": "/api/student/parents/:studentId",
                 "method": "get",
                 "description": "学生家长查询"
+            },
+            "countAttendance" : {
+                "url": "/api/student/countAttendance/:studentId",
+                "method": "get",
+                "description": "学生出勤信息统计"
+            },
+            "listAttendance" : {
+                "url": "/api/student/listAttendance/:studentId",
+                "method": "get",
+                "description": "学生出勤信息统计"
             }
         },
 
         class : {
-            "usedModel": ["school/class", "student/student"],
+            "usedModel": ["school/class", "student/student", "student/studentLeave", "attendance/attendance"],
             "list": {
                 "url": "/api/class/list",
                 "method": "get",

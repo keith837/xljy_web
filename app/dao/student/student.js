@@ -234,6 +234,36 @@ Student.queryPage = function(obj, schoolIds, start, pageSize, callback){
     mysqlUtil.query(querySql, args, callback);
 }
 
+Student.listByStudentId = function(studentId, startDate, start, pageSize, callback){
+    Student.queryNumByStudentId(studentId, startDate, function(err, data){
+        if(err){
+            return callback(err);
+        }
+        var total = 0;
+        if(data){
+            total = data.total;
+        }
+        Student.queryPageByStudentId(studentId, startDate, start, pageSize, function(err, attendances){
+            if(err){
+                return callback(err);
+            }
+            callback(null, total, attendances);
+        });
+    });
+}
+
+Student.queryNumByStudentId = function(studentId, startDate, callback){
+    var sql = "select count(*) as total from (select A.studentId, 1 as dataType, A.startDate,A.endDate,A.state from XL_STUDENT_LEAVE A where A.state!=0 and A.startDate>=? and A.studentId=? ";
+    sql += "UNION SELECT B.objId, 2 as dataType, B.comeDate,B.leaveDate,B.state FROM XL_ATTENDANCE B where B.state=1 and B.attendanceDate>=? and B.objId=? and B.attendanceType=1) C";
+    mysqlUtil.queryOne(sql, [startDate, studentId, startDate, studentId], callback);
+}
+
+Student.queryPageByStudentId = function(studentId, startDate, start, pageSize, callback){
+    var sql = "select * from (select A.studentId, 1 as dataType, A.startDate,A.endDate,A.state from XL_STUDENT_LEAVE A where A.state!=0 and A.startDate>=? and A.studentId=? ";
+    sql += "UNION SELECT B.objId, 2 as dataType, B.comeDate,B.leaveDate,B.state FROM XL_ATTENDANCE B where B.state=1 and B.attendanceDate>=? and B.objId=? and B.attendanceType=1) C order by C.startDate desc limit ?,?";
+    mysqlUtil.query(sql, [startDate, studentId, startDate, studentId, start, pageSize], callback);
+}
+
 Student.listByPage = function(obj, schoolIds, start, pageSize, callback){
     Student.queryNum(obj, schoolIds, function(err, data){
         if(err){
