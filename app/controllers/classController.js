@@ -1,4 +1,5 @@
 var basicController = require("../../core/utils/controller/basicController");
+var moment = require("moment");
 
 module.exports = new basicController(__filename).init({
 
@@ -291,10 +292,65 @@ module.exports = new basicController(__filename).init({
             if(err){
                 return next(err);
             }
-            res.json({
-                code : "00",
-                data : students ? students : new Array()
+            if(!students){
+                return res.json({
+                    code : "00",
+                    studentNum: 0,
+                    leaveNum : 0,
+                    attendanceNum : 0,
+                    data : new Array()
+                });
+            }
+            var currDate = moment().format("YYYY-MM-DD");
+            self.model['studentLeave'].listByClassId(classId, currDate, function(err, leaves){
+                if(err){
+                    return next(err);
+                }
+                var attendanceObj = new Object();
+                attendanceObj.attendanceType = 1;
+                attendanceObj.classId = classId;
+                attendanceObj.attendanceDate = currDate;
+                self.model['attendance'].listByCond(attendanceObj, function(err, attendances){
+                    if(err){
+                        return next(err);
+                    }
+                    var studentLeaveObj = new Object();
+                    if(leaves){
+                        for(var i = 0; i < leaves.length; i ++){
+                            studentLeaveObj[leaves[i].studentId] = leaves[i];
+                        }
+                    }
+                    var studentAttendanceObj = new Object();
+                    if(attendances){
+                        for(var i = 0; i < attendances.length; i ++){
+                            studentAttendanceObj[attendances[i].objId] = attendances[i];
+                        }
+                    }
+                    var attendanceNum = 0;
+                    var leaveNum = 0;
+                    for(var i = 0; i < students.length; i ++){
+                        var studentLeave = studentLeaveObj[students[i].studentId];
+                        if(studentLeave){
+                            students[i].leaveInfo = studentLeave;
+                            leaveNum ++;
+                        }else{
+                            var studentAttendance = studentAttendanceObj[students[i].studentId];
+                            if(studentAttendance){
+                                students[i].attendanceInfo = studentAttendance;
+                                attendanceNum ++;
+                            }
+                        }
+                    }
+                    res.json({
+                        code : "00",
+                        studentNum : students.length,
+                        leaveNum: leaveNum,
+                        attendanceNum: attendanceNum,
+                        data : students
+                    });
+                });
             });
+
         });
     },
 

@@ -7,6 +7,11 @@ StudentLeave.save = function (args, callback) {
     mysqlUtil.query(sql, args, callback);
 };
 
+StudentLeave.listByClassId = function(classId, leaveDate, callback){
+    var sql = "select * from XL_STUDENT_LEAVE where state!=0 and startDate <= ? and endDate >= ? and classId=?"
+    mysqlUtil.query(sql, [leaveDate, leaveDate, classId], callback);
+}
+
 StudentLeave.list = function(obj, startDate, endDate, leaveDate, callback){
     var sql = "select  A.leaveId,A.schoolId,A.classId,A.aUserId,A.tUserId,B.studentName,A.startDate,A.endDate,A.leaveDays,";
     sql += "A.applyDate,A.reason,A.state from XL_STUDENT_LEAVE A, XL_STUDENT B where A.studentId=B.studentId";
@@ -26,7 +31,7 @@ StudentLeave.list = function(obj, startDate, endDate, leaveDate, callback){
         tempArgs.push(endDate);
     }
     if(leaveDate){
-        sql += " and (A.startDate <= ? and A.endDate >= ?) and A.state > 0";
+        sql += " and (A.startDate <= ? and A.endDate >= ?) and A.state != 0";
         tempArgs.push(leaveDate);
         tempArgs.push(leaveDate);
     }
