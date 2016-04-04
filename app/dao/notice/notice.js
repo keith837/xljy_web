@@ -116,6 +116,7 @@ Notice.publishNotice = function (noticeParam, noticePic, callback) {
     });
 }
 
+
 Notice.findPicById = function (noticeId, callback) {
     mysqlUtil.query("select * from XL_NOTICE_PIC where noticeId=? and state=1", [noticeId], callback);
 }
@@ -202,6 +203,49 @@ Notice.editNotice = function (noticeParam, noticePic, callback) {
                 conn.release();
                 callback.apply(null, [null, results]);
             });
+        });
+
+    });
+
+}
+
+
+Notice.addPic = function (noticeId, pics, callback) {
+    mysqlUtil.query("select * from XL_NOTICE where noticeId=? and state=1", [noticeId], function (err, data) {
+        if (err) {
+            return callback(err);
+        }
+        if (!data || data.length !== 1) {
+            return callback(new Error("查询不到通知[" + noticeId + "]"));
+        }
+        var noticePicSQL = "insert into XL_NOTICE_PIC(noticeId,picUrl,picDesc,state,userId,createDate,doneDate) values ?";
+        var noticePicParam = new Array();
+        var now = new Date();
+        for (var pic in pics) {
+            noticePicParam.push([noticeId, pics[pic][0], null, 1, pics[pic][1], now, now]);
+        }
+        mysqlUtil.query(noticePicSQL, [noticePicParam], function (err, res) {
+            callback(err, res);
+        });
+
+    });
+
+}
+
+Notice.delPic = function (noticeId, picId, userId, callback) {
+    mysqlUtil.query("select * from XL_NOTICE where noticeId=? and state=1", [noticeId], function (err, data) {
+        if (err) {
+            return callback(err);
+        }
+        if (!data || data.length !== 1) {
+            return callback(new Error("查询不到通知[" + noticeId + "]"));
+        } else {
+            if (data[0].userId !== userId) {
+                return callback(new Error("通知必须由创建者修改."));
+            }
+        }
+        mysqlUtil.query("delete from XL_NOTICE_PIC where picId=?", [picId], function (err, res) {
+            callback(err, res);
         });
 
     });

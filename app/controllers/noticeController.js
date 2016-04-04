@@ -245,6 +245,53 @@ module.exports = new basicController(__filename).init({
 
     },
 
+    addPic: function (req, res, next) {
+        var self = this;
+        var userId = req.user.userId;
+        var noticeId = parseInt(req.params.noticeId);
+
+        var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "PHOTOS");
+        uploadDir += "user" + userId + "/";
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir);
+        }
+
+        var form = new formidable.IncomingForm();   //创建上传表单
+        form.encoding = 'utf-8';		//设置编辑
+        form.uploadDir = uploadDir;	 //设置上传目录
+        form.keepExtensions = true;	 //保留后缀
+        form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
+        form.parse(req, function (err, fields, files) {
+            var pics = new Array();
+            for (var photos in files) {
+                //var width = images(files[photos].path).width();
+                //var height = images(files[photos].path).height();
+                pics.push([path.normalize(files[photos].path).replace(/\\/g, '/'), userId]);
+            }
+            if (pics.length === 0) {
+                return next(self.Error("没有上传图片."));
+            }
+            self.model['notice'].addPic(noticeId, pics, function (err, data) {
+                if (err) {
+                    return next(err);
+                }
+                res.json({code: "00", msg: "添加图片成功", data: data.insertId});
+            });
+        });
+    },
+
+    delPic: function (req, res, next) {
+        var userId = req.user.userId;
+        var picId = parseInt(req.params.id);
+        var noticeId = parseInt(req.params.noticeId);
+        this.model['notice'].delPic(noticeId, picId, userId, function (err, data) {
+            if (err) {
+                return next(err);
+            }
+            res.json({code: "00", msg: "图片删除成功"});
+        });
+    },
+
     del: function (request, response, next) {
         var self = this;
         var userId = request.user.userId;
