@@ -12,6 +12,7 @@ module.exports = new basicController(__filename).init({
         var self = this;
         var start = parseInt(request.query.iDisplayStart || this.webConfig.iDisplayStart);
         var pageSize = parseInt(request.query.iDisplayLength || this.webConfig.iDisplayLength);
+        var photoLength = parseInt(request.query.iDisplayPhotoLength || this.webConfig.iDisplayPhotoLength);
 
         var queryCondition = [];
         var userId = request.user.userId;
@@ -98,7 +99,7 @@ module.exports = new basicController(__filename).init({
             }
         }
 
-        this.model['notice'].queryByNoticeType(start, pageSize, queryCondition, function (err, totalCount, res) {
+        this.model['notice'].queryByNoticeType(start, pageSize, photoLength, queryCondition, function (err, totalCount, res) {
             if (err) {
                 return next(err);
             }
@@ -111,6 +112,7 @@ module.exports = new basicController(__filename).init({
         var self = this;
         var start = parseInt(request.query.iDisplayStart || this.webConfig.iDisplayStart);
         var pageSize = parseInt(request.query.iDisplayLength || this.webConfig.iDisplayLength);
+        var photoLength = parseInt(request.query.iDisplayPhotoLength || this.webConfig.iDisplayPhotoLength);
 
         var queryCondition = [];
         var userId = parseInt(request.params.userId);
@@ -123,7 +125,7 @@ module.exports = new basicController(__filename).init({
             queryCondition.push({"key": "noticeTypeId", "opr": "=", "val": noticeTypeId});
         }
 
-        this.model['notice'].queryByNoticeType(start, pageSize, queryCondition, function (err, totalCount, res) {
+        this.model['notice'].queryByNoticeType(start, pageSize, photoLength, queryCondition, function (err, totalCount, res) {
             if (err) {
                 return next(err);
             }
@@ -136,6 +138,7 @@ module.exports = new basicController(__filename).init({
         var self = this;
         var start = parseInt(request.query.iDisplayStart || this.webConfig.iDisplayStart);
         var pageSize = parseInt(request.query.iDisplayLength || this.webConfig.iDisplayLength);
+        var photoLength = parseInt(request.query.iDisplayPhotoLength || this.webConfig.iDisplayPhotoLength);
 
         var queryCondition = [];
         var classId = parseInt(request.params.classId);
@@ -148,7 +151,7 @@ module.exports = new basicController(__filename).init({
             queryCondition.push({"key": "noticeTypeId", "opr": "=", "val": noticeTypeId});
         }
 
-        this.model['notice'].queryByNoticeType(start, pageSize, queryCondition, function (err, totalCount, res) {
+        this.model['notice'].queryByNoticeType(start, pageSize, photoLength, queryCondition, function (err, totalCount, res) {
             if (err) {
                 return next(err);
             }
@@ -204,11 +207,11 @@ module.exports = new basicController(__filename).init({
         form.parse(request, function (err, fields, files) {
             var content = fields.noticeContext;
             var title = fields.noticeTitle;
-            var noticeParam = [noticeTypeId, title, content, schoolId, classId, userId, schoolName, className, userName, nickName];
             var noticePics = new Array();
             for (var photos in files) {
                 noticePics.push([path.normalize(files[photos].path).replace(/\\/g, '/'), userId]);
             }
+            var noticeParam = [noticeTypeId, title, content, schoolId, classId, userId, schoolName, className, userName, nickName, noticePics.length];
             self.model['notice'].publishNotice(noticeParam, noticePics, function (err, noticeId) {
                 if (err) {
                     return next(err);
@@ -319,6 +322,22 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    morePic: function (req, res, next) {
+        var self = this;
+
+        var start = parseInt(req.query.iDisplayStart) || 0;
+        var photoLength = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayPhotoLength);
+
+        var noticeId = parseInt(req.params.noticeId);
+
+        this.model['notice'].morePic(noticeId, start, photoLength, function (err, totalCount, results) {
+            if (err) {
+                return next(err);
+            }
+            res.json(self.createPageData("00", totalCount, results));
+        });
+    },
+
     edit: function (request, response, next) {
         var self = this;
         var noticeId = parseInt(request.params.id);
@@ -338,11 +357,12 @@ module.exports = new basicController(__filename).init({
         form.parse(request, function (err, fields, files) {
             var content = fields.noticeContext;
             var title = fields.noticeTitle;
-            var noticeParam = [userId, title, content, noticeId];
+
             var noticePics = new Array();
             for (var photos in files) {
                 noticePics.push([path.normalize(files[photos].path).replace(/\\/g, '/'), userId]);
             }
+            var noticeParam = [userId, noticePics.length, title, content, noticeId];
             self.model['notice'].editNotice(noticeParam, noticePics, function (err, data) {
                 if (err) {
                     return next(err);

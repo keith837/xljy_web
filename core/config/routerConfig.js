@@ -637,6 +637,11 @@ var routerConfig = {
                 "url": "/api/notices/:noticeId/:id",
                 "method": "delete",
                 "description": "删除图片"
+            },
+            "morePic": {
+                "url": "/api/notices/:noticeId/pic",
+                "method": "get",
+                "description": "查看更多图片"
             }
         },
         notes: {

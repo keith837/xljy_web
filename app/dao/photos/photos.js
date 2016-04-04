@@ -77,7 +77,7 @@ Photos.moreComment = function (albumId, start, pageSize, done) {
             return done(new Error("相册[" + albumId + "]不存在"));
         }
 
-        sql = "select * from XL_CLASS_ALBUM_HANDLE where albumId=? and handleType=2 and state=1 order by albumId limit ?,?";
+        sql = "select * from XL_CLASS_ALBUM_HANDLE where albumId=? and handleType=2 and state=1 order by handleId limit ?,?";
         mysqlUtil.query(sql, [albumId, start, pageSize], function (err, comments) {
             done(err, album[0].isComment, comments, album[0].userId, album[0].nickName);
         });
@@ -156,7 +156,7 @@ Photos.morePhoto = function (albumId, start, pageSize, done) {
             return done(new Error("相册[" + albumId + "]不存在"));
         }
 
-        sql = "select * from XL_CLASS_ALBUM_PIC where albumId=? and state=1 order by albumId limit ?,?";
+        sql = "select * from XL_CLASS_ALBUM_PIC where albumId=? and state=1 order by picId limit ?,?";
         mysqlUtil.query(sql, [albumId, start, pageSize], function (err, comments) {
             done(err, album[0].photoCount, comments);
         });
