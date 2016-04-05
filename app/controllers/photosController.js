@@ -255,6 +255,14 @@ module.exports = new basicController(__filename).init({
             }
         }
 
+        var queryUserId = req.query.userId;
+        if (queryUserId) {
+            queryUserId = parseInt(queryUserId);
+            if (!isNaN(queryUserId)) {
+                queryCondition.push({"key": "userId", "opr": "=", "val": queryUserId});
+            }
+        }
+
         this.model['photos'].queryPhotosByType(start, pageSize, queryCondition, function (err, totalCount, results) {
             if (err) {
                 return next(err);
