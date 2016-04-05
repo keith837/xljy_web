@@ -627,6 +627,21 @@ var routerConfig = {
                 "url": "/api/notices/class/:classId",
                 "method": "get",
                 "description": "班级的所有通知列表"
+            },
+            "addPic": {
+                "url": "/api/notices/:noticeId/add",
+                "method": "put",
+                "description": "添加图片"
+            },
+            "delPic": {
+                "url": "/api/notices/:noticeId/:id",
+                "method": "delete",
+                "description": "删除图片"
+            },
+            "morePic": {
+                "url": "/api/notices/:noticeId/pic",
+                "method": "get",
+                "description": "查看更多图片"
             }
         },
         notes: {

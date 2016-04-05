@@ -6,7 +6,7 @@ var Notice = module.exports;
 var mysqlUtil = require("../../../core/utils/pool/mysql/mysqlPool");
 var async = require("async");
 
-Notice.queryByNoticeType = function (start, pageSize, queryCondition, callback) {
+Notice.queryByNoticeType = function (start, pageSize, photoLength, queryCondition, callback) {
 
     var sql = "select * from XL_NOTICE m where m.state=1 ";
     var params = [];
@@ -51,7 +51,7 @@ Notice.queryByNoticeType = function (start, pageSize, queryCondition, callback) 
             if (err) {
                 return callback(err);
             }
-            findPicByArray(totalNum, res, 0, callback);
+            findPicByArray(totalNum, photoLength, res, 0, callback);
         });
     });
 }
@@ -66,8 +66,8 @@ Notice.publishNotice = function (noticeParam, noticePic, callback) {
             if (err) {
                 return callback.apply(null, [err, null]);
             }
-            var sql = "insert into XL_NOTICE(noticeTypeId,noticeTitle,noticeContext,state,createDate,doneDate,schoolId,classId,userId,schoolName,className,userName,nickName)";
-            sql += "values(?,?,?,1,now(),now(),?,?,?,?,?,?,?)";
+            var sql = "insert into XL_NOTICE(noticeTypeId,noticeTitle,noticeContext,state,createDate,doneDate,schoolId,classId,userId,schoolName,className,userName,nickName,picNum)";
+            sql += "values(?,?,?,1,now(),now(),?,?,?,?,?,?,?,?)";
 
             conn.query(sql, noticeParam, function (err, res) {
                 if (err) {
@@ -116,6 +116,10 @@ Notice.publishNotice = function (noticeParam, noticePic, callback) {
     });
 }
 
+Notice.findPagedPicById = function (noticeId, photoLength, callback) {
+    mysqlUtil.query("select * from XL_NOTICE_PIC where noticeId=? and state=1 order by picId limit 0,?", [noticeId, photoLength], callback);
+}
+
 Notice.findPicById = function (noticeId, callback) {
     mysqlUtil.query("select * from XL_NOTICE_PIC where noticeId=? and state=1", [noticeId], callback);
 }
@@ -146,12 +150,12 @@ Notice.queryDetail = function (noticeId, callback) {
 
 
 Notice.editNotice = function (noticeParam, noticePic, callback) {
-    mysqlUtil.query("select * from XL_NOTICE where noticeId=? and state=1", [noticeParam[3]], function (err, data) {
+    mysqlUtil.query("select * from XL_NOTICE where noticeId=? and state=1", [noticeParam[4]], function (err, data) {
         if (err) {
             return callback(err);
         }
         if (!data || data.length !== 1) {
-            return callback(new Error("查询不到通知[" + noticeParam[3] + "]"));
+            return callback(new Error("查询不到通知[" + noticeParam[4] + "]"));
         } else {
             if (data[0].userId !== noticeParam[0]) {
                 return callback(new Error("通知必须由创建者修改."));
@@ -167,17 +171,17 @@ Notice.editNotice = function (noticeParam, noticePic, callback) {
                     callback(err);
                 });
             }, function (callback) {
-                var updateSql = "update XL_NOTICE set noticeTitle=?,noticeContext=?,doneDate=now() where noticeId=?";
+                var updateSql = "update XL_NOTICE set picNum=?,noticeTitle=?,noticeContext=?,doneDate=now() where noticeId=?";
                 conn.query(updateSql, noticeParam.slice(1), function (err, upd) {
                     callback(err, upd);
                 });
             }, function (upd, callback) {
                 var delSql = "delete from XL_NOTICE_PIC where noticeId=?";
-                conn.query(delSql, noticeParam[3], function (err, res) {
+                conn.query(delSql, noticeParam[4], function (err, res) {
                     callback(err, res);
                 });
             }, function (res, callback) {
-                var noticeId = noticeParam[3];
+                var noticeId = noticeParam[4];
                 var noticePicSQL = "insert into XL_NOTICE_PIC(noticeId,picUrl,picDesc,state,userId,createDate,doneDate) values ?";
                 var noticePicParam = new Array();
                 var now = new Date();
@@ -208,19 +212,152 @@ Notice.editNotice = function (noticeParam, noticePic, callback) {
 
 }
 
-function findPicByArray(totalNum, notice, i, callback) {
+
+Notice.addPic = function (noticeId, pics, callback) {
+    mysqlUtil.query("select * from XL_NOTICE where noticeId=? and state=1", [noticeId], function (err, data) {
+        if (err) {
+            return callback(err);
+        }
+        if (!data || data.length !== 1) {
+            return callback(new Error("查询不到通知[" + noticeId + "]"));
+        }
+
+        mysqlUtil.getConnection(function (err, conn) {
+            if (err) {
+                return callback.apply(null, [err, null]);
+            }
+
+            var tasks = [function (callback) {
+                conn.beginTransaction(function (err) {
+                    callback(err);
+                });
+            }, function (callback) {
+                var updateSql = "update XL_NOTICE set picNum=picNum+?,doneDate=now() where noticeId=?";
+                conn.query(updateSql, [pics.length, noticeId], function (err, upd) {
+                    callback(err, upd);
+                });
+            }, function (upd, callback) {
+                var noticePicSQL = "insert into XL_NOTICE_PIC(noticeId,picUrl,picDesc,state,userId,createDate,doneDate) values ?";
+                var noticePicParam = new Array();
+                var now = new Date();
+                for (var pic in pics) {
+                    noticePicParam.push([noticeId, pics[pic][0], null, 1, pics[pic][1], now, now]);
+                }
+                conn.query(noticePicSQL, [noticePicParam], function (err, res) {
+                    callback(err, res);
+                });
+            }, function (res, callback) {
+                conn.commit(function (err) {
+                    if (err) {
+                        return callback(err);
+                    }
+                    callback(null, res);
+                });
+            }];
+
+            async.waterfall(tasks, function (err, results) {
+                if (err) {
+                    conn.rollback();
+                    conn.release();
+                    return callback(err);
+                }
+                conn.release();
+                callback.apply(null, [null, results]);
+            });
+        });
+
+    });
+
+}
+
+Notice.delPic = function (noticeId, picId, userId, callback) {
+    mysqlUtil.query("select * from XL_NOTICE where noticeId=? and state=1", [noticeId], function (err, data) {
+        if (err) {
+            return callback(err);
+        }
+        if (!data || data.length !== 1) {
+            return callback(new Error("查询不到通知[" + noticeId + "]"));
+        } else {
+            if (data[0].userId !== userId) {
+                return callback(new Error("通知必须由创建者修改."));
+            }
+        }
+        mysqlUtil.getConnection(function (err, conn) {
+            if (err) {
+                return callback.apply(null, [err, null]);
+            }
+
+            var tasks = [function (callback) {
+                conn.beginTransaction(function (err) {
+                    callback(err);
+                });
+            }, function (callback) {
+                conn.query("delete from XL_NOTICE_PIC where picId=?", [picId], function (err, res) {
+                    if (err) {
+                        return callback(err);
+                    }
+                    callback(err, res.affectedRows);
+                });
+            }, function (upd, callback) {
+                var updateSql = "update XL_NOTICE set picNum=picNum-?,doneDate=now() where noticeId=?";
+                conn.query(updateSql, [upd, noticeId], function (err, upd) {
+                    callback(err, upd);
+                });
+            }, function (res, callback) {
+                conn.commit(function (err) {
+                    if (err) {
+                        return callback(err);
+                    }
+                    callback(null, res);
+                });
+            }];
+
+            async.waterfall(tasks, function (err, results) {
+                if (err) {
+                    conn.rollback();
+                    conn.release();
+                    return callback(err);
+                }
+                conn.release();
+                callback.apply(null, [null, results]);
+            });
+        });
+
+    });
+
+}
+
+Notice.morePic = function (noticeId, start, pageSize, done) {
+    var sql = "select * from XL_NOTICE where noticeId=? and state=1";
+    mysqlUtil.query(sql, noticeId, function (err, notices) {
+        if (err) {
+            return done(err);
+        }
+        if (notices.length !== 1) {
+            return done(new Error("通知[" + noticeId + "]不存在"));
+        }
+
+        sql = "select * from XL_NOTICE_PIC where noticeId=? and state=1 order by picId limit ?,?";
+        mysqlUtil.query(sql, [noticeId, start, pageSize], function (err, pics) {
+            done(err, notices[0].picNum, pics);
+        });
+
+    });
+}
+
+function findPicByArray(totalNum, photoLength, notice, i, callback) {
     if (i < notice.length - 1) {
-        Notice.findPicById(notice[i].noticeId, function (err, res) {
+        Notice.findPagedPicById(notice[i].noticeId, photoLength, function (err, res) {
             if (err) {
                 return callback(err);
             }
             notice[i].picPaths = new Object();
             notice[i].picPaths = res;
             i++;
-            findPicByArray(totalNum, notice, i, callback);
+            findPicByArray(totalNum, photoLength, notice, i, callback);
         });
     } else {
-        Notice.findPicById(notice[i].noticeId, function (err, res) {
+        Notice.findPagedPicById(notice[i].noticeId, photoLength, function (err, res) {
             if (err) {
                 return callback(err);
             }

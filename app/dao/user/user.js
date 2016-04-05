@@ -101,7 +101,7 @@ User.queryPage = function(obj, custNameOrBillId, schoolIds, start, pageSize, cal
         whereSql = whereSql.substr(0, whereSql.length - 1) + ")";
     }
     var querySql = "select B.groupName,IFNULL(C.schoolName,'无学校') schoolName,m.* from XL_USER m inner join XL_USER_GROUP B on m.groupId=B.groupId left join XL_SCHOOL C on m.schoolId=C.schoolId where m.state != 0 and " + whereSql;
-    querySql += " limit ?,?";
+    querySql += " order by m.createDate desc limit ?,?";
     args.push(start);
     args.push(pageSize);
     mysqlUtil.query(querySql, args, callback);

@@ -73,9 +73,9 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="nickName">昵称<span style="color: red;">*</span></label>
+                                        <label class="control-label" for="nickName">称谓<span style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <input type="text" id="nickName" name="nickName" placeholder="昵称" class="span3">
+                                            <input type="text" id="nickName" name="nickName" placeholder="称谓" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -121,7 +121,7 @@
                                     <div class="control-group">
                                         <div class="controls">
                                             <button type="submit" class="btn">提交</button>
-                                            <button type="reset" class="btn">重置</button>
+                                            <button type="reset" id="resetBtn" class="btn">重置</button>
                                             <button type="button" id="backBtn" style="display: none;" class="btn" onclick="javascript:history.back();">返回</button>
                                         </div>
                                     </div>
@@ -166,6 +166,7 @@
         var userId = $.url.param('userId');
         if (userId) {
             $('#backBtn').css("display", "");
+            $('#resetBtn').css("display","none");
             $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>更新用户</a>");
 
 
