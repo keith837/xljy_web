@@ -278,7 +278,13 @@ module.exports = new basicController(__filename).init({
                 if (err) {
                     return next(err);
                 }
-                res.json({code: "00", msg: "添加图片成功", data: data.insertId});
+
+                self.model['notice'].findPicDetails(data.insertId, function (err, data) {
+                    if (err) {
+                        return next(err);
+                    }
+                    res.json({code: "00", msg: "添加图片成功", data: data});
+                });
             });
         });
     },

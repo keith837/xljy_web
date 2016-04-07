@@ -124,6 +124,10 @@ Notice.findPicById = function (noticeId, callback) {
     mysqlUtil.query("select * from XL_NOTICE_PIC where noticeId=? and state=1", [noticeId], callback);
 }
 
+Notice.findPicDetails = function (picId, callback) {
+    mysqlUtil.query("select * from XL_NOTICE_PIC where picId=? and state=1", [picId], callback);
+}
+
 Notice.delete = function (noticeId, userId, callback) {
     mysqlUtil.query("update XL_NOTICE set state=0,userId=?,doneDate=now() where noticeId=?", [userId, noticeId], callback);
 }
