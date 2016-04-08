@@ -35,7 +35,7 @@ Notice.queryByNotesType = function (start, pageSize, queryCondition, callback) {
     sql = sql + sqlCondition;
 
     var countSQL = "select count(*) as total from (" + sql + ") m";
-    sql = "select * from (" + sql + " order by notesId desc) m limit ?,?";
+    sql = "select a.*,b.custName as tCustName,b.nickName as tNickName,b.userUrl as tUserUrl from (select * from (" + sql + " order by notesId desc) m limit ?,?) a left join XL_USER b on a.tUserId=b.userId";
     mysqlUtil.queryOne(countSQL, params, function (err, res) {
         if (err) {
             return callback(err);
@@ -56,8 +56,8 @@ Notice.queryByNotesType = function (start, pageSize, queryCondition, callback) {
 }
 
 Notice.publishNotes = function (notesParam, callback) {
-    var sql = "insert into XL_WORK_NOTES(notesTypeId,notesTitle,notesContext,state,createDate,doneDate,schoolId,classId,userId,schoolName,className,userName,nickName)";
-    sql += "values(?,?,?,1,now(),now(),?,?,?,?,?,?,?)";
+    var sql = "insert into XL_WORK_NOTES(notesTypeId,notesTitle,notesContext,state,createDate,doneDate,schoolId,classId,userId,schoolName,className,userName,nickName,tUserId)";
+    sql += "values(?,?,?,1,now(),now(),?,?,?,?,?,?,?,?)";
     mysqlUtil.query(sql, notesParam, function (err, data) {
         if (err) {
             return callback(err);
@@ -72,23 +72,23 @@ Notice.delete = function (notesId, userId, callback) {
 }
 
 Notice.queryDetail = function (notesId, callback) {
-    mysqlUtil.query("select * from XL_WORK_NOTES where notesId=?", [notesId], callback);
+    mysqlUtil.query("select a.*,b.custName as tCustName,b.nickName as tNickName,b.userUrl as tUserUrl from XL_WORK_NOTES a left join XL_USER b on a.tUserId=b.userId where a.notesId=?", [notesId], callback);
 }
 
 
 Notice.editNotes = function (notesParam, callback) {
-    mysqlUtil.query("select * from XL_WORK_NOTES where notesId=? and state=1", [notesParam[3]], function (err, data) {
+    mysqlUtil.query("select * from XL_WORK_NOTES where notesId=? and state=1", [notesParam[4]], function (err, data) {
         if (err) {
             return callback(err);
         }
         if (!data || data.length !== 1) {
-            return callback(new Error("查询不到笔记[" + notesParam[3] + "]"));
+            return callback(new Error("查询不到笔记[" + notesParam[4] + "]"));
         } else {
             if (data[0].userId !== notesParam[0]) {
                 return callback(new Error("笔记必须由创建者修改."));
             }
         }
-        var updateSql = "update XL_WORK_NOTES set notesTitle=?,notesContext=?,doneDate=now() where notesId=?";
+        var updateSql = "update XL_WORK_NOTES set tUserId=?,notesTitle=?,notesContext=?,doneDate=now() where notesId=?";
         mysqlUtil.query(updateSql, notesParam.slice(1), callback);
 
     });

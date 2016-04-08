@@ -11,17 +11,24 @@ module.exports = new basicController(__filename).init({
 
         var queryCondition = [];
         var userId = request.user.userId;
-        queryCondition.push({"key": "userId", "opr": "=", "val": userId});
 
         var notesTypeId = null;
         if (request.user.source == 2 && request.user.channel == 4) {
             // web login
+            queryCondition.push({"key": "userId", "opr": "=", "val": userId});
         } else {
             notesTypeId = parseInt(request.query.notesTypeId);
             if (!notesTypeId || isNaN(notesTypeId)) {
                 return next(this.Error("没有输入笔记类型[notesTypeId]."));
             }
             queryCondition.push({"key": "notesTypeId", "opr": "=", "val": notesTypeId});
+
+            var tUserId = parseInt(request.query.tUserId);
+            if (!tUserId || isNaN(tUserId)) {
+                queryCondition.push({"key": "userId", "opr": "=", "val": userId});
+            } else {
+                queryCondition.push({"key": "tUserId", "opr": "=", "val": tUserId});
+            }
         }
 
         var effDateStart = request.query.startDate;
@@ -82,13 +89,14 @@ module.exports = new basicController(__filename).init({
         var nickName = request.user.nickName;
         var content = request.body.notesContext;
         var title = request.body.notesTitle;
-        var notesParam = [notesTypeId, title, content, schoolId, classId, userId, schoolName, className, userName, nickName];
+        var tUserId = request.body.tUserId;
+        var notesParam = [notesTypeId, title, content, schoolId, classId, userId, schoolName, className, userName, nickName, tUserId];
 
-        self.model['notes'].publishNotes(notesParam, function (err, noticeId) {
+        self.model['notes'].publishNotes(notesParam, function (err, notesId) {
             if (err) {
                 return next(err);
             }
-            self.model['notes'].queryDetail(noticeId, function (err, res) {
+            self.model['notes'].queryDetail(notesId, function (err, res) {
                 if (err) {
                     return next(err);
                 }
@@ -132,7 +140,8 @@ module.exports = new basicController(__filename).init({
 
         var content = request.body.notesContext;
         var title = request.body.notesTitle;
-        var notesParam = [userId, title, content, notesId];
+        var tUserId = request.body.tUserId;
+        var notesParam = [userId, tUserId, title, content, notesId];
         self.model['notes'].editNotes(notesParam, function (err, data) {
             if (err) {
                 return next(err);
