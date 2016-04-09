@@ -2,8 +2,8 @@ var mysqlUtil = require("../../../core/utils/pool/mysql/mysqlPool");
 var StudentLeave = module.exports;
 
 StudentLeave.save = function (args, callback) {
-    var sql = "insert into XL_STUDENT_LEAVE(schoolId,classId,aUserId,studentId,tUserId,startDate,endDate,leaveDays,applyDate,";
-    sql += "reason,state,createDate,doneDate,oUserId,remark) values (?,?,?,?,?,?,?,?,now(),?,1,now(),now(),?,?)";
+    var sql = "insert into XL_STUDENT_LEAVE(schoolId,classId,aUserId,applyPeason,studentId,tUserId,startDate,endDate,leaveDays,applyDate,";
+    sql += "reason,state,createDate,doneDate,oUserId,remark) values (?,?,?,?,?,?,?,?,?,now(),?,1,now(),now(),?,?)";
     mysqlUtil.query(sql, args, callback);
 };
 
@@ -13,7 +13,7 @@ StudentLeave.listByClassId = function(classId, leaveDate, callback){
 }
 
 StudentLeave.list = function(obj, startDate, endDate, leaveDate, callback){
-    var sql = "select  A.leaveId,A.schoolId,A.classId,A.aUserId,A.tUserId,B.studentName,A.startDate,A.endDate,A.leaveDays,";
+    var sql = "select  A.leaveId,A.schoolId,A.classId,A.aUserId,A.applyPeason,A.tUserId,B.studentName,A.startDate,A.endDate,A.leaveDays,";
     sql += "A.applyDate,A.reason,A.state from XL_STUDENT_LEAVE A, XL_STUDENT B where A.studentId=B.studentId";
     var tempArgs = new Array();
     if(obj){
@@ -39,7 +39,7 @@ StudentLeave.list = function(obj, startDate, endDate, leaveDate, callback){
 }
 
 StudentLeave.findByLeaveId = function(leaveId, callback){
-    var sql = "select  A.leaveId,A.schoolId,A.classId,A.aUserId,A.tUserId,A.studentId,B.studentName,A.startDate,A.endDate,A.leaveDays,";
+    var sql = "select  A.leaveId,A.schoolId,A.classId,A.aUserId,A.applyPeason,A.tUserId,A.studentId,B.studentName,A.startDate,A.endDate,A.leaveDays,";
     sql += "A.applyDate,A.reason,A.state from XL_STUDENT_LEAVE A, XL_STUDENT B where A.studentId=B.studentId and A.leaveId = ?";
     mysqlUtil.queryOne(sql, [leaveId], callback);
 }

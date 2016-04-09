@@ -437,7 +437,9 @@ module.exports = new basicController(__filename).init({
             return next(new Error("请假天数不能小于0"));
         }
 
-        self.model['studentLeave'].save([schoolId, classId, userId, studentId, tUserId, startDate, endDate, leaveDays, reason, userId, remark], function(err, data){
+        var applyPeason =  req.user.student.studentName + req.user.nickName;
+
+        self.model['studentLeave'].save([schoolId, classId, userId, applyPeason, studentId, tUserId, startDate, endDate, leaveDays, reason, userId, remark], function(err, data){
             if(err){
                 return next(err);
             }
