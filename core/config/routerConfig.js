@@ -420,6 +420,11 @@ var routerConfig = {
                 "method": "get",
                 "description": "查询班级"
             },
+            "showDetail": {
+                "url": "/api/class/showDetail/:classId",
+                "method": "get",
+                "description": "查询班级及老师"
+            },
             "add": {
                 "url": "/api/class/add",
                 "method": "post",

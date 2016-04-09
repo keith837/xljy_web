@@ -89,6 +89,32 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    showDetail : function(req, res, next){
+        var self = this;
+        var classId = parseInt(req.params.classId);
+        self.model['class'].findByClassId(classId, function(err, classInfo){
+            if(err){
+                return next(err);
+            }
+            if(!classInfo){
+                return res.json({
+                    code : "00",
+                    data : null
+                });
+            }
+            self.model['class'].listTeacherByClassId(classId, function(err, teachers){
+                if(err){
+                    return next(err);
+                }
+                classInfo.teachers = teachers;
+                res.json({
+                    code : "00",
+                    data : classInfo ? classInfo : null
+                });
+            });
+        });
+    },
+
     add : function(req, res, next){
         var self = this;
         var schoolId = req.body.schoolId;
