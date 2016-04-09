@@ -301,14 +301,14 @@ Student.listByStudentId = function(studentId, startDate, start, pageSize, callba
 }
 
 Student.queryNumByStudentId = function(studentId, startDate, callback){
-    var sql = "select count(*) as total from (select A.studentId, 1 as dataType, A.startDate,A.endDate,A.state from XL_STUDENT_LEAVE A where A.state!=0 and A.startDate>=? and A.studentId=? ";
-    sql += "UNION SELECT B.objId, 2 as dataType, B.comeDate,B.leaveDate,B.state FROM XL_ATTENDANCE B where B.state=1 and B.attendanceDate>=? and B.objId=? and B.attendanceType=1) C";
+    var sql = "select count(*) as total from (select A.studentId, 1 as dataType, A.startDate,A.endDate,A.state,A.leaveDays,A.applyPeason from XL_STUDENT_LEAVE A where A.state!=0 and A.startDate>=? and A.studentId=? ";
+    sql += "UNION SELECT B.objId, 2 as dataType, B.comeDate,B.leaveDate,B.state,null,null FROM XL_ATTENDANCE B where B.state=1 and B.attendanceDate>=? and B.objId=? and B.attendanceType=1) C";
     mysqlUtil.queryOne(sql, [startDate, studentId, startDate, studentId], callback);
 }
 
 Student.queryPageByStudentId = function(studentId, startDate, start, pageSize, callback){
-    var sql = "select * from (select A.studentId, 1 as dataType, A.startDate,A.endDate,A.state from XL_STUDENT_LEAVE A where A.state!=0 and A.startDate>=? and A.studentId=? ";
-    sql += "UNION SELECT B.objId, 2 as dataType, B.comeDate,B.leaveDate,B.state FROM XL_ATTENDANCE B where B.state=1 and B.attendanceDate>=? and B.objId=? and B.attendanceType=1) C order by C.startDate desc limit ?,?";
+    var sql = "select * from (select A.studentId, 1 as dataType, A.startDate,A.endDate,A.state,A.leaveDays,A.applyPeason from XL_STUDENT_LEAVE A where A.state!=0 and A.startDate>=? and A.studentId=? ";
+    sql += "UNION SELECT B.objId, 2 as dataType, B.comeDate,B.leaveDate,B.state,null,null FROM XL_ATTENDANCE B where B.state=1 and B.attendanceDate>=? and B.objId=? and B.attendanceType=1) C order by C.startDate desc limit ?,?";
     mysqlUtil.query(sql, [startDate, studentId, startDate, studentId, start, pageSize], callback);
 }
 
