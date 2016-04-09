@@ -609,6 +609,9 @@ module.exports = new basicController(__filename).init({
         form.keepExtensions = true;	 //保留后缀
         form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
         form.parse(req, function (err, fields, files) {
+            if(err){
+                return next(err);
+            }
             var obj = new Object();
             if(files && files.userPic){
                 obj.userUrl = path.normalize(files.userPic.path).replace(/\\/g, '/');
