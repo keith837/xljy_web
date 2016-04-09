@@ -395,6 +395,11 @@ var routerConfig = {
                 "url": "/api/student/listAttendance/:studentId",
                 "method": "get",
                 "description": "学生出勤信息统计"
+            },
+            "uppic" : {
+                "url": "/api/student/uppic",
+                "method": "put",
+                "description": "学生头像上传"
             }
         },
 

@@ -46,8 +46,8 @@ Student.save = function(args, userId, oUserId, callback){
             if(err){
                 return callback(err);
             }
-            var insertSql = "insert into XL_STUDENT(schoolId,classId,studentName,studentAge,gender,cardNum,address,state,createDate,";
-            insertSql += "doneDate,oUserId,remark) values (?,?,?,?,?,?,?,1,now(),now(),?,?)";
+            var insertSql = "insert into XL_STUDENT(schoolId,classId,studentName,studentPic,studentAge,gender,cardNum,address,state,createDate,";
+            insertSql += "doneDate,oUserId,remark) values (?,?,?,?,?,?,?,?,1,now(),now(),?,?)";
             conn.query(insertSql, args, function(err, student){
                 if(err){
                     conn.rollback();

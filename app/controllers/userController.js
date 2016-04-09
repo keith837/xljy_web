@@ -263,6 +263,7 @@ module.exports = new basicController(__filename).init({
                             retStudents.push({
                                 studentId : students[i].studentId,
                                 studentName : students[i].studentName,
+                                studentPic : students[i].studentPic,
                                 schoolId : students[i].schoolId,
                                 classId : students[i].classId
                             });
@@ -301,6 +302,7 @@ module.exports = new basicController(__filename).init({
                     retStudents.push({
                         studentId : students[i].studentId,
                         studentName : students[i].studentName,
+                        studentPic : students[i].studentPic,
                         schoolId : students[i].schoolId,
                         classId : students[i].classId
                     });

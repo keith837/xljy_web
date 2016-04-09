@@ -1,8 +1,49 @@
 var basicController = require("../../core/utils/controller/basicController");
 var pushCore = require("../../core/utils/alim/pushCore");
 var moment = require("moment");
+var formidable = require("formidable");
+var path = require("path");
 
 module.exports = new basicController(__filename).init({
+    uppic : function(req, res, next){
+        var self = this;
+        var userId = req.user.userId;
+        var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "STUDENT_HEAD");
+        var form = new formidable.IncomingForm();   //创建上传表单
+        form.encoding = 'utf-8';		//设置编辑
+        form.uploadDir = uploadDir;	 //设置上传目录
+        form.keepExtensions = true;	 //保留后缀
+        form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
+        form.parse(req, function (err, fields, files) {
+            if(err){
+                return next(err);
+            }
+            var obj = new Object();
+            if(files && files.studentPic){
+                obj.studentPic = path.normalize(files.studentPic.path).replace(/\\/g, '/');
+            }else{
+                return next(new Error("学生头像不能为空"));
+            }
+            obj.doneDate = new Date();
+            obj.oUserId = userId;
+            var studentId = req.user.student.studentId;
+            self.model['student'].update(obj, null, studentId, function(err, data){
+                if(err){
+                    return next(err);
+                }
+                if(data && data.affectedRows == 1){
+                    res.json({
+                        code : "00",
+                        msg : "学生头像上传成功",
+                        data : obj.userUrl
+                    });
+                }else{
+                    return next(new Error("学生头像上传失败"));
+                }
+            });
+        });
+    },
+
     select : function(req, res, next){
         var self = this;
         var log = this.logger;
@@ -83,6 +124,7 @@ module.exports = new basicController(__filename).init({
                 retStudents.push({
                     studentId : students[i].studentId,
                     studentName : students[i].studentName,
+                    studentPic : students[i].studentPic,
                     schoolId : students[i].schoolId,
                     classId : students[i].classId
                 });
@@ -123,6 +165,10 @@ module.exports = new basicController(__filename).init({
         if(!address){
             return next(new Error("学生联系地址不能为空"));
         }
+        if(!gender){
+            return next(new Error("学生性别不能为空"));
+        }
+        var studentPic = self.cacheManager.getCacheValue("FILE_DIR", "DEFAULT_STUDENT_HEAD");
         self.model['class'].findOne(classId, function(err, classInfo){
             if(err){
                 return next(err);
@@ -130,7 +176,7 @@ module.exports = new basicController(__filename).init({
             if(!classInfo){
                 return next("学生关联的班级信息不存在");
             }
-            self.model['student'].save([classInfo.schoolId,classId,studentName,studentAge,gender,cardNum,address,oUserId,remark], userId, oUserId, function(err, student){
+            self.model['student'].save([classInfo.schoolId,classId,studentName,studentPic,studentAge,gender,cardNum,address,oUserId,remark], userId, oUserId, function(err, student){
                 if(err){
                     return next(err);
                 }
