@@ -18,7 +18,8 @@ module.exports= new basicController(__filename).init({
                 introduce : introduce,
                 contractName : contractName,
                 moblie : moblie,
-                copyright : copyright
+                copyright : copyright,
+                state:1
             }
         });
     }
