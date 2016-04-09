@@ -39,6 +39,64 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    restDevice : function(req, res, next){
+        var self = this;
+        var installationId = req.body.installationId;
+        var deviceType = req.body.deviceType;
+        var user = req.user;
+        var log = self.logger;
+        if(!installationId){
+            return next(new Error("手机实例标识不能为空"));
+        }
+        if (!deviceType) {
+            return next(new Error("手机设备类型不能为空"));
+        }
+        pushCore.regDevice(user.deviceType, user.installationId, [], function (err, objectId) {
+            if (err) {
+                log.error("删除原设备[" + user.installationId + "]云端token出错");
+                return next(err);
+            }
+            log.info("删除原设备[" + user.installationId + "]云端token成功，objectId=" + objectId);
+            var channels = new Array();
+            var groupId = user.groupId;
+            if(groupId == 10){
+                channels.push("school_" + user.schools[0].schoolId + "_parent");
+                channels.push("class_" + user.class.classId);
+            }else if(groupId == 20){
+                channels.push("school_" + user.schools[0].schoolId + "_teacher");
+                channels.push("class_" + user.class.classId);
+            }else{
+                channels.push("school_" + user.schools[0].schoolId);
+            }
+            pushCore.regDevice(deviceType, installationId, channels, function (err, objectId) {
+                if (err) {
+                    log.error("注册新设备[" + installationId + "]出错");
+                    return next(err);
+                }
+                log.info("注册新设备[" + installationId + "]成功，objectId=" + objectId);
+                var userObj = new Object();
+                userObj.doneDate = new Date();
+                userObj.installationId = installationId;
+                userObj.deviceType = deviceType;
+                var userId = user.userId;
+                self.model['user'].update(userObj, userId, function(err, data){
+                    if(err){
+                        return next(err);
+                    }
+                    user.installationId = installationId;
+                    user.deviceType = deviceType;
+                    var expireDate = self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60;
+                    self.redis.set(user.token, JSON.stringify(user), "EX", expireDate);
+                    self.redis.set(user.userId, user.token, "EX", expireDate);
+                    res.json({
+                        code : "00",
+                        msg : "设备信息重置成功"
+                    });
+                });
+            });
+        });
+    },
+
     //app端登录
     login : function(req, res, next){
         var self = this;

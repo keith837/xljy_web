@@ -121,6 +121,11 @@ var routerConfig = {
                 "url": "/api/user/showTeacher/:userId",
                 "method": "get",
                 "description": "教师档案"
+            },
+            restDevice : {
+                "url": "/api/user/restDevice",
+                "method": "put",
+                "description": "重置设备信息"
             }
         },
 

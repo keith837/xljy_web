@@ -41,8 +41,9 @@ module.exports = new basicController(__filename).init({
         var user = req.user;
         user.schools = [school];
         user.schoolIds = [school.schoolId];
-        self.redis.set(user.token, JSON.stringify(user));
-
+        var expireDate = self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60;
+        self.redis.set(user.token, JSON.stringify(user), "EX", expireDate);
+        self.redis.set(user.userId, user.token, "EX", expireDate);
         pushCore.regDevice(user.deviceType, user.installationId, [], function (err, objectId) {
             if (err) {
                 log.error("删除设备[" + user.installationId + "]云端token出错");
