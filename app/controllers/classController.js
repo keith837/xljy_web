@@ -98,16 +98,21 @@ module.exports = new basicController(__filename).init({
         var classDesc = req.body.classDesc;
         var classUrl = req.body.classUrl;
         var oUserId = req.user.userId;
+        var teacherId = req.body.teacherId;
         if(!schoolId){
             return next(new Error("班级归属学校不能为空"));
         }
         if(!tUserId){
             return next(new Error("班主任不能为空"));
         }
+        if(!gradeId){
+            return next(new Error("年级不能为空"));
+        }
         if(!className){
             return next(new Error("班级名称不能为空"));
         }
-        self.model['class'].save([schoolId, gradeId, tUserId, className, classDesc, classUrl, oUserId], function(err, data){
+        var teacherArray = new Array();
+        self.model['class'].save([schoolId, gradeId, tUserId, className, classDesc, classUrl, oUserId], teacherId, function(err, data){
             if(err){
                 return next(err);
             }
@@ -132,6 +137,7 @@ module.exports = new basicController(__filename).init({
         var classDesc = req.body.classDesc;
         var classUrl = req.body.classUrl;
         var oUserId = req.user.userId;
+        var teacherId = req.body.teacherId;
         if(schoolId){
             obj.schoolId = schoolId;
         }
@@ -152,7 +158,7 @@ module.exports = new basicController(__filename).init({
         }
         obj.oUserId = oUserId;
         obj.doneDate = new Date();
-        self.model['class'].update(obj, tUserId, classId, function(err, data){
+        self.model['class'].update(obj, tUserId, classId, teacherId, function(err, data){
             if(err){
                 return next(err);
             }else if(data.affectedRows != 1){
@@ -223,7 +229,7 @@ module.exports = new basicController(__filename).init({
                 if(relData){
                     return next(new Error("班级已关联该老师"));
                 }
-                self.model['class'].saveTeacher([classInfo.schoolId, classId, tUserId, jobType, req.user.userId], function(err, data){
+                self.model['class'].saveTeacher([classId, tUserId, jobType, oUserId], function(err, data){
                     if(err){
                         return next(err);
                     }else if(data.affectedRows != 1){

@@ -180,7 +180,7 @@ Class.listByPage = function(obj, schoolIds, start, pageSize, callback){
     });
 }
 
-Class.update = function(obj, tUserId, classId, callback){
+Class.update = function(obj, tUserId, classId, teacherId, callback){
     mysqlUtil.getConnection(function(err, conn){
         if(err){
             return callback(err);
@@ -204,14 +204,83 @@ Class.update = function(obj, tUserId, classId, callback){
                     conn.release();
                     return callback(err);
                 }
-                if(tUserId){
-                    var updateRelSql = "update XL_CLASS_TEACHER_REL set tUserId=?,doneDate=now(),oUserId=? where isMaster=1 and classId=?";
-                    conn.query(updateRelSql, [tUserId,obj.oUserId,classId], function(err, data){
+                if(teacherId){
+                    var deleteSql = "update XL_CLASS_TEACHER_REL set state = 0 where isMaster=0 and classId=?"
+                    mysqlUtil.query(deleteSql, [classId], function(err, data){
                         if(err){
                             conn.rollback();
                             conn.release();
                             return callback(err);
                         }
+                        var insertRelSql = "insert into XL_CLASS_TEACHER_REL(classId,tUserId,isMaster,jobType,state,createDate,doneDate,oUserId) values ?";
+                        var tempArgs = new Array();
+                        var sysDate = new Date();
+                        if(teacherId instanceof Array){
+                            for(var i = 0; i < teacherId.length; i ++){
+                                var teacherInfo = teacherId[i].split('_');
+                                tempArgs.push([classId, teacherInfo[1], 0, teacherInfo[0], 1, sysDate, sysDate, obj.oUserId]);
+                            }
+                        }else{
+                            var teacherInfo = teacherId.split('_');
+                            tempArgs.push([classId, teacherInfo[1], 0, teacherInfo[0], 1, sysDate, sysDate, obj.oUserId]);
+                        }
+                        mysqlUtil.query(insertRelSql, [tempArgs], function(err, data){
+                            if(err){
+                                conn.rollback();
+                                conn.release();
+                                return callback(err);
+                            }
+                            if(tUserId){
+                                var updateRelSql = "update XL_CLASS_TEACHER_REL set tUserId=?,doneDate=now(),oUserId=? where isMaster=1 and classId=?";
+                                conn.query(updateRelSql, [tUserId,obj.oUserId,classId], function(err, data){
+                                    if(err){
+                                        conn.rollback();
+                                        conn.release();
+                                        return callback(err);
+                                    }
+                                    conn.commit(function(err){
+                                        if(err){
+                                            conn.rollback();
+                                            conn.release();
+                                            return callback(err);
+                                        }
+                                        conn.release();
+                                        return callback(err, classData);;
+                                    });
+                                });
+                            }else{
+                                conn.commit(function(err){
+                                    if(err){
+                                        conn.rollback();
+                                        conn.release();
+                                        return callback(err);
+                                    }
+                                    conn.release();
+                                    return callback(err, classData);;
+                                });
+                            }
+                        });
+                    });
+                }else{
+                    if(tUserId){
+                        var updateRelSql = "update XL_CLASS_TEACHER_REL set tUserId=?,doneDate=now(),oUserId=? where isMaster=1 and classId=?";
+                        conn.query(updateRelSql, [tUserId,obj.oUserId,classId], function(err, data){
+                            if(err){
+                                conn.rollback();
+                                conn.release();
+                                return callback(err);
+                            }
+                            conn.commit(function(err){
+                                if(err){
+                                    conn.rollback();
+                                    conn.release();
+                                    return callback(err);
+                                }
+                                conn.release();
+                                return callback(err, classData);;
+                            });
+                        });
+                    }else{
                         conn.commit(function(err){
                             if(err){
                                 conn.rollback();
@@ -221,17 +290,7 @@ Class.update = function(obj, tUserId, classId, callback){
                             conn.release();
                             return callback(err, classData);;
                         });
-                    });
-                }else{
-                    conn.commit(function(err){
-                        if(err){
-                            conn.rollback();
-                            conn.release();
-                            return callback(err);
-                        }
-                        conn.release();
-                        return callback(err, classData);;
-                    });
+                    }
                 }
             });
         });
@@ -239,8 +298,8 @@ Class.update = function(obj, tUserId, classId, callback){
 }
 
 Class.saveTeacher = function(args, callback){
-    var insertRelSql = "insert into XL_CLASS_TEACHER_REL(schoolId,classId,tUserId,isMaster,jobType,state,createDate,doneDate,oUserId)";
-    insertRelSql += " values (?,?,?,0,?,1,now(),now(),?)";
+    var insertRelSql = "insert into XL_CLASS_TEACHER_REL(classId,tUserId,isMaster,jobType,state,createDate,doneDate,oUserId)";
+    insertRelSql += " values (?,?,0,?,1,now(),now(),?)";
     mysqlUtil.query(insertRelSql, args, callback);
 }
 
@@ -249,7 +308,7 @@ Class.listStudentByClass = function(classId, callback){
     mysqlUtil.query(selectSql, [classId], callback);
 }
 
-Class.save = function(args, callback){
+Class.save = function(args, teacherId, callback){
     mysqlUtil.getConnection(function(err, conn){
         if(err){
             return callback(err);
@@ -266,9 +325,22 @@ Class.save = function(args, callback){
                     conn.release();
                     return callback(err);
                 }
-                var insertRelSql = "insert into XL_CLASS_TEACHER_REL(schoolId,classId,tUserId,isMaster,jobType,state,createDate,doneDate,oUserId)";
-                insertRelSql += " values (?,?,?,1,?,1,now(),now(),?)";
-                conn.query(insertRelSql, [args[0],classData.insertId,args[2],'班主任',args[6]], function(err, data){
+                var insertRelSql = "insert into XL_CLASS_TEACHER_REL(classId,tUserId,isMaster,jobType,state,createDate,doneDate,oUserId) values ?";
+                var tempArgs = new Array();
+                var sysDate = new Date();
+                tempArgs.push([classData.insertId, args[2], 1, '班主任', 1, sysDate, sysDate, args[6]]);
+                if(teacherId){
+                    if(teacherId instanceof Array){
+                        for(var i = 0; i < teacherId.length; i ++){
+                            var teacherInfo = teacherId[i].split('_');
+                            tempArgs.push([classData.insertId, teacherInfo[1], 0, teacherInfo[0], 1, sysDate, sysDate, args[6]]);
+                        }
+                    }else{
+                        var teacherInfo = teacherId.split('_');
+                        tempArgs.push([classData.insertId, teacherInfo[1], 0, teacherInfo[0], 1, sysDate, sysDate, args[6]]);
+                    }
+                }
+                conn.query(insertRelSql, [tempArgs], function(err, data){
                     if(err){
                         conn.rollback();
                         conn.release();
