@@ -35,7 +35,7 @@ module.exports = new basicController(__filename).init({
                     res.json({
                         code : "00",
                         msg : "学生头像上传成功",
-                        data : obj.userUrl
+                        data : obj.studentPic
                     });
                 }else{
                     return next(new Error("学生头像上传失败"));
