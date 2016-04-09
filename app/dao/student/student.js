@@ -56,25 +56,60 @@ Student.save = function(args, userId, oUserId, callback){
                 }
                 var insertRelSql = "insert into XL_USER_STUDENT_REL(userId,studentId,state,createDate,doneDate,oUserId)";
                 insertRelSql += " values (?,?,1,now(),now(),?)";
-                conn.query(insertRelSql, [userId,student.insertId,oUserId], function(err, data){
-                    if(err){
-                        conn.rollback();
-                        conn.release();
-                        return callback(err);
-                    }
-                    conn.commit(function(err){
+                var studentId = student.insertId;
+                if(userId instanceof Array){
+                    Student.saveUserStudentRels(conn, insertRelSql, studentId, userId, 0, oUserId, student, callback);
+                }else{
+                    conn.query(insertRelSql, [userId, studentId, oUserId], function(err, data){
                         if(err){
                             conn.rollback();
                             conn.release();
                             return callback(err);
                         }
-                        conn.release();
-                        return callback(err, student);;
+                        conn.commit(function(err){
+                            if(err){
+                                conn.rollback();
+                                conn.release();
+                                return callback(err);
+                            }
+                            conn.release();
+                            return callback(err, student);;
+                        });
                     });
-                });
+                }
             });
         });
     });
+}
+
+Student.saveUserStudentRels = function(conn, insertRelSql, studentId, userIds, index, oUserId, student, callback){
+    if(index >=  userIds.length - 1){
+        conn.query(insertRelSql, [userIds[index], studentId, oUserId], function(err, data){
+            if(err){
+                conn.rollback();
+                conn.release();
+                return callback(err);
+            }
+            conn.commit(function(err){
+                if(err){
+                    conn.rollback();
+                    conn.release();
+                    return callback(err);
+                }
+                conn.release();
+                return callback(err, student);;
+            });
+        });
+    }else{
+        conn.query(insertRelSql, [userIds[index], studentId, oUserId], function(err, data){
+            if(err){
+                conn.rollback();
+                conn.release();
+                return callback(err);
+            }
+            Student.saveUserStudentRels(conn, insertRelSql, studentId, userIds, index + 1, oUserId, student, callback);
+        });
+    }
 }
 
 Student.delete = function(studentId, callback){
@@ -138,23 +173,36 @@ Student.update = function(obj, userId, studentId, callback){
                     return callback(err);
                 }
                 if(userId){
-                    var insertRelSql = "insert into XL_USER_STUDENT_REL(userId,studentId,state,createDate,doneDate,oUserId) values (?,?,1,now(),now(),?)";
-                    conn.query(insertRelSql, [userId,studentId,obj.oUserId], function(err, data){
+                    var deleteSql = "update XL_USER_STUDENT_REL set state = 0,doneDate=now(),oUserId=? where studentId=?";
+                    conn.query(deleteSql, [obj.oUserId,studentId], function(err, data){
                         if(err){
                             conn.rollback();
                             conn.release();
                             return callback(err);
                         }
-                        conn.commit(function(err){
-                            if(err){
-                                conn.rollback();
-                                conn.release();
-                                return callback(err);
-                            }
-                            conn.release();
-                            return callback(err, studentData);
-                        });
+                        var insertRelSql = "insert into XL_USER_STUDENT_REL(userId,studentId,state,createDate,doneDate,oUserId) values (?,?,1,now(),now(),?)";
+                        if(userId instanceof Array){
+                            Student.saveUserStudentRels(conn, insertRelSql, studentId, userId, 0, obj.oUserId, studentData, callback);
+                        }else{
+                            conn.query(insertRelSql, [userId,studentId,obj.oUserId], function(err, data){
+                                if(err){
+                                    conn.rollback();
+                                    conn.release();
+                                    return callback(err);
+                                }
+                                conn.commit(function(err){
+                                    if(err){
+                                        conn.rollback();
+                                        conn.release();
+                                        return callback(err);
+                                    }
+                                    conn.release();
+                                    return callback(err, studentData);
+                                });
+                            });
+                        }
                     });
+
                 }else{
                     conn.commit(function(err){
                         if(err){
