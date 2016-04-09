@@ -13,7 +13,7 @@ StudentLeave.listByClassId = function(classId, leaveDate, callback){
 }
 
 StudentLeave.list = function(obj, startDate, endDate, leaveDate, callback){
-    var sql = "select  A.leaveId,A.schoolId,A.classId,A.aUserId,A.applyPeason,A.tUserId,B.studentName,A.startDate,A.endDate,A.leaveDays,";
+    var sql = "select  A.leaveId,A.schoolId,A.classId,A.aUserId,A.applyPeason,A.tUserId,A.studentId,B.studentName,A.startDate,A.endDate,A.leaveDays,";
     sql += "A.applyDate,A.reason,A.state from XL_STUDENT_LEAVE A, XL_STUDENT B where A.studentId=B.studentId";
     var tempArgs = new Array();
     if(obj){
