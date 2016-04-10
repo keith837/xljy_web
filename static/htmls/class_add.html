@@ -59,6 +59,20 @@
                                             <input type="text" style="display: none;" disabled="disabled" id="tUserName" class="span3">
                                         </div>
                                     </div>
+                                    <div class="control-group" id="tTeacherDiv">
+                                        <label class="control-label" for="tTeacherId">教师</label>
+                                        <div class="controls">
+                                            <input type="text" id="tTeacherId" name="tTeacherId" placeholder="请选择用户" class="span3">
+                                            <input type="text" style="display: none;" disabled="disabled" id="tTeacherName" class="span3">
+                                        </div>
+                                    </div>
+                                    <div class="control-group" id="tAssistantDiv">
+                                        <label class="control-label" for="tAssistantId">辅导员</label>
+                                        <div class="controls">
+                                            <input type="text" id="tAssistantId" name="tAssistantId" placeholder="请选择用户" class="span3">
+                                            <input type="text" style="display: none;" disabled="disabled" id="tAssistantName" class="span3">
+                                        </div>
+                                    </div>
                                     <div class="control-group">
                                         <label class="control-label" for="gradeId">年级<span style="color: red;">*</span></label>
                                         <div class="controls">
@@ -128,7 +142,7 @@
             $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>更新班级</a>");
 
 
-            $.get("/api/class/show/" + classId, null, function (json) {
+            $.get("/api/class/showDetail/" + classId, null, function (json) {
                 if (json.code == "00") {
                     console.info(json.data);
                     $("#className").val(json.data.className);
@@ -141,11 +155,32 @@
                     $("#gradeName").val(json.data.gradeName);
 
                     $("#tUserId").css("display", "none");
+                    $("#tTeacherDiv").css("display", "none");
+                    $("#tAssistantDiv").css("display", "none");
+                    $("#tTeacherId").css("display", "none");
+                    $("#tAssistantId").css("display", "none");
                     $("#schoolId").css("display", "none");
                     $("#gradeId").css("display", "none");
                     $("#schoolName").css("display", "");
                     $("#tUserName").css("display", "");
                     $("#gradeName").css("display", "");
+                    $("#tTeacherName").css("display", "");
+                    $("#tAssistantName").css("display", "");
+
+                    var teachers = json.data.teachers;
+                    if (teachers && teachers.length > 0) {
+                        for (var x in teachers) {
+                            if (teachers[x].jobType == "教师") {
+                                $("#tTeacherDiv").css("display", "");
+                                $("#tTeacherId").val(teachers[x].userId);
+                                $("#tTeacherName").val(teachers[x].custName);
+                            } else if (teachers[x].jobType == "辅导员") {
+                                $("#tAssistantDiv").css("display", "");
+                                $("#tAssistantId").val(teachers[x].userId);
+                                $("#tAssistantName").val(teachers[x].custName);
+                            }
+                        }
+                    }
 
                 }
             }, 'json');
@@ -155,6 +190,8 @@
 
             $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
             $("#tUserId").select2({data: [{id: -1, text: "请选择用户"}]});
+            $("#tTeacherId").select2({data: [{id: -1, text: "请选择用户"}]});
+            $("#tAssistantId").select2({data: [{id: -1, text: "请选择用户"}]});
             $("#gradeId").select2({data: [{id: -1, text: "请选择用户"}]});
             loadSchool();
             //loadUser(30,"tUserId");
@@ -187,6 +224,17 @@
                 $(element).parents('.control-group').addClass('success');
             },
             submitHandler: function(form) {
+                var teachers = checkTeachers();
+                if (teachers == null) {
+                    return;
+                } else if (teachers.length > 0) {
+                    for (var x in teachers) {
+                        var input1 = $("<input type='hidden' name='teacherId' />")
+                        input1.attr('value', teachers[x]);
+                        $(form).append(input1);
+                    }
+                }
+
                 var editType = $("#editType").val();
                 var url = "/api/class/add";
                 var type = "post";
@@ -198,6 +246,37 @@
             }
         });
     })
+
+    function checkTeachers(){
+        var tUserId = $("#tUserId").val();
+        var teacherId = $("#tTeacherId").val();
+        var assistantId = $("#tAssistantId").val();
+        var teachers = new Array();
+        if (teacherId != "" && teacherId != -1) {
+            if (tUserId == teacherId) {
+                swal({title: "提交失败!", text: "班主任和教师不能是同一个人!", type: "error", timer: autoCloseTime});
+                return null;
+            }else{
+                teachers.push("教师_" + teacherId);
+            }
+        }
+        if (assistantId != "" && assistantId != -1) {
+            if (tUserId == assistantId) {
+                swal({title: "提交失败!", text: "班主任和辅导员不能是同一个人!", type: "error", timer: autoCloseTime});
+                return null;
+            }else{
+                teachers.push("辅导员_" + assistantId);
+            }
+        }
+
+        if ((assistantId != "" && assistantId != -1) && (teacherId != "" && teacherId != -1)) {
+            if (teacherId == assistantId) {
+                swal({title: "提交失败!", text: "教师和辅导员不能是同一个人!", type: "error", timer: autoCloseTime});
+                return null;
+            }
+        }
+        return teachers;
+    }
 </script>
 </body>
 </html>

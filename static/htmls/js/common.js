@@ -406,12 +406,31 @@ function loadTuser(schoolId,selectId) {
                 })
                 $("#"+selectId).select2({data: options});
 
+                if ($("#tTeacherId").length == 1) {
+                    $("#tTeacherId").select2({data: options});
+                }
+                if ($("#tAssistantId").length == 1) {
+                    $("#tAssistantId").select2({data: options});
+                }
+
             } else {
                 initNullSelect("#"+selectId);
+                if ($("#tTeacherId").length == 1) {
+                    initNullSelect("#tTeacherId");
+                }
+                if ($("#tAssistantId").length == 1) {
+                    initNullSelect("#tAssistantId");
+                }
             }
         },
         error: function (msg) {
             initNullSelect("#"+selectId);
+            if ($("#tTeacherId").length == 1) {
+                initNullSelect("#tTeacherId");
+            }
+            if ($("#tAssistantId").length == 1) {
+                initNullSelect("#tAssistantId");
+            }
         }
     });
 }
