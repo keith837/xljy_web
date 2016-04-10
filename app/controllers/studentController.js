@@ -634,7 +634,7 @@ module.exports = new basicController(__filename).init({
                     return next(err);
                 }
                 res.json({
-                    code : 00,
+                    code : "00",
                     data : {
                         leaveDays : (leaveData ? leaveData.total : 0),
                         attendanceDays : (attendanceData ? attendanceData.total : 0)
