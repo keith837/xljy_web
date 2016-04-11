@@ -56,21 +56,21 @@
                                         <label class="control-label" for="tUserId">班主任<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <input type="text" id="tUserId" name="tUserId" placeholder="请选择用户" class="span3">
-                                            <input type="text" style="display: none;" disabled="disabled" id="tUserName" class="span3">
+                                            <!--<input type="text" style="display: none;" disabled="disabled" id="tUserName" class="span3">-->
                                         </div>
                                     </div>
                                     <div class="control-group" id="tTeacherDiv">
                                         <label class="control-label" for="tTeacherId">教师</label>
                                         <div class="controls">
                                             <input type="text" id="tTeacherId" name="tTeacherId" placeholder="请选择用户" class="span3">
-                                            <input type="text" style="display: none;" disabled="disabled" id="tTeacherName" class="span3">
+                                         <!--   <input type="text" style="display: none;" disabled="disabled" id="tTeacherName" class="span3">-->
                                         </div>
                                     </div>
                                     <div class="control-group" id="tAssistantDiv">
                                         <label class="control-label" for="tAssistantId">辅导员</label>
                                         <div class="controls">
                                             <input type="text" id="tAssistantId" name="tAssistantId" placeholder="请选择用户" class="span3">
-                                            <input type="text" style="display: none;" disabled="disabled" id="tAssistantName" class="span3">
+                                          <!--  <input type="text" style="display: none;" disabled="disabled" id="tAssistantName" class="span3">-->
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -135,6 +135,9 @@
 
     $(document).ready(function(){
 
+        $("#tUserId").select2({data: [{id: -1, text: "请选择用户"}]});
+        $("#tTeacherId").select2({data: [{id: -1, text: "请选择用户"}]});
+        $("#tAssistantId").select2({data: [{id: -1, text: "请选择用户"}]});
         var classId = $.url.param('classId');
         if (classId) {
             $('#backBtn').css("display", "");
@@ -150,20 +153,23 @@
                     $("#schoolName").val(json.data.schoolName);
                     $("#schoolId").val(json.data.schoolId);
                     $("#gradeId").val(json.data.gradeId);
-                    $("#tUserId").val(json.data.tUserId);
-                    $("#tUserName").val(json.data.custName);
+                    //$("#tUserId").val(json.data.tUserId);
+                    //$("#tUserName").val(json.data.custName);
                     $("#gradeName").val(json.data.gradeName);
 
+                    /*
                     $("#tUserId").css("display", "none");
                     $("#tTeacherDiv").css("display", "none");
                     $("#tAssistantDiv").css("display", "none");
                     $("#tTeacherId").css("display", "none");
                     $("#tAssistantId").css("display", "none");
+                    */
                     $("#schoolId").css("display", "none");
                     $("#gradeId").css("display", "none");
                     $("#schoolName").css("display", "");
-                    $("#tUserName").css("display", "");
                     $("#gradeName").css("display", "");
+                    /*
+                    $("#tUserName").css("display", "");
                     $("#tTeacherName").css("display", "");
                     $("#tAssistantName").css("display", "");
 
@@ -181,7 +187,9 @@
                             }
                         }
                     }
-
+                    */
+                    var teachers = json.data.teachers;
+                    loadTuser($("#schoolId").val(),'tUserId',teachers);
                 }
             }, 'json');
         } else {
@@ -189,9 +197,6 @@
             $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>新增班级</a>");
 
             $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
-            $("#tUserId").select2({data: [{id: -1, text: "请选择用户"}]});
-            $("#tTeacherId").select2({data: [{id: -1, text: "请选择用户"}]});
-            $("#tAssistantId").select2({data: [{id: -1, text: "请选择用户"}]});
             $("#gradeId").select2({data: [{id: -1, text: "请选择用户"}]});
             loadSchool();
             //loadUser(30,"tUserId");

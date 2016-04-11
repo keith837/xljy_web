@@ -177,7 +177,7 @@ function initNullSelect(component) {
     $(component).select2("val", -1);
 }
 //加载学校
-function loadSchool(){
+function loadSchool(loadParent){
     $.ajax({
         url: "/api/school/list",    //后台webservice里的方法名称
         type: "get",
@@ -206,6 +206,11 @@ function loadSchool(){
                     schoolSelect.on("change", function (e) {
                         initNullSelect("#tUserId");
                         loadTuser($(this).val(),"tUserId");
+                    });
+                }
+                if (loadParent) {
+                    schoolSelect.on("change", function (e) {
+                        loadParentUser($(this).val(), "userId");
                     });
                 }
             } else {
@@ -362,6 +367,42 @@ function loadUser(groupId,selectId) {
     });
 }
 
+// 加载家长
+function loadParentUser(schoolId,selectId) {
+    $.ajax({
+        url: "/api/user/list",    //后台webservice里的方法名称
+        type: "get",
+        dataType: "json",
+        data: {groupId:10,schoolId:schoolId,iDisplayStart:0,iDisplayLength:10000000},
+        contentType: "application/json",
+        traditional: true,
+        success: function (data) {
+            if (data.code == "00") {
+                var options = [];
+                $.each(data.data, function (i, item) {
+                    options.push({id: item.userId, text: item.custName});
+                })
+                $("#"+selectId).select2({data: options});
+
+                if ($("#secondUserId").length == 1) {
+                    $("#secondUserId").select2({data: options});
+                }
+            } else {
+                initNullSelect("#"+selectId);
+                if ($("#secondUserId").length == 1) {
+                    initNullSelect("#secondUserId");
+                }
+            }
+        },
+        error: function (msg) {
+            initNullSelect("#"+selectId);
+            if ($("#secondUserId").length == 1) {
+                initNullSelect("#secondUserId");
+            }
+        }
+    });
+}
+
 //加载园长
 function loadSuser(groupId,selectId) {
     $.ajax({
@@ -390,7 +431,7 @@ function loadSuser(groupId,selectId) {
 }
 
 //加载老师
-function loadTuser(schoolId,selectId) {
+function loadTuser(schoolId,selectId,teachers) {
     $.ajax({
         url: "/api/school/webTeachers/"+schoolId,    //后台webservice里的方法名称
         type: "get",
@@ -401,9 +442,19 @@ function loadTuser(schoolId,selectId) {
         success: function (data) {
             if (data.code == "00") {
                 var options = [];
+                var tObject = new Object();
                 $.each(data.data, function (i, item) {
                     options.push({id: item.userId, text: item.custName});
-                })
+                    tObject[item.userId] = item;
+                });
+                if (teachers) {
+                    $.each(teachers, function (i, item) {
+                        var tObj = tObject[item.userId];
+                        if (typeof tObj === "undefined") {
+                            options.push({id: item.userId, text: item.custName});
+                        }
+                    });
+                }
                 $("#"+selectId).select2({data: options});
 
                 if ($("#tTeacherId").length == 1) {

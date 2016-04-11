@@ -64,6 +64,8 @@
                                         <label class="control-label" for="userId">绑定家长<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <input type="text" id="userId" name="userId" placeholder="请选择家长" class="span3">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input type="text" id="secondUserId" name="secondUserId" placeholder="请选择家长" class="span3">
                                         </div>
                                     </div>
 
@@ -169,7 +171,7 @@
                     $("#classId").css("display", "none");
                     $("#schoolName").css("display", "");
                     $("#className").css("display", "");
-
+                    loadParentUser($("#schoolId").val(), "userId");
                 }
             }, 'json');
         } else {
@@ -179,12 +181,10 @@
             $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
             $("#classId").select2({data: [{id: -1, text: "请选择班级"}]});
 
-            loadSchool();
-
-
+            loadSchool(true);
         }
         $("#userId").select2({data: [{id: -1, text: "请选择家长"}]});
-        loadUser(10,"userId");
+        $("#secondUserId").select2({data: [{id: -1, text: "请选择家长"}]});
         initValidator();
         $("#studentForm").validate({
             ignore: ".ignore",
@@ -225,6 +225,18 @@
                 $(element).parents('.control-group').addClass('success');
             },
             submitHandler: function(form) {
+                var secondUserId = $("#secondUserId").val();
+                if (secondUserId != "" && secondUserId != -1) {
+                    if (secondUserId == $("#userId").val()) {
+                        swal({title: "提交失败!", text: "同一个家长不能选择两次!", type: "error", timer: autoCloseTime});
+                        return;
+                    } else {
+                        var input1 = $("<input type='hidden' name='userId' />");
+                        input1.attr('value', secondUserId);
+                        $(form).append(input1);
+                    }
+                }
+
                 var editType = $("#editType").val();
                 var url = "/api/student/add";
                 var type = "post";
