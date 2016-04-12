@@ -802,7 +802,7 @@ module.exports = new basicController(__filename).init({
                     self.active(user, userName, securityCode, password, res, next);
                 });
             }else if(groupId == 20){
-                self.model['class'].listByTeacherId(user.userId, function(err, classes){
+                self.model['class'].listAllByTeacherId(user.userId, function(err, classes){
                     if(err){
                         return next(err);
                     }
