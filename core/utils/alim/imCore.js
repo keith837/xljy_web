@@ -29,16 +29,22 @@ imCore.regUser = function (username, password, nick, cb) {
         cb)
 }
 
-imCore.changeUser = function (username, nick, cb) {
+imCore.changeUser = function (username, nick, cb, url) {
+
+    var tempObj ={
+        userid: username,
+        nick: nick
+    };
+
+    if(url){
+        tempObj.icon_url = url;
+    };
 
     client.execute('taobao.openim.users.update',
         {
-            userinfos: JSON.stringify([{
-                userid: username,
-                nick: nick
-            }])
+            userinfos: JSON.stringify([tempObj])
         },
-        cb)
+        cb);
 }
 
 module.exports = imCore;

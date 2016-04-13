@@ -604,6 +604,7 @@ module.exports = new basicController(__filename).init({
     uppic : function(req, res, next){
         var self = this;
         var userId = req.user.userId;
+        var nickName = req.user.nickName;
         var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "USER_HEAD");
         var form = new formidable.IncomingForm();   //创建上传表单
         form.encoding = 'utf-8';		//设置编辑
@@ -626,6 +627,14 @@ module.exports = new basicController(__filename).init({
                     return next(err);
                 }
                 if(data && data.affectedRows == 1){
+                    var yunUser = "yunuser_" + userId;
+                    var yunPassword = imCore.getPasswordHash(yunUser);
+                    var realUrl = self.cacheManager.getCacheValue("WEB_URL", "WEB_URL") + obj.userUrl;
+                    imCore.changeUser(yunUser, yunPassword, function(err, data){
+                        if(err){
+                            self.logger.error(err);
+                        }
+                    }, realUrl);
                     res.json({
                         code : "00",
                         msg : "用户头像上传成功",
