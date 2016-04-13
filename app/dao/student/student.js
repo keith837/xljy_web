@@ -308,7 +308,7 @@ Student.queryNumByStudentId = function(studentId, startDate, callback){
 
 Student.queryPageByStudentId = function(studentId, startDate, start, pageSize, callback){
     var sql = "select * from (select A.studentId, 1 as dataType, A.leaveId, A.startDate,A.endDate,A.applyDate as createDate,A.state,A.leaveDays,A.applyPeason,A.reason from XL_STUDENT_LEAVE A where A.state!=0 and A.startDate>=? and A.studentId=? ";
-    sql += "UNION SELECT B.objId, 2 as dataType, B.attendanceId, B.comeDate,B.leaveDate,A.createDate,B.state,null,null,null FROM XL_ATTENDANCE B where B.state=1 and B.attendanceDate>=? and B.objId=? and B.attendanceType=1) C order by C.startDate desc limit ?,?";
+    sql += "UNION SELECT B.objId, 2 as dataType, B.attendanceId, B.comeDate,B.leaveDate,B.createDate,B.state,null,null,null FROM XL_ATTENDANCE B where B.state=1 and B.attendanceDate>=? and B.objId=? and B.attendanceType=1) C order by C.startDate desc limit ?,?";
     mysqlUtil.query(sql, [startDate, studentId, startDate, studentId, start, pageSize], callback);
 }
 
