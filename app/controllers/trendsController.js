@@ -497,6 +497,7 @@ module.exports = new basicController(__filename).init({
                                     nickName: likes[i].nickName,
                                     userId: likes[i].hUserId,
                                     userUrl: userObj[likes[i].hUserId].userUrl,
+                                    custName: userObj[likes[i].hUserId].custName,
                                     createDate: likes[i].createDate
                                 });
                             }
@@ -522,16 +523,19 @@ module.exports = new basicController(__filename).init({
                                     nickName: comments[i].nickName,
                                     userId: comments[i].hUserId,
                                     userUrl: userObj[comments[i].hUserId].userUrl,
+                                    custName: userObj[comments[i].hUserId].custName,
                                     createDate: comments[i].createDate
                                 }
                                 tempCommentObject[comments[i].handleId] = comment;
                                 if(comments[i].pHandleId == 0){
                                     comment.cUserId = trendsObject[comment.trendsId].userId;
                                     comment.cNickName = trendsObject[comment.trendsId].nickName;
+                                    comment.cCustName = trendsObject[comment.trendsId].custName;
                                     comment.cUserUrl = userObj[comment.cUserId].userUrl;
                                 }else{
                                     comment.cUserId = tempCommentObject[comment.pHandleId].userId;
                                     comment.cNickName = tempCommentObject[comment.pHandleId].nickName;
+                                    comment.cCustName = tempCommentObject[comment.pHandleId].custName;
                                     comment.cUserUrl = tempCommentObject[comment.pHandleId].userUrl;
                                 }
                                 commentArray.push(comment);
