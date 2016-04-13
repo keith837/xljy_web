@@ -460,6 +460,11 @@ var routerConfig = {
                 "method": "get",
                 "description": "班级老师通讯录"
             },
+            "teacherAndPrincipal" : {
+                "url": "/api/class/teacherAndPrincipal",
+                "method": "get",
+                "description": "班级老师和校长查询"
+            },
             "principal":{
                 "url": "/api/class/principal/:classId",
                 "method": "get",

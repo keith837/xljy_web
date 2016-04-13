@@ -317,6 +317,39 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    teacherAndPrincipal : function(req, res, next){
+        var self = this;
+        var classId = req.query.classId;
+        if(!classId){
+            var groupId = req.user.groupId;
+            if(groupId == 10 || groupId == 20){
+                classId = req.user.class.classId;
+            }else{
+                return next(new Error("请传人班级编号"));
+            }
+        }
+        self.model['class'].listTeacherByClassId(classId, function(err, teachers){
+            if(err){
+                return next(err);
+            }
+            if(!teachers){
+                teachers = new Array();
+            }
+            self.model['class'].findPrincipalByClassId(classId, function(err, principal){
+                if(err){
+                    return next(err);
+                }
+                if(principal){
+                    teachers.push(principal);
+                }
+                res.json({
+                    code : "00",
+                    data : teachers
+                });
+            });
+        });
+    },
+
     students : function(req, res, next){
         var self = this;
         var classId = parseInt(req.params.classId);

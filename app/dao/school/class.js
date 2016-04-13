@@ -26,6 +26,10 @@ Class.listTeacherByClassId = function(classId, callback){
     mysqlUtil.query("select A.classId,A.isMaster,A.jobType,B.nickName,B.userName,B.custName,B.userId,B.yunAccout,B.userUrl from XL_CLASS_TEACHER_REL A,XL_USER B where A.tUserId=B.userId and A.state=1 and A.classId=?", [classId], callback);
 }
 
+Class.findPrincipalByClassId = function(classId, callback){
+    mysqlUtil.queryOne("select -1 as classId,-1 as isMaster,'校长' as jobType,C.nickName,C.userName,C.custName,C.userId,C.yunAccout,C.userUrl from XL_SCHOOL A, XL_CLASS B, XL_USER C where A.schoolId=B.schoolId and A.sUserId=C.userId and B.classId=?", [classId], callback);
+}
+
 Class.listTeacherByClassIds = function(classIds, callback){
     var sql = "select A.classId,A.isMaster,A.jobType,B.nickName,B.userName,B.custName,B.userId from XL_CLASS_TEACHER_REL A,XL_USER B where A.tUserId=B.userId and A.state=1 and A.classId in (-1";
     var tempArgs = new Array();
