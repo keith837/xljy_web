@@ -359,5 +359,40 @@ module.exports = new basicController(__filename).init({
                 });
             });
         });
+    },
+
+    countAttendance : function(req, res, next){
+        var self = this;
+        var schoolId = parseInt(req.params.schoolId);
+        if(schoolId <= 0){
+            var groupId = req.user.groupId;
+            if(groupId == 10){
+                schoolId = req.user.schools[0].schoolId;
+            }
+        }
+        if(schoolId <= 0){
+            return next(new Error("学校编号不能为空"));
+        }
+        var startDate = req.query.startDate;
+        if(!startDate){
+            startDate = self.cacheManager.getCacheValue("TERM_INFO", "DEFAULT_START_DATE");
+        }
+        self.model["studentLeave"].countBySchoolId(schoolId, startDate, function(err, leaveData){
+            if(err){
+                return next(err);
+            }
+            self.model['attendance'].countBySchoolId(1, schoolId, startDate, function(err, attendanceData){
+                if(err){
+                    return next(err);
+                }
+                res.json({
+                    code : "00",
+                    data : {
+                        leaveDays : (leaveData ? leaveData.total : 0),
+                        attendanceDays : (attendanceData ? attendanceData.total : 0)
+                    }
+                });
+            });
+        });
     }
 });

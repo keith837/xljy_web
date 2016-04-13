@@ -166,7 +166,7 @@ var routerConfig = {
             }
         },
         school : {
-            "usedModel": ["school/school","school/class"],
+            "usedModel": ["school/school","school/class", "student/studentLeave", "attendance/attendance"],
             "select": {
                 "url": "/api/school/select/:schoolId",
                 "method": "post",
@@ -216,6 +216,11 @@ var routerConfig = {
                 "url": "/api/school/webTeachers/:schoolId",
                 "method": "get",
                 "description": "学校老师查询"
+            },
+            "countAttendance" : {
+                "url": "/api/school/countAttendance/:schoolId",
+                "method": "get",
+                "description": "学校学生出勤信息统计"
             },
             "classes" : {
                 "url": "/api/school/classes",
@@ -394,7 +399,7 @@ var routerConfig = {
             "listAttendance" : {
                 "url": "/api/student/listAttendance/:studentId",
                 "method": "get",
-                "description": "学生出勤信息统计"
+                "description": "学生出勤信息"
             },
             "uppic" : {
                 "url": "/api/student/uppic",

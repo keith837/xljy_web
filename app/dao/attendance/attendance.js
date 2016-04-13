@@ -37,6 +37,11 @@ Attendance.countByObjId = function(attendanceType, objId, startDate, callback){
     mysqlUtil.queryOne(sql, [attendanceType, objId, startDate], callback);
 }
 
+Attendance.countBySchoolId = function(attendanceType, schoolId, startDate, callback){
+    var sql = "select count(*) as total from XL_ATTENDANCE where attendanceType=? and schoolId=? and attendanceDate>=? and state=1";
+    mysqlUtil.queryOne(sql, [attendanceType, schoolId, startDate], callback);
+}
+
 Attendance.update = function(obj, attendanceId, callback){
     var tempArgs = new Array();
     var sql = "update XL_ATTENDANCE set doneDate=now()";
