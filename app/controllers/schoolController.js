@@ -329,9 +329,33 @@ module.exports = new basicController(__filename).init({
             if(err){
                 return next(err);
             }
-            res.json({
-                code : "00",
-                data : classes ? classes : new Array()
+            if(!classes || classes.length <= 0){
+                return res.json({
+                    code : "00",
+                    leaveNum : 0,
+                    attendanceNum : 0,
+                    data : new Array()
+                });
+            }
+            var startDate = req.query.startDate;
+            if(!startDate){
+                startDate = self.cacheManager.getCacheValue("TERM_INFO", "DEFAULT_START_DATE");
+            }
+            self.model["studentLeave"].countBySchoolId(schoolId, startDate, function(err, leaveData){
+                if(err){
+                    return next(err);
+                }
+                self.model['attendance'].countBySchoolId(1, schoolId, startDate, function(err, attendanceData){
+                    if(err){
+                        return next(err);
+                    }
+                    res.json({
+                        code : "00",
+                        leaveDays : (leaveData ? leaveData.total : 0),
+                        attendanceDays : (attendanceData ? attendanceData.total : 0),
+                        data : classes
+                    });
+                });
             });
         });
     },
