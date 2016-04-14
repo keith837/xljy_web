@@ -845,6 +845,69 @@ var routerConfig = {
                 "method": "get",
                 "description": "查询记录详情"
             }
+        },
+        activity: {
+            "usedModel": ["photos/activity", "user/user", "photos/photos"],
+            "publish": {
+                "url": "/api/activity",
+                "method": "post",
+                "description": "发布精彩活动"
+            },
+            "publishPost": {
+                "url": "/api/activity/:activityId/posts",
+                "method": "post",
+                "description": "发布精彩活动帖子"
+            },
+            "delete": {
+                "url": "/api/activity/:id",
+                "method": "delete",
+                "description": "删除精彩活动"
+            },
+            "deletePost": {
+                "url": "/api/activity/:activityId/:albumId",
+                "method": "delete",
+                "description": "删除精彩活动帖子"
+            },
+            "like": {
+                "url": "/api/activity/:activityId/:albumId/like",
+                "method": "put",
+                "description": "点赞帖子"
+            },
+            "unlike": {
+                "url": "/api/activity/:activityId/:albumId/unlike",
+                "method": "delete",
+                "description": "取消点赞帖子"
+            },
+            "comment": {
+                "url": "/api/activity/:activityId/:albumId/comment",
+                "method": "put",
+                "description": "评论帖子"
+            },
+            "delComment": {
+                "url": "/api/activity/:activityId/:albumId/comment/:commentId",
+                "method": "delete",
+                "description": "删除评论帖子"
+            },
+            "list": {
+                "url": "/api/activity",
+                "method": "get",
+                "description": "精彩活动列表"
+            },
+            "addPhoto": {
+                "url": "/api/activity/:activityId/:albumId/photo",
+                "method": "put",
+                "description": "添加照片"
+            },
+            "delPhoto": {
+                "url": "/api/activity/:activityId/:albumId/photo/:id",
+                "method": "delete",
+                "description": "删除照片"
+            },
+            "edit": {
+                "url": "/api/activity/:activityId/:albumId",
+                "method": "put",
+                "description": "编辑帖子"
+            }
         }
     }
 }

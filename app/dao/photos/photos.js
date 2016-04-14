@@ -244,8 +244,8 @@ Photos.delPhoto = function (albumId, picId, userId, done) {
                 callback(err, upd);
             });
         }, function (res, callback) {
-            var picSQL = "update XL_CLASS_ALBUM_PIC set state=0,doneDate=now(),userId=? where picId=? and state=1";
-            conn.query(picSQL, [userId, picId], function (err, res) {
+            var picSQL = "update XL_CLASS_ALBUM_PIC set state=0,doneDate=now(),userId=? where picId=? and state=1 and albumId=?";
+            conn.query(picSQL, [userId, picId, albumId], function (err, res) {
                 if (res.affectedRows !== 1) {
                     return callback(new Error("没有找到照片[" + picId + "]"));
                 }
