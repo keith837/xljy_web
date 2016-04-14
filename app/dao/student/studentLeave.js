@@ -59,7 +59,11 @@ StudentLeave.countByStudentId = function(studentId, startDate, callback){
     mysqlUtil.queryOne(sql, [studentId, startDate], callback);
 }
 
-StudentLeave.countBySchoolId = function(schoolId, startDate, callback){
-    var sql = "select sum(leaveDays) as total from XL_STUDENT_LEAVE where schoolId=? and startDate>=? and state!=0";
-    mysqlUtil.queryOne(sql, [schoolId, startDate], callback);
+StudentLeave.countBySchoolId = function(schoolId, leaveDate, callback){
+    var sql = "select count(*) as total from XL_STUDENT_LEAVE where schoolId=? and startDate<=? and endDate>? and state!=0";
+    mysqlUtil.queryOne(sql, [schoolId, leaveDate, leaveDate], callback);
+}
+StudentLeave.validLeave = function(studentId, startDate, endDate, callback){
+    var sql = "select count(*) as total from XL_STUDENT_LEAVE where state != 0 and ((startDate<=? and endDate>?) or (startDate<? and endDate>=?)) and studentId=?";
+    mysqlUtil.queryOne(sql, [startDate, startDate, endDate, endDate, studentId], callback);
 }

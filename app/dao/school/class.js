@@ -26,6 +26,16 @@ Class.listTeacherByClassId = function(classId, callback){
     mysqlUtil.query("select A.classId,A.isMaster,A.jobType,B.nickName,B.userName,B.custName,B.userId,B.yunAccout,B.userUrl from XL_CLASS_TEACHER_REL A,XL_USER B where A.tUserId=B.userId and A.state=1 and A.classId=?", [classId], callback);
 }
 
+Class.listInstallationInfoByClassId = function(classId, callback){
+    mysqlUtil.query("select B.installationId from XL_CLASS_TEACHER_REL A,XL_USER B where A.tUserId=B.userId and B.installationId is not null and A.state=1 and A.classId=?", [classId], callback);
+}
+
+Class.listInstallationInfo = function(classId, notUserId, userId, callback){
+    var sql = "select B.installationId from XL_CLASS_TEACHER_REL A,XL_USER B where B.installationId is not null and A.tUserId=B.userId and A.state=1 and A.classId=? and A.tUserId!=?";
+    sql += " union select C.installationId from XL_USER C where C.installationId is not null and C.state!=0 and C.userId=?";
+    mysqlUtil.query(sql, [classId, notUserId, userId], callback);
+}
+
 Class.findPrincipalByClassId = function(classId, callback){
     mysqlUtil.queryOne("select -1 as classId,-1 as isMaster,'校长' as jobType,C.nickName,C.userName,C.custName,C.userId,C.yunAccout,C.userUrl from XL_SCHOOL A, XL_CLASS B, XL_USER C where A.schoolId=B.schoolId and A.sUserId=C.userId and B.classId=?", [classId], callback);
 }

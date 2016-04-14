@@ -2,6 +2,7 @@ var basicController = require("../../core/utils/controller/basicController");
 var formidable = require("formidable");
 var path = require("path");
 var pushCore = require("../../core/utils/alim/pushCore");
+var moment = require('moment');
 
 module.exports = new basicController(__filename).init({
 
@@ -337,22 +338,22 @@ module.exports = new basicController(__filename).init({
                     data : new Array()
                 });
             }
-            var startDate = req.query.startDate;
-            if(!startDate){
-                startDate = self.cacheManager.getCacheValue("TERM_INFO", "DEFAULT_START_DATE");
+            var attendanceDate = req.query.attendanceDate;
+            if(!attendanceDate){
+                attendanceDate = moment().format("YYYY-MM-DD");
             }
-            self.model["studentLeave"].countBySchoolId(schoolId, startDate, function(err, leaveData){
+            self.model["studentLeave"].countBySchoolId(schoolId, attendanceDate, function(err, leaveData){
                 if(err){
                     return next(err);
                 }
-                self.model['attendance'].countBySchoolId(1, schoolId, startDate, function(err, attendanceData){
+                self.model['attendance'].countBySchoolId(1, schoolId, attendanceDate, function(err, attendanceData){
                     if(err){
                         return next(err);
                     }
                     res.json({
                         code : "00",
-                        leaveDays : (leaveData ? leaveData.total : 0),
-                        attendanceDays : (attendanceData ? attendanceData.total : 0),
+                        leaveNum : (leaveData ? leaveData.total : 0),
+                        attendanceNum : (attendanceData ? attendanceData.total : 0),
                         data : classes
                     });
                 });
@@ -397,23 +398,23 @@ module.exports = new basicController(__filename).init({
         if(schoolId <= 0){
             return next(new Error("学校编号不能为空"));
         }
-        var startDate = req.query.startDate;
-        if(!startDate){
-            startDate = self.cacheManager.getCacheValue("TERM_INFO", "DEFAULT_START_DATE");
+        var attendanceDate = req.query.attendanceDate;
+        if(!attendanceDate){
+            attendanceDate = moment().format("YYYY-MM-DD");
         }
-        self.model["studentLeave"].countBySchoolId(schoolId, startDate, function(err, leaveData){
+        self.model["studentLeave"].countBySchoolId(schoolId, attendanceDate, function(err, leaveData){
             if(err){
                 return next(err);
             }
-            self.model['attendance'].countBySchoolId(1, schoolId, startDate, function(err, attendanceData){
+            self.model['attendance'].countBySchoolId(1, schoolId, attendanceDate, function(err, attendanceData){
                 if(err){
                     return next(err);
                 }
                 res.json({
                     code : "00",
                     data : {
-                        leaveDays : (leaveData ? leaveData.total : 0),
-                        attendanceDays : (attendanceData ? attendanceData.total : 0)
+                        leaveNum : (leaveData ? leaveData.total : 0),
+                        attendanceNum : (attendanceData ? attendanceData.total : 0)
                     }
                 });
             });

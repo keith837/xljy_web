@@ -426,7 +426,7 @@ module.exports = new basicController(__filename).init({
         var sDate = moment(startDate, "YYYY-MM-DD");
         var eDate = moment(endDate, "YYYY-MM-DD");
         var leaveDays = 0;
-        while(sDate <= eDate){
+        while(sDate < eDate){
             var week = sDate.day();
             if(week > 0 && week < 6){
                 leaveDays += 1;
@@ -436,18 +436,78 @@ module.exports = new basicController(__filename).init({
         if(leaveDays <= 0){
             return next(new Error("请假天数不能小于0"));
         }
-
         var applyPeason =  req.user.student.studentName + req.user.nickName;
-
-        self.model['studentLeave'].save([schoolId, classId, userId, applyPeason, studentId, tUserId, startDate, endDate, leaveDays, reason, userId, remark], function(err, data){
+        self.model['studentLeave'].validLeave(studentId, startDate, endDate, function(err, data){
             if(err){
                 return next(err);
             }
-            res.json({
-                code : "00",
-                msg : "请假申请提交成功",
-                data : data.insertId
-            });
+            if(data && data.total > 0){
+                return next(new Error("不能重复请假"));
+            }
+            self.model['studentLeave'].save([schoolId, classId, userId, applyPeason, studentId, tUserId, startDate, endDate, leaveDays, reason, userId, remark], function(err, data){
+                if(err){
+                    return next(err);
+                }
+                var leaveId = data.insertId;
+                self.model['class'].listInstallationInfoByClassId(classId, function(err, yunUsers){
+                    if(err){
+                        return self.logger.error("查询可被通知的班级老师信息失败", err);
+                    }
+                    if(!yunUsers || yunUsers.length <= 0){
+                        return self.logger.info("查询可被通知的班级老师信息为空，不进行推送");
+                    }
+                    var noticeAction = self.cacheManager.getOneCache("LEAVE_APPLY_NOTICE");
+                    var content = "请假申请通知";
+                    var studentName = req.user.student.studentName;
+                    var aCustName = req.user.custName;
+                    var aNickName = req.user.nickName;
+                    var sysDate = new Date();
+                    var inData = {
+                        "ios": {
+                            "alert": content,
+                            "category": noticeAction.codeKey,
+                            "studentId": studentId,
+                            "studentName": studentName,
+                            "startDate": startDate,
+                            "endDate": endDate,
+                            "leaveDays": leaveDays,
+                            "reason": reason,
+                            "aUserId": userId,
+                            "aCustName": aCustName,
+                            "aNickName": aNickName,
+                            "leaveId": leaveId,
+                            "doneDate": sysDate
+                        },
+                        "android": {
+                            "alert": content,
+                            "title": content,
+                            "action": noticeAction.codeValue,
+                            "studentId": studentId,
+                            "studentName": studentName,
+                            "startDate": startDate,
+                            "endDate": endDate,
+                            "leaveDays": leaveDays,
+                            "reason": reason,
+                            "aUserId": userId,
+                            "aCustName": aCustName,
+                            "aNickName": aNickName,
+                            "leaveId": leaveId,
+                            "doneDate": sysDate
+                        }
+                    };
+                    pushCore.pushToUsers(inData, yunUsers, function(err, objectId){
+                        if(err){
+                            return self.logger.error("推送请假申请通知失败", err);
+                        }
+                        self.logger.info("推送请假申请通知成功,objectId=" + objectId);
+                    });
+                });
+                res.json({
+                    code : "00",
+                    msg : "请假申请提交成功",
+                    data : leaveId
+                });
+             });
         });
     },
 
@@ -483,6 +543,60 @@ module.exports = new basicController(__filename).init({
                 if(err){
                     return next(err);
                 }
+                var classId = req.user.student.classId;
+                self.model['class'].listInstallationInfoByClassId(classId, function(err, yunUsers){
+                    if(err){
+                        return self.logger.error("查询可被通知的班级老师信息失败", err);
+                    }
+                    if(!yunUsers || yunUsers.length <= 0){
+                        return self.logger.info("查询可被通知的班级老师信息为空，不进行推送");
+                    }
+                    var noticeAction = self.cacheManager.getOneCache("LEAVE_CANCEL_NOTICE");
+                    var content = "请假取消通知";
+                    var studentName = req.user.student.studentName;
+                    var aCustName = req.user.custName;
+                    var aNickName = req.user.nickName;
+                    var sysDate = new Date();
+                    var inData = {
+                        "ios": {
+                            "alert": content,
+                            "category": noticeAction.codeKey,
+                            "studentId": studentId,
+                            "studentName": studentName,
+                            "startDate": leave.startDate,
+                            "endDate": leave.endDate,
+                            "leaveDays": leave.leaveDays,
+                            "reason": leave.reason,
+                            "aUserId": userId,
+                            "aCustName": aCustName,
+                            "aNickName": aNickName,
+                            "leaveId": leaveId,
+                            "doneDate": sysDate
+                        },
+                        "android": {
+                            "alert": content,
+                            "title": content,
+                            "action": noticeAction.codeValue,
+                            "studentId": studentId,
+                            "studentName": studentName,
+                            "startDate": leave.startDate,
+                            "endDate": leave.endDate,
+                            "leaveDays": leave.leaveDays,
+                            "reason": leave.reason,
+                            "aUserId": userId,
+                            "aCustName": aCustName,
+                            "aNickName": aNickName,
+                            "leaveId": leaveId,
+                            "doneDate": sysDate
+                        }
+                    };
+                    pushCore.pushToUsers(inData, yunUsers, function(err, objectId){
+                        if(err){
+                            return self.logger.error("推送请假取消通知失败", err);
+                        }
+                        self.logger.info("推送请假取消通知成功,objectId=" + objectId);
+                    });
+                });
                 res.json({
                     code : "00",
                     msg : "取消请假申请成功"
@@ -523,6 +637,60 @@ module.exports = new basicController(__filename).init({
                 if(err){
                     return next(err);
                 }
+                self.model['class'].listInstallationInfo(classId, userId, leave.aUserId, function(err, yunUsers){
+                    if(err){
+                        return self.logger.error("查询被通知的老师及家长用户信息失败", err);
+                    }
+                    if(!yunUsers || yunUsers.length <= 0){
+                        return self.logger.info("查询可被通知的老师及家长用户信息为空，不进行推送");
+                    }
+                    var noticeAction = self.cacheManager.getOneCache("LEAVE_APPROVE_NOTICE");
+                    var content = "请假审批通知";
+                    var tCustName = req.user.custName;
+                    var tNickName = req.user.nickName;
+                    var sysDate = new Date();
+                    var inData = {
+                        "ios": {
+                            "alert": content,
+                            "category": noticeAction.codeKey,
+                            "aUserId": leave.aUserId,
+                            "studentId": leave.studentId,
+                            "studentName": leave.studentName,
+                            "startDate": leave.startDate,
+                            "endDate": leave.endDate,
+                            "leaveDays": leave.leaveDays,
+                            "reason": leave.reason,
+                            "tUserId": userId,
+                            "tCustName": tCustName,
+                            "tNickName": tNickName,
+                            "leaveId": leaveId,
+                            "doneDate": sysDate
+                        },
+                        "android": {
+                            "alert": content,
+                            "title": content,
+                            "action": noticeAction.codeValue,
+                            "aUserId": leave.aUserId,
+                            "studentId": leave.studentId,
+                            "studentName": leave.studentName,
+                            "startDate": leave.startDate,
+                            "endDate": leave.endDate,
+                            "leaveDays": leave.leaveDays,
+                            "reason": leave.reason,
+                            "tUserId": userId,
+                            "tCustName": tCustName,
+                            "tNickName": tNickName,
+                            "leaveId": leaveId,
+                            "doneDate": sysDate
+                        }
+                    };
+                    pushCore.pushToUsers(inData, yunUsers, function(err, objectId){
+                        if(err){
+                            return self.logger.error("推送请假审批通知失败", err);
+                        }
+                        self.logger.info("推送请假审批通知成功,objectId=" + objectId);
+                    });
+                });
                 res.json({
                     code : "00",
                     msg : "审批请假申请成功"

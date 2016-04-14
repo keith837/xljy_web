@@ -48,6 +48,14 @@ function getCache(codeType, codeKey) {
     return null;
 }
 
+function getOneCache(codeType){
+    var caches = cacheObj[codeType];
+    if(caches && caches.length >= 1){
+        return caches[0];
+    }
+    return null;
+}
+
 function getCacheValue(codeType, codeKey) {
     var cacheData = getCache(codeType, codeKey);
     if (!cacheData) {
@@ -59,3 +67,5 @@ function getCacheValue(codeType, codeKey) {
 cacheManager.getCache = getCache;
 
 cacheManager.getCacheValue = getCacheValue;
+
+cacheManager.getOneCache = getOneCache;
