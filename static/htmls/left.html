@@ -119,20 +119,21 @@
                 if (data.code == "00") {
                     var innerHtml = "<ul style=\"display:block;\">";
                     $.each(data.data, function (i, item) {
-                        innerHtml+="<li class=\""+item.activeStyle+"\">";
-                        innerHtml+="<a href=\"#\"><i class=\"icon icon-th-list\"></i> <span>"+item.menuName+"</span></a>";
-                        innerHtml += "<ul>";
-                        $.each(item.childs, function (i, item2) {
+                        if(item.childs && item.childs.length > 0){
+                            innerHtml+="<li class=\""+item.activeStyle+"\">";
+                            innerHtml+="<a href=\"#\"><i class=\"icon icon-th-list\"></i> <span>"+item.menuName+"</span></a>";
+                            innerHtml += "<ul>";
+                            $.each(item.childs, function (i, item2) {
 
-                            if(item2.activeStyle==null){
-                                innerHtml+="<li><a href=\""+item2.menuUrl+"\" target=\"mainFrame\">"+item2.menuName+"</a></li>";
-                            }else{
-                                innerHtml+="<li class='"+item2.activeStyle+"'><a href=\""+item2.menuUrl+"\" target=\"mainFrame\">"+item2.menuName+"</a></li>";
-                            }
-                        });
-                        innerHtml+="</ul>";
-                        innerHtml+="</li>";
-
+                                if(item2.activeStyle==null){
+                                    innerHtml+="<li><a href=\""+item2.menuUrl+"\" target=\"mainFrame\">"+item2.menuName+"</a></li>";
+                                }else{
+                                    innerHtml+="<li class='"+item2.activeStyle+"'><a href=\""+item2.menuUrl+"\" target=\"mainFrame\">"+item2.menuName+"</a></li>";
+                                }
+                            });
+                            innerHtml+="</ul>";
+                            innerHtml+="</li>";
+                        }
                     });
                     innerHtml+="</ul>";
                     $("#sidebar").html(innerHtml);
