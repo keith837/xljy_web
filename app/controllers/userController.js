@@ -1139,6 +1139,19 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    listGroupUser : function(req, res, next){
+        var self = this;
+        self.model['user'].listGroupUser(function(err, users){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                data : users,
+            });
+        });
+    },
+
     addAttr : function(req, res, next){
         var self = this;
         var sysDate = new Date();

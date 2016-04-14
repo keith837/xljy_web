@@ -27,6 +27,11 @@ User.save = function(args, callback){
     mysqlUtil.query(sql, args, callback);
 }
 
+User.listGroupUser = function(callback){
+    var sql = "select * from XL_USER A where state != 0 and groupId = 40 and not exists(select 1 from XL_SCHOOL_BRAND B where A.userId=B.bUserId and B.state=1)";
+    mysqlUtil.query(sql, [], callback);
+}
+
 User.delete = function(userId, callback){
     mysqlUtil.query("update XL_USER set state = 0 where userId=?", [userId], callback);
 }

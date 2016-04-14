@@ -367,6 +367,35 @@ function loadUser(groupId,selectId) {
     });
 }
 
+function loadGroupUser(selectId){
+    $.ajax({
+        url: "/api/user/listGroupUser",    //后台webservice里的方法名称
+        type: "get",
+        dataType: "json",
+        data: null,
+        contentType: "application/json",
+        traditional: true,
+        success: function (data) {
+            if (data.code == "00") {
+                if(!data.data){
+                    initNullSelect("#"+selectId);
+                }else {
+                    var options = [];
+                    $.each(data.data, function (i, item) {
+                        options.push({id: item.userId, text: item.custName});
+                    })
+                    $("#" + selectId).select2({data: options});
+                }
+            } else {
+                initNullSelect("#"+selectId);
+            }
+        },
+        error: function (msg) {
+            initNullSelect("#"+selectId);
+        }
+    });
+}
+
 // 加载家长
 function loadParentUser(schoolId,selectId) {
     $.ajax({

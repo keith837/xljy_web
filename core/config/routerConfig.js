@@ -126,6 +126,11 @@ var routerConfig = {
                 "url": "/api/user/restDevice",
                 "method": "put",
                 "description": "重置设备信息"
+            },
+            listGroupUser : {
+                "url": "/api/user/listGroupUser",
+                "method": "get",
+                "description": "查询集团园长"
             }
         },
 
