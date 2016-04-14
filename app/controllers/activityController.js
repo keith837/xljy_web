@@ -191,7 +191,7 @@ module.exports = new basicController(__filename).init({
                 if (err) {
                     return next(err);
                 }
-                res.json({code: "00", msg: "相册点赞成功", data: data.insertId});
+                res.json({code: "00", msg: "点赞成功", data: data.insertId});
             });
         });
     },
