@@ -22,6 +22,19 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    school: function (request, response, next) {
+        var self = this;
+        var start = parseInt(request.query.iDisplayStart || this.webConfig.iDisplayStart);
+        var pageSize = parseInt(request.query.iDisplayLength || this.webConfig.iDisplayLength);
+        var schoolId = request.params.id;
+        this.model['recom'].querySchool(start, pageSize, schoolId, function (err, totalCount, res) {
+            if (err) {
+                return next(err);
+            }
+            response.json(self.createPageData("00", totalCount, res));
+        });
+    },
+
     list: function (request, response, next) {
         var self = this;
         var log = this.logger;
@@ -89,6 +102,7 @@ module.exports = new basicController(__filename).init({
                 return next(new Error("推荐缩略图不能为空"));
             }
             var param = {};
+            param.schoolId = fields.schoolId;
             param.consultTitle = fields.consultTitle;
             param.consultUrl = consultUrl;
             param.consultLink = fields.consultLink;

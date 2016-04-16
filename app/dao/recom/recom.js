@@ -11,6 +11,34 @@ Recom.queryAllNum = function (condition, params, callback) {
     });
 }
 
+Recom.querySchool = function (start, pageSize, schoolId, callback) {
+    var sqlCondition = " 1=1 ";
+    var sqlParams = [];
+    if (schoolId && schoolId > 0) {
+        sqlCondition += " and schoolId = ? ";
+        sqlParams.push(schoolId);
+    }
+
+    Recom.queryAllNum(sqlCondition, sqlParams, function (err, totalCount) {
+        if (err) {
+            return callback(err, null);
+        }
+        if (totalCount === 0) {
+            return callback(err, 0, []);
+        }
+
+        sqlCondition += " order by consultId desc,isMain desc limit ?,?";
+        sqlParams.push(start);
+        sqlParams.push(pageSize);
+
+        var sql = "select m.*,n.schoolName from (select * from XL_CONSULT m where " + sqlCondition;
+        sql += ") m left join XL_SCHOOL n on m.schoolId=n.schoolId";
+        mysqlUtil.query(sql, sqlParams, function (err, res) {
+            callback(err, totalCount, res);
+        });
+    });
+}
+
 Recom.queryPage = function (start, pageSize, consultId,consultDate,consultTitle, consultType, callback) {
     var sqlCondition = " 1=1 ";
     var sqlParams = [];
@@ -52,6 +80,7 @@ Recom.queryPage = function (start, pageSize, consultId,consultDate,consultTitle,
 
 Recom.add = function (recom, callback) {
     var params = [];
+    params.push(recom.schoolId);
     params.push(recom.consultTitle);
     params.push(recom.consultUrl);
     params.push(recom.consultLink);
@@ -62,7 +91,7 @@ Recom.add = function (recom, callback) {
     var sysDate = new Date();
     var doneCode = sysDate.getTime();
     params.push(doneCode);
-    mysqlUtil.query("insert into XL_CONSULT(schoolId,consultTitle,consultUrl,consultDate,consultLink,content,consultType,isMain,createDate,doneDate,userId,doneCode) values(null,?,?,now(),?,?,?,?,now(),now(),?,?)", params, function (err, res) {
+    mysqlUtil.query("insert into XL_CONSULT(schoolId,consultTitle,consultUrl,consultDate,consultLink,content,consultType,isMain,createDate,doneDate,userId,doneCode) values(?,?,?,now(),?,?,?,?,now(),now(),?,?)", params, function (err, res) {
         if (err) {
             return callback(err);
         }

@@ -22,7 +22,7 @@
 <div id="content">
     <div id="breadcrumb">
         <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 推荐管理</a>
-        <a href="#" class="current">新增推广</a>
+        <a href="#" class="current">校园风采</a>
     </div>
     <div class="container-fluid">
         <div class="row-fluid">
@@ -32,7 +32,7 @@
 								<span class="icon">
 									<i class="icon-th"></i>
 								</span>
-                        <h5>推广信息</h5>
+                        <h5>校园风采</h5>
                     </div>
                     <div class="widget-content nopadding">
 
@@ -46,11 +46,18 @@
                                             <!--<input type="text" style="display: none;" disabled="disabled" id="schoolName" class="span5">-->
                                         <!--</div>-->
                                     <!--</div>-->
-                                    <div class="control-group">
+                                    <div class="control-group" style="display:none">
                                         <label class="control-label" for="consultType">推荐类型<span style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <input type="text" id="consultType" name="consultType" placeholder="请选择推荐类型" class="span5">
+                                            <input type="text" id="consultType" name="consultType" value="2" placeholder="请选择推荐类型" class="span5">
                                             <input type="text" style="display: none;" disabled="disabled" id="consultTypeName" class="span5">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="schoolId">学校<span style="color: red;">*</span></label>
+                                        <div class="controls">
+                                            <input type="text" id="schoolId" name="schoolId" placeholder="请选择学校" class="span3">
+                                            <input type="text" style="display: none;" disabled="disabled" id="schoolName" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group control-inline">
@@ -58,7 +65,7 @@
                                         <div class="controls">
                                             <input type="hidden" id="editType" name="editType" value="add" />
                                             <input type="hidden" id="consultLink" name="consultLink" value="" />
-                                            <input type="text" id="consultTitle" name="consultTitle" placeholder="标题" class="span5"> <input type="checkbox" id="isMain" name="isMain">是否头条
+                                            <input type="text" id="consultTitle" name="consultTitle" placeholder="标题" class="span5">
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -127,14 +134,18 @@
         });
         var options = [];
         options.push({id: 1, text: "资讯推荐"});
-        //options.push({id: 2, text: "校园风采"});
-        $("#consultType").select2({data: options});
+        options.push({id: 2, text: "校园风采"});
+        loadSchool();
+       // $("#consultType").select2({data: options});
         initValidator();
         $("#recomForm").submit(function() {
             ue.sync();
         }).validate({
             ignore: ".ignore",
             rules:{
+                schoolId:{
+                    required:true
+                },
                 consultTitle:{
                     required:true
                 },

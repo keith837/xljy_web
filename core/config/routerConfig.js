@@ -264,6 +264,11 @@ var routerConfig = {
                 "url": "/api/recom/showall",
                 "method": "get",
                 "description": "web推荐列表"
+            },
+            "school": {
+                "url": "/api/recom/school/:id",
+                "method": "get",
+                "description": "校园风采"
             }
         },
         brand : {
