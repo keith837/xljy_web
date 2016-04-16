@@ -35,6 +35,7 @@ StudentLeave.list = function(obj, startDate, endDate, leaveDate, callback){
         tempArgs.push(leaveDate);
         tempArgs.push(leaveDate);
     }
+    sql += " order by A.applyDate desc";
     mysqlUtil.query(sql, tempArgs, callback);
 }
 
