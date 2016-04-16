@@ -32,7 +32,7 @@ Class.listInstallationInfoByClassId = function(classId, callback){
 
 Class.listInstallationInfo = function(classId, notUserId, userId, callback){
     var sql = "select B.installationId,B.deviceType from XL_CLASS_TEACHER_REL A,XL_USER B where B.installationId is not null and A.tUserId=B.userId and A.state=1 and A.classId=? and A.tUserId!=?";
-    sql += " union select C.installationId from XL_USER C where C.installationId is not null and C.state!=0 and C.userId=?";
+    sql += " union select C.installationId,C.deviceType from XL_USER C where C.installationId is not null and C.state!=0 and C.userId=?";
     mysqlUtil.query(sql, [classId, notUserId, userId], callback);
 }
 
