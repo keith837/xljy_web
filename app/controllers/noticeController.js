@@ -383,6 +383,71 @@ module.exports = new basicController(__filename).init({
             });
         });
 
+    },
+
+    readNotice: function (req, res, next) {
+        var self = this;
+        var userId = req.user.userId;
+        var groupId = req.user.groupId;
+
+        var queryCondition = [];
+        var currentTs = req.query.currentTs;
+        if (!currentTs) {
+            return next(this.Error("没有输入时间戳."));
+        }
+        var noticeTypeId = parseInt(req.query.noticeTypeId);
+        if (!noticeTypeId || isNaN(noticeTypeId)) {
+            return next(this.Error("没有输入通知类型."));
+        }
+        queryCondition.push({"key": "noticeTypeId", "opr": "=", "val": noticeTypeId});
+
+        var classId = {};
+        var schoolId = {};
+        if (groupId === 10) {
+            classId = {"key": "classId", "opr": "=", "val": req.user.student.classId};
+            schoolId = {"key": "schoolId", "opr": "=", "val": req.user.student.schoolId};
+        } else if (groupId === 20) {
+            classId = {"key": "classId", "opr": "=", "val": req.user.class.classId};
+            schoolId = {"key": "schoolId", "opr": "=", "val": req.user.class.schoolId};
+        } else if (groupId === 30 || groupId === 40) {
+            var schoolIds = req.user.schoolIds;
+            if (schoolIds == null || schoolIds.length <= 0) {
+                return next(this.Error("园长没有对应的学校信息"));
+            }
+            schoolId = {"key": "schoolId", "opr": "in", "val": schoolIds};
+        } else if (groupId == 50) {
+        } else {
+            return next(this.Error("用户没有相应权限"));
+        }
+
+        if (noticeTypeId == 1 || noticeTypeId == 7) {
+            if (groupId == 10 || groupId == 20) {
+                queryCondition.push(classId);
+            } else {
+                queryCondition.push(schoolId);
+            }
+        } else {
+            queryCondition.push(schoolId);
+        }
+
+        var redisKey = "notice_" + userId + "_" + noticeTypeId;
+        self.redis.get(redisKey, function (err, oldTimestamp) {
+            if (err) {
+                return next(err);
+            }
+
+            if (oldTimestamp) {
+                queryCondition.push({"key": "createDate", "opr": ">", "val": oldTimestamp});
+            }
+
+            self.model['notice'].countByCondition(queryCondition, function (err, flag) {
+                if (err) {
+                    return next(err);
+                }
+                self.redis.set(redisKey, currentTs);
+                res.json({code: "00", data: flag});
+            });
+        });
     }
 
 

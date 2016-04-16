@@ -672,6 +672,11 @@ var routerConfig = {
                 "url": "/api/notices/:noticeId/pic",
                 "method": "get",
                 "description": "查看更多图片"
+            },
+            "readNotice": {
+                "url": "/api/notices/unread/:userId",
+                "method": "get",
+                "description": "读取未读通知"
             }
         },
         notes: {
