@@ -465,18 +465,7 @@ module.exports = new basicController(__filename).init({
                     var inData = {
                         "ios": {
                             "alert": content,
-                            "category": noticeAction.codeKey,
-                            "studentId": studentId,
-                            "studentName": studentName,
-                            "startDate": startDate,
-                            "endDate": endDate,
-                            "leaveDays": leaveDays,
-                            "reason": reason,
-                            "aUserId": userId,
-                            "aCustName": aCustName,
-                            "aNickName": aNickName,
-                            "leaveId": leaveId,
-                            "doneDate": sysDate
+                            "category": noticeAction.codeKey
                         },
                         "android": {
                             "alert": content,
