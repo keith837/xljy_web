@@ -471,7 +471,17 @@ module.exports = new basicController(__filename).init({
                         "ios": {
                             "alert": content,
                             "category": noticeAction.codeKey,
-                            "studentId": studentId
+                            "studentId": studentId,
+                            "studentName": studentName,
+                            "startDate": startDate,
+                            "endDate": endDate,
+                            "leaveDays": leaveDays,
+                            "reason": reason,
+                            "aUserId": userId,
+                            "aCustName": aCustName,
+                            "aNickName": aNickName,
+                            "leaveId": leaveId,
+                            "doneDate": sysDate
                         },
                         "android": {
                             "alert": content,
@@ -546,6 +556,11 @@ module.exports = new basicController(__filename).init({
                     if(!yunUsers || yunUsers.length <= 0){
                         return self.logger.info("查询可被通知的班级老师信息为空，不进行推送");
                     }
+
+                    var deviceUsers = [];
+                    for (var x in yunUsers) {
+                        deviceUsers.push(pushCore.genUser(yunUsers[x].deviceType, yunUsers[x].installationId));
+                    }
                     var noticeAction = self.cacheManager.getOneCache("LEAVE_CANCEL_NOTICE");
                     var content = "请假取消通知";
                     var studentName = req.user.student.studentName;
@@ -585,7 +600,7 @@ module.exports = new basicController(__filename).init({
                             "doneDate": sysDate
                         }
                     };
-                    pushCore.pushToUsers(inData, yunUsers, function(err, objectId){
+                    pushCore.pushToUsers(inData, deviceUsers, function(err, objectId){
                         if(err){
                             return self.logger.error("推送请假取消通知失败", err);
                         }
@@ -639,6 +654,11 @@ module.exports = new basicController(__filename).init({
                     if(!yunUsers || yunUsers.length <= 0){
                         return self.logger.info("查询可被通知的老师及家长用户信息为空，不进行推送");
                     }
+
+                    var deviceUsers = [];
+                    for (var x in yunUsers) {
+                        deviceUsers.push(pushCore.genUser(yunUsers[x].deviceType, yunUsers[x].installationId));
+                    }
                     var noticeAction = self.cacheManager.getOneCache("LEAVE_APPROVE_NOTICE");
                     var content = "请假审批通知";
                     var tCustName = req.user.custName;
@@ -679,7 +699,7 @@ module.exports = new basicController(__filename).init({
                             "doneDate": sysDate
                         }
                     };
-                    pushCore.pushToUsers(inData, yunUsers, function(err, objectId){
+                    pushCore.pushToUsers(inData, deviceUsers, function(err, objectId){
                         if(err){
                             return self.logger.error("推送请假审批通知失败", err);
                         }
