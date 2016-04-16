@@ -456,6 +456,11 @@ module.exports = new basicController(__filename).init({
                     if(!yunUsers || yunUsers.length <= 0){
                         return self.logger.info("查询可被通知的班级老师信息为空，不进行推送");
                     }
+
+                    var deviceUsers = [];
+                    for (var x in yunUsers) {
+                        deviceUsers.push(pushCore.genUser(yunUsers[x].deviceType, yunUsers[x].installationId));
+                    }
                     var noticeAction = self.cacheManager.getOneCache("LEAVE_APPLY_NOTICE");
                     var content = "请假申请通知";
                     var studentName = req.user.student.studentName;
@@ -484,7 +489,7 @@ module.exports = new basicController(__filename).init({
                             "doneDate": sysDate
                         }
                     };
-                    pushCore.pushToUsers(inData, yunUsers, function(err, objectId){
+                    pushCore.pushToUsers(inData, deviceUsers, function(err, objectId){
                         if(err){
                             return self.logger.error("推送请假申请通知失败", err);
                         }

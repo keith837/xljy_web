@@ -27,7 +27,7 @@ Class.listTeacherByClassId = function(classId, callback){
 }
 
 Class.listInstallationInfoByClassId = function(classId, callback){
-    mysqlUtil.query("select B.installationId from XL_CLASS_TEACHER_REL A,XL_USER B where A.tUserId=B.userId and B.installationId is not null and A.state=1 and A.classId=?", [classId], callback);
+    mysqlUtil.query("select B.installationId,B.deviceType from XL_CLASS_TEACHER_REL A,XL_USER B where A.tUserId=B.userId and B.installationId is not null and A.state=1 and A.classId=?", [classId], callback);
 }
 
 Class.listInstallationInfo = function(classId, notUserId, userId, callback){
