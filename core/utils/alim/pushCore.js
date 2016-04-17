@@ -118,8 +118,8 @@ pushCore.prototype.pushToUsers = function (indata, users, cb) {
 pushCore.prototype.basicCall = function (data, path, callback) {
     var https = require('https');
     var contents = JSON.stringify(data);
-    console.log(data);
-    console.log(path);
+    logger.info(data);
+    logger.info(path);
     var options = {
         host: "leancloud.cn",
         path: path,
