@@ -1,6 +1,9 @@
 var pushCore = function () {
     this.config = require("../../config/webConfig").PUSH_CONFIG;
 }
+
+var logger = require("../logger/logger")(__filename);
+
 pushCore.INSTALLATIONS = "/1.1/installations";  //注册设备
 pushCore.PUSH = "/1.1/push";
 
@@ -18,6 +21,7 @@ pushCore.prototype.regDevice = function (type, token, channels, cb) {
         data.installationId = token;
     }
     this.basicCall(data, pushCore.INSTALLATIONS, function (jsondata) {
+        logger.info(jsondata);
         try {
             var jsondata = JSON.parse(jsondata);
             cb(null, jsondata.objectId);
@@ -37,7 +41,7 @@ pushCore.prototype.pushToAll = function (indata, cb) {
         data: indata
     }
     this.basicCall(data, pushCore.PUSH, function (jsondata) {
-        console.log(jsondata);
+        logger.info(jsondata);
         try {
             var jsondata = JSON.parse(jsondata);
             cb(null, jsondata.objectId);
@@ -52,7 +56,7 @@ pushCore.prototype.pushToChannels = function (indata, channel, cb) {
         channels: channel
     }
     this.basicCall(data, pushCore.PUSH, function (jsondata) {
-        console.log(jsondata);
+        logger.info(jsondata);
         try {
             var jsondata = JSON.parse(jsondata);
             cb(null, jsondata.objectId);
@@ -78,7 +82,7 @@ pushCore.prototype.pushToUser = function (indata, user, cb) {
         where: user
     }
     this.basicCall(data, pushCore.PUSH, function (jsondata) {
-        console.log(jsondata);
+        logger.info(jsondata);
         try {
             var jsondata = JSON.parse(jsondata);
             cb(null, jsondata.objectId);
@@ -101,7 +105,7 @@ pushCore.prototype.pushToUsers = function (indata, users, cb) {
         cql: "select * from _Installation where " + whereArray.join(" or ")
     };
     this.basicCall(data, pushCore.PUSH, function (jsondata) {
-        console.log(jsondata);
+        logger.info(jsondata);
         try {
             var jsondata = JSON.parse(jsondata);
             cb(null, jsondata.objectId);
