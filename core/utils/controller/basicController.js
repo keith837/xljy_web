@@ -38,6 +38,14 @@ basicController.prototype.init = function(dy){
                     arug1[2](err);
                 });
                 d.run(function () {
+                    var response = arug1[1];
+                    response.oldjson = response.json;
+                    response.json = function (injson) {
+                        injson = JSON.stringify(injson);
+                        injson = injson.replace(new RegExp(":null", "gm"), ":\"\"");
+                        response.oldjson(JSON.parse(injson));
+                    }
+                    arug1[1] = response;
                     arug1.callee.cfn.apply(self, arug1);
                 })
 
