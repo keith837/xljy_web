@@ -450,7 +450,7 @@ module.exports = new basicController(__filename).init({
                     return next(err);
                 }
                 self.redis.set(redisKey, currentTs);
-                res.json({code: "00", data: {flag: flag, students: []}});
+                res.json({code: "00", data: {flag: flag}});
             });
         });
     },
