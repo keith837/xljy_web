@@ -627,7 +627,7 @@ var routerConfig = {
             }
         },
         notice: {
-            "usedModel": ['notice/notice'],
+            "usedModel": ['notice/notice','student/studentLeave'],
             "list": {
                 "url": "/api/notices",
                 "method": "get",

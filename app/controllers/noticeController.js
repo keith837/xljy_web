@@ -390,15 +390,20 @@ module.exports = new basicController(__filename).init({
         var userId = req.user.userId;
         var groupId = req.user.groupId;
 
+        var noticeTypeId = parseInt(req.query.noticeTypeId);
+        if (!noticeTypeId || isNaN(noticeTypeId)) {
+            return next(this.Error("没有输入通知类型."));
+        }
+        if (noticeTypeId >= 11 && noticeTypeId <= 13) {
+            return self.readLeave(req, res, next);
+        }
+
         var queryCondition = [];
         var currentTs = req.query.currentTs;
         if (!currentTs) {
             return next(this.Error("没有输入时间戳."));
         }
-        var noticeTypeId = parseInt(req.query.noticeTypeId);
-        if (!noticeTypeId || isNaN(noticeTypeId)) {
-            return next(this.Error("没有输入通知类型."));
-        }
+
         queryCondition.push({"key": "noticeTypeId", "opr": "=", "val": noticeTypeId});
 
         var classId = {};
@@ -445,7 +450,69 @@ module.exports = new basicController(__filename).init({
                     return next(err);
                 }
                 self.redis.set(redisKey, currentTs);
-                res.json({code: "00", data: flag});
+                res.json({code: "00", data: {flag: flag, students: []}});
+            });
+        });
+    },
+
+
+    readLeave: function (req, res, next) {
+        var self = this;
+        var userId = req.user.userId;
+        var groupId = req.user.groupId;
+
+        var noticeTypeId = parseInt(req.query.noticeTypeId);
+        if (!noticeTypeId || isNaN(noticeTypeId)) {
+            return next(this.Error("没有输入通知类型."));
+        }
+
+        var currentTs = req.query.currentTs;
+        if (!currentTs) {
+            return next(this.Error("没有输入时间戳."));
+        }
+        var queryCondition = [];
+        if (noticeTypeId == 11) {
+            queryCondition.push({"key": "state", "opr": "=", "val": 1});
+        } else if (noticeTypeId == 12) {
+            queryCondition.push({"key": "state", "opr": "=", "val": 0});
+        } else if (noticeTypeId == 13) {
+            queryCondition.push({"key": "state", "opr": "=", "val": 2});
+        }
+        if (groupId === 10) {
+            queryCondition.push({"key": "aUserId", "opr": "=", "val": userId});
+        } else if (groupId === 20) {
+            queryCondition.push({"key": "classId", "opr": "=", "val": req.user.class.classId});
+            if (noticeTypeId == 13) {
+                queryCondition.push({"key": "tUserId", "opr": "<>", "val": userId});
+            }
+        } else {
+            return next(this.Error("用户没有相应权限"));
+        }
+
+        var redisKey = "notice_" + userId + "_" + noticeTypeId;
+        self.redis.get(redisKey, function (err, oldTimestamp) {
+            if (err) {
+                return next(err);
+            }
+
+            if (oldTimestamp) {
+                if (noticeTypeId == 11) {
+                    queryCondition.push({"key": "applyDate", "opr": ">", "val": oldTimestamp});
+                } else {
+                    queryCondition.push({"key": "doneDate", "opr": ">", "val": oldTimestamp});
+                }
+            }
+
+            self.model['studentLeave'].queryByCondition(queryCondition, function (err, data) {
+                if (err) {
+                    return next(err);
+                }
+                self.redis.set(redisKey, currentTs);
+                var flag = 0;
+                if (data && data.length > 0) {
+                    flag = 1;
+                }
+                res.json({code: "00", data: {flag: flag, students: data}});
             });
         });
     }

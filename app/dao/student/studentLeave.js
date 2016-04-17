@@ -1,6 +1,37 @@
 var mysqlUtil = require("../../../core/utils/pool/mysql/mysqlPool");
 var StudentLeave = module.exports;
 
+
+StudentLeave.queryByCondition = function (queryCondition, callback) {
+    var sql = "select studentId from XL_STUDENT_LEAVE m where 1=1 ";
+    var params = [];
+
+    var sqlCondition = "";
+    if (queryCondition || queryCondition.length > 0) {
+        for (var i in queryCondition) {
+            var opr = queryCondition[i].opr;
+            if (opr == "like") {
+                sqlCondition += "and " + queryCondition[i].key + " " + opr + " ? ";
+                params.push("%" + queryCondition[i].val + "%");
+            } else if (opr == "in") {
+                var ids = queryCondition[i].val;
+                var appenderId = "";
+                for (var k in ids) {
+                    appenderId += "?,";
+                    params.push(ids[k]);
+                }
+                appenderId = appenderId.substr(0, appenderId.length - 1);
+                sqlCondition += "and " + queryCondition[i].key + " " + opr + " (" + appenderId + ") ";
+            } else {
+                sqlCondition += "and " + queryCondition[i].key + " " + opr + " ? ";
+                params.push(queryCondition[i].val);
+            }
+        }
+    }
+    sql = sql + sqlCondition;
+    mysqlUtil.query(sql, params, callback);
+}
+
 StudentLeave.save = function (args, callback) {
     var sql = "insert into XL_STUDENT_LEAVE(schoolId,classId,aUserId,applyPeason,studentId,tUserId,startDate,endDate,leaveDays,applyDate,";
     sql += "reason,state,createDate,doneDate,oUserId,remark) values (?,?,?,?,?,?,?,?,?,now(),?,1,now(),now(),?,?)";
