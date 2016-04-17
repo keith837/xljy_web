@@ -95,6 +95,9 @@ Notice.queryByNoticeType = function (start, pageSize, photoLength, queryConditio
             if (err) {
                 return callback(err);
             }
+            if(!res || res.length <= 0){
+                return callback(null, totalNum, []);
+            }
             findPicByArray(totalNum, photoLength, res, 0, callback);
         });
     });
