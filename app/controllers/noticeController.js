@@ -52,15 +52,18 @@ module.exports = new basicController(__filename).init({
                 return next(this.Error("没有输入通知类型."));
             }
             queryCondition.push({"key": "noticeTypeId", "opr": "=", "val": noticeTypeId});
-            if (noticeTypeId == 1 || noticeTypeId == 7) {
-                if (groupId == 10 || groupId == 20) {
-                    queryCondition.push(classId);
+            if (groupId != 50) {
+                if (noticeTypeId == 1 || noticeTypeId == 7) {
+                    if (groupId == 10 || groupId == 20) {
+                        queryCondition.push(classId);
+                    } else {
+                        queryCondition.push(schoolId);
+                    }
                 } else {
                     queryCondition.push(schoolId);
                 }
-            } else {
-                queryCondition.push(schoolId);
             }
+
         }
 
         var effDateStart = request.query.startDate;
