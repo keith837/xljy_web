@@ -606,6 +606,7 @@ module.exports = new basicController(__filename).init({
         var userId = req.user.userId;
         var nickName = req.user.nickName;
         var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "USER_HEAD");
+        var custName = req.user.custName;
         var form = new formidable.IncomingForm();   //创建上传表单
         form.encoding = 'utf-8';		//设置编辑
         form.uploadDir = uploadDir;	 //设置上传目录
@@ -630,7 +631,7 @@ module.exports = new basicController(__filename).init({
                     var yunUser = "yunuser_" + userId;
                     var yunPassword = imCore.getPasswordHash(yunUser);
                     var realUrl = self.cacheManager.getCacheValue("WEB_URL", "WEB_URL") + obj.userUrl;
-                    imCore.changeUser(yunUser, yunPassword, function(err, data){
+                    imCore.changeUser(yunUser, custName, function(err, data){
                         if(err){
                             self.logger.error(err);
                         }
