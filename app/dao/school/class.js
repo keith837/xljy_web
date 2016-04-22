@@ -322,6 +322,11 @@ Class.listStudentByClass = function(classId, callback){
     mysqlUtil.query(selectSql, [classId], callback);
 }
 
+Class.listStudentAndDeviceByClass = function(classId, callback){
+    var selectSql = "select A.*, B.deviceId,B.deviceSign,B.deviceName from XL_STUDENT A LEFT JOIN XL_DEVICE B on A.studentId=B.studentId where A.state = 1 and A.classId = ?";
+    mysqlUtil.query(selectSql, [classId], callback);
+}
+
 Class.save = function(args, teacherId, callback){
     mysqlUtil.getConnection(function(err, conn){
         if(err){

@@ -353,7 +353,7 @@ module.exports = new basicController(__filename).init({
     students : function(req, res, next){
         var self = this;
         var classId = parseInt(req.params.classId);
-        self.model['class'].listStudentByClass(classId, function(err, students){
+        self.model['class'].listStudentAndDeviceByClass(classId, function(err, students){
             if(err){
                 return next(err);
             }
