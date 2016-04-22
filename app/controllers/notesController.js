@@ -1,6 +1,10 @@
 /**
  * Created by Jerry on 2/11/2016.
  */
+var formidable = require("formidable");
+var fs = require("fs");
+var path = require("path");
+var images = require("images");
 
 var basicController = require("../../core/utils/controller/basicController");
 module.exports = new basicController(__filename).init({
@@ -81,29 +85,53 @@ module.exports = new basicController(__filename).init({
             return next(this.Error("用户组[" + groupId + "]没有相应的权限发布此笔记[" + notesTypeId + "]."));
         }
 
+        var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "PHOTOS");
+        uploadDir += "user" + userId + "/";
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir);
+        }
+        var form = new formidable.IncomingForm();   //创建上传表单
+        form.encoding = 'utf-8';		//设置编辑
+        form.uploadDir = uploadDir;	 //设置上传目录
+        form.keepExtensions = true;	 //保留后缀
+        form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
+
         var classId = 0;
         var className = null;
         var schoolId = request.user.schools[0].schoolId;
         var schoolName = request.user.schools[0].schoolName;
         var userName = request.user.custName;
         var nickName = request.user.nickName;
-        var content = request.body.notesContext;
-        var title = request.body.notesTitle;
-        var tUserId = request.body.tUserId;
-        var notesParam = [notesTypeId, title, content, schoolId, classId, userId, schoolName, className, userName, nickName, tUserId];
 
-        self.model['notes'].publishNotes(notesParam, function (err, notesId) {
-            if (err) {
-                return next(err);
+        var picUrl = null;
+        var width = 0;
+        var height = 0;
+        form.parse(request, function (err, fields, files) {
+            var content = fields.notesContext;
+            var title = fields.notesTitle;
+            var tUserId = fields.tUserId;
+
+            for (var photos in files) {
+                picUrl = path.normalize(files[photos].path).replace(/\\/g, '/');
+                width = images(files[photos].path).width();
+                height = images(files[photos].path).height();
             }
-            self.model['notes'].queryDetail(notesId, function (err, res) {
+            var notesParam = [notesTypeId, title, content, schoolId, classId, userId, schoolName, className, userName, nickName, tUserId, picUrl, width, height];
+
+            self.model['notes'].publishNotes(notesParam, function (err, notesId) {
                 if (err) {
                     return next(err);
                 }
-                response.json({code: "00", msg: "发布笔记成功", data: res});
+                self.model['notes'].queryDetail(notesId, function (err, res) {
+                    if (err) {
+                        return next(err);
+                    }
+                    response.json({code: "00", msg: "发布笔记成功", data: res});
 
+                });
             });
         });
+
     },
 
     del: function (request, response, next) {
@@ -138,21 +166,42 @@ module.exports = new basicController(__filename).init({
         var notesId = parseInt(request.params.id);
         var userId = request.user.userId;
 
-        var content = request.body.notesContext;
-        var title = request.body.notesTitle;
-        var tUserId = request.body.tUserId;
-        var notesParam = [userId, tUserId, title, content, notesId];
-        self.model['notes'].editNotes(notesParam, function (err, data) {
-            if (err) {
-                return next(err);
+        var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "PHOTOS");
+        uploadDir += "user" + userId + "/";
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir);
+        }
+        var form = new formidable.IncomingForm();   //创建上传表单
+        form.encoding = 'utf-8';		//设置编辑
+        form.uploadDir = uploadDir;	 //设置上传目录
+        form.keepExtensions = true;	 //保留后缀
+        form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
+
+        var picUrl = null;
+        var width = 0;
+        var height = 0;
+        form.parse(request, function (err, fields, files) {
+            var content = fields.notesContext;
+            var title = fields.notesTitle;
+            var tUserId = fields.tUserId;
+
+            for (var photos in files) {
+                picUrl = path.normalize(files[photos].path).replace(/\\/g, '/');
+                width = images(files[photos].path).width();
+                height = images(files[photos].path).height();
             }
-            self.model['notes'].queryDetail(notesId, function (err, res) {
+            var notesParam = [userId, tUserId, title, content, picUrl, width, height, notesId];
+            self.model['notes'].editNotes(notesParam, function (err, data) {
                 if (err) {
                     return next(err);
                 }
-                response.json({code: "00", msg: "更新笔记成功", data: res});
+                self.model['notes'].queryDetail(notesId, function (err, res) {
+                    if (err) {
+                        return next(err);
+                    }
+                    response.json({code: "00", msg: "更新笔记成功", data: res});
+                });
             });
-
         });
     }
 

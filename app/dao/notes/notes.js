@@ -56,8 +56,8 @@ Notice.queryByNotesType = function (start, pageSize, queryCondition, callback) {
 }
 
 Notice.publishNotes = function (notesParam, callback) {
-    var sql = "insert into XL_WORK_NOTES(notesTypeId,notesTitle,notesContext,state,createDate,doneDate,schoolId,classId,userId,schoolName,className,userName,nickName,tUserId)";
-    sql += "values(?,?,?,1,now(),now(),?,?,?,?,?,?,?,?)";
+    var sql = "insert into XL_WORK_NOTES(notesTypeId,notesTitle,notesContext,state,createDate,doneDate,schoolId,classId,userId,schoolName,className,userName,nickName,tUserId,picUrl,width,height)";
+    sql += "values(?,?,?,1,now(),now(),?,?,?,?,?,?,?,?,?,?,?)";
     mysqlUtil.query(sql, notesParam, function (err, data) {
         if (err) {
             return callback(err);
@@ -77,18 +77,18 @@ Notice.queryDetail = function (notesId, callback) {
 
 
 Notice.editNotes = function (notesParam, callback) {
-    mysqlUtil.query("select * from XL_WORK_NOTES where notesId=? and state=1", [notesParam[4]], function (err, data) {
+    mysqlUtil.query("select * from XL_WORK_NOTES where notesId=? and state=1", [notesParam[7]], function (err, data) {
         if (err) {
             return callback(err);
         }
         if (!data || data.length !== 1) {
-            return callback(new Error("查询不到笔记[" + notesParam[4] + "]"));
+            return callback(new Error("查询不到笔记[" + notesParam[7] + "]"));
         } else {
             if (data[0].userId !== notesParam[0]) {
                 return callback(new Error("笔记必须由创建者修改."));
             }
         }
-        var updateSql = "update XL_WORK_NOTES set tUserId=?,notesTitle=?,notesContext=?,doneDate=now() where notesId=?";
+        var updateSql = "update XL_WORK_NOTES set tUserId=?,notesTitle=?,notesContext=?,picUrl=?,width=?,height=?,doneDate=now() where notesId=?";
         mysqlUtil.query(updateSql, notesParam.slice(1), callback);
 
     });
