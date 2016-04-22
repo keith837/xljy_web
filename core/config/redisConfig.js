@@ -4,7 +4,7 @@
 var redisConfig  = {
     SERVER : '120.25.102.158',
     PORT : "6379",
-    PASSWORD : "" ,
+    PASSWORD : "redis" ,
     POOLSIZE : 10 ,
     DB : 0 ,
     TTL : 11
