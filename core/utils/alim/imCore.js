@@ -16,6 +16,15 @@ var imCore = {}
 imCore.getPasswordHash = function (password) {
     return util.md5(password + "~!@#$%^&*()_+");
 }
+
+imCore.regUsers = function(userInfos, cb){
+    client.execute('taobao.openim.users.add', {userinfos : userInfos}, cb);
+}
+
+imCore.delUsers = function(userIds, cb){
+    client.execute('taobao.openim.users.delete', {userids : userIds}, cb);
+}
+
 imCore.regUser = function (username, password, nick, cb) {
 
     client.execute('taobao.openim.users.add',

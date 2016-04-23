@@ -17,7 +17,11 @@ School.listByPrincipalId = function(principalId, callback){
  * @param callback
  */
 School.listByGroupId = function(groupId, callback){
-    mysqlUtil.query("select A.* from XL_SCHOOL A left join XL_SCHOOL_BRAND B on A.brandId=B.brandId where A.state=1 and B.bUserId = ? ", [groupId], callback);
+    mysqlUtil.query("select A.* from XL_SCHOOL A left join XL_SCHOOL_BRAND B on A.brandId=B.brandId where A.state=1 and B.state=1 and B.bUserId = ? ", [groupId], callback);
+}
+
+School.listBrandByGroupId = function(groupId, callback){
+    mysqlUtil.query("select * from XL_SCHOOL_BRAND where state=1 bUserId=?", [groupId], callback);
 }
 
 /**

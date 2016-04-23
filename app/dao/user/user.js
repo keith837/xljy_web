@@ -10,6 +10,10 @@ User.findByGroupIdAndNullSchoolId = function(groupId, callback){
     mysqlUtil.query("select * from XL_USER WHERE state!=0 and groupId=? and schoolId is null", [groupId], callback);
 }
 
+User.findByKey = function(userId, callback){
+    mysqlUtil.query("select * from XL_USER WHERE state!=0 and userId=?", [userId], callback);
+}
+
 User.findByUserId = function(userId, callback){
     mysqlUtil.queryOne("select B.groupName,IFNULL(C.schoolName,'无学校') schoolName,m.* from XL_USER m inner join XL_USER_GROUP B on m.groupId=B.groupId left join XL_SCHOOL C on m.schoolId=C.schoolId where m.state != 0 and m.userId=?", [userId], callback);
 }
@@ -123,6 +127,27 @@ User.listByUserIds = function(userObj, callback){
         }
         sql = sql.substr(0, sql.length - 1);
         sql += ")";
+    }
+    mysqlUtil.query(sql, tempArgs, callback);
+}
+
+User.listByUserIdArray = function(userArray, callback){
+    if(!userArray){
+        return callback(null, null);
+    }
+    var sql = "select * from XL_USER where groupId=10 and state=1 ";
+    var tempArgs = new Array();
+    if(userArray instanceof Array){
+        sql += "and userId in (";
+        for(var i = 0; i < userArray.length; i ++){
+            sql += "?,";
+            tempArgs.push(userArray[i]);
+        }
+        sql = sql.substr(0, sql.length - 1);
+        sql += ")";
+    }else{
+        sql += "and userId=?";
+        tempArgs.push(userArray);
     }
     mysqlUtil.query(sql, tempArgs, callback);
 }

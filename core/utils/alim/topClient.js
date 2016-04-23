@@ -1,6 +1,6 @@
 var urllib = require('urllib');
 var util = require('./topUtil');
-
+var logger = require("../logger/logger")(__filename);
 /**
  * TOP API Client.
  *
@@ -32,6 +32,8 @@ function TopClient(options) {
  * @param {Function(err, response)} callback
  */
 TopClient.prototype.invoke = function (method, params, reponseNames, defaultResponse, type, callback) {
+    logger.info("im调用方法：" + method);
+    logger.info("im调用参数：" + JSON.stringify(params));
     params.method = method;
     this.request(params, type, function (err, result) {
         if (err) {
@@ -50,6 +52,7 @@ TopClient.prototype.invoke = function (method, params, reponseNames, defaultResp
         if (response === undefined) {
             response = defaultResponse;
         }
+        logger.info("im调用结果：" + JSON.stringify(response));
         callback(null, response);
     });
 };

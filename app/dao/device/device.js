@@ -100,6 +100,11 @@ Device.update = function (device, callback) {
     });
 }
 
+Device.findByStudentId = function(studentId, callback){
+    var sql = "select deviceId, deviceSign, deviceName from XL_DEVICE where studentId=?";
+    mysqlUtil.queryOne(sql, [studentId], callback);
+}
+
 Device.queryDetail = function (id, callback) {
     var sql = "select c.schoolId,c.schoolName,b.classId,b.className,a.studentName,m.* from XL_DEVICE m, XL_STUDENT a, XL_CLASS b, XL_SCHOOL c where m.studentId = a.studentId and a.classId = b.classId and a.schoolId = c.schoolId and m.deviceId=?";
     mysqlUtil.query(sql, [id], callback);
