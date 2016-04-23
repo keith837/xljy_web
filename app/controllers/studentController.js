@@ -74,7 +74,7 @@ module.exports = new basicController(__filename).init({
                     if(!school){
                         return next(new Error("未找到宝贝对应的学校信息"));
                     }
-                    self.model['class'].findByStudentId(studentId, function(err, device){
+                    self.model['device'].findByStudentId(studentId, function(err, device){
                         if(err){
                             return next(err);
                         }
@@ -266,85 +266,83 @@ module.exports = new basicController(__filename).init({
             }
             obj.doneDate = new Date();
             obj.oUserId = oUserId;
-            if(classId && classId != student.classId){
-                obj.classId = classId;
-                self.model['class'].findOne(classId, function(err, classInfo){
+            self.model['student'].listDelYunUserByStudentId(studentId, userId, function(err, delUsers){
+                if(err){
+                    return next(err);
+                }
+                self.model['student'].listAddYunUserByStudentId(studentId, userId, function(err, addUsers){
                     if(err){
                         return next(err);
                     }
-                    if(!classInfo){
-                        return next("学生关联的班级信息不存在");
-                    }
-                    obj.schoolId = classInfo.schoolId;
-                    self.model['student'].update(obj, userId, studentId, function(err, data){
-                        if(err){
-                            return next(err);
-                        }
-                        self.modifyYunUser(studentId, studentName, userId);
-                        res.json({
-                            code : "00",
-                            msg : "学生信息修改成功"
+                    if(classId && classId != student.classId){
+                        obj.classId = classId;
+                        self.model['class'].findOne(classId, function(err, classInfo){
+                            if(err){
+                                return next(err);
+                            }
+                            if(!classInfo){
+                                return next("学生关联的班级信息不存在");
+                            }
+                            obj.schoolId = classInfo.schoolId;
+                            self.model['student'].update(obj, userId, studentId, function(err, data){
+                                if(err){
+                                    return next(err);
+                                }
+                                self.modifyYunUser(studentId, studentName, delUsers, addUsers);
+                                res.json({
+                                    code : "00",
+                                    msg : "学生信息修改成功"
+                                });
+                            });
                         });
-                    });
-                });
-            }else{
-                self.model['student'].update(obj, userId, studentId, function(err, data){
-                    if(err){
-                        return next(err);
+                    }else{
+                        self.model['student'].update(obj, userId, studentId, function(err, data){
+                            if(err){
+                                return next(err);
+                            }
+                            self.modifyYunUser(studentId, studentName, delUsers, addUsers);
+                            res.json({
+                                code : "00",
+                                msg : "学生信息修改成功"
+                            });
+                        });
                     }
-                    self.modifyYunUser(studentId, studentName, userId);
-                    res.json({
-                        code : "00",
-                        msg : "学生信息修改成功"
-                    });
                 });
-            }
+            });
         });
     },
 
-    modifyYunUser : function(studentId, studentName, userIds){
+    modifyYunUser : function(studentId, studentName, delUsers, addUsers){
         var self = this;
-        self.model['student'].listDelYunUserByStudentId(studentId, userIds, function(err, users){
-            if(err){
-                self.logger.error("查询需删除的云用户失败：", err);
-            }else{
-                if(users && users.length > 0){
-                    var delYunUserArray = new Array();
-                    for(var i = 0; i < users.length; i ++){
-                        delYunUserArray.push("yunuser_" + users[i].userId + "_" + studentId);
-                    }
-                    imCore.delUsers(delYunUserArray, function(err, data){
-                        if(err){
-                            self.logger.error("删除云帐号失败：", err);
-                        }
-                    });
-                }
+        if(delUsers && delUsers.length > 0){
+            var delYunUserArray = new Array();
+            for(var i = 0; i < delUsers.length; i ++){
+                delYunUserArray.push("yunuser_" + delUsers[i].userId + "_" + studentId);
             }
-        });
-        self.model['student'].listAddYunUserByStudentId(studentId, userIds, function(err, users){
-            if(err){
-                self.logger.error("查询需注册的云用户失败：", err);
-            }else{
-                if(users && users.length > 0){
-                    var addYunUserArray = new Array();
-                    for(var i = 0; i < users.length; i ++){
-                        var yunUser = "yunuser_" + users[i].userId + "_" + studentId;
-                        var yunName = studentName + users[i].nickName;
-                        var yunPassword = imCore.getPasswordHash(yunUser);
-                        userInfoArray.push({
-                            userid: yunUser,
-                            password: yunPassword,
-                            nick: yunName
-                        });
-                    }
-                    imCore.regUsers(addYunUserArray, function(err, yunRes) {
-                        if (err) {
-                            self.logger.error("注册云帐号失败：", err);
-                        }
-                    });
+            imCore.delUsers(delYunUserArray.join(','), function(err, data){
+                if(err){
+                    self.logger.error("删除云帐号失败：", err);
                 }
+            });
+        }
+        if(addUsers && addUsers.length > 0){
+            var addYunUserArray = new Array();
+            for(var i = 0; i < addUsers.length; i ++){
+                var yunUser = "yunuser_" + addUsers[i].userId + "_" + studentId;
+                var yunName = studentName + addUsers[i].nickName;
+                var yunPassword = imCore.getPasswordHash(yunUser);
+                addYunUserArray.push({
+                    userid: yunUser,
+                    password: yunPassword,
+                    nick: yunName
+                });
             }
-        });
+            imCore.regUsers(addYunUserArray, function(err, yunRes) {
+                if (err) {
+                    self.logger.error("注册云帐号失败：", err);
+                }
+            });
+        }
     },
 
     del : function(req, res, next){
@@ -366,7 +364,7 @@ module.exports = new basicController(__filename).init({
                     for(var i = 0; i < users.length; i ++){
                         userIds.push("yunuser_" + users[i].userId + "_" + studentId);
                     }
-                    imCore.delUsers(userIds, function(err, data){
+                    imCore.delUsers(userIds.join(','), function(err, data){
                         if(err){
                             self.logger.error("删除云帐号失败：", err);
                         }

@@ -845,24 +845,23 @@ module.exports = new basicController(__filename).init({
             if (smsLog.sendDate < moment(date).format("YYYY-MM-DD HH:mm:ss")) {
                 return next(new Error("短信验证码已过期"));
             }
-            self.regYunUser(0, user, userName, students, password, res, next);
-        });
-    },
-
-    regYunUser : function(i, user, userName, students, password, res, next){
-        var self = this;
-        var student = students[i];
-        var yunUser = "yunuser_" + user.userId + "_" + student.studentId;
-        var yunName = student.studentName + user.nickName;
-        var yunPassword = imCore.getPasswordHash(yunUser);
-        imCore.regUser(yunUser, yunPassword, yunName, function(err, yunRes){
-            if(err){
-                return next(err);
+            var userInfoArray = new Array();
+            for(var i = 0; i < students.length; i ++){
+                var student = students[i];
+                var yunUser = "yunuser_" + user.userId + "_" + student.studentId;
+                var yunName = student.studentName + user.nickName;
+                var yunPassword = imCore.getPasswordHash(yunUser);
+                userInfoArray.push({
+                    userid: yunUser,
+                    password: yunPassword,
+                    nick: yunName
+                });
             }
-            if(i < students.length - 1){
-                self.regYunUser(++i, user, userName, students, password, res, next);
-            }else{
-                self.model['user'].active(userName, password, yunUser, function (err, data) {
+            imCore.regUsers(userInfoArray, function(err, yunRes){
+                if(err){
+                    return next(err);
+                }
+                self.model['user'].active(userName, password, function (err, data) {
                     if (err) {
                         return next(err);
                     }
@@ -871,7 +870,7 @@ module.exports = new basicController(__filename).init({
                         msg: "注册成功"
                     });
                 });
-            }
+            });
         });
     },
 
@@ -895,7 +894,7 @@ module.exports = new basicController(__filename).init({
                 if(err){
                     return next(err);
                 }
-                self.model['user'].active(userName, password, yunUser, function (err, data) {
+                self.model['user'].active(userName, password, function (err, data) {
                     if (err) {
                         return next(err);
                     }
@@ -1146,8 +1145,8 @@ module.exports = new basicController(__filename).init({
 
     del : function(req, res, next){
         var self = this;
-        var userId = req.params.userId;
-        if(!userId){
+        var userId = parseInt(req.params.userId);
+        if(userId <= 0){
             return next(new Error("需删除的用户编号为空"));
         }
         self.model["user"].findByKey(userId, function(err, user){
@@ -1166,17 +1165,7 @@ module.exports = new basicController(__filename).init({
                     if(students && students.length > 0){
                         return next(new Error("该家长已关联宝贝，不允许删除"));
                     }
-                    self.model["user"].delete(userId, function(err, data){
-                        if(err){
-                            return next(err);
-                        }else if (data.affectedRows !== 1){
-                            return next(new Error("用户删除失败"));
-                        }
-                        res.json({
-                            code : "00",
-                            msg : "用户删除成功"
-                        });
-                    });
+                    self.delUserAndYun(2, userId, res, next);
                 });
             }else if(groupId == 20){
                 self.model['class'].listAllByTeacherId(userId, function(err, classes) {
@@ -1186,22 +1175,7 @@ module.exports = new basicController(__filename).init({
                     if (classes && classes.length > 0) {
                         return next(new Error("该老师已绑定班级，不允许删除"));
                     }
-                    imCore.delUsers(["yunuser_" + userId], function(err, data){
-                        if(err){
-                            return next(err);
-                        }
-                        self.model["user"].delete(userId, function(err, data){
-                            if(err){
-                                return next(err);
-                            }else if (data.affectedRows !== 1){
-                                return next(new Error("用户删除失败"));
-                            }
-                            res.json({
-                                code : "00",
-                                msg : "用户删除成功"
-                            });
-                        });
-                    });
+                    self.delUserAndYun(user.state, userId, res, next);
                 });
             }else if(groupId == 30){
                 self.model['school'].listByPrincipalId(userId, function(err, schools){
@@ -1211,22 +1185,7 @@ module.exports = new basicController(__filename).init({
                     if(schools && schools.length > 0){
                         return next(new Error("该园长已绑定园所，不允许删除"));
                     }
-                    imCore.delUsers(["yunuser_" + userId], function(err, data){
-                        if(err){
-                            return next(err);
-                        }
-                        self.model["user"].delete(userId, function(err, data){
-                            if(err){
-                                return next(err);
-                            }else if (data.affectedRows !== 1){
-                                return next(new Error("用户删除失败"));
-                            }
-                            res.json({
-                                code : "00",
-                                msg : "用户删除成功"
-                            });
-                        });
-                    });
+                    self.delUserAndYun(user.state, userId, res, next);
                 });
             }else if(groupId == 40){
                 self.model['school'].listBrandByGroupId(userId, function(err, brands){
@@ -1236,42 +1195,46 @@ module.exports = new basicController(__filename).init({
                     if(brands && brands.length > 0){
                         return next(new Error("该集团园长已绑定品牌，不允许删除"));
                     }
-                    imCore.delUsers(["yunuser_" + userId], function(err, data){
-                        if(err){
-                            return next(err);
-                        }
-                        self.model["user"].delete(userId, function(err, data){
-                            if(err){
-                                return next(err);
-                            }else if (data.affectedRows !== 1){
-                                return next(new Error("用户删除失败"));
-                            }
-                            res.json({
-                                code : "00",
-                                msg : "用户删除成功"
-                            });
-                        });
-                    });
+                    self.delUserAndYun(user.state, userId, res, next);
                 });
             }else{
-                imCore.delUsers(["yunuser_" + userId], function(err, data){
-                    if(err){
-                        return next(err);
-                    }
-                    self.model["user"].delete(userId, function(err, data){
-                        if(err){
-                            return next(err);
-                        }else if (data.affectedRows !== 1){
-                            return next(new Error("用户删除失败"));
-                        }
-                        res.json({
-                            code : "00",
-                            msg : "用户删除成功"
-                        });
-                    });
-                });
+                self.delUserAndYun(user.state, userId, res, next);
             }
         });
+    },
+
+    delUserAndYun : function(state, userId, res, next){
+        var self = this;
+        if(state == 1){
+            imCore.delUsers("yunuser_" + userId, function(err, data){
+                if(err){
+                    return next(err);
+                }
+                self.model["user"].delete(userId, function(err, data){
+                    if(err){
+                        return next(err);
+                    }else if (data.affectedRows !== 1){
+                        return next(new Error("用户删除失败"));
+                    }
+                    res.json({
+                        code : "00",
+                        msg : "用户删除成功"
+                    });
+                });
+            });
+        }else{
+            self.model["user"].delete(userId, function(err, data){
+                if(err){
+                    return next(err);
+                }else if (data.affectedRows !== 1){
+                    return next(new Error("用户删除失败"));
+                }
+                res.json({
+                    code : "00",
+                    msg : "用户删除成功"
+                });
+            });
+        }
     },
 
     show : function(req, res, next){

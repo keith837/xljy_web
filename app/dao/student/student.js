@@ -32,7 +32,7 @@ Student.listDelYunUserByStudentId = function(studentId, userIds, callback){
             sql += "?,";
             tempArgs.push(userIds[i]);
         }
-        sql += sql.substr(0, sql.length - 1) + ")";
+        sql = sql.substr(0, sql.length - 1) + ")";
     }
     mysqlUtil.query(sql, tempArgs, callback);
 }
@@ -41,7 +41,7 @@ Student.listAddYunUserByStudentId = function(studentId, userIds, callback){
     if(!userIds || userIds.length <= 0){
         return callback(null, null);
     }
-    var sql = "select * from XL_USER where userId not in (select userId from XL_USER_STUDENT_REL A where A.state=1 and A.studentId=?) and state=1";
+    var sql = "select * from XL_USER where userId not in (select userId from XL_USER_STUDENT_REL A where A.state=1 and A.studentId=?) and state=1 ";
     var tempArgs = new Array();
     tempArgs.push(studentId);
     sql += "and userId in (";
@@ -49,7 +49,7 @@ Student.listAddYunUserByStudentId = function(studentId, userIds, callback){
         sql += "?,";
         tempArgs.push(userIds[i]);
     }
-    sql += sql.substr(0, sql.length - 1) + ")";
+    sql = sql.substr(0, sql.length - 1) + ")";
     mysqlUtil.query(sql, tempArgs, callback);
 }
 

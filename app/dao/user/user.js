@@ -11,7 +11,7 @@ User.findByGroupIdAndNullSchoolId = function(groupId, callback){
 }
 
 User.findByKey = function(userId, callback){
-    mysqlUtil.query("select * from XL_USER WHERE state!=0 and userId=?", [userId], callback);
+    mysqlUtil.queryOne("select * from XL_USER WHERE state!=0 and userId=?", [userId], callback);
 }
 
 User.findByUserId = function(userId, callback){
@@ -53,8 +53,8 @@ User.update = function(obj, userId, callback){
     mysqlUtil.query(sql, args, callback);
 }
 
-User.active = function(userName, password, yunAccout, callback){
-    mysqlUtil.query("update XL_USER set state = 1,doneDate = now(),password=?,yunAccout=? where userName = ? and state!=0", [password, yunAccout, userName], callback);
+User.active = function(userName, password, callback){
+    mysqlUtil.query("update XL_USER set state = 1,doneDate = now(),password=? where userName = ? and state!=0", [password, userName], callback);
 }
 
 User.modifyPwd = function(userName, password, callback){
