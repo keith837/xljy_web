@@ -921,6 +921,135 @@ module.exports = new basicController(__filename).init({
                 });
             });
         });
-    }
+    },
 
+    activities : function(req, res, next){
+        var self = this;
+        var studentId = parseInt(req.params.studentId);
+        if(studentId <= 0){
+            return next(new Error("学生编号不能为空"));
+        }
+        var dataType = req.query.dataType;
+        if(dataType){
+            dataType = parseInt(dataType);
+        }
+        var startTime = req.query.startTime;
+        var timeMonth = req.query.timeMonth;
+        var timeWeek = req.query.timeWeek;
+        var timeDay = req.query.timeDay;
+        var timeHour = req.query.timeHour;
+        var endTime = req.query.endTime;
+        if(!startTime && !timeMonth && !timeWeek && !timeDay && !timeHour){
+            return next(new Error("传人参数不合法"));
+        }
+        if(startTime){
+            startTime = parseInt(startTime);
+        }
+        if(endTime){
+            endTime = parseInt(endTime);
+        }
+        var qryObj = new Object();
+        if(timeMonth){
+            qryObj.timeMonth = timeMonth;
+        }
+        if(timeWeek){
+            qryObj.timeWeek = timeWeek;
+        }
+        if(timeDay){
+            qryObj.timeDay = timeDay;
+        }
+        if(timeHour){
+            qryObj.timeHour = timeHour;
+        }
+        self.model["sports"].list(dataType, qryObj, startTime, endTime, function(err, sports){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                data : sports
+            });
+        });
+    },
+
+    addSports : function(req, res, next){
+        var self = this;
+        var studentId = parseInt(req.params.studentId);
+        if(studentId <= 0){
+            return next(new Error("学生编号不能为空"));
+        }
+        var time = req.body.time;
+        if(!time){
+            return next(new Error("时间不能为空"));
+        }else{
+            time = parseInt(time);
+        }
+        var calValue = req.body.calValue;
+        if(!calValue){
+            return next(new Error("运动量不能为空"));
+        }else{
+            calValue = parseInt(calValue);
+        }
+        var currMomont = moment();
+        var reversion = currMomont.format("YYMMDDHHmmss") + Math.round(Math.random() * 899999 + 100000);
+        self.model["sports"].save(parseSports(reversion, studentId, time, calValue, currMomont.toDate()), function(err, data){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                data : {
+                    identifier : data.insertId,
+                    reversion : reversion
+                }
+            });
+        });
+    },
+
+    addBatchSports : function(req, res, next){
+        var self = this;
+        var studentId = parseInt(req.params.studentId);
+        if(studentId <= 0){
+            return next(new Error("学生编号不能为空"));
+        }
+        var datas = req.body.datas;
+        console.log(datas);
+        if(!datas){
+            return next(new Error("上传运动量数据不能为空"));
+        }else{
+            datas = JSON.parse(datas);
+        }
+        if(!(datas instanceof Array) || datas.length <= 0){
+            return next(new Error("参数不合法"));
+        }
+        var currMomont = moment();
+        var reversion = currMomont.format("YYMMDDHHmmss") + Math.round(Math.random() * 899999 + 100000);
+        var sportsArray = new Array();
+        for(var i = 0; i < datas.length; i++){
+            var time = datas[i].time;
+            var calValue = datas[i].calValue;
+            if(!time || !calValue){
+                return next(new Error("参数不合法"));
+            }
+            sportsArray.push(parseSports(reversion, studentId, time, calValue, currMomont.toDate()));
+        }
+        self.model["sports"].saveBatch(studentId, reversion, sportsArray, function(err, data){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                data : data
+            });
+        });
+    }
 });
+
+function parseSports(reversion, studentId, time, calValue, currDate) {
+    var momentDate = moment(time);
+    var timeMonth = parseInt(momentDate.format("YYYYMM"));
+    var timeDay = parseInt(momentDate.format("YYYYMMDD"));
+    var timeHour = parseInt(momentDate.format("YYYYMMDDHH"));
+    var timeWeek = parseInt(momentDate.format("YYYY") + momentDate.week());
+    return [reversion, studentId, time, momentDate.toDate(), calValue, timeMonth, timeWeek, timeDay, timeHour, currDate];
+}

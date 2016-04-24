@@ -335,7 +335,7 @@ var routerConfig = {
         },
 
         student : {
-            "usedModel": ["student/student", "school/class", "school/school", "student/studentLeave", "attendance/attendance", "user/user", 'device/device'],
+            "usedModel": ["student/student", "student/sports", "school/class", "school/school", "student/studentLeave", "attendance/attendance", "user/user", 'device/device'],
             "select": {
                 "url": "/api/student/select/:studentId",
                 "method": "post",
@@ -415,6 +415,21 @@ var routerConfig = {
                 "url": "/api/student/uppic",
                 "method": "put",
                 "description": "学生头像上传"
+            },
+            "activities" : {
+                "url": "/api/student/activities/:studentId",
+                "method": "get",
+                "description": "学生运动量统计"
+            },
+            "addSports" : {
+                "url": "/api/student/activity/:studentId",
+                "method": "post",
+                "description": "上传运动量"
+            },
+            "addBatchSports" : {
+                "url": "/api/student/activities/:studentId",
+                "method": "post",
+                "description": "批量上传运动量"
             }
         },
 
