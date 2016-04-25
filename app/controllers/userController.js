@@ -1361,6 +1361,68 @@ module.exports = new basicController(__filename).init({
                 });
             });
         });
+    },
+
+    syncYun : function(req, res, next){
+        var self = this;
+        var yunUser = req.params.yunUser;
+        if(!yunUser){
+            return next("云帐号不能为空");
+        }
+        var yunInfo = yunUser.split("_");
+        if(yunInfo.length < 2){
+            return next("云帐号格式不正确【yunuser_xx】或【yunuser_xx_xx】");
+        }
+        var userId = parseInt(yunInfo[1]);
+        self.model['user'].findByKey(userId, function(err, user){
+            if(err){
+                return next(err);
+            }
+            if(!user){
+                return next(new Error("用户信息不存在"));
+            }
+            var groupId = user.groupId;
+            if(groupId == 10){
+                if(yunInfo.length != 3){
+                    return next(new Error("云帐号格式不正确，家长用户格式为【yunuser_xx_xx】"));
+                }
+                var studentId = parseInt(yunInfo[2]);
+                self.model['student'].findByStudentId(studentId, function(err, student){
+                    if(err){
+                        return next(err);
+                    }
+                    if(!student){
+                        return next(new Error("学生信息不存在"));
+                    }
+                    var yunName = student.studentName + user.nickName;
+                    self.syncToYun(yunUser, yunName, res, next);
+                });
+            }else{
+                var yunName = user.custName + user.nickName;
+                self.syncToYun(yunUser, yunName, res, next);
+            }
+
+        })
+
+    },
+
+    syncToYun : function(yunUser, yunName, res, next){
+        imCore.delUsers(yunUser, function(err, data){
+            if(err){
+                return next(err);
+            }
+            var yunPassword = imCore.getPasswordHash(yunUser);
+            imCore.regUser(yunUser, yunPassword, yunName, function(err, data){
+                if(err){
+                    return next(err);
+                }
+                res.json({
+                    code : "00",
+                    data : "云帐号同步成功",
+                    syncInfo : data
+                });
+            });
+        });
     }
 });
 

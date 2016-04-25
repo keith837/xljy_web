@@ -131,6 +131,11 @@ var routerConfig = {
                 "url": "/api/user/listGroupUser",
                 "method": "get",
                 "description": "查询集团园长"
+            },
+            syncYun : {
+                "url": "/api/user/syncYun/:yunUser",
+                "method": "put",
+                "description": "同步云信息"
             }
         },
 
