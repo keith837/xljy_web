@@ -53,6 +53,7 @@ exportUtils.getConfig = function (bizType, operation, cb) {
             }
             config.filter = filter;
             config.importSQL = sql;
+            config.postMethod = query.postMethod;
             callback(err, config);
         });
     }];

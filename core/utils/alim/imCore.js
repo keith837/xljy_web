@@ -25,6 +25,10 @@ imCore.delUsers = function(userIds, cb){
     client.execute('taobao.openim.users.delete', {userids : userIds}, cb);
 }
 
+imCore.getUser = function (userId, cb) {
+    client.execute('taobao.openim.users.get', {userids: userId}, cb);
+}
+
 imCore.regUser = function (username, password, nick, cb) {
 
     client.execute('taobao.openim.users.add',

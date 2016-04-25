@@ -136,6 +136,11 @@ var routerConfig = {
                 "url": "/api/user/syncYun/:yunUser",
                 "method": "put",
                 "description": "同步云信息"
+            },
+            getYun :{
+                "url": "/api/user/getYun/:yunUser",
+                "method": "get",
+                "description": "获取云账号信息"
             }
         },
 

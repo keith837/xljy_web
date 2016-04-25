@@ -1423,6 +1423,16 @@ module.exports = new basicController(__filename).init({
                 });
             });
         });
+    },
+
+    getYun : function(req, res, next){
+        var yunUser = req.params.yunUser;
+        imCore.getUser(yunUser, function (err, data) {
+            if (err) {
+                return next(err);
+            }
+            res.json(JSON.stringify(data));
+        });
     }
 });
 
