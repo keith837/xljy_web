@@ -1051,5 +1051,6 @@ function parseSports(reversion, studentId, time, calValue, currDate) {
     var timeDay = parseInt(momentDate.format("YYYYMMDD"));
     var timeHour = parseInt(momentDate.format("YYYYMMDDHH"));
     var timeWeek = parseInt(momentDate.format("YYYY") + momentDate.week());
-    return [reversion, studentId, time, momentDate.toDate(), calValue, timeMonth, timeWeek, timeDay, timeHour, currDate];
+    var timeMinute = momentDate.minute() < 30 ? 1 : 2;
+    return [reversion, studentId, time, momentDate.toDate(), calValue, timeMonth, timeWeek, timeDay, timeHour, timeMinute, currDate];
 }

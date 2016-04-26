@@ -21,6 +21,11 @@ Sports.countByHour = function(whereSql, args, callback){
     mysqlUtil.query(sql, args, callback);
 }
 
+Sports.countByMinute = function(whereSql, args, callback){
+    var sql = "select timeMinute, sum(calValue) as calValue from XL_SPORTS where" + whereSql + " group by timeMinute order by timeMinute";
+    mysqlUtil.query(sql, args, callback);
+}
+
 Sports.listByCond = function(whereSql, args, callback){
     var sql = "select * from XL_SPORTS where" + whereSql + " order by time";
     mysqlUtil.query(sql, args, callback);
@@ -44,13 +49,15 @@ Sports.list = function(dataType, qryObj, startTime, endTime, callback){
         tempArgs.push(endTime);
     }
     if(dataType == 1){
-        Sports.countByHour(whereSql, tempArgs, callback);
+        Sports.countByMinute(whereSql, tempArgs, callback);
     }else if(dataType == 2){
-        Sports.countByWeek(whereSql, tempArgs, callback);
+        Sports.countByHour(whereSql, tempArgs, callback);
     }else if(dataType == 3){
-        Sports.countByMonth(whereSql, tempArgs, callback);
-    }else if(dataType == 4){
         Sports.countByDay(whereSql, tempArgs, callback);
+    }else if(dataType == 4){
+        Sports.countByWeek(whereSql, tempArgs, callback);
+    }else if(dataType == 5){
+        Sports.countByMonth(whereSql, tempArgs, callback);
     }else{
         Sports.listByCond(whereSql, tempArgs, callback);
     }
@@ -58,7 +65,7 @@ Sports.list = function(dataType, qryObj, startTime, endTime, callback){
 
 
 Sports.save = function(args, callback){
-    var sql = "insert into XL_SPORTS(reversion,studentId,time,sportsDate,calValue,timeMonth,timeWeek,timeDay,timeHour,createDate) values (?,?,?,?,?,?,?,?,?,?)";
+    var sql = "insert into XL_SPORTS(reversion,studentId,time,sportsDate,calValue,timeMonth,timeWeek,timeDay,timeHour,timeMinute,createDate) values (?,?,?,?,?,?,?,?,?,?)";
     mysqlUtil.query(sql, args, callback);
 }
 
@@ -72,7 +79,7 @@ Sports.saveBatch = function(studentId, reversion, args, callback){
                 conn.release();
                 return callback(err, null);
             }
-            var sql = "insert into XL_SPORTS(reversion,studentId,time,sportsDate,calValue,timeMonth,timeWeek,timeDay,timeHour,createDate) values ?";
+            var sql = "insert into XL_SPORTS(reversion,studentId,time,sportsDate,calValue,timeMonth,timeWeek,timeDay,timeHour,timeMinute,createDate) values ?";
             conn.query(sql, [args], function(err, data){
                 if(err){
                     conn.rollback();
