@@ -6,8 +6,10 @@ var xlsx = require('node-xlsx');
 var formidable = require("formidable");
 var xlsUtils = require("../../core/utils/common/xlsUtils");
 var exportUtils = require("../../core/utils/common/exportUtils");
+var importUtils = require("../../core/utils/common/importUtils");
 var async = require("async");
 var uuid = require("node-uuid");
+
 
 module.exports = new basicController(__filename).init({
 
@@ -122,16 +124,24 @@ module.exports = new basicController(__filename).init({
                 }
                 userObj.importTbl = data[1].table;
                 log.info("batchId=[" + batchId + "],导入临时表数条数" + res.affectedRows);
-                callback(err, data[1].importSQL);
+                callback(err, data[1]);
             });
-        }, function executeSQL(sqls, callback) {
-            exportUtils.execImportSQL(sqls, userObj, function (err, res) {
+        }, function executeSQL(data, callback) {
+            exportUtils.execImportSQL(data.importSQL, userObj, function (err, res) {
                 if (err) {
                     return callback(err);
                 }
                 log.info("batchId=[" + batchId + "],更新记录条数" + res);
-                callback(err, res);
+                callback(err, data);
             });
+        }, function executePostMethod(config, callback) {
+            if (config.postMethod && config.postMethod != "") {
+                log.info("batchId=[" + batchId + "],执行method=" + config.postMethod);
+                eval("importUtils." + config.postMethod + "('" + batchId + "')");
+            } else {
+                log.info("batchId=[" + batchId + "],没有配置postMethod");
+            }
+            callback(null, null);
         }];
 
         async.waterfall(tasks, function (err, results) {

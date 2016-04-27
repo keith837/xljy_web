@@ -82,7 +82,7 @@ async.waterfall([
                     error: err
                 });
             });
-            server = app.listen(3001, cb);
+            server = app.listen(webConfig.APP_PORT, cb);
         },
         function (next) {
             var host = server.address().address;

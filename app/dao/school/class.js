@@ -23,7 +23,7 @@ Class.listAllByTeacherId = function(teacherId, callback){
  * @param callback
  */
 Class.listTeacherByClassId = function(classId, callback){
-    mysqlUtil.query("select A.classId,A.isMaster,A.jobType,B.nickName,B.userName,B.custName,B.userId,B.yunAccout,B.userUrl from XL_CLASS_TEACHER_REL A,XL_USER B where A.tUserId=B.userId and A.state=1 and A.classId=?", [classId], callback);
+    mysqlUtil.query("select A.classId,A.isMaster,A.jobType,B.nickName,B.userName,B.custName,B.userId,concat('yunuser_',B.userId) as yunAccout,B.userUrl,B.state as userState from XL_CLASS_TEACHER_REL A,XL_USER B where A.tUserId=B.userId and A.state=1 and A.classId=?", [classId], callback);
 }
 
 Class.listInstallationInfoByClassId = function(classId, callback){
@@ -37,7 +37,7 @@ Class.listInstallationInfo = function(classId, notUserId, userId, callback){
 }
 
 Class.findPrincipalByClassId = function(classId, callback){
-    mysqlUtil.queryOne("select -1 as classId,-1 as isMaster,'校长' as jobType,C.nickName,C.userName,C.custName,C.userId,C.yunAccout,C.userUrl from XL_SCHOOL A, XL_CLASS B, XL_USER C where A.schoolId=B.schoolId and A.sUserId=C.userId and B.classId=?", [classId], callback);
+    mysqlUtil.queryOne("select -1 as classId,-1 as isMaster,'校长' as jobType,C.nickName,C.userName,C.custName,C.userId,concat('yunuser_',C.userId) as yunAccout,C.userUrl,C.state as userState from XL_SCHOOL A, XL_CLASS B, XL_USER C where A.schoolId=B.schoolId and A.sUserId=C.userId and B.classId=?", [classId], callback);
 }
 
 Class.listTeacherByClassIds = function(classIds, callback){
@@ -57,7 +57,7 @@ Class.listTeacherByClassIds = function(classIds, callback){
  * @param callback
  */
 Class.findPrincipalBySchoolId = function(classId, callback){
-    var sql = "select C.userId,C.userName,C.custName,C.nickName,A.schoolId,A.schoolName,C.yunAccout from XL_SCHOOL A, XL_CLASS B, XL_USER C where A.schoolId=B.schoolId and A.sUserId=C.userId and B.classId=?";
+    var sql = "select C.userId,C.userName,C.custName,C.nickName,A.schoolId,A.schoolName,concat('yunuser_',C.userId) as yunAccout,C.state as userState from XL_SCHOOL A, XL_CLASS B, XL_USER C where A.schoolId=B.schoolId and A.sUserId=C.userId and B.classId=?";
     mysqlUtil.queryOne(sql, [classId], callback);
 }
 
@@ -67,7 +67,7 @@ Class.findPrincipalBySchoolId = function(classId, callback){
  * @param callback
  */
 Class.listParentsByClassId = function(classId, callback){
-    var sql = "select A.studentId,A.studentName,C.userId,C.userName,C.nickName,C.custName,C.yunAccout,C.userUrl from XL_STUDENT A,XL_USER_STUDENT_REL B,XL_USER C where A.studentId=B.studentId and B.userId=C.userId and A.state=1 and B.state=1 and classId=? order by B.studentId";
+    var sql = "select A.studentId,A.studentName,C.userId,C.userName,C.nickName,C.custName,concat('yunuser_',C.userId,'_',A.studentId) as yunAccout,C.userUrl,C.state as userState from XL_STUDENT A,XL_USER_STUDENT_REL B,XL_USER C where A.studentId=B.studentId and B.userId=C.userId and A.state=1 and B.state=1 and classId=? order by B.studentId";
     mysqlUtil.query(sql, [classId], callback);
 }
 
@@ -323,7 +323,7 @@ Class.listStudentByClass = function(classId, callback){
 }
 
 Class.listStudentAndDeviceByClass = function(classId, callback){
-    var selectSql = "select A.*, B.deviceId,B.deviceSign,B.deviceName from XL_STUDENT A LEFT JOIN XL_DEVICE B on A.studentId=B.studentId where A.state = 1 and A.classId = ?";
+    var selectSql = "select A.*, B.deviceId,B.deviceSign,B.deviceName from XL_STUDENT A LEFT JOIN XL_DEVICE B on A.studentId=B.studentId where A.state = 1 and B.state=1 and A.classId = ?";
     mysqlUtil.query(selectSql, [classId], callback);
 }
 

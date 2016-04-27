@@ -17,6 +17,42 @@ Student.findStudentInfo = function(studentId, callback){
     mysqlUtil.queryOne("select A.*,B.className,C.schoolName from XL_STUDENT A, XL_CLASS B, XL_SCHOOL C WHERE A.schoolId=C.schoolId and B.classId=A.classId and A.state=1 and A.studentId=?", [studentId], callback);
 }
 
+Student.findParentByStudentId = function(studentId, callback){
+    var sql = "select B.* from XL_USER_STUDENT_REL A, XL_USER B where A.userId=B.userId and A.state=1 and B.state=1 and A.studentId=?";
+    mysqlUtil.query(sql, [studentId], callback);
+}
+
+Student.listDelYunUserByStudentId = function(studentId, userIds, callback){
+    var sql = "select B.* from XL_USER_STUDENT_REL A, XL_USER B WHERE A.userId=B.userId and A.state=1 and B.state=1 and A.studentId=? ";
+    var tempArgs = new Array();
+    tempArgs.push(studentId);
+    if(userIds && userIds.length > 0){
+        sql += "and A.userId not in (";
+        for(var i = 0; i < userIds.length; i ++){
+            sql += "?,";
+            tempArgs.push(userIds[i]);
+        }
+        sql = sql.substr(0, sql.length - 1) + ")";
+    }
+    mysqlUtil.query(sql, tempArgs, callback);
+}
+
+Student.listAddYunUserByStudentId = function(studentId, userIds, callback){
+    if(!userIds || userIds.length <= 0){
+        return callback(null, null);
+    }
+    var sql = "select * from XL_USER where userId not in (select userId from XL_USER_STUDENT_REL A where A.state=1 and A.studentId=?) and state=1 ";
+    var tempArgs = new Array();
+    tempArgs.push(studentId);
+    sql += "and userId in (";
+    for(var i = 0; i < userIds.length; i ++){
+        sql += "?,";
+        tempArgs.push(userIds[i]);
+    }
+    sql = sql.substr(0, sql.length - 1) + ")";
+    mysqlUtil.query(sql, tempArgs, callback);
+}
+
 Student.findParents = function(studentIds, callback){
     var sql = "select A.*,B.nickName,B.custName,B.userName from XL_USER_STUDENT_REL A, XL_USER B WHERE A.userId=B.userId and ";
     sql +=  "A.state=1 and A.studentId in (";

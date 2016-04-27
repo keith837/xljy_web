@@ -2,6 +2,7 @@ var basicController = require("../../core/utils/controller/basicController");
 var pushCore = require("../../core/utils/alim/pushCore");
 var moment = require("moment");
 var formidable = require("formidable");
+var imCore = require("../../core/utils/alim/imCore.js");
 var path = require("path");
 
 module.exports = new basicController(__filename).init({
@@ -73,36 +74,45 @@ module.exports = new basicController(__filename).init({
                     if(!school){
                         return next(new Error("未找到宝贝对应的学校信息"));
                     }
-                    user.schools = [school];
-                    user.schoolIds = [school.schoolId];
-                    var expireDate = self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60;
-                    self.redis.set(user.token, JSON.stringify(user), "EX", expireDate);
-                    self.redis.set(user.userId, user.token, "EX", expireDate);
-                    pushCore.regDevice(user.deviceType, user.installationId, [], function (err, objectId) {
-                        if (err) {
-                            log.error("删除设备[" + user.installationId + "]云端token出错");
-                            log.error(err);
-                            return;
+                    self.model['device'].findByStudentId(studentId, function(err, device){
+                        if(err){
+                            return next(err);
                         }
-                        log.info("删除设备[" + user.installationId + "]云端token成功，objectId=" + objectId);
-
-
-                        var channels = [];
-                        channels.push("school_" + user.schools[0].schoolId + "_parent");
-                        channels.push("class_" + user.class.classId);
-                        pushCore.regDevice(user.deviceType, user.installationId, channels, function (err, objectId) {
+                        var retObj = new Object();
+                        retObj.yunAccount = "yunuser_" + userId + "_" + studentId;
+                        retObj.yunPassword = imCore.getPasswordHash("yunuser_" + userId + "_" + studentId);
+                        retObj.deviceId = device ? device.deviceId : null;
+                        retObj.deviceSign = device ? device.deviceSign : null;
+                        retObj.deviceName = device ? device.deviceName : null;
+                        res.json({
+                            code : "00",
+                            msg : "宝贝选择成功",
+                            data : retObj
+                        });
+                        user.schools = [school];
+                        user.schoolIds = [school.schoolId];
+                        var expireDate = self.cacheManager.getCacheValue("LOGIN", "TIMEOUT") * 60;
+                        self.redis.set(user.token, JSON.stringify(user), "EX", expireDate);
+                        self.redis.set(user.userId, user.token, "EX", expireDate);
+                        pushCore.regDevice(user.deviceType, user.installationId, [], function (err, objectId) {
                             if (err) {
-                                log.error("注册设备[" + user.installationId + "]出错");
+                                log.error("删除设备[" + user.installationId + "]云端token出错");
                                 log.error(err);
                                 return;
                             }
-                            log.info("注册设备[" + user.installationId + "]成功，objectId=" + objectId);
+                            log.info("删除设备[" + user.installationId + "]云端token成功，objectId=" + objectId);
+                            var channels = [];
+                            channels.push("school_" + user.schools[0].schoolId + "_parent");
+                            channels.push("class_" + user.class.classId);
+                            pushCore.regDevice(user.deviceType, user.installationId, channels, function (err, objectId) {
+                                if (err) {
+                                    log.error("注册设备[" + user.installationId + "]出错");
+                                    log.error(err);
+                                    return;
+                                }
+                                log.info("注册设备[" + user.installationId + "]成功，objectId=" + objectId);
+                            });
                         });
-                    });
-
-                    res.json({
-                        code : "00",
-                        msg : "宝贝选择成功"
                     });
                 });
             });
@@ -173,14 +183,38 @@ module.exports = new basicController(__filename).init({
             if(!classInfo){
                 return next("学生关联的班级信息不存在");
             }
-            self.model['student'].save([classInfo.schoolId,classId,studentName,studentPic,studentAge,gender,cardNum,address,oUserId,remark], userId, oUserId, function(err, student){
+            self.model['user'].listByUserIdArray(userId, function(err, users){
                 if(err){
                     return next(err);
                 }
-                res.json({
-                    code : "00",
-                    msg : "学生添加成功",
-                    data : student.insertId
+                self.model['student'].save([classInfo.schoolId,classId,studentName,studentPic,studentAge,gender,cardNum,address,oUserId,remark], userId, oUserId, function(err, student){
+                    if(err){
+                        return next(err);
+                    }
+                    var studentId = student.insertId;
+                    if(users && users.length > 0){
+                        var userInfoArray = new Array();
+                        for(var i = 0; i < users.length; i ++){
+                            var yunUser = "yunuser_" + users[i].userId + "_" + studentId;
+                            var yunName = studentName + users[i].nickName;
+                            var yunPassword = imCore.getPasswordHash(yunUser);
+                            userInfoArray.push({
+                                userid: yunUser,
+                                password: yunPassword,
+                                nick: yunName
+                            });
+                        }
+                        imCore.regUsers(userInfoArray, function(err, yunRes) {
+                            if (err) {
+                                self.logger.error("注册云帐号失败：", err);
+                            }
+                        });
+                    }
+                    res.json({
+                        code : "00",
+                        msg : "学生添加成功",
+                        data : studentId
+                    });
                 });
             });
         });
@@ -229,54 +263,116 @@ module.exports = new basicController(__filename).init({
             }
             obj.doneDate = new Date();
             obj.oUserId = oUserId;
-            if(classId && classId != student.classId){
-                obj.classId = classId;
-                self.model['class'].findOne(classId, function(err, classInfo){
+            self.model['student'].listDelYunUserByStudentId(studentId, userId, function(err, delUsers){
+                if(err){
+                    return next(err);
+                }
+                self.model['student'].listAddYunUserByStudentId(studentId, userId, function(err, addUsers){
                     if(err){
                         return next(err);
                     }
-                    if(!classInfo){
-                        return next("学生关联的班级信息不存在");
-                    }
-                    obj.schoolId = classInfo.schoolId;
-                    self.model['student'].update(obj, userId, studentId, function(err, data){
-                        if(err){
-                            return next(err);
-                        }
-                        res.json({
-                            code : "00",
-                            msg : "学生信息修改成功"
+                    if(classId && classId != student.classId){
+                        obj.classId = classId;
+                        self.model['class'].findOne(classId, function(err, classInfo){
+                            if(err){
+                                return next(err);
+                            }
+                            if(!classInfo){
+                                return next("学生关联的班级信息不存在");
+                            }
+                            obj.schoolId = classInfo.schoolId;
+                            self.model['student'].update(obj, userId, studentId, function(err, data){
+                                if(err){
+                                    return next(err);
+                                }
+                                self.modifyYunUser(studentId, studentName, delUsers, addUsers);
+                                res.json({
+                                    code : "00",
+                                    msg : "学生信息修改成功"
+                                });
+                            });
                         });
-                    });
-                });
-            }else{
-                self.model['student'].update(obj, userId, studentId, function(err, data){
-                    if(err){
-                        return next(err);
+                    }else{
+                        self.model['student'].update(obj, userId, studentId, function(err, data){
+                            if(err){
+                                return next(err);
+                            }
+                            self.modifyYunUser(studentId, studentName, delUsers, addUsers);
+                            res.json({
+                                code : "00",
+                                msg : "学生信息修改成功"
+                            });
+                        });
                     }
-                    res.json({
-                        code : "00",
-                        msg : "学生信息修改成功"
-                    });
+                });
+            });
+        });
+    },
+
+    modifyYunUser : function(studentId, studentName, delUsers, addUsers){
+        var self = this;
+        if(delUsers && delUsers.length > 0){
+            var delYunUserArray = new Array();
+            for(var i = 0; i < delUsers.length; i ++){
+                delYunUserArray.push("yunuser_" + delUsers[i].userId + "_" + studentId);
+            }
+            imCore.delUsers(delYunUserArray.join(','), function(err, data){
+                if(err){
+                    self.logger.error("删除云帐号失败：", err);
+                }
+            });
+        }
+        if(addUsers && addUsers.length > 0){
+            var addYunUserArray = new Array();
+            for(var i = 0; i < addUsers.length; i ++){
+                var yunUser = "yunuser_" + addUsers[i].userId + "_" + studentId;
+                var yunName = studentName + addUsers[i].nickName;
+                var yunPassword = imCore.getPasswordHash(yunUser);
+                addYunUserArray.push({
+                    userid: yunUser,
+                    password: yunPassword,
+                    nick: yunName
                 });
             }
-        });
+            imCore.regUsers(addYunUserArray, function(err, yunRes) {
+                if (err) {
+                    self.logger.error("注册云帐号失败：", err);
+                }
+            });
+        }
     },
 
     del : function(req, res, next){
         var self = this;
         var studentId = req.params.studentId;
-        if(!studentId){
+        if(!studentId || studentId <= 0){
             return next(new Error("需删除的学生编号为空"));
         }
-        self.model["student"].delete(studentId, function(err, data){
+        self.model["student"].findParentByStudentId(studentId, function(err, users){
             if(err){
                 return next(err);
             }
-            res.json({
-                code : "00",
-                msg : "学生信息删除成功"
+            self.model["student"].delete(studentId, function(err, data){
+                if(err){
+                    return next(err);
+                }
+                if(users && users.length > 0){
+                    var userIds = new Array();
+                    for(var i = 0; i < users.length; i ++){
+                        userIds.push("yunuser_" + users[i].userId + "_" + studentId);
+                    }
+                    imCore.delUsers(userIds.join(','), function(err, data){
+                        if(err){
+                            self.logger.error("删除云帐号失败：", err);
+                        }
+                    });
+                }
+                res.json({
+                    code : "00",
+                    msg : "学生信息删除成功"
+                });
             });
+
         });
     },
 
@@ -822,6 +918,137 @@ module.exports = new basicController(__filename).init({
                 });
             });
         });
-    }
+    },
 
+    activities : function(req, res, next){
+        var self = this;
+        var studentId = parseInt(req.params.studentId);
+        if(studentId <= 0){
+            return next(new Error("学生编号不能为空"));
+        }
+        var dataType = req.query.dataType;
+        if(dataType){
+            dataType = parseInt(dataType);
+        }
+        var startTime = req.query.startTime;
+        var timeMonth = req.query.timeMonth;
+        var timeWeek = req.query.timeWeek;
+        var timeDay = req.query.timeDay;
+        var timeHour = req.query.timeHour;
+        var endTime = req.query.endTime;
+        if(!startTime && !timeMonth && !timeWeek && !timeDay && !timeHour){
+            return next(new Error("传人参数不合法"));
+        }
+        if(startTime){
+            startTime = parseInt(startTime);
+        }
+        if(endTime){
+            endTime = parseInt(endTime);
+        }
+        var qryObj = new Object();
+        if(timeMonth){
+            qryObj.timeMonth = timeMonth;
+        }
+        if(timeWeek){
+            qryObj.timeWeek = timeWeek;
+        }
+        if(timeDay){
+            qryObj.timeDay = timeDay;
+        }
+        if(timeHour){
+            qryObj.timeHour = timeHour;
+        }
+        self.model["sports"].list(dataType, qryObj, startTime, endTime, function(err, sports){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                data : sports
+            });
+        });
+    },
+
+    addSports : function(req, res, next){
+        var self = this;
+        var studentId = parseInt(req.params.studentId);
+        if(studentId <= 0){
+            return next(new Error("学生编号不能为空"));
+        }
+        var time = req.body.time;
+        if(!time){
+            return next(new Error("时间不能为空"));
+        }else{
+            time = parseInt(time);
+        }
+        var calValue = req.body.calValue;
+        if(!calValue){
+            return next(new Error("运动量不能为空"));
+        }else{
+            calValue = parseInt(calValue);
+        }
+        var currMomont = moment();
+        var reversion = currMomont.format("YYMMDDHHmmss") + Math.round(Math.random() * 899999 + 100000);
+        self.model["sports"].save(parseSports(reversion, studentId, time, calValue, currMomont.toDate()), function(err, data){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                data : {
+                    identifier : data.insertId,
+                    reversion : reversion
+                }
+            });
+        });
+    },
+
+    addBatchSports : function(req, res, next){
+        var self = this;
+        var studentId = parseInt(req.params.studentId);
+        if(studentId <= 0){
+            return next(new Error("学生编号不能为空"));
+        }
+        var datas = req.body.datas;
+        console.log(datas);
+        if(!datas){
+            return next(new Error("上传运动量数据不能为空"));
+        }else{
+            datas = JSON.parse(datas);
+        }
+        if(!(datas instanceof Array) || datas.length <= 0){
+            return next(new Error("参数不合法"));
+        }
+        var currMomont = moment();
+        var reversion = currMomont.format("YYMMDDHHmmss") + Math.round(Math.random() * 899999 + 100000);
+        var sportsArray = new Array();
+        for(var i = 0; i < datas.length; i++){
+            var time = datas[i].time;
+            var calValue = datas[i].calValue;
+            if(!time || !calValue){
+                return next(new Error("参数不合法"));
+            }
+            sportsArray.push(parseSports(reversion, studentId, time, calValue, currMomont.toDate()));
+        }
+        self.model["sports"].saveBatch(studentId, reversion, sportsArray, function(err, data){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                data : data
+            });
+        });
+    }
 });
+
+function parseSports(reversion, studentId, time, calValue, currDate) {
+    var momentDate = moment(time);
+    var timeMonth = parseInt(momentDate.format("YYYYMM"));
+    var timeDay = parseInt(momentDate.format("YYYYMMDD"));
+    var timeHourStr = momentDate.format("YYYYMMDDHH");
+    var timeHour = parseInt(timeHourStr);
+    var timeWeek = parseInt(momentDate.format("YYYY") + momentDate.week());
+    var timeMinute = parseInt(timeHourStr + (momentDate.minute() < 30 ? 1 : 2));
+    return [reversion, studentId, time, momentDate.toDate(), calValue, timeMonth, timeWeek, timeDay, timeHour, timeMinute, currDate];
+}

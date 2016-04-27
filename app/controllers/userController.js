@@ -6,6 +6,7 @@ var formidable = require("formidable");
 var path = require("path");
 var imCore = require("../../core/utils/alim/imCore.js");
 var pushCore = require("../../core/utils/alim/pushCore");
+var webConfig = require("../../core/config/webConfig");
 
 module.exports = new basicController(__filename).init({
 
@@ -282,9 +283,7 @@ module.exports = new basicController(__filename).init({
                                 pointNum : user.pointNum,
                                 userUrl : user.userUrl,
                                 token : user.token,
-                                yunAccout : user.yunAccout,
-                                yunPassword : imCore.getPasswordHash(user.yunAccout),
-                                webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
+                                webUrl : webConfig.WEB_URL,
                                 students : retStudents
                             }
                         });
@@ -321,9 +320,7 @@ module.exports = new basicController(__filename).init({
                         pointNum : user.pointNum,
                         userUrl : user.userUrl,
                         token : user.token,
-                        yunAccout : user.yunAccout,
-                        yunPassword : imCore.getPasswordHash(user.yunAccout),
-                        webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
+                        webUrl : webConfig.WEB_URL,
                         students : retStudents
                     }
                 });
@@ -374,9 +371,9 @@ module.exports = new basicController(__filename).init({
                         pointNum : user.pointNum,
                         userUrl : user.userUrl,
                         token : user.token,
-                        yunAccout : user.yunAccout,
-                        yunPassword : imCore.getPasswordHash(user.yunAccout),
-                        webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
+                        yunAccout : "yunuser_" + user.userId,
+                        yunPassword : imCore.getPasswordHash("yunuser_" + user.userId),
+                        webUrl : webConfig.WEB_URL,
                         class : {
                             classId : classes[0].classId,
                             schoolId : classes[0].schoolId,
@@ -442,9 +439,9 @@ module.exports = new basicController(__filename).init({
                     pointNum : user.pointNum,
                     userUrl : user.userUrl,
                     token : user.token,
-                    yunAccout : user.yunAccout,
-                    yunPassword : imCore.getPasswordHash(user.yunAccout),
-                    webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
+                    yunAccout : "yunuser_" + user.userId,
+                    yunPassword : imCore.getPasswordHash("yunuser_" + user.userId),
+                    webUrl : webConfig.WEB_URL,
                     schools : retSchools
                 }
             });
@@ -503,9 +500,9 @@ module.exports = new basicController(__filename).init({
                     pointNum : user.pointNum,
                     userUrl : user.userUrl,
                     token : user.token,
-                    yunAccout : user.yunAccout,
-                    yunPassword : imCore.getPasswordHash(user.yunAccout),
-                    webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
+                    yunAccout : "yunuser_" + user.userId,
+                    yunPassword : imCore.getPasswordHash("yunuser_" + user.userId),
+                    webUrl : webConfig.WEB_URL,
                     schools : retSchools
                 }
             });
@@ -551,9 +548,9 @@ module.exports = new basicController(__filename).init({
                     pointNum : user.pointNum,
                     userUrl : user.userUrl,
                     token : user.token,
-                    yunAccout : user.yunAccout,
-                    yunPassword : imCore.getPasswordHash(user.yunAccout),
-                    webUrl : self.cacheManager.getCacheValue("WEB_URL", "WEB_URL"),
+                    yunAccout : "yunuser_" + user.userId,
+                    yunPassword : imCore.getPasswordHash("yunuser_" + user.userId),
+                    webUrl : webConfig.WEB_URL,
                     schools : retSchools
                 }
             });
@@ -604,9 +601,7 @@ module.exports = new basicController(__filename).init({
     uppic : function(req, res, next){
         var self = this;
         var userId = req.user.userId;
-        var nickName = req.user.nickName;
         var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "USER_HEAD");
-        var custName = req.user.custName;
         var form = new formidable.IncomingForm();   //创建上传表单
         form.encoding = 'utf-8';		//设置编辑
         form.uploadDir = uploadDir;	 //设置上传目录
@@ -630,8 +625,13 @@ module.exports = new basicController(__filename).init({
                 if(data && data.affectedRows == 1){
                     var yunUser = "yunuser_" + userId;
                     var yunPassword = imCore.getPasswordHash(yunUser);
-                    var realUrl = self.cacheManager.getCacheValue("WEB_URL", "WEB_URL") + obj.userUrl;
-                    imCore.changeUser(yunUser, custName, function(err, data){
+                    var realUrl = webConfig.WEB_URL + obj.userUrl;
+                    var yunName = req.user.custName + req.user.nickName;
+                    var groupId = req.user.groupId;
+                    if(groupId == 10){
+                        yunName = req.user.student.studentName + req.user.nickName;
+                    }
+                    imCore.changeUser(yunUser, yunName, function(err, data){
                         if(err){
                             self.logger.error(err);
                         }
@@ -801,6 +801,7 @@ module.exports = new basicController(__filename).init({
                 return next(new Error("该手机号码已注册"));
             }
             var groupId = user.groupId;
+            var yunName = user.custName + user.nickName;
             if(groupId == 10){
                 self.model['student'].listByUserId(user.userId, function(err, students){
                     if(err){
@@ -809,7 +810,7 @@ module.exports = new basicController(__filename).init({
                     if(!students || students.length <= 0){
                         return next(new Error("该家长未关联宝贝，不能注册"));
                     }
-                    self.active(user, userName, securityCode, password, res, next);
+                    self.activeByStudent(user, userName, students, securityCode, password, res, next);
                 });
             }else if(groupId == 20){
                 self.model['class'].listAllByTeacherId(user.userId, function(err, classes){
@@ -822,16 +823,58 @@ module.exports = new basicController(__filename).init({
                     if(classes.length > 1){
                         return next(new Error("该老师带班数量不唯一"));
                     }
-                    self.active(user, userName, securityCode, password, res, next);
+                    self.active(user, userName, yunName, securityCode, password, res, next);
                 });
             }else{
-                self.active(user, userName, securityCode, password, res, next);
+                self.active(user, userName, yunName, securityCode, password, res, next);
             }
-
         });
     },
 
-    active : function(user, userName, securityCode, password, res, next){
+    activeByStudent : function(user, userName, students, securityCode, password, res, next){
+        var self = this;
+        self.model['smsLog'].findOne(userName, securityCode, function (err, smsLog) {
+            if (err) {
+                return next(err);
+            }
+            if (!smsLog) {
+                return next(new Error("短信验证码错误"));
+            }
+            var date = new Date();
+            date.setMinutes(date.getMinutes() - 5);
+            if (smsLog.sendDate < moment(date).format("YYYY-MM-DD HH:mm:ss")) {
+                return next(new Error("短信验证码已过期"));
+            }
+            var userInfoArray = new Array();
+            for(var i = 0; i < students.length; i ++){
+                var student = students[i];
+                var yunUser = "yunuser_" + user.userId + "_" + student.studentId;
+                var yunName = student.studentName + user.nickName;
+                var yunPassword = imCore.getPasswordHash(yunUser);
+                userInfoArray.push({
+                    userid: yunUser,
+                    password: yunPassword,
+                    nick: yunName
+                });
+            }
+            imCore.regUsers(userInfoArray, function(err, yunRes){
+                if(err){
+                    return next(err);
+                }
+                self.model['user'].active(userName, password, function (err, data) {
+                    if (err) {
+                        return next(err);
+                    }
+                    res.json({
+                        code: "00",
+                        msg: "注册成功"
+                    });
+                });
+            });
+        });
+    },
+
+    active : function(user, userName, yunName, securityCode, password, res, next){
         var self = this;
         self.model['smsLog'].findOne(userName, securityCode, function (err, smsLog) {
             if (err) {
@@ -847,11 +890,11 @@ module.exports = new basicController(__filename).init({
             }
             var yunUser = "yunuser_" + user.userId;
             var yunPassword = imCore.getPasswordHash(yunUser);
-            imCore.regUser(yunUser, yunPassword, user.custName, function(err, yunRes){
+            imCore.regUser(yunUser, yunPassword, yunName, function(err, yunRes){
                 if(err){
                     return next(err);
                 }
-                self.model['user'].active(userName, password, yunUser, function (err, data) {
+                self.model['user'].active(userName, password, function (err, data) {
                     if (err) {
                         return next(err);
                     }
@@ -945,11 +988,9 @@ module.exports = new basicController(__filename).init({
             if(groupId == 10){
                 nickName = (gender == 1 ? "爸爸" : "妈妈");
             }else if(groupId == 20){
-                nickName = custName.substr(0, 1) + "老师";
+                nickName = "老师";
             }else if(groupId == 30 || groupId == 40 || groupId == 50){
-                nickName = custName.substr(0, 1) + "园长";
-            }else if(groupId == 99){
-                nickName = "超级管理员";
+                nickName = "园长";
             }
         }
         var userUrl = self.cacheManager.getCacheValue("FILE_DIR", "DEFAULT_USER_HEAD");
@@ -1050,9 +1091,9 @@ module.exports = new basicController(__filename).init({
                     }
                     nickName = (gender == 1 ? "爸爸" : "妈妈");
                 }else if(groupId == 20){
-                    nickName = custName.substr(0, 1) + "老师";
+                    nickName = "老师";
                 }else if(groupId == 30 || groupId == 40 || groupId == 50){
-                    nickName = custName.substr(0, 1) + "园长";
+                    nickName = "园长";
                 }
             }
             obj.nickName = nickName;
@@ -1104,21 +1145,96 @@ module.exports = new basicController(__filename).init({
 
     del : function(req, res, next){
         var self = this;
-        var userId = req.params.userId;
-        if(!userId){
+        var userId = parseInt(req.params.userId);
+        if(userId <= 0){
             return next(new Error("需删除的用户编号为空"));
         }
-        self.model["user"].delete(userId, function(err, data){
+        self.model["user"].findByKey(userId, function(err, user){
             if(err){
                 return next(err);
-            }else if (data.affectedRows !== 1){
-                return next(new Error("用户删除失败"));
             }
-            res.json({
-                code : "00",
-                msg : "用户删除成功"
-            });
+            if(!user){
+                return next(new Error("删除的用户信息不存在"));
+            }
+            var groupId = user.groupId;
+            if(groupId == 10){
+                self.model['student'].listByUserId(userId, function(err, students){
+                    if(err){
+                        return next(err);
+                    }
+                    if(students && students.length > 0){
+                        return next(new Error("该家长已关联宝贝，不允许删除"));
+                    }
+                    self.delUserAndYun(2, userId, res, next);
+                });
+            }else if(groupId == 20){
+                self.model['class'].listAllByTeacherId(userId, function(err, classes) {
+                    if (err) {
+                        return next(err);
+                    }
+                    if (classes && classes.length > 0) {
+                        return next(new Error("该老师已绑定班级，不允许删除"));
+                    }
+                    self.delUserAndYun(user.state, userId, res, next);
+                });
+            }else if(groupId == 30){
+                self.model['school'].listByPrincipalId(userId, function(err, schools){
+                    if(err){
+                        return next(err);
+                    }
+                    if(schools && schools.length > 0){
+                        return next(new Error("该园长已绑定园所，不允许删除"));
+                    }
+                    self.delUserAndYun(user.state, userId, res, next);
+                });
+            }else if(groupId == 40){
+                self.model['school'].listBrandByGroupId(userId, function(err, brands){
+                    if(err){
+                        return next(err);
+                    }
+                    if(brands && brands.length > 0){
+                        return next(new Error("该集团园长已绑定品牌，不允许删除"));
+                    }
+                    self.delUserAndYun(user.state, userId, res, next);
+                });
+            }else{
+                self.delUserAndYun(user.state, userId, res, next);
+            }
         });
+    },
+
+    delUserAndYun : function(state, userId, res, next){
+        var self = this;
+        if(state == 1){
+            imCore.delUsers("yunuser_" + userId, function(err, data){
+                if(err){
+                    return next(err);
+                }
+                self.model["user"].delete(userId, function(err, data){
+                    if(err){
+                        return next(err);
+                    }else if (data.affectedRows !== 1){
+                        return next(new Error("用户删除失败"));
+                    }
+                    res.json({
+                        code : "00",
+                        msg : "用户删除成功"
+                    });
+                });
+            });
+        }else{
+            self.model["user"].delete(userId, function(err, data){
+                if(err){
+                    return next(err);
+                }else if (data.affectedRows !== 1){
+                    return next(new Error("用户删除失败"));
+                }
+                res.json({
+                    code : "00",
+                    msg : "用户删除成功"
+                });
+            });
+        }
     },
 
     show : function(req, res, next){
@@ -1244,6 +1360,78 @@ module.exports = new basicController(__filename).init({
                     data : teacher
                 });
             });
+        });
+    },
+
+    syncYun : function(req, res, next){
+        var self = this;
+        var yunUser = req.params.yunUser;
+        if(!yunUser){
+            return next("云帐号不能为空");
+        }
+        var yunInfo = yunUser.split("_");
+        if(yunInfo.length < 2){
+            return next("云帐号格式不正确【yunuser_xx】或【yunuser_xx_xx】");
+        }
+        var userId = parseInt(yunInfo[1]);
+        self.model['user'].findByKey(userId, function(err, user){
+            if(err){
+                return next(err);
+            }
+            if(!user){
+                return next(new Error("用户信息不存在"));
+            }
+            var groupId = user.groupId;
+            if(groupId == 10){
+                if(yunInfo.length != 3){
+                    return next(new Error("云帐号格式不正确，家长用户格式为【yunuser_xx_xx】"));
+                }
+                var studentId = parseInt(yunInfo[2]);
+                self.model['student'].findByStudentId(studentId, function(err, student){
+                    if(err){
+                        return next(err);
+                    }
+                    if(!student){
+                        return next(new Error("学生信息不存在"));
+                    }
+                    var yunName = student.studentName + user.nickName;
+                    self.syncToYun(yunUser, yunName, res, next);
+                });
+            }else{
+                var yunName = user.custName + user.nickName;
+                self.syncToYun(yunUser, yunName, res, next);
+            }
+
+        })
+
+    },
+
+    syncToYun : function(yunUser, yunName, res, next){
+        imCore.delUsers(yunUser, function(err, data){
+            if(err){
+                return next(err);
+            }
+            var yunPassword = imCore.getPasswordHash(yunUser);
+            imCore.regUser(yunUser, yunPassword, yunName, function(err, data){
+                if(err){
+                    return next(err);
+                }
+                res.json({
+                    code : "00",
+                    data : "云帐号同步成功",
+                    syncInfo : data
+                });
+            });
+        });
+    },
+
+    getYun : function(req, res, next){
+        var yunUser = req.params.yunUser;
+        imCore.getUser(yunUser, function (err, data) {
+            if (err) {
+                return next(err);
+            }
+            res.json(JSON.stringify(data));
         });
     }
 });
