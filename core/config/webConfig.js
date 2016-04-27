@@ -2,7 +2,7 @@
  * Created by pz on 16/1/27.
  */
 var webConfig = {
-    APP_PORT : 3002,
+    APP_PORT : 3001,
     WEB_URL : "http://120.25.102.158:3002/xljy/",
     STATICPATH: [
         {

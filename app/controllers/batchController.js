@@ -137,7 +137,7 @@ module.exports = new basicController(__filename).init({
         }, function executePostMethod(config, callback) {
             if (config.postMethod && config.postMethod != "") {
                 log.info("batchId=[" + batchId + "],执行method=" + config.postMethod);
-                eval("importUtils." + config.postMethod + "(" + batchId + ")");
+                eval("importUtils." + config.postMethod + "('" + batchId + "')");
             } else {
                 log.info("batchId=[" + batchId + "],没有配置postMethod");
             }

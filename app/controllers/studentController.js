@@ -172,9 +172,6 @@ module.exports = new basicController(__filename).init({
         if(!cardNum){
             return next(new Error("学生证件号码不能为空"));
         }
-        if(!address){
-            return next(new Error("学生联系地址不能为空"));
-        }
         if(!gender){
             return next(new Error("学生性别不能为空"));
         }

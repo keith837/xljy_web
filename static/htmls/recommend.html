@@ -167,11 +167,12 @@
 
                 }},
                 {"mDataProp": function(obj){
-                    if(obj.consultLink!=null && obj.consultLink!=""){
-                        return "<a href='"+obj.consultLink+"'>"+obj.consultLink.substring(0, 20)+"</a>";
+                    if( obj.consultLink=="recom.html"){
+                        return "<a href='recom.html?consultId="+obj.consultId+"'>recom.html</a>";
                     }else{
                         //recom.html?consultId="+obj.consultId+"
-                        return "<a href='recom.html?consultId="+obj.consultId+"'>recom.html</a>";
+                        return "<a href='"+obj.consultLink+"'>"+obj.consultLink.substring(0, 20)+"</a>";
+
                     }
 
                 }},
