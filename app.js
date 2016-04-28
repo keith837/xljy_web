@@ -41,10 +41,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(busboy());
 
-webConfig.PRINT_ACCESS_LOG && app.use(log4js.connectLogger(loggerCall('normal'), {
-    level: log4js.levels.INFO,
-    format: ':method :url'
-}));
+app.use(log4js.connectLogger(logger, {level:'auto', format:':method :url'}));
+
 //登录校验
 app.use(loginFilter);
 
