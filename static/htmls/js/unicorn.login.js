@@ -49,6 +49,7 @@ $(document).ready(function () {
                     //console.info(data);
                     $.cookie('token', data.data.token);
                     $.cookie('userId', data.data.userId);
+                    $.cookie('custName', data.data.custName);
                     $.cookie('groupId', data.data.groupId);
                     swal({   title: "登陆成功!",   text: "登陆成功",  type: "success", timer: 1000,   showConfirmButton: true },function(){
                         setTimeout(function(){
