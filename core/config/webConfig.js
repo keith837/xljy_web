@@ -3,7 +3,7 @@
  */
 var webConfig = {
     APP_PORT : 3001,
-    WEB_URL : "http://120.25.102.158:3002/xljy/",
+    WEB_URL : "http://120.25.102.158:3001/xljy/",
     STATICPATH: [
         {
             webpath: "/xljy",
