@@ -65,6 +65,9 @@ async.waterfall([
             app.cacheManager = require("./core/utils/cache/cacheManager").init(cb);
         },
         function (cb) {
+            app.get("/", function(req, res, next){
+                return res.redirect(webConfig.contextPath + "/main.html");
+            });
             controllerEnter.bootControllers(app);
             logger.info("载入/controllers 下控制器 完成..");
             //错误处理中间件
