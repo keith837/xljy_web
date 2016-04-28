@@ -288,9 +288,6 @@ module.exports = new basicController(__filename).init({
                 });
             });
         });
-
-
-
     },
 
     teachers : function(req, res, next){
