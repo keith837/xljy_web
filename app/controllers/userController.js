@@ -516,17 +516,19 @@ module.exports = new basicController(__filename).init({
             if(err){
                 return next(err);
             }
-            if(!schools || schools.length <= 0){
+            if(!isWeb && (!schools || schools.length <= 0)){
                 return next(new Error("园所信息为空"));
             }
             var retSchools = new Array();
-            for(var i = 0; i < schools.length; i ++){
-                retSchools.push({
-                    schoolId : schools[i].schoolId,
-                    schoolName : schools[i].schoolName,
-                    schoolDesc : schools[i].schoolDesc,
-                    schoolUrl : schools[i].schoolUrl
-                });
+            if(schools && schools.length >= 0){
+                for(var i = 0; i < schools.length; i ++){
+                    retSchools.push({
+                        schoolId : schools[i].schoolId,
+                        schoolName : schools[i].schoolName,
+                        schoolDesc : schools[i].schoolDesc,
+                        schoolUrl : schools[i].schoolUrl
+                    });
+                }
             }
             var date = new Date();
             date.setDate(date.getDate() + 7);

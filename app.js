@@ -41,10 +41,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(busboy());
 
-webConfig.PRINT_ACCESS_LOG && app.use(log4js.connectLogger(loggerCall('normal'), {
-    level: log4js.levels.INFO,
-    format: ':method :url'
-}));
+app.use(log4js.connectLogger(logger, {level:'auto', format:':method :url'}));
+
 //登录校验
 app.use(loginFilter);
 
@@ -67,6 +65,9 @@ async.waterfall([
             app.cacheManager = require("./core/utils/cache/cacheManager").init(cb);
         },
         function (cb) {
+            app.get("/", function(req, res, next){
+                return res.redirect(webConfig.contextPath + "/main.html");
+            });
             controllerEnter.bootControllers(app);
             logger.info("载入/controllers 下控制器 完成..");
             //错误处理中间件

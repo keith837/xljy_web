@@ -60,7 +60,10 @@ module.exports = new basicController(__filename).init({
                         recomm = new Array();
                         groupObject[data[x].doneCode] = recomm;
                     }
-                    data[x].consultLink=self.cacheManager.getCacheValue("WEB_URL", "WEB_URL")+"recom.html?consultId="+data[x].consultId;
+                    if(data[x].consultLink=="recom.html"){
+                        data[x].consultLink=self.cacheManager.getCacheValue("WEB_URL", "WEB_URL")+"recom.html?consultId="+data[x].consultId;
+                    }
+
                     recomm.push(data[x]);
                 }
                 var preDoneCode = doneCodeArr[0];

@@ -89,12 +89,15 @@ module.exports = new basicController(__filename).init({
         }
     },
 
-    retSchools : function(err, schools, res){
+    retSchools : function(err, schools, res, next){
         if (err) {
             return next(err);
         }
         if (!schools || schools.length <= 0) {
-            return next(new Error("该园长关联的园所信息为空"));
+            return res.json({
+                code : "00",
+                schools : []
+            });
         }
         var retSchools = new Array();
         for (var i = 0; i < schools.length; i++) {
@@ -285,9 +288,6 @@ module.exports = new basicController(__filename).init({
                 });
             });
         });
-
-
-
     },
 
     teachers : function(req, res, next){

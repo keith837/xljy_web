@@ -13,7 +13,7 @@ function checkLogin(req, res, next){
     //}
     for(var i = 0; i < filterUrls.length; i ++){
         var d=reqPath.length-filterUrls[i].codeValue.length;
-        if(reqPath.indexOf(filterUrls[i].codeValue) == 0 || (d>=0&&reqPath.lastIndexOf(filterUrls[i].codeValue)==d)){
+        if(reqPath == "/" || reqPath.indexOf(filterUrls[i].codeValue) == 0 || (d>=0&&reqPath.lastIndexOf(filterUrls[i].codeValue)==d)){
             logger.debug("当前请求URL【" + reqPath + "】无需登录");
             return next();
         }
