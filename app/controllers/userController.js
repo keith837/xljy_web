@@ -516,6 +516,9 @@ module.exports = new basicController(__filename).init({
             if(err){
                 return next(err);
             }
+            if(!isWeb && (!schools || schools.length <= 0)){
+                return next(new Error("园所信息为空"));
+            }
             var retSchools = new Array();
             if(schools && schools.length >= 0){
                 for(var i = 0; i < schools.length; i ++){
