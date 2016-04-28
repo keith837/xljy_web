@@ -89,7 +89,7 @@ module.exports = new basicController(__filename).init({
         }
     },
 
-    retSchools : function(err, schools, res){
+    retSchools : function(err, schools, res, next){
         if (err) {
             return next(err);
         }
