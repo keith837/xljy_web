@@ -1,6 +1,7 @@
-# Ignore everything in this directory 
+# Ignore everything in this directory
+# Except this file !.gitignore
 
 *
 !.gitignore
 
-# Except this file !.gitignore
+
