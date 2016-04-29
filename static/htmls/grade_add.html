@@ -39,10 +39,10 @@
                         <div class="container-fluid">
                             <div class="row-fluid">
                                 <form class="form-horizontal" name="gradeForm" id="gradeForm">
+                                    <input type="hidden" id="editType" name="editType" value="add" />
                                     <div class="control-group">
                                         <label class="control-label" for="gradeName">年级名称<span style="color: red;">*</span></label>
                                         <div class="controls">
-                                            <input type="hidden" id="editType" name="editType" value="add" />
                                             <input type="text" id="gradeName" name="gradeName" placeholder="年级名称" class="span3">
                                             <input type="text" id="gradeNameDisplay" style="display: none;" disabled="disabled" name="gradeNameDisplay" placeholder="年级名称" class="span3">
                                         </div>
@@ -153,6 +153,14 @@
             $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>新增年级</a>");
 
             $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
+            var options = [];
+            options.push({id: 1, text: "托班"});
+            options.push({id: 2, text: "小班"});
+            options.push({id: 3, text: "中班"});
+            options.push({id: 4, text: "大班"});
+            options.push({id: 5, text: "国际班"});
+            options.push({id: 6, text: "特长班"});
+            $("#gradeName").select2({data: options});
             loadSchool();
             initValidator();
         }

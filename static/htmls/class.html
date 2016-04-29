@@ -142,6 +142,7 @@
                 {"mDataProp": "classId"},
                 {"mDataProp": "schoolName"},
                 {"mDataProp": function(obj){
+                    console.info(obj);
                     if(obj.classUrl!=null) {
                         return "<img src='" + obj.classUrl + "'/>";
                     }else{
@@ -150,25 +151,7 @@
 
                 }},
                 {"mDataProp": "className"},
-                {"mDataProp": "gradeId",
-                    "render": function (data) {
-                        if (data == 1) {
-                            return "托班";
-                        } else if (data == 2) {
-                            return "小班";
-                        } else if (data == 3) {
-                            return "中班";
-                        } else if (data == 4) {
-                            return "大班";
-                        } else if (data == 5) {
-                            return "国际班";
-                        } else if (data == 6) {
-                            return "特长班";
-                        } else {
-                            return "其他";
-                        }
-                    }
-                },
+                {"mDataProp": "gradeName"},
                 {"mDataProp": "classDesc"},
                 {"mDataProp": "createDate"}
             ],
