@@ -84,13 +84,24 @@ module.exports = new basicController(__filename).init({
         var self = this;
         var id = parseInt(request.params.id);
         var userId = request.user.userId;
-        this.model['grade'].del(id, userId, function (err, data) {
-            if (err) {
+        if(id <= 0){
+            return next(new Error("年级编号不能为空"));
+        }
+        self.model[""].listClassByGradeId(id, function(err, classes){
+            if(err){
                 return next(err);
-            } else if (data.affectedRows !== 1) {
-                return next(self.Error("删除年级记录失败."));
             }
-            response.json({code: "00", msg: "删除年级记录成功."});
+            if(classes && classes.length >= 0){
+                return next(new Error("该年级已绑定班级，不允许删除"));
+            }
+            self.model['grade'].del(id, userId, function (err, data) {
+                if (err) {
+                    return next(err);
+                } else if (data.affectedRows !== 1) {
+                    return next(self.Error("删除年级记录失败."));
+                }
+                response.json({code: "00", msg: "删除年级记录成功."});
+            });
         });
     },
 });

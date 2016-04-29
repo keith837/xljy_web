@@ -92,6 +92,10 @@ Grade.del = function (id, userId, callback) {
     mysqlUtil.query("update XL_GRADE set state=0,doneDate=now(),oUserId=? where gradeId=? ", [userId, id], callback);
 }
 
+Grade.listClassByGradeId = function(gradeId, callback){
+    mysqlUtil.query("select * from XL_CLASS where state=1 and gradeId=?", [gradeId], callback);
+}
+
 
 Grade.add = function (grade, callback) {
     mysqlUtil.queryOne("select count(*) as total from XL_GRADE where gradeName=? and schoolId=? and state=1", [grade.gradeName, grade.schoolId], function (err, res) {
