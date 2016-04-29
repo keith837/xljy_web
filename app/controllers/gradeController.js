@@ -91,7 +91,7 @@ module.exports = new basicController(__filename).init({
             if(err){
                 return next(err);
             }
-            if(classes && classes.length >= 0){
+            if(classes && classes.length > 0){
                 return next(new Error("该年级已绑定班级，不允许删除"));
             }
             self.model['grade'].del(id, userId, function (err, data) {
