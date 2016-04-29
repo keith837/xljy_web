@@ -87,7 +87,7 @@ module.exports = new basicController(__filename).init({
         if(id <= 0){
             return next(new Error("年级编号不能为空"));
         }
-        self.model[""].listClassByGradeId(id, function(err, classes){
+        self.model["grade"].listClassByGradeId(id, function(err, classes){
             if(err){
                 return next(err);
             }
