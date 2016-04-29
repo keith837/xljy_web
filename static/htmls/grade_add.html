@@ -44,6 +44,7 @@
                                         <div class="controls">
                                             <input type="hidden" id="editType" name="editType" value="add" />
                                             <input type="text" id="gradeName" name="gradeName" placeholder="年级名称" class="span3">
+                                            <input type="text" id="gradeNameDisplay" style="display: none;" disabled="disabled" name="gradeNameDisplay" placeholder="年级名称" class="span3">
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -142,6 +143,9 @@
                     $("#schoolId").css("display", "none");
                     $("#schoolName").css("display", "");
 
+                    $('#gradeName').css("display", "none");
+                    $('#gradeNameDisplay').val(json.data.gradeName);
+                    $('#gradeNameDisplay').css("display", "");
                 }
             }, 'json');
         } else {
