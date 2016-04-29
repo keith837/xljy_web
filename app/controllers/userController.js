@@ -221,7 +221,7 @@ module.exports = new basicController(__filename).init({
         }else{
             return next(new Error("用户组" + groupId + "信息未定义"));
         }
-        self.model['userLogin'].logLogin([user.groupId,user.userId,user.nickName,user.billId,user.custName,user.channel,user.source,user.source,clientId,null]);
+        self.model['userLogin'].logLogin([user.groupId,user.userId,user.nickName,user.userName,user.custName,user.channel,user.source,user.source,clientId,null]);
     },
 
     //家长登录
@@ -596,7 +596,7 @@ module.exports = new basicController(__filename).init({
                 self.adminLogin(true, user, res, next);
             }
             var clientId = getClientIp(req);
-            self.model['userLogin'].logLogin([user.groupId,user.userId,user.nickName,user.billId,user.custName,4,2,2,clientId,null]);
+            self.model['userLogin'].logLogin([user.groupId,user.userId,user.nickName,user.userName,user.custName,4,2,2,clientId,null]);
         });
     },
 
