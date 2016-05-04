@@ -323,7 +323,7 @@ Class.listStudentByClass = function(classId, callback){
 }
 
 Class.listStudentAndDeviceByClass = function(classId, callback){
-    var selectSql = "select A.*, B.deviceId,B.deviceSign,B.deviceName from XL_STUDENT A LEFT JOIN XL_DEVICE B on A.studentId=B.studentId where A.state = 1 and B.state=1 and A.classId = ?";
+    var selectSql = "select A.*, B.deviceId,B.deviceSign,B.deviceName from XL_STUDENT A LEFT JOIN XL_DEVICE B on A.studentId=B.studentId where A.state = 1 and (B.state=1 or B.state is null) and A.classId = ?";
     mysqlUtil.query(selectSql, [classId], callback);
 }
 
