@@ -1421,7 +1421,7 @@ module.exports = new basicController(__filename).init({
                     }
                     return res.json({
                         code : "00",
-                        msg : "同步成功",
+                        msg : "同步成功,家长帐号" + jzCount + "个,老师帐号" + lsCount + "个,园长帐号" + xzCount + "个",
                         syncData : userInfoArray,
                         syncResult : yunRes
                     });
