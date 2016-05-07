@@ -1005,12 +1005,13 @@ module.exports = new basicController(__filename).init({
 
     addBatchSports : function(req, res, next){
         var self = this;
+        var logger = self.logger;
         var studentId = parseInt(req.params.studentId);
         if(studentId <= 0){
             return next(new Error("学生编号不能为空"));
         }
         var datas = req.body.datas;
-        console.log(datas);
+        self.logger.debug(req.body);
         if(!datas){
             return next(new Error("上传运动量数据不能为空"));
         }else{
