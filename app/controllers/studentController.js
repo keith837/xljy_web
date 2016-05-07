@@ -929,6 +929,8 @@ module.exports = new basicController(__filename).init({
         var dataType = req.query.dataType;
         if(dataType){
             dataType = parseInt(dataType);
+        }else{
+            dataType = 0;
         }
         var startTime = req.query.startTime;
         var timeMonth = req.query.timeMonth;
@@ -939,8 +941,13 @@ module.exports = new basicController(__filename).init({
         if(!startTime && !timeMonth && !timeWeek && !timeDay && !timeHour){
             return next(new Error("传人参数不合法"));
         }
-        if(startTime){
+        var minStartTime = moment();
+        minStartTime.year(minStartTime.year() - 1);
+        var minTimes = minStartTime.toDate().getTime();
+        if(startTime && startTime > minTimes){
             startTime = parseInt(startTime);
+        }else{
+            startTime = minTimes;
         }
         if(endTime){
             endTime = parseInt(endTime);
@@ -958,13 +965,100 @@ module.exports = new basicController(__filename).init({
         if(timeHour){
             qryObj.timeHour = timeHour;
         }
+        if(studentId){
+            qryObj.studentId = studentId;
+        }
         self.model["sports"].list(dataType, qryObj, startTime, endTime, function(err, sports){
             if(err){
                 return next(err);
             }
+            if(dataType <= 0 || dataType > 5){
+                return res.json({
+                    code : "00",
+                    data : sports
+                });
+            }
+            var keyStr;
+            var intervalTime;
+            var unitTime;
+            var formatStr;
+            var startMoment = moment(startTime);
+            var endMoment = moment(endTime);
+            if(dataType == 1){
+                keyStr = "timeMinute";
+                unitTime = "m";
+                intervalTime = 30;
+                if(startMoment.minute() < 30){
+                    startMoment.minute(0);
+                }else{
+                    startMoment.minute(30);
+                }
+                formatStr = "YYYYMMDDHH";
+            }else if(dataType == 2){
+                keyStr = "timeHour";
+                unitTime = "h";
+                intervalTime = 1;
+                formatStr = "YYYYMMDDHH";
+                startMoment.minute(0);
+                startMoment.second(0);
+                startMoment.millisecond(0);
+            }else if(dataType == 3){
+                keyStr = "timeDay"
+                unitTime = "d";
+                intervalTime = 1;
+                formatStr = "YYYYMMDD";
+                startMoment.hour(0);
+                startMoment.minute(0);
+                startMoment.second(0);
+                startMoment.millisecond(0);
+            }else if(dataType == 4){
+                unitTime = "d";
+                intervalTime = 7;
+                keyStr = "timeWeek";
+                formatStr = "YYYY";
+                startMoment.isoWeekday(1);
+                startMoment.hour(0);
+                startMoment.minute(0);
+                startMoment.second(0);
+                startMoment.millisecond(0);
+            }else if(dataType == 5){
+                unitTime = "M";
+                keyStr = "timeMonth"
+                intervalTime = 1
+                formatStr = "YYYYMM";
+                startMoment.date(1);
+                startMoment.hour(0);
+                startMoment.minute(0);
+                startMoment.second(0);
+                startMoment.millisecond(0);
+            }
+            var sprotObj = new Object();
+            if(sports && sports.length > 0){
+                for(var i = 0; i < sports.length; i ++){
+                    sprotObj[sports[i][keyStr]] = sports[i];
+                }
+            }
+            console.log(sprotObj);
+            var retSports = new Array();
+            while(startMoment <= endMoment){
+                var formatKey = startMoment.format(formatStr);
+                if(dataType == 1){
+                    formatKey += (startMoment.minute() < 30 ? 1 : 2);
+                }else if(dataType == 4){
+                    formatKey += startMoment.week();
+                }
+                var obj = sprotObj[formatKey];
+                if(!obj){
+                    obj = new Object();
+                    obj[keyStr] = formatKey;
+                    obj.calValue = 0;
+                }
+                retSports.push(obj);
+                startMoment.add(intervalTime, unitTime);
+            }
             res.json({
                 code : "00",
-                data : sports
+                data : retSports
             });
         });
     },
