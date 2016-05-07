@@ -6,6 +6,8 @@
 var basicController = require("../../core/utils/controller/basicController");
 var formidable = require("formidable");
 var path = require("path");
+var webConfig = require("../../core/config/webConfig");
+
 module.exports = new basicController(__filename).init({
     weblist: function (request, response, next) {
         var self = this;
@@ -61,7 +63,7 @@ module.exports = new basicController(__filename).init({
                         groupObject[data[x].doneCode] = recomm;
                     }
                     if(data[x].consultLink=="recom.html"){
-                        data[x].consultLink=self.cacheManager.getCacheValue("WEB_URL", "WEB_URL")+"recom.html?consultId="+data[x].consultId;
+                        data[x].consultLink= webConfig.WEB_URL +"recom.html?consultId="+data[x].consultId;
                     }
 
                     recomm.push(data[x]);
