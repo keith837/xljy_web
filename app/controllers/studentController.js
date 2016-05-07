@@ -1040,6 +1040,28 @@ module.exports = new basicController(__filename).init({
                 data : data
             });
         });
+    },
+
+    delSports : function(req, res, next){
+        var self = this;
+        var studentId = req.body.studentId;
+        var reversion = req.body.reversion;
+        var obj = new Object();
+        if(studentId){
+            obj.studentId = studentId;
+        }
+        if(reversion){
+            obj.reversion = reversion;
+        }
+        self.model["sports"].delete(obj, function(err, data){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                msg : "删除成功:" + JSON.stringify(data)
+            });
+        });
     }
 });
 

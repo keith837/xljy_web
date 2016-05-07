@@ -31,6 +31,16 @@ Sports.listByCond = function(whereSql, args, callback){
     mysqlUtil.query(sql, args, callback);
 }
 
+Sports.delete = function(obj, callback){
+    var sql = "delete from XL_SPORTS where 1=1";
+    var tempArgs = new Array();
+    for(var key in obj){
+        sql += " and " + key + "=?";
+        tempArgs.push(obj[key]);
+    }
+    mysqlUtil.query(sql, tempArgs, callback);
+}
+
 Sports.list = function(dataType, qryObj, startTime, endTime, callback){
     var whereSql = " 1=1 ";
     var tempArgs = new Array();

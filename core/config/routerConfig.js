@@ -440,6 +440,11 @@ var routerConfig = {
                 "url": "/api/student/activities/:studentId",
                 "method": "post",
                 "description": "批量上传运动量"
+            },
+            "delSports" : {
+                "url": "/api/student/activities",
+                "method": "delete",
+                "description": "删除运动量"
             }
         },
 
