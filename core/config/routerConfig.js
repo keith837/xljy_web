@@ -137,6 +137,11 @@ var routerConfig = {
                 "method": "put",
                 "description": "同步云信息"
             },
+            syncAllYun : {
+                "url": "/api/user/syncYuns",
+                "method": "put",
+                "description": "全量同步云信息"
+            },
             getYun :{
                 "url": "/api/user/getYun/:yunUser",
                 "method": "get",

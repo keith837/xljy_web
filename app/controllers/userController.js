@@ -1365,6 +1365,71 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    syncAllYun : function(req, res, next){
+        var self = this;
+        self.model['user'].queryUser(function(err, users){
+            if(err){
+                return next(err);
+            }
+            var userInfoArray = new Array();
+            var lsCount = 0;
+            var xzCount = 0;
+            var jzCount = 0;
+            if(users && users.length > 0){
+                for(var i = 0; i < users.length; i ++){
+                    var yunName = users[i].custName + users[i].nickName;
+                    var yunUser = "yunuser_" + users[i].userId;
+                    var yunPassword = imCore.getPasswordHash(yunUser);
+                    if(users[i].groupId == 20){
+                        lsCount ++;
+                    }else{
+                        xzCount ++;
+                    }
+                    userInfoArray.push({
+                        userid: yunUser,
+                        password: yunPassword,
+                        nick: yunName
+                    });
+                }
+            }
+            self.model['student'].queryAll(function(err, students){
+                if(err){
+                    return next(err);
+                }
+                if(students && students.length > 0){
+                    for(var i = 0; i < students.length; i ++){
+                        jzCount ++;
+                        var yunUser = "yunuser_" + students[i].userId + "_" + students[i].studentId;
+                        var yunName = students[i].studentName + students[i].nickName;
+                        var yunPassword = imCore.getPasswordHash(yunUser);
+                        userInfoArray.push({
+                            userid: yunUser,
+                            password: yunPassword,
+                            nick: yunName
+                        });
+                    }
+                }
+                if(userInfoArray.length <= 0){
+                    return res.json({
+                        code : "00",
+                        msg : "查询需同步帐号信息为空"
+                    });
+                }
+                imCore.regUsers(userInfoArray, function(err, yunRes){
+                    if(err){
+                        return next(err);
+                    }
+                    return res.json({
+                        code : "00",
+                        msg : "同步成功",
+                        syncData : userInfoArray,
+                        syncResult : yunRes
+                    });
+                });
+            });
+        });
+    },
+
     syncYun : function(req, res, next){
         var self = this;
         var yunUser = req.params.yunUser;
@@ -1403,9 +1468,7 @@ module.exports = new basicController(__filename).init({
                 var yunName = user.custName + user.nickName;
                 self.syncToYun(yunUser, yunName, res, next);
             }
-
-        })
-
+        });
     },
 
     syncToYun : function(yunUser, yunName, res, next){

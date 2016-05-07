@@ -1,6 +1,10 @@
 var Student = module.exports;
 var mysqlUtil = require("../../../core/utils/pool/mysql/mysqlPool");
 
+Student.queryAll = function(callback){
+    mysqlUtil.query("select A.studentName,C.userId,C.nickName,A.studentId from XL_STUDENT A, XL_USER_STUDENT_REL B, XL_USER C WHERE A.studentId=B.studentId and B.userId=C.userId and A.state=1 and B.state=1 and C.state=1 and C.groupId = 10", [], callback);
+}
+
 Student.listByUserId = function (userId, callback) {
     mysqlUtil.query("select A.* from XL_STUDENT A, XL_USER_STUDENT_REL B WHERE A.studentId=B.studentId and A.state=1 and B.state=1 and B.userId=?", [userId], callback);
 }

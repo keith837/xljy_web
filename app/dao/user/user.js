@@ -61,6 +61,10 @@ User.modifyPwd = function(userName, password, callback){
     mysqlUtil.query("update XL_USER set doneDate = now(),password=? where userName = ? and state!=0", [password, userName], callback);
 }
 
+User.queryUser = function(callback){
+    mysqlUtil.query("select * from XL_USER where state = 1 and groupId != 10", [], callback);
+}
+
 User.queryNum = function(obj, custNameOrBillId, schoolIds, callback){
     var whereSql = " 1=1 ";
     var args = new Array();
