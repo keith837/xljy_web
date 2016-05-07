@@ -1026,8 +1026,8 @@ module.exports = new basicController(__filename).init({
         for(var i = 0; i < datas.length; i++){
             var time = datas[i].time;
             var calValue = datas[i].calValue;
-            if(!time || !calValue){
-                return next(new Error("参数不合法"));
+            if(!time || (!calValue && calValue != 0)){
+                return next(new Error("参数不合法：" + JSON.stringify(datas[i])));
             }
             sportsArray.push(parseSports(reversion, studentId, time, calValue, currMomont.toDate()));
         }
