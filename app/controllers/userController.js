@@ -4,6 +4,7 @@ var jwt = require("jwt-simple");
 var moment = require('moment');
 var formidable = require("formidable");
 var path = require("path");
+var async = require("async");
 var imCore = require("../../core/utils/alim/imCore.js");
 var pushCore = require("../../core/utils/alim/pushCore");
 var webConfig = require("../../core/config/webConfig");
@@ -1415,15 +1416,27 @@ module.exports = new basicController(__filename).init({
                         msg : "查询需同步帐号信息为空"
                     });
                 }
-                imCore.regUsers(userInfoArray, function(err, yunRes){
-                    if(err){
+
+                var index = Math.ceil(userInfoArray.length / 100);
+                var keys = [];
+                for (var k = 0; k < index; k++) {
+                    var userinfos = userInfoArray.slice(k * 100, (k + 1) * 100);
+                    keys.push(userinfos);
+                }
+
+                async.concat(keys, function (key, done) {
+                    imCore.regUsers(key, function (err, yunRes) {
+                        done(err, yunRes);
+                    });
+                }, function (err, values) {
+                    if (err) {
                         return next(err);
                     }
                     return res.json({
-                        code : "00",
-                        msg : "同步成功",
-                        syncData : userInfoArray,
-                        syncResult : yunRes
+                        code: "00",
+                        msg: "同步成功",
+                        syncData: userInfoArray,
+                        syncResult: values
                     });
                 });
             });
