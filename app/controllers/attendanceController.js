@@ -71,7 +71,7 @@ module.exports = new basicController(__filename).init({
                 });
                 return res.json({
                     code : "00",
-                    data : "进出园信息录入成功"
+                    msg : "进出园信息录入成功"
                 });
             });
         });
