@@ -3,8 +3,13 @@ var mysqlUtil = require("../../../core/utils/pool/mysql/mysqlPool");
 var Attendance = module.exports;
 
 Attendance.save = function(args, callback){
-    var sql = "insert into XL_ATTENDANCE(schoolId,classId,attendanceDate,attendanceType,objId,attendanceFlag,attendanceTime,state,createDate,doneDate,remark)";
+    var sql = "insert into XL_ATTENDANCE(schoolId,classId,attendanceDate,attendanceType,objId,comeDate,leaveDate,state,createDate,doneDate,remark)";
     sql += " values(?,?,?,?,?,?,?,1,now(),now(),?)";
+    mysqlUtil.query(sql, args, callback);
+}
+
+Attendance.saveCheckTime = function(args, callback){
+    var sql = "insert into XL_CHECK_TIME(deviceSign,checkFlag,checkTime,createDate) values (?,?,?,now())";
     mysqlUtil.query(sql, args, callback);
 }
 

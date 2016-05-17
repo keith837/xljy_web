@@ -81,7 +81,7 @@ Class.countTeacherByClassId = function(classId, callback){
 }
 
 Class.findGradeByClassId = function(classId, callback){
-    var sql = "select B.*, C.userId,C.userName,C.custName from XL_CLASS A, XL_GRADE B, XL_USER C where A.state=1 and B.state=1 and C.state=1 and A.gradeId=B.gradeId and A.tUserId=C.userId and A.classId=?";
+    var sql = "select B.*, C.* from XL_CLASS A, XL_GRADE B, XL_USER C where A.state=1 and B.state=1 and C.state=1 and A.gradeId=B.gradeId and A.tUserId=C.userId and A.classId=?";
     mysqlUtil.queryOne(sql, [classId], callback);
 }
 
