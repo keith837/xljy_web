@@ -80,6 +80,11 @@ Class.countTeacherByClassId = function(classId, callback){
     mysqlUtil.queryOne("select count(*) as total from XL_CLASS_TEACHER_REL where state = 1 and isMaster = 0 and classId = ?", [classId], callback);
 }
 
+Class.findGradeByClassId = function(classId, callback){
+    var sql = "select B.*, C.userId,C.userName,C.custName from XL_CLASS A, XL_GRADE B, XL_USER C where A.state=1 and B.state=1 and C.state=1 and A.gradeId=B.gradeId and A.tUserId=C.userId and A.classId=?";
+    mysqlUtil.queryOne(sql, [classId], callback);
+}
+
 Class.findRelByClassAndTeacherId = function(classId, tUserId, callback){
     mysqlUtil.queryOne("select * from XL_CLASS_TEACHER_REL where state=1 and classId=? and tUserId=?", [classId, tUserId], callback);
 }

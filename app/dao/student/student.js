@@ -22,7 +22,7 @@ Student.findStudentInfo = function(studentId, callback){
 }
 
 Student.findParentByStudentId = function(studentId, callback){
-    var sql = "select B.* from XL_USER_STUDENT_REL A, XL_USER B where A.userId=B.userId and A.state=1 and B.state=1 and A.studentId=?";
+    var sql = "select B.* from XL_USER_STUDENT_REL A, XL_USER B where A.userId=B.userId and A.state=1 and B.state!=0 and A.studentId=?";
     mysqlUtil.query(sql, [studentId], callback);
 }
 

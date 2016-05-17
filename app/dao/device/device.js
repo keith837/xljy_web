@@ -150,3 +150,8 @@ Device.queryDetail = function (id, callback) {
     var sql = "select c.schoolId,c.schoolName,b.classId,b.className,a.studentName,m.* from XL_DEVICE m, XL_STUDENT a, XL_CLASS b, XL_SCHOOL c where m.studentId = a.studentId and a.classId = b.classId and a.schoolId = c.schoolId and m.deviceId=?";
     mysqlUtil.query(sql, [id], callback);
 }
+
+Device.findByMacAddr = function(macAddr, callback){
+    var sql = "select B.* from XL_DEVICE A, XL_STUDENT B WHERE A.state=1 and B.state=1 and A.studentId = B.studentId and A.deviceSign=?";
+    mysqlUtil.queryOne(sql, [macAddr], callback);
+}

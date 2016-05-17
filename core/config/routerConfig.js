@@ -26,8 +26,15 @@ var routerConfig = {
                 "method": "get",
                 "description": "GET请求"
             }
+        },
 
-
+        attendance: {
+            "usedModel": ["device/device", "attendance/attendance", "student/student", "school/class"],
+            "attendance" : {
+                "url" : "/api/student/checkTime/:macAddr",
+                "method": "post",
+                "description": "学生出入园"
+            }
         },
 
         user: {
