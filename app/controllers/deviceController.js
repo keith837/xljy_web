@@ -105,7 +105,7 @@ module.exports = new basicController(__filename).init({
 
 function parseDevice(request) {
     var device = {};
-    device.deviceSign = request.body.deviceSign;
+    device.deviceSign = request.body.deviceSign ? request.body.deviceSign.toUpperCase() : "";
     device.deviceName = request.body.deviceName;
     device.studentId = parseInt(request.body.studentId);
     device.state = request.body.state;

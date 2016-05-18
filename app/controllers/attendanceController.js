@@ -10,6 +10,8 @@ module.exports = new basicController(__filename).init({
         var macAddr = req.params.macAddr;
         if(!macAddr || macAddr == ""){
             return next("mac地址不能为空");
+        }else{
+            macAddr = macAddr.toUpperCase();
         }
         var checkFlag = req.body.checkFlag;
         var checkTime = req.body.checkTime;
@@ -105,8 +107,21 @@ module.exports = new basicController(__filename).init({
                             var attndSubTime = attendanceDate.format("HH:mm:ss");
                             if(attndSubTime > grade.sComeDate && attndSubTime < grade.sLeaveDate){
                                 isSendFlag = true;
-                                SmsSendUtil.sendNoticeSms(grade.userName, "你班的" + studengInfo.studentName + "学生，在非放学时间离开学校，请尽快核实", function(data){
-                                    self.logger.info("给老师下发短信完成" + JSON.stringify(data));
+                                self.model["class"].listTeacherByClassId(studengInfo.classId, function(err, tUsers){
+                                    if(err){
+                                        self.logger.error("查询班级老师失败：", err);
+                                    }else{
+                                        if(!tUsers || tUsers.length <= 0){
+                                            self.logger.info("为查到需下发短信的班级老师洗信息");
+                                        }else{
+                                            for(var i = 0; i < tUsers.length; i ++){
+                                                self.logger.info("开始给老师【" + tUsers[i].custName + "-" + tUsers[i].userName + "】下发短信:");
+                                                SmsSendUtil.sendNoticeSms(tUsers[i].userName, "你班的" + studengInfo.studentName + "学生，在非放学时间离开学校，请尽快核实", function(data){
+                                                    self.logger.info("给老师下发短信完成：" + JSON.stringify(data));
+                                                });
+                                            }
+                                        }
+                                    }
                                 });
                                 /*if(allUsers != null && allUsers.length > 0){
                                     for(var i = 0; i < allUsers.length; i ++){
