@@ -108,13 +108,13 @@ module.exports = new basicController(__filename).init({
                                 SmsSendUtil.sendNoticeSms(grade.userName, "你班的" + studengInfo.studentName + "学生，在非放学时间离开学校，请尽快核实", function(data){
                                     self.logger.info("给老师下发短信完成" + JSON.stringify(data));
                                 });
-                                if(allUsers != null && allUsers.length > 0){
+                                /*if(allUsers != null && allUsers.length > 0){
                                     for(var i = 0; i < allUsers.length; i ++){
                                         SmsSendUtil.sendNoticeSms(allUsers[i].userName, "你家宝宝于" + dateStr + "," + (checkFlag == 1 ? "进入" : "离开") + "学校", function(data){
                                             self.logger.info("给家长下发短信完成" + JSON.stringify(data));
                                         });
                                     }
-                                }
+                                }*/
                             }
                         }
                     }
