@@ -1,4 +1,4 @@
-﻿﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>响亮教育管理平台</title>
@@ -205,6 +205,12 @@
                 }
                 saveOrUpdate(url, type, "#gradeForm","grade.html");
             }
+        });
+        $(".datetimepicker div table thead tr th").each(function(){
+            $(this).remove();
+        });
+        $(".datetimepicker div table tbody tr td").each(function(){
+            $(this).css("width", "225px");
         });
     })
 </script>
