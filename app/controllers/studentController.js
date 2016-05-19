@@ -1196,7 +1196,9 @@ module.exports = new basicController(__filename).init({
                 }
                 return res.json({
                     code : "00",
-                    data : lostId
+                    data : lostPicArgs,
+                    msg : "图片上传成功",
+                    lostId : lostId
                 });
             });
         });
@@ -1265,7 +1267,9 @@ module.exports = new basicController(__filename).init({
                     }
                     return res.json({
                         code : "00",
-                        data : lost
+                        msg : "发布宝贝丢失记录成功",
+                        data : lostPicArgs,
+                        lostId : lost,
                     });
                 });
             });
