@@ -229,7 +229,8 @@ module.exports = new basicController(__filename).init({
                     var inData = {
                         "ios": {
                             "alert": content,
-                            "category": noticeTypeId.toString()
+                            "category": noticeTypeId.toString(),
+                            "sound": "notificationCupcake.caf"
                         },
                         "android": {
                             "alert": content,

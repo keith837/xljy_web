@@ -357,7 +357,7 @@ var routerConfig = {
         },
 
         student : {
-            "usedModel": ["student/student", "student/sports", "school/class", "school/school", "student/studentLeave", "attendance/attendance", "user/user", 'device/device'],
+            "usedModel": ["student/student", "student/sports", "school/class", "school/school", "student/studentLeave", "attendance/attendance", "user/user", 'device/device', 'student/lost'],
             "select": {
                 "url": "/api/student/select/:studentId",
                 "method": "post",
@@ -457,6 +457,26 @@ var routerConfig = {
                 "url": "/api/student/activities",
                 "method": "delete",
                 "description": "删除运动量"
+            },
+            "lost" : {
+                "url": "/api/student/lost/:studentId",
+                "method": "post",
+                "description": "发布宝贝走失记录"
+            },
+            "upLostPic" : {
+                "url": "/api/student/upLostPic/:lostId",
+                "method": "post",
+                "description": "上传宝贝走失图片"
+            },
+            "nextLost" : {
+                "url": "/api/student/nextLost/:index",
+                "method": "get",
+                "description": "获取下条宝贝走失记录"
+            },
+            "upPosition" : {
+                "url": "/api/student/upPosition/:lostId",
+                "method": "post",
+                "description": "上传走失宝贝位置信息"
             }
         },
 

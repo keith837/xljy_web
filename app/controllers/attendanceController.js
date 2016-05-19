@@ -163,6 +163,7 @@ module.exports = new basicController(__filename).init({
                     "ios": {
                         "alert": content,
                         "category": noticeAction.codeKey,
+                        "sound": "notificationCupcake.caf",
                         "studentId": studengInfo.studentId,
                         "studentName": studengInfo.studentName,
                         "dateStr": dateStr,

@@ -4,6 +4,7 @@ var moment = require("moment");
 var formidable = require("formidable");
 var imCore = require("../../core/utils/alim/imCore.js");
 var path = require("path");
+var images = require("images");
 
 module.exports = new basicController(__filename).init({
     uppic : function(req, res, next){
@@ -564,6 +565,7 @@ module.exports = new basicController(__filename).init({
                         "ios": {
                             "alert": content,
                             "category": noticeAction.codeKey,
+                            "sound": "notificationCupcake.caf",
                             "studentId": studentId,
                             "studentName": studentName,
                             "startDate": startDate,
@@ -664,6 +666,7 @@ module.exports = new basicController(__filename).init({
                         "ios": {
                             "alert": content,
                             "category": noticeAction.codeKey,
+                            "sound": "notificationCupcake.caf",
                             "studentId": studentId,
                             "studentName": studentName,
                             "startDate": leave.startDate,
@@ -761,6 +764,7 @@ module.exports = new basicController(__filename).init({
                         "ios": {
                             "alert": content,
                             "category": noticeAction.codeKey,
+                            "sound": "notificationCupcake.caf",
                             "aUserId": leave.aUserId,
                             "studentId": leave.studentId,
                             "studentName": leave.studentName,
@@ -1156,7 +1160,198 @@ module.exports = new basicController(__filename).init({
                 msg : "删除成功:" + JSON.stringify(data)
             });
         });
+    },
+
+    upLostPic : function(req, res, next){
+        var self = this;
+        var lostId = req.params.lostId;
+        if(!lostId || lostId <= 0){
+            return next(new Error("学生走失记录编号不能为空"));
+        }
+        var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "STUDENT_LOST");
+        var form = new formidable.IncomingForm();   //创建上传表单
+        form.encoding = 'utf-8';		//设置编辑
+        form.uploadDir = uploadDir;	 //设置上传目录
+        form.keepExtensions = true;	 //保留后缀
+        form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
+        var userId = req.user.userId;
+        form.parse(req, function (err, fields, files) {
+            if(err) {
+                return next(err);
+            }
+            var sysDate = new Date();
+            var userId = req.user.userId;
+            var lostPicArgs = new Array();
+            for (var photos in files) {
+                var width = images(files[photos].path).width();
+                var height = images(files[photos].path).height();
+                lostPicArgs.push([path.normalize(files[photos].path).replace(/\\/g, '/'), width, height, null, 1, sysDate, sysDate, userId, lostId]);
+            }
+            if(lostPicArgs == null || lostPicArgs.length <= 0){
+                return next(new Error("图片不能为空"));
+            }
+            self.model['lost'].savePics(lostPicArgs, function(err, data){
+                if(err){
+                    return next(err);
+                }
+                return res.json({
+                    code : "00",
+                    data : lostId
+                });
+            });
+        });
+    },
+
+    lost : function(req, res, next){
+        var self = this;
+        var studentId = req.params.studentId;
+        if(!studentId || studentId <= 0){
+            return next(new Error("学生编号不能为空"));
+        }
+        self.model['student'].findByStudentId(studentId, function(err, student){
+            if(err){
+                return next(err);
+            }
+            if(!student){
+                return next(new Error("学生信息不存在"));
+            }
+            var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "STUDENT_LOST");
+            var form = new formidable.IncomingForm();   //创建上传表单
+            form.encoding = 'utf-8';		//设置编辑
+            form.uploadDir = uploadDir;	 //设置上传目录
+            form.keepExtensions = true;	 //保留后缀
+            form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
+            var userId = req.user.userId;
+            form.parse(req, function (err, fields, files) {
+                if(err){
+                    return next(err);
+                }
+                var features = fields.features;
+                if(!features){
+                    return next(new Error("学生特征不能为空"));
+                }
+                var lostDate = fields.lostDate;
+                if(!lostDate){
+                    return next(new Error("学生走失日期不能为空"));
+                }
+                var lostAddr = fields.lostAddr;
+                if(!lostAddr){
+                    return next(new Error("学生失踪地点不能为空"));
+                }
+                var contactBillId = fields.contactBillId;
+                if(!contactBillId){
+                    return next(new Error("联系电话不能为空"));
+                }
+                var studentAge = fields.studentAge;
+                if(!studentAge){
+                    studentAge = student.studentAge;
+                }
+                var gender = fields.gender;
+                if(!gender){
+                    gender = student.gender;
+                }
+                var remark = fields.remark;
+                var lostPicArgs = new Array();
+                var sysDate = new Date();
+                for (var photos in files) {
+                    var width = images(files[photos].path).width();
+                    var height = images(files[photos].path).height();
+                    lostPicArgs.push([path.normalize(files[photos].path).replace(/\\/g, '/'), width, height, null, 1, sysDate, sysDate, userId]);
+                }
+                var lostArgs = [student.schoolId, student.classId, studentId, student.studentName, studentAge, gender, features, lostDate, lostAddr, contactBillId, userId, remark];
+                self.model['lost'].save(lostArgs, lostPicArgs, function(err, lost){
+                    if(err){
+                        return next(err);
+                    }
+                    return res.json({
+                        code : "00",
+                        data : lost
+                    });
+                });
+            });
+        });
+    },
+
+    upPosition : function(req, res, next){
+        var self = this;
+        var lostId = req.params.lostId;
+        if(!lostId || lostId <= 0){
+            return next(new Error("学生走失记录编号不能为空"));
+        }
+        var positionX = req.body.positionX;
+        var positionY = req.body.positionY;
+        var address = req.body.address;
+        if(!address){
+            return next(new Error("上传地址不能为空"));
+        }
+        self.model['lost'].savePosition([lostId, positionX, positionY, address], function(err, data){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                msg : '位置信息上传成功'
+            });
+        });
+    },
+
+    nextLost : function(req, res, next){
+        var self = this;
+        var index = req.params.index;
+        if(!index || index < 0){
+            index = 0;
+        }else{
+            index = parseInt(index);
+        }
+        self.model['lost'].nextOne(index, function(err, studentLost){
+            if(err){
+                return next(err);
+            }
+            if(!studentLost && index > 0){
+                index = 0;
+                self.model['lost'].nextOne(index, function(err, studentLost){
+                    if(err){
+                        return next(err);
+                    }
+                    self.retLost(index, studentLost, res, next);
+                });
+            }else{
+                self.retLost(index, studentLost, res, next);
+            }
+        })
+    },
+
+    retLost : function(index, studentLost, res, next){
+        var self = this;
+        if(!studentLost){
+            if(index == 0){
+                index = -1;
+            }
+            return res.json({
+                code : "00",
+                data : studentLost,
+                index : index
+            });
+        }
+        self.model['device'].findByStudentId(studentLost.studentId, function(err, device){
+            if(err){
+                return next(err);
+            }
+            self.model['lost'].findPics(studentLost.lostId, function(err, lostPics){
+                if(err){
+                    return next(err);
+                }
+                studentLost.deviceSign = device ? device.deviceSign : null;
+                studentLost.lostPics = lostPics ? lostPics : [];
+                res.json({
+                    code : "00",
+                    data : studentLost,
+                    index : ++ index
+                })
+            });
+        });
     }
+
 });
 
 function parseSports(reversion, studentId, time, calValue, currDate) {
