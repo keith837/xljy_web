@@ -193,7 +193,7 @@ var routerConfig = {
             }
         },
         school : {
-            "usedModel": ["school/school","school/class", "student/studentLeave", "attendance/attendance"],
+            "usedModel": ["school/school","school/class", "student/studentLeave", "attendance/attendance", "student/sports"],
             "select": {
                 "url": "/api/school/select/:schoolId",
                 "method": "post",
@@ -481,7 +481,7 @@ var routerConfig = {
         },
 
         class : {
-            "usedModel": ["school/class", "student/student", "student/studentLeave", "attendance/attendance"],
+            "usedModel": ["school/class", "student/student", "student/studentLeave", "attendance/attendance", "student/sports"],
             "list": {
                 "url": "/api/class/list",
                 "method": "get",

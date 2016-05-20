@@ -363,10 +363,12 @@ module.exports = new basicController(__filename).init({
                     studentNum: 0,
                     leaveNum : 0,
                     attendanceNum : 0,
+                    sumCalValue : 0,
                     data : new Array()
                 });
             }
-            var currDate = moment().format("YYYY-MM-DD");
+            var dateMoment = moment();
+            var currDate = dateMoment.format("YYYY-MM-DD");
             self.model['studentLeave'].listByClassId(classId, currDate, function(err, leaves){
                 if(err){
                     return next(err);
@@ -406,13 +408,22 @@ module.exports = new basicController(__filename).init({
                             }
                         }
                     }
-                    res.json({
-                        code : "00",
-                        studentNum : students.length,
-                        leaveNum: leaveNum,
-                        attendanceNum: attendanceNum,
-                        data : students
-                    });
+                    var obj = new Object();
+                    obj.classId = classId;
+                    obj.timeDay = dateMoment.format("YYYYMMDD");
+                    self.model['sports'].sumByCond(obj, function(err, sports){
+                        if(err){
+                            return next(err);
+                        }
+                        res.json({
+                            code : "00",
+                            studentNum : students.length,
+                            leaveNum: leaveNum,
+                            attendanceNum : attendanceNum,
+                            sumCalValue : sports ? sports.sumCalValue : 0,
+                            data : students
+                        });
+                    })
                 });
             });
 

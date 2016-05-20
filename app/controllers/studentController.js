@@ -1085,18 +1085,26 @@ module.exports = new basicController(__filename).init({
         }else{
             calValue = parseInt(calValue);
         }
-        var currMomont = moment();
-        var reversion = currMomont.format("YYMMDDHHmmss") + Math.round(Math.random() * 899999 + 100000);
-        self.model["sports"].save(parseSports(reversion, studentId, time, calValue, currMomont.toDate()), function(err, data){
+        self.model["student"].findByStudentId(studentId, function(err, student){
             if(err){
                 return next(err);
             }
-            res.json({
-                code : "00",
-                data : {
-                    identifier : data.insertId,
-                    reversion : reversion
+            if(!student){
+                return next(new Error("学生信息不存在"));
+            }
+            var currMomont = moment();
+            var reversion = currMomont.format("YYMMDDHHmmss") + Math.round(Math.random() * 899999 + 100000);
+            self.model["sports"].save(parseSports(reversion, studentId, time, calValue, currMomont.toDate(), student), function(err, data){
+                if(err){
+                    return next(err);
                 }
+                res.json({
+                    code : "00",
+                    data : {
+                        identifier : data.insertId,
+                        reversion : reversion
+                    }
+                });
             });
         });
     },
@@ -1118,24 +1126,32 @@ module.exports = new basicController(__filename).init({
         if(!(datas instanceof Array) || datas.length <= 0){
             return next(new Error("参数不合法"));
         }
-        var currMomont = moment();
-        var reversion = currMomont.format("YYMMDDHHmmss") + Math.round(Math.random() * 899999 + 100000);
-        var sportsArray = new Array();
-        for(var i = 0; i < datas.length; i++){
-            var time = datas[i].time;
-            var calValue = datas[i].calValue;
-            if(!time || (!calValue && calValue != 0)){
-                return next(new Error("参数不合法：" + JSON.stringify(datas[i])));
-            }
-            sportsArray.push(parseSports(reversion, studentId, time, calValue, currMomont.toDate()));
-        }
-        self.model["sports"].saveBatch(studentId, reversion, sportsArray, function(err, data){
+        self.model["student"].findByStudentId(studentId, function(err, student){
             if(err){
                 return next(err);
             }
-            res.json({
-                code : "00",
-                data : data
+            if(!student){
+                return next(new Error("学生信息不存在"));
+            }
+            var currMomont = moment();
+            var reversion = currMomont.format("YYMMDDHHmmss") + Math.round(Math.random() * 899999 + 100000);
+            var sportsArray = new Array();
+            for(var i = 0; i < datas.length; i++){
+                var time = datas[i].time;
+                var calValue = datas[i].calValue;
+                if(!time || (!calValue && calValue != 0)){
+                    return next(new Error("参数不合法：" + JSON.stringify(datas[i])));
+                }
+                sportsArray.push(parseSports(reversion, studentId, time, calValue, currMomont.toDate(), student));
+            }
+            self.model["sports"].saveBatch(studentId, reversion, sportsArray, function(err, data){
+                if(err){
+                    return next(err);
+                }
+                res.json({
+                    code : "00",
+                    data : data
+                });
             });
         });
     },
@@ -1358,7 +1374,7 @@ module.exports = new basicController(__filename).init({
 
 });
 
-function parseSports(reversion, studentId, time, calValue, currDate) {
+function parseSports(reversion, studentId, time, calValue, currDate, student) {
     var momentDate = moment(time);
     var timeMonth = parseInt(momentDate.format("YYYYMM"));
     var timeDay = parseInt(momentDate.format("YYYYMMDD"));
@@ -1366,5 +1382,5 @@ function parseSports(reversion, studentId, time, calValue, currDate) {
     var timeHour = parseInt(timeHourStr);
     var timeWeek = parseInt(momentDate.format("YYYY") + momentDate.week());
     var timeMinute = parseInt(timeHourStr + (momentDate.minute() < 30 ? 1 : 2));
-    return [reversion, studentId, time, momentDate.toDate(), calValue, timeMonth, timeWeek, timeDay, timeHour, timeMinute, currDate];
+    return [reversion, student.classId, student.schoolId, studentId, time, momentDate.toDate(), calValue, timeMonth, timeWeek, timeDay, timeHour, timeMinute, currDate];
 }

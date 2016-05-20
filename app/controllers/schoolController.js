@@ -335,6 +335,7 @@ module.exports = new basicController(__filename).init({
                     code : "00",
                     leaveNum : 0,
                     attendanceNum : 0,
+                    sumCalValue : 0,
                     data : new Array()
                 });
             }
@@ -350,11 +351,20 @@ module.exports = new basicController(__filename).init({
                     if(err){
                         return next(err);
                     }
-                    res.json({
-                        code : "00",
-                        leaveNum : (leaveData ? leaveData.total : 0),
-                        attendanceNum : (attendanceData ? attendanceData.total : 0),
-                        data : classes
+                    var obj = new Object();
+                    obj.schoolId = schoolId;
+                    obj.timeDay = moment(attendanceDate, "YYYY-MM-DD").format("YYYYMMDD");
+                    self.model['sports'].sumByCond(obj, function(err, sports){
+                        if(err){
+                            return next(err);
+                        }
+                        res.json({
+                            code : "00",
+                            leaveNum : (leaveData ? leaveData.total : 0),
+                            attendanceNum : (attendanceData ? attendanceData.total : 0),
+                            sumCalValue : sports ? sports.sumCalValue : 0,
+                            data : classes
+                        });
                     });
                 });
             });

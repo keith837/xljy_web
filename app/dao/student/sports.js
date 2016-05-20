@@ -31,6 +31,18 @@ Sports.listByCond = function(whereSql, args, callback){
     mysqlUtil.query(sql, args, callback);
 }
 
+Sports.sumByCond = function(obj, callback){
+    var sql = "select IFNULL(sum(calValue), 0) as sumCalValue from XL_SPORTS where 1=1";
+    var tempArgs = [];
+    if(obj){
+        for(var key in obj){
+            sql += " and " + key + "=?";
+            tempArgs.push(obj[key]);
+        }
+    }
+    mysqlUtil.queryOne(sql, tempArgs, callback);
+}
+
 Sports.delete = function(obj, callback){
     var sql = "delete from XL_SPORTS where 1=1";
     var tempArgs = new Array();
@@ -75,7 +87,7 @@ Sports.list = function(dataType, qryObj, startTime, endTime, callback){
 
 
 Sports.save = function(args, callback){
-    var sql = "insert into XL_SPORTS(reversion,studentId,time,sportsDate,calValue,timeMonth,timeWeek,timeDay,timeHour,timeMinute,createDate) values (?,?,?,?,?,?,?,?,?,?)";
+    var sql = "insert into XL_SPORTS(reversion,classId,schoolId,studentId,time,sportsDate,calValue,timeMonth,timeWeek,timeDay,timeHour,timeMinute,createDate) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
     mysqlUtil.query(sql, args, callback);
 }
 
@@ -89,7 +101,7 @@ Sports.saveBatch = function(studentId, reversion, args, callback){
                 conn.release();
                 return callback(err, null);
             }
-            var sql = "insert into XL_SPORTS(reversion,studentId,time,sportsDate,calValue,timeMonth,timeWeek,timeDay,timeHour,timeMinute,createDate) values ?";
+            var sql = "insert into XL_SPORTS(reversion,classId,schoolId,studentId,time,sportsDate,calValue,timeMonth,timeWeek,timeDay,timeHour,timeMinute,createDate) values ?";
             conn.query(sql, [args], function(err, data){
                 if(err){
                     conn.rollback();
