@@ -193,7 +193,7 @@ var routerConfig = {
             }
         },
         school : {
-            "usedModel": ["school/school","school/class", "student/studentLeave", "attendance/attendance", "student/sports"],
+            "usedModel": ["school/school","school/class", "student/studentLeave", "attendance/attendance", "student/sports", "school/grade"],
             "select": {
                 "url": "/api/school/select/:schoolId",
                 "method": "post",
@@ -253,6 +253,11 @@ var routerConfig = {
                 "url": "/api/school/classes",
                 "method": "get",
                 "description": "学校班级查询"
+            },
+            "grades" : {
+                "url": "/api/school/grades/:schoolId",
+                "method": "get",
+                "description": "学校年级查询"
             }
         },
         recom: {

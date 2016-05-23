@@ -396,6 +396,21 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    grades : function(req, res, next){
+        var self = this;
+        var schoolId = parseInt(req.params.schoolId);
+        self.model["grade"].listBySchoolId(schoolId, function(err, grades){
+            if(err){
+                return next(err);
+            }
+            res.json({
+                code : "00",
+                data : grade ? grades : []
+            });
+        });
+
+    },
+
     countAttendance : function(req, res, next){
         var self = this;
         var schoolId = parseInt(req.params.schoolId);

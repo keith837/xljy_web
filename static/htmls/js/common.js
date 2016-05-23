@@ -542,6 +542,32 @@ function loadBrand(selectId) {
     });
 }
 
+function loadSchoolGrade(selectId, schoolId) {
+    $.ajax({
+        url: "/api/school/grades/" + schoolId,    //后台webservice里的方法名称
+        type: "get",
+        dataType: "json",
+        contentType: "application/json",
+        data: {iDisplayStart:0,iDisplayLength:10000000},
+        traditional: true,
+        success: function (data) {
+            if (data.code == "00" && data.data && data.data.length > 0) {
+                var options = [];
+                $.each(data.data, function (i, item) {
+                    options.push({id: item.gradeId, text: item.gradeName});
+                })
+                $("#"+selectId).select2({data: options});
+
+            } else {
+                initNullSelect("#"+selectId);
+            }
+        },
+        error: function (msg) {
+            initNullSelect("#"+selectId);
+        }
+    });
+}
+
 //加载年级
 function loadGrade(selectId) {
     $.ajax({

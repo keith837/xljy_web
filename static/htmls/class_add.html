@@ -1,4 +1,4 @@
-﻿﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>响亮教育管理平台</title>
@@ -37,7 +37,7 @@
 
                         <div class="container-fluid">
                             <div class="row-fluid">
-                                <form class="form-horizontal" name="schoolForm" id="classForm">
+                                <form class="form-horizontal" name="classForm" id="classForm"  method="post" enctype="multipart/form-data">
                                     <div class="control-group">
                                         <label class="control-label" for="className">名称<span style="color: red;">*</span></label>
                                         <div class="controls">
@@ -122,6 +122,7 @@
 <script src="js/jquery.ui.custom.js"></script>
 <script src="js/jquery.validate.js"></script>
 <script src="js/jquery.url.js"></script>
+<script src="js/jquery.form.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-colorpicker.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
@@ -147,7 +148,6 @@
 
             $.get("/api/class/showDetail/" + classId, null, function (json) {
                 if (json.code == "00") {
-                    console.info(json.data);
                     $("#className").val(json.data.className);
                     $("#editType").val("edit");
                     $("#schoolName").val(json.data.schoolName);
@@ -200,7 +200,6 @@
             $("#gradeId").select2({data: [{id: -1, text: "请选择用户"}]});
             loadSchool();
             //loadUser(30,"tUserId");
-            loadGrade("gradeId");
             initValidator();
         }
         $("#classForm").validate({
@@ -239,7 +238,6 @@
                         $(form).append(input1);
                     }
                 }
-
                 var editType = $("#editType").val();
                 var url = "/api/class/add";
                 var type = "post";
@@ -247,8 +245,35 @@
                     url = "/api/class/modify/" + classId;
                     type = "put";
                 }
-                saveOrUpdate(url, type, "#classForm","class.html");
+
+                $("#classForm").ajaxSubmit({
+                    url: url,
+                    type: type,
+                    success: function (data) {
+                        if (data.code == "00") {
+                            swal({
+                                title: "保存成功!",
+                                text: "保存成功",
+                                timer: autoCloseTime,
+                                showConfirmButton: true
+                            }, function () {
+                                setTimeout(function () {
+                                    window.location.href = "kindergarten.html";
+                                }, 2000);
+                            });
+                        } else {
+                            swal({title: "保存失败!", text: data.msg, type: "error", timer: autoCloseTime});
+                        }
+                    },
+                    error: function (data) {
+                        swal({title: "保存失败!", text: "保存失败!", type: "error", timer: autoCloseTime});
+                    }
+                });
             }
+        });
+
+        $("#schoolId").change(function(){
+            loadSchoolGrade("gradeId", $("#schoolId").val());
         });
     })
 

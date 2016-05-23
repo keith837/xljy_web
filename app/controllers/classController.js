@@ -1,5 +1,7 @@
 var basicController = require("../../core/utils/controller/basicController");
 var moment = require("moment");
+var formidable = require("formidable");
+var path = require("path");
 
 module.exports = new basicController(__filename).init({
 
@@ -117,35 +119,49 @@ module.exports = new basicController(__filename).init({
 
     add : function(req, res, next){
         var self = this;
-        var schoolId = req.body.schoolId;
-        var tUserId = req.body.tUserId;
-        var gradeId = req.body.gradeId;
-        var className = req.body.className;
-        var classDesc = req.body.classDesc;
-        var classUrl = req.body.classUrl;
-        var oUserId = req.user.userId;
-        var teacherId = req.body.teacherId;
-        if(!schoolId){
-            return next(new Error("班级归属学校不能为空"));
-        }
-        if(!tUserId){
-            return next(new Error("班主任不能为空"));
-        }
-        if(!gradeId){
-            return next(new Error("年级不能为空"));
-        }
-        if(!className){
-            return next(new Error("班级名称不能为空"));
-        }
-        var teacherArray = new Array();
-        self.model['class'].save([schoolId, gradeId, tUserId, className, classDesc, classUrl, oUserId], teacherId, function(err, data){
+        var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "CLASS_URL");
+        var form = new formidable.IncomingForm();   //创建上传表单
+        form.encoding = 'utf-8';		//设置编辑
+        form.uploadDir = uploadDir;	 //设置上传目录
+        form.keepExtensions = true;	 //保留后缀
+        form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
+        form.parse(req, function (err, fields, files) {
             if(err){
                 return next(err);
             }
-            res.json({
-                code : "00",
-                msg : "班级添加成功"
-            })
+            var schoolId = fields.schoolId;
+            var tUserId = fields.tUserId;
+            var gradeId = fields.gradeId;
+            var className = fields.className;
+            var classDesc = fields.classDesc;
+            var oUserId = req.user.userId;
+            var teacherId = fields.teacherId;
+            if(!schoolId){
+                return next(new Error("班级归属学校不能为空"));
+            }
+            if(!tUserId){
+                return next(new Error("班主任不能为空"));
+            }
+            if(!gradeId){
+                return next(new Error("年级不能为空"));
+            }
+            if(!className){
+                return next(new Error("班级名称不能为空"));
+            }
+            var classUrl;
+            if(files && files.classUrl){
+                classUrl = path.normalize(files.classUrl.path).replace(/\\/g, '/');
+            }
+            var teacherArray = new Array();
+            self.model['class'].save([schoolId, gradeId, tUserId, className, classDesc, classUrl, oUserId], teacherId, function(err, data){
+                if(err){
+                    return next(err);
+                }
+                res.json({
+                    code : "00",
+                    msg : "班级添加成功"
+                })
+            });
         });
     },
 
@@ -155,44 +171,58 @@ module.exports = new basicController(__filename).init({
         if(!classId && classId <= 0){
             return next(new Error("班级编号不能为空"));
         }
-        var obj = new Object();
-        var schoolId = req.body.schoolId;
-        var tUserId = req.body.tUserId;
-        var gradeId = req.body.gradeId;
-        var className = req.body.className;
-        var classDesc = req.body.classDesc;
-        var classUrl = req.body.classUrl;
-        var oUserId = req.user.userId;
-        var teacherId = req.body.teacherId;
-        if(schoolId){
-            obj.schoolId = schoolId;
-        }
-        if(tUserId){
-            obj.tUserId = tUserId;
-        }
-        if(gradeId){
-            obj.gradeId = gradeId;
-        }
-        if(className){
-            obj.className = className;
-        }
-        if(classDesc){
-            obj.classDesc = classDesc;
-        }
-        if(classUrl){
-            obj.classUrl = classUrl;
-        }
-        obj.oUserId = oUserId;
-        obj.doneDate = new Date();
-        self.model['class'].update(obj, tUserId, classId, teacherId, function(err, data){
+        var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "CLASS_URL");
+        var form = new formidable.IncomingForm();   //创建上传表单
+        form.encoding = 'utf-8';		//设置编辑
+        form.uploadDir = uploadDir;	 //设置上传目录
+        form.keepExtensions = true;	 //保留后缀
+        form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
+        form.parse(req, function (err, fields, files) {
             if(err){
                 return next(err);
-            }else if(data.affectedRows != 1){
-                return next(new Error("班级修改失败"));
             }
-            res.json({
-                code : "00",
-                msg : "班级修改成功"
+            var obj = new Object();
+            var schoolId = fields.schoolId;
+            var tUserId = fields.tUserId;
+            var gradeId = fields.gradeId;
+            var className = fields.className;
+            var classDesc = fields.classDesc;
+            var oUserId = req.user.userId;
+            var teacherId = fields.teacherId;
+            if(schoolId){
+                obj.schoolId = schoolId;
+            }
+            if(tUserId){
+                obj.tUserId = tUserId;
+            }
+            if(gradeId){
+                obj.gradeId = gradeId;
+            }
+            if(className){
+                obj.className = className;
+            }
+            if(classDesc){
+                obj.classDesc = classDesc;
+            }
+            if(classUrl){
+                obj.classUrl = classUrl;
+            }
+            obj.oUserId = oUserId;
+            obj.doneDate = new Date();
+            var classUrl;
+            if(files && files.classUrl){
+                obj.classUrl = path.normalize(files.classUrl.path).replace(/\\/g, '/');
+            }
+            self.model['class'].update(obj, tUserId, classId, teacherId, function(err, data){
+                if(err){
+                    return next(err);
+                }else if(data.affectedRows != 1){
+                    return next(new Error("班级修改失败"));
+                }
+                res.json({
+                    code : "00",
+                    msg : "班级修改成功"
+                });
             });
         });
     },

@@ -96,6 +96,9 @@ Grade.listClassByGradeId = function(gradeId, callback){
     mysqlUtil.query("select * from XL_CLASS where state=1 and gradeId=?", [gradeId], callback);
 }
 
+Grade.listBySchoolId = function(schoolId, callback){
+    mysqlUtil.query("select * from XL_GRADE where state=1 and schoolId=?", [schoolId], callback);
+}
 
 Grade.add = function (grade, callback) {
     mysqlUtil.queryOne("select count(*) as total from XL_GRADE where gradeName=? and schoolId=? and state=1", [grade.gradeName, grade.schoolId], function (err, res) {
