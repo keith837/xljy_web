@@ -142,7 +142,7 @@ Device.update = function (device, callback) {
 }
 
 Device.findByStudentId = function (studentId, callback) {
-    var sql = "select deviceId, deviceSign, deviceName from XL_DEVICE where studentId=?";
+    var sql = "select deviceId, deviceSign, deviceName from XL_DEVICE where state=1 and studentId=?";
     mysqlUtil.queryOne(sql, [studentId], callback);
 }
 
