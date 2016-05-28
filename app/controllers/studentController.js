@@ -1363,6 +1363,7 @@ module.exports = new basicController(__filename).init({
                 }
                 studentLost.deviceSign = device ? device.deviceSign : null;
                 studentLost.lostPics = lostPics ? lostPics : [];
+                studentLost.webUrl = this.webConfig.WEB_URL;
                 res.json({
                     code : "00",
                     data : studentLost,
