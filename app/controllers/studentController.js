@@ -5,6 +5,7 @@ var formidable = require("formidable");
 var imCore = require("../../core/utils/alim/imCore.js");
 var path = require("path");
 var images = require("images");
+var webConfig = require("../../core/config/webConfig");
 
 module.exports = new basicController(__filename).init({
     uppic : function(req, res, next){
@@ -1363,7 +1364,7 @@ module.exports = new basicController(__filename).init({
                 }
                 studentLost.deviceSign = device ? device.deviceSign : null;
                 studentLost.lostPics = lostPics ? lostPics : [];
-                studentLost.webUrl = this.webConfig.WEB_URL;
+                studentLost.webUrl = webConfig.WEB_URL;
                 res.json({
                     code : "00",
                     data : studentLost,
