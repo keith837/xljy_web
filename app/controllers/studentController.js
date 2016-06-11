@@ -1056,7 +1056,7 @@ module.exports = new basicController(__filename).init({
                 if(!obj){
                     obj = new Object();
                     obj[keyStr] = formatKey;
-                    obj.calValue = 0;
+                    obj.calValue = -1;
                 }
                 retSports.push(obj);
                 startMoment.add(intervalTime, unitTime);
