@@ -135,7 +135,8 @@ module.exports = new basicController(__filename).init({
             var className = fields.className;
             var classDesc = fields.classDesc;
             var oUserId = req.user.userId;
-            var teacherId = fields.teacherId;
+            var teacherId = fields.tTeacherId;
+            var tAssistantId = fields.tAssistantId;
             if(!schoolId){
                 return next(new Error("班级归属学校不能为空"));
             }
@@ -153,7 +154,15 @@ module.exports = new basicController(__filename).init({
                 classUrl = path.normalize(files.classUrl.path).replace(/\\/g, '/');
             }
             var teacherArray = new Array();
-            self.model['class'].save([schoolId, gradeId, tUserId, className, classDesc, classUrl, oUserId], teacherId, function(err, data){
+            if (teacherId) {
+                teacherArray.push("教师_" + teacherId);
+            }
+            if (tAssistantId) {
+                teacherArray.push("辅导员_" + tAssistantId);
+            }
+
+
+            self.model['class'].save([schoolId, gradeId, tUserId, className, classDesc, classUrl, oUserId], teacherArray, function(err, data){
                 if(err){
                     return next(err);
                 }
@@ -188,7 +197,8 @@ module.exports = new basicController(__filename).init({
             var className = fields.className;
             var classDesc = fields.classDesc;
             var oUserId = req.user.userId;
-            var teacherId = fields.teacherId;
+            var teacherId = fields.tTeacherId;
+            var tAssistantId = fields.tAssistantId;
             if(schoolId){
                 obj.schoolId = schoolId;
             }
@@ -213,7 +223,15 @@ module.exports = new basicController(__filename).init({
             if(files && files.classUrl){
                 obj.classUrl = path.normalize(files.classUrl.path).replace(/\\/g, '/');
             }
-            self.model['class'].update(obj, tUserId, classId, teacherId, function(err, data){
+
+            var teacherArray = new Array();
+            if (teacherId) {
+                teacherArray.push("教师_" + teacherId);
+            }
+            if (tAssistantId) {
+                teacherArray.push("辅导员_" + tAssistantId);
+            }
+            self.model['class'].update(obj, tUserId, classId, teacherArray, function(err, data){
                 if(err){
                     return next(err);
                 }else if(data.affectedRows != 1){
