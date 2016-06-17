@@ -231,6 +231,10 @@ module.exports = new basicController(__filename).init({
             if (tAssistantId) {
                 teacherArray.push("辅导员_" + tAssistantId);
             }
+            if (teacherArray.length == 0) {
+                teacherArray = null;
+            }
+
             self.model['class'].update(obj, tUserId, classId, teacherArray, function(err, data){
                 if(err){
                     return next(err);
