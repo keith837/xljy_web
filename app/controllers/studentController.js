@@ -1043,7 +1043,6 @@ module.exports = new basicController(__filename).init({
                     sprotObj[sports[i][keyStr]] = sports[i];
                 }
             }
-            console.log(sprotObj);
             var retSports = new Array();
             while(startMoment <= endMoment){
                 var formatKey = startMoment.format(formatStr);
@@ -1052,6 +1051,7 @@ module.exports = new basicController(__filename).init({
                 }else if(dataType == 4){
                     formatKey += startMoment.week();
                 }
+                formatKey = parseInt(formatKey);
                 var obj = sprotObj[formatKey];
                 if(!obj){
                     obj = new Object();
