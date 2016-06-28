@@ -112,8 +112,8 @@ Lost.list = function(schoolId,classId,studentId,studentName,pageNo,pageSize,call
     }
     if(pageNo && pageSize){
         selectSql += " limit ?, ?";
-        tempArgs.push(pageNo);
-        tempArgs.push(pageSize);
+        tempArgs.push(parseInt(pageNo));
+        tempArgs.push(parseInt(pageSize));
     }
     mysqlUtil.query(selectSql, tempArgs, callback);
 }
