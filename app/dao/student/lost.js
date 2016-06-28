@@ -82,7 +82,7 @@ Lost.delete = function(lostId, callback){
 }
 
 Lost.deleteByStudentId = function(studentId, callback){
-    var deleteSql = "update XL_STUDENT_LOST set state=1 where studentId = ?";
+    var deleteSql = "update XL_STUDENT_LOST set state=0 where studentId = ?";
     mysqlUtil.query(deleteSql, [studentId], callback);
 }
 
