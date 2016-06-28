@@ -91,7 +91,7 @@ Lost.listByStudentId = function(studentId, callback){
     mysqlUtil.query(selectSql, [studentId], callback);
 }
 
-Lost.list = function(schoolId,classId,studentId,studentName,pageNo,pageSize){
+Lost.list = function(schoolId,classId,studentId,studentName,pageNo,pageSize,callback){
     var selectSql = "select * from XL_STUDENT_LOST where state=1";
     var tempArgs = new Array();
     if(schoolId){
