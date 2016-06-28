@@ -483,15 +483,15 @@ var routerConfig = {
                 "method": "post",
                 "description": "删除宝贝丢失记录"
             },
-            "lostLost" : {
-                "url": "/api/student/listLost",
-                "method": "get",
-                "description": "获取宝贝丢失记录"
-            },
             "upPosition" : {
                 "url": "/api/student/upPosition/:lostId",
                 "method": "post",
                 "description": "上传走失宝贝位置信息"
+            },
+            "listLost" : {
+                "url": "/api/student/listLost",
+                "method": "get",
+                "description": "获取宝贝丢失记录"
             }
         },
 
