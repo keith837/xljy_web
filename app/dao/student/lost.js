@@ -111,7 +111,7 @@ Lost.list = function(schoolId,classId,studentId,studentName,pageNo,pageSize,call
         tempArgs.push("%" + studentName + "%");
     }
     if(pageNo && pageSize){
-        selectSql += "limit ?, ?";
+        selectSql += " limit ?, ?";
         tempArgs.push(pageNo);
         tempArgs.push(pageSize);
     }
