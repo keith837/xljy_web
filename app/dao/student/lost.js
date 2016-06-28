@@ -67,7 +67,7 @@ Lost.savePic = function(picArgs, callback){
 }
 
 Lost.nextOne = function(index, callback){
-    var selectLostSql = "select * from XL_STUDENT_LOST limit ?,1";
+    var selectLostSql = "select * from XL_STUDENT_LOST where state=1 limit ?,1";
     mysqlUtil.queryOne(selectLostSql, [index], callback);
 }
 
@@ -79,6 +79,43 @@ Lost.findPics = function(lostId, callback){
 Lost.delete = function(lostId, callback){
     var deleteLostSql = "delete from XL_STUDENT_LOST where lostId = ?";
     mysqlUtil.query(deleteLostSql, [lostId], callback);
+}
+
+Lost.deleteByStudentId = function(studentId, callback){
+    var deleteSql = "update XL_STUDENT_LOST set state=1 where studentId = ?";
+    mysqlUtil.query(deleteSql, [studentId], callback);
+}
+
+Lost.selectByStudentId = function(studentId, callback){
+    var selectSql = "select * from XL_STUDENT_LOST where state=1 and studentId = ?";
+    mysqlUtil.query(selectSql, [studentId], callback);
+}
+
+Lost.list = function(schoolId,classId,studentId,studentName,pageNo,pageSize){
+    var selectSql = "select * from XL_STUDENT_LOST where state=1";
+    var tempArgs = new Array();
+    if(schoolId){
+        selectSql += " and schoolId=? "
+        tempArgs.push(schoolId);
+    }
+    if(classId){
+        selectSql += " and calssId=? "
+        tempArgs.push(classId);
+    }
+    if(studentId){
+        selectSql += " and studentId=? "
+        tempArgs.push(studentId);
+    }
+    if(studentName){
+        selectSql += " and studentId like ? "
+        tempArgs.push("%" + studentName + "%");
+    }
+    if(pageNo && pageSize){
+        selectSql += "limit ?, ?";
+        tempArgs.push(pageNo);
+        tempArgs.push(pageSize);
+    }
+    mysqlUtil.query(selectSql, tempArgs, callback);
 }
 
 Lost.deletePics = function(callback, lostId, picId){
