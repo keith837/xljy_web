@@ -478,6 +478,16 @@ var routerConfig = {
                 "method": "get",
                 "description": "获取下条宝贝走失记录"
             },
+            "unlost" : {
+                "url": "/api/student/unlost/:studentId",
+                "method": "post",
+                "description": "删除宝贝丢失记录"
+            },
+            "lostLost" : {
+                "url": "/api/student/listLost",
+                "method": "get",
+                "description": "获取宝贝丢失记录"
+            },
             "upPosition" : {
                 "url": "/api/student/upPosition/:lostId",
                 "method": "post",
