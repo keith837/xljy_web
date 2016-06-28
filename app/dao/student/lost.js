@@ -86,7 +86,7 @@ Lost.deleteByStudentId = function(studentId, callback){
     mysqlUtil.query(deleteSql, [studentId], callback);
 }
 
-Lost.selectByStudentId = function(studentId, callback){
+Lost.listByStudentId = function(studentId, callback){
     var selectSql = "select * from XL_STUDENT_LOST where state=1 and studentId = ?";
     mysqlUtil.query(selectSql, [studentId], callback);
 }
