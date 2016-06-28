@@ -1220,6 +1220,50 @@ module.exports = new basicController(__filename).init({
             });
         });
     },
+    
+    listLost : function(req, res, next){
+        var pageNo = req.query.pageNo;
+        var pageSize = req.query.pageSize;
+        var studentId = req.query.studentId;
+        var schoolId = req.query.schoolId;
+        var classId = req.query.classId;
+        var studentName = req.query.studentName;
+        self.model['lost'].list(schoolId,classId,studentId,studentName,pageNo,pageSize, function(err, lostes){
+            if(err){
+                return next(err);
+            }
+            res.json({
+               code : "00",
+               msg : "丢失记录查询成功",
+               data : lostes
+            });
+        })
+    },
+    
+    unlost : function(req, res, next){
+        var self = this;
+        var studentId = req.params.studentId;
+        if(!studentId || studentId <= 0){
+            return next(new Error("学生编号不能为空"));
+        }
+        self.model['lost'].listByStudentId(studentId, function(err, lostes){
+            if(err){
+                return next(err);
+            }
+            if(!lostes || lostes.length <= 0){
+                return next(new Error("该学生未关联丢失记录"));
+            }
+            self.model['lost'].deleteByStudentId(studentId, function(err, data){
+                if(err){
+                    return next(err);
+                }
+                res.json({
+                    code : "00",
+                    msg : "删除丢失记录成功"
+                });
+            });
+        });
+    },
 
     lost : function(req, res, next){
         var self = this;
