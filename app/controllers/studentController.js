@@ -1222,6 +1222,7 @@ module.exports = new basicController(__filename).init({
     },
     
     listLost : function(req, res, next){
+        var self = this;
         var pageNo = req.query.pageNo;
         var pageSize = req.query.pageSize;
         var studentId = req.query.studentId;
