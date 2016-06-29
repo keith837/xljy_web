@@ -1233,13 +1233,11 @@ module.exports = new basicController(__filename).init({
             if(err){
                 return next(err);
             }
-            if(!lostes || lostes.length <= 0){
-                return res.json({
+            return res.json({
                    code : "00",
                    msg : "丢失记录查询成功",
                    data : new Array()
                 });
-            }
            
         })
     },
