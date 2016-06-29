@@ -1236,7 +1236,7 @@ module.exports = new basicController(__filename).init({
             return res.json({
                    code : "00",
                    msg : "丢失记录查询成功",
-                   data : new Array()
+                   data : lostes
                 });
            
         })
