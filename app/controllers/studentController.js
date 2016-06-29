@@ -1248,21 +1248,7 @@ module.exports = new basicController(__filename).init({
                 if(err){
                     return next(err);
                 }
-                var lostPicsObj = new Object();
-                if(lostPics && lostPics.length > 0){
-                    for(var i = 0; i < lostPics.length; i ++){
-                        var lostPicArray = lostPicsObj[lostPics[i].lostId];
-                        if(!lostPicArray){
-                            lostPicArray = new Array();
-                            lostPicsObj[lostPics[i].lostId] = lostPicArray;
-                        }
-                        lostPicArray.push(lostPics[i]);
-                    }
-                }
-                for(var i = 0; i < lostes.length; i ++){
-                    var lostPicArray = lostPicsObj[lostes[i].lostId];
-                    lostes[i].lostPics = lostPicArray ? lostPicArray : new Array();
-                }
+                
                 return res.json({
                    code : "00",
                    msg : "丢失记录查询成功",
