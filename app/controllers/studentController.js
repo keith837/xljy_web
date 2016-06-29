@@ -1240,21 +1240,7 @@ module.exports = new basicController(__filename).init({
                    data : new Array()
                 });
             }
-            var lostIds = new Array();
-            for(var i = 0; i < lostes.length; i ++){
-                lostIds.push(lostes[i].lostId);
-            }
-            self.model['lost'].listPics(lostIds, function(err, lostPics){
-                if(err){
-                    return next(err);
-                }
-                
-                return res.json({
-                   code : "00",
-                   msg : "丢失记录查询成功",
-                   data : lostes
-                });
-            });
+           
         })
     },
     
