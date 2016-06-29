@@ -65,7 +65,8 @@ Lost.listPics = function(lostIds, callback){
     var lostPicQuerySql = "select * from XL_STU_LOST_PIC where lostId in(0";
     if(lostIds && lostIds.length > 0){
         for(var i = 0; i < lostIds.length; i ++){
-        lostPicQuerySql += ",?";
+            lostPicQuerySql += ",?";
+        }
     }
     lostPicQuerySql += ") order by lostId";
     mysqlUtil.query(lostPicQuerySql, lostIds, callback);
