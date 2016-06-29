@@ -61,6 +61,16 @@ Lost.savePics = function(picArgs, callback){
     mysqlUtil.query(lostPicSql, [picArgs], callback);
 }
 
+Lost.listPics = function(lostIds, callback){
+    var lostPicQuerySql = "select * from XL_STU_LOST_PIC where lostId in(0";
+    if(lostIds && lostIds.length > 0){
+        for(var i = 0; i < lostIds.length; i ++){
+        lostPicQuerySql += ",?";
+    }
+    lostPicQuerySql += ") order by lostId";
+    mysqlUtil.query(lostPicQuerySql, lostIds, callback);
+}
+
 Lost.savePic = function(picArgs, callback){
     var picSql = "insert into XL_STU_LOST_PIC(lostId,picUrl,width,height,picDesc,state,createDate,doneDate,oUserId) values (?,?,?,?,?,1,now(),now(),?)";
     mysqlUtil.query(picSql, picArgs, callback);
