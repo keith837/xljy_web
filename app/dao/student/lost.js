@@ -147,3 +147,9 @@ Lost.savePosition = function(positionArgs, callback){
     var positionSql = "insert into XL_STUDENT_POSITION(lostId,positionX,positionY,address,state,createDate,doneDate) values (?,?,?,?,1,now(),now())";
     mysqlUtil.query(positionSql, positionArgs, callback);
 }
+
+Lost.findPositionByStudentId = function (studentId, callback) {
+    var selectSql = "SELECT * FROM XL_STUDENT_LOST a, XL_STUDENT_POSITION b "
+        + "where a.state=1 and a.studentId= ? and a.lostId=b.lostId and b.state=1";
+    mysqlUtil.query(selectSql, [studentId], callback);
+}

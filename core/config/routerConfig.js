@@ -492,6 +492,11 @@ var routerConfig = {
                 "url": "/api/student/listLost",
                 "method": "get",
                 "description": "获取宝贝丢失记录"
+            },
+            "lostPosition" : {
+                "url": "/api/student/lostPosition/:studentId",
+                "method": "get",
+                "description": "获取宝贝丢失位置信息"
             }
         },
 

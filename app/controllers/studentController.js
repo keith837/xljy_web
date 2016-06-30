@@ -1448,6 +1448,20 @@ module.exports = new basicController(__filename).init({
                 })
             });
         });
+    },
+
+    lostPosition: function (req, res, next) {
+        var self = this;
+        var studentId = req.params.studentId;
+        self.model['lost'].findPositionByStudentId(studentId, function (err, positions) {
+            if (err) {
+                return next(err);
+            }
+            res.json({
+                code: "00",
+                data: positions
+            })
+        });
     }
 
 });
