@@ -231,13 +231,15 @@
                 var teachers = checkTeachers();
                 if (teachers == null) {
                     return;
-                } else if (teachers.length > 0) {
+                }
+                /*
+                else if (teachers.length > 0) {
                     for (var x in teachers) {
                         var input1 = $("<input type='hidden' name='teacherId' />")
                         input1.attr('value', teachers[x]);
                         $(form).append(input1);
                     }
-                }
+                }*/
                 var editType = $("#editType").val();
                 var url = "/api/class/add";
                 var type = "post";
