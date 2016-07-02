@@ -98,8 +98,15 @@ Lost.deleteByStudentId = function(studentId, callback){
 }
 
 Lost.listByStudentId = function(studentId, callback){
-    var selectSql = "select * from XL_STUDENT_LOST where state=1 and studentId = ?";
+    var selectSql = "select b.schoolName,c.className,a.* from XL_STUDENT_LOST a,XL_SCHOOL b,XL_CLASS c "
+    +"where a.schoolId=b.schoolId and a.classId=c.classId and a.state=1 and b.state=1 and c.state=1 and a.studentId = ?";
     mysqlUtil.query(selectSql, [studentId], callback);
+}
+
+Lost.listByLostId = function(lostId, callback){
+    var selectSql = "select b.schoolName,c.className,a.* from XL_STUDENT_LOST a,XL_SCHOOL b,XL_CLASS c "
+        +"where a.schoolId=b.schoolId and a.classId=c.classId and a.state=1 and b.state=1 and c.state=1 and a.lostId = ?";
+    mysqlUtil.query(selectSql, [lostId], callback);
 }
 
 Lost.list = function(schoolId,classId,studentId,studentName,pageNo,pageSize,callback){

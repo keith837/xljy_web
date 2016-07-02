@@ -1293,6 +1293,15 @@ module.exports = new basicController(__filename).init({
                     code : "00",
                     msg : "删除丢失记录成功"
                 });
+
+                var content = lostes[0].schoolName + lostes[0].className + lostes[0].studentName + "已经找回，谢谢大家参与寻找";
+                var noticeAction = self.cacheManager.getOneCache("STU_FOUND_NOTICE");
+                self.pushNotification(content, noticeAction, function (err, objectId) {
+                    if (err) {
+                        return self.logger.error("推送宝贝[" + lostes[0].studentId + "]找回消息失败", err);
+                    }
+                    self.logger.info("推送宝贝[" + lostes[0].studentId + "]找回消息成功,objectId=" + objectId);
+                });
             });
         });
     },
@@ -1358,11 +1367,20 @@ module.exports = new basicController(__filename).init({
                     if(err){
                         return next(err);
                     }
-                    return res.json({
+                    res.json({
                         code : "00",
                         msg : "发布宝贝丢失记录成功",
                         data : lostPicArgs,
-                        lostId : lost,
+                        lostId : lost
+                    });
+
+                    var content = student.schoolName + student.className + student.studentName + "意外走失，请大家开启志愿者版，共同寻找宝贝";
+                    var noticeAction = self.cacheManager.getOneCache("STU_LOST_NOTICE");
+                    self.pushNotification(content, noticeAction, function (err, objectId) {
+                        if (err) {
+                            return self.logger.error("推送宝贝[" + studentId + "]走失消息失败", err);
+                        }
+                        self.logger.info("推送宝贝[" + studentId + "]走失消息成功,objectId=" + objectId);
                     });
                 });
             });
@@ -1381,15 +1399,34 @@ module.exports = new basicController(__filename).init({
         if(!address){
             return next(new Error("上传地址不能为空"));
         }
-        self.model['lost'].savePosition([lostId, positionX, positionY, address], function(err, data){
-            if(err){
+        self.model['lost'].listByLostId(lostId, function (err, lostes) {
+            if (err) {
                 return next(err);
             }
-            res.json({
-                code : "00",
-                msg : '位置信息上传成功'
+            if (!lostes || lostes.length <= 0) {
+                return next(new Error("该学生未关联丢失记录"));
+            }
+
+            self.model['lost'].savePosition([lostId, positionX, positionY, address], function (err, data) {
+                if (err) {
+                    return next(err);
+                }
+                res.json({
+                    code: "00",
+                    msg: '位置信息上传成功'
+                });
+
+                var content = lostes[0].schoolName + lostes[0].className + lostes[0].studentName + "有最新位置信息，请大家继续参与寻找";
+                var noticeAction = self.cacheManager.getOneCache("STU_POSITION_NOTICE");
+                self.pushNotification(content, noticeAction, function (err, objectId) {
+                    if (err) {
+                        return self.logger.error("推送宝贝[" + lostes[0].studentId + "]位置消息失败", err);
+                    }
+                    self.logger.info("推送宝贝[" + lostes[0].studentId + "]位置消息成功,objectId=" + objectId);
+                });
             });
         });
+
     },
 
     nextLost : function(req, res, next){
@@ -1462,6 +1499,22 @@ module.exports = new basicController(__filename).init({
                 data: positions
             })
         });
+    },
+
+    pushNotification: function (content, noticeAction, callback) {
+        var inData = {
+            "ios": {
+                "alert": content,
+                "category": noticeAction.codeKey,
+                "sound": "notificationCupcake.caf"
+            },
+            "android": {
+                "alert": content,
+                "title": content,
+                "action": noticeAction.codeValue
+            }
+        };
+        pushCore.pushToAll(inData, callback);
     }
 
 });

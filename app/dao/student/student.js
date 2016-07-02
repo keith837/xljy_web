@@ -14,7 +14,8 @@ Student.findOne = function (userId, studentId, callback) {
 }
 
 Student.findByStudentId = function(studentId, callback){
-    mysqlUtil.queryOne("select * from XL_STUDENT where state = 1 and studentId = ?", [studentId], callback);
+    mysqlUtil.queryOne("select b.schoolName,c.className,a.* from XL_STUDENT a,XL_SCHOOL b,XL_CLASS c "+
+    "where a.schoolId=b.schoolId and a.classId=c.classId and a.state=1 and b.state=1 and c.state=1 and a.studentId = ?", [studentId], callback);
 }
 
 Student.findStudentInfo = function(studentId, callback){
