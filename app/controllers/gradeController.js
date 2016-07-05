@@ -5,8 +5,11 @@ module.exports = new basicController(__filename).init({
     list: function (req, res, next) {
         var self = this;
         var groupId = req.user.groupId;
+        var schoolId = null;
         if (groupId == 10 || groupId == 20) {
             return next(new Error("当前用户无查询权限"));
+        } else if (groupId == 30 || groupId == 40) {
+            schoolId = req.user.schoolIds;
         }
         var start = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);
         var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
@@ -15,7 +18,7 @@ module.exports = new basicController(__filename).init({
         if (gradeName) {
             obj.gradeName = gradeName;
         }
-        self.model['grade'].listByPage(obj, start, pageSize, function (err, total, brands) {
+        self.model['grade'].listByPage(schoolId, obj, start, pageSize, function (err, total, brands) {
             if (err) {
                 return next(err);
             }

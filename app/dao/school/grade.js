@@ -7,7 +7,7 @@ var Grade = module.exports;
  * @param obj 查询条件
  * @param callback
  */
-Grade.queryNum = function (obj, callback) {
+Grade.queryNum = function (schoolId, obj, callback) {
     var whereSql = " A.state=1 ";
     var args = new Array();
     if (obj) {
@@ -17,6 +17,9 @@ Grade.queryNum = function (obj, callback) {
         }
     }
     var countSql = "select count(*) as total from XL_GRADE A, XL_SCHOOL B where A.schoolId=B.schoolId and " + whereSql;
+    if (schoolId) {
+        countSql += " and A.schoolId in (" + schoolId + ")";
+    }
     mysqlUtil.queryOne(countSql, args, callback);
 }
 
@@ -27,7 +30,7 @@ Grade.queryNum = function (obj, callback) {
  * @param pageSize 每页条数
  * @param callback
  */
-Grade.queryPage = function (obj, start, pageSize, callback) {
+Grade.queryPage = function (schoolId, obj, start, pageSize, callback) {
     var whereSql = " A.state=1 ";
     var args = new Array();
     if (obj) {
@@ -37,14 +40,17 @@ Grade.queryPage = function (obj, start, pageSize, callback) {
         }
     }
     var querySql = "select A.*,B.schoolName from XL_GRADE A, XL_SCHOOL B where A.schoolId=B.schoolId and " + whereSql;
+    if (schoolId) {
+        querySql += " and A.schoolId in (" + schoolId + ")";
+    }
     querySql += " limit ?,?";
     args.push(start);
     args.push(pageSize);
     mysqlUtil.query(querySql, args, callback);
 }
 
-Grade.listByPage = function (obj, start, pageSize, callback) {
-    Grade.queryNum(obj, function (err, data) {
+Grade.listByPage = function (schoolId, obj, start, pageSize, callback) {
+    Grade.queryNum(schoolId, obj, function (err, data) {
         if (err) {
             return callback(err);
         }
@@ -52,7 +58,7 @@ Grade.listByPage = function (obj, start, pageSize, callback) {
         if (data) {
             total = data.total;
         }
-        Grade.queryPage(obj, start, pageSize, function (err, users) {
+        Grade.queryPage(schoolId, obj, start, pageSize, function (err, users) {
             if (err) {
                 return callback(err);
             }
