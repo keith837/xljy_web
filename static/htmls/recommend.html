@@ -224,7 +224,7 @@
         $('.data-table tbody').on( 'click', 'button#delrow', function () {
             //var row = table.row( $(this).parents('tr') ).data();
             var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
-            deleteRow("您将推荐【"+row.consultTitle+"】",'/api/recom/'+row.consultId,'DELETE',null,table);
+            deleteRow("您将删除推荐【"+row.consultTitle+"】",'/api/recom/'+row.consultId,'DELETE',null,table);
 
         });
     });
