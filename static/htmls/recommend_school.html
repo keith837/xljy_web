@@ -64,7 +64,6 @@
                                         <label class="control-label" for="consultTitle">标题<span style="color: red;">*</span></label>
                                         <div class="controls">
                                             <input type="hidden" id="editType" name="editType" value="add" />
-                                            <input type="hidden" id="consultLink" name="consultLink" value="" />
                                             <input type="text" id="consultTitle" name="consultTitle" placeholder="标题" class="span5">
                                         </div>
                                     </div>
@@ -75,7 +74,13 @@
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="consultContent">内容<span style="color: red;">*</span></label>
+                                        <label class="control-label">链接</label>
+                                        <div class="controls">
+                                            <input type="text" id="consultLink" name="consultLink" placeholder="链接" class="span5">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="consultContent">内容</label>
                                         <div class="controls">
                                             <script id="consultContent" name="consultContent" type="text/plain"  style="width:340px;height:400px"></script>
                                         </div>
@@ -124,6 +129,9 @@
 <script type="text/javascript" charset="utf-8" src="js/ueditor/ueditor.all.js"> </script>
 <script type="text/javascript" charset="utf-8" src="js/ueditor/lang/zh-cn/zh-cn.js"> </script>
 <script type="text/javascript">
+    function urlValidate(value){
+        return /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
+    }
 
     $(document).ready(function () {
         var ue = UE.getEditor('consultContent');
@@ -140,6 +148,19 @@
         initValidator();
         $("#recomForm").submit(function() {
             ue.sync();
+
+            if ($("#consultLink").val() != "" && !urlValidate($("#consultLink").val())) {
+                swal({title: "保存失败!", text: "链接不是合法的URL", type: "error", timer: autoCloseTime});
+                return false;
+            }
+            if ($("#consultLink").val() == "" && ue.getContent() == "") {
+                swal({title: "保存失败!", text: "输入链接地址或校园风采内容", type: "error", timer: autoCloseTime});
+                return false;
+            }
+            if ($("#consultLink").val() == "" && ue.getContent() != "") {
+                $("#consultLink").val("recom.html");
+            }
+
         }).validate({
             ignore: ".ignore",
             rules:{
@@ -153,9 +174,6 @@
                     required:true
                 },
                 consultUrl:{
-                    required:true
-                },
-                consultContent:{
                     required:true
                 }
             },
@@ -193,7 +211,12 @@
                         showConfirmButton: true
                     }, function () {
                         setTimeout(function () {
-                            window.location.href = "recommend.html";
+                            var groupId = $.cookie('groupId');
+                            if (groupId == 50) {
+                                window.location.href = "recommend.html";
+                            } else {
+                                window.location.href = "recommend_school_list.html";
+                            }
                         }, 2000);
                     });
                 } else {

@@ -14,9 +14,9 @@ Recom.queryAllNum = function (condition, params, callback) {
 Recom.querySchool = function (start, pageSize, schoolId, callback) {
     var sqlCondition = " 1=1 ";
     var sqlParams = [];
-    if (schoolId && schoolId > 0) {
-        sqlCondition += " and schoolId = ? ";
-        sqlParams.push(schoolId);
+    if (schoolId) {
+        sqlCondition += " and schoolId in ( " + schoolId + ")";
+        //sqlParams.push(schoolId);
     }
 
     Recom.queryAllNum(sqlCondition, sqlParams, function (err, totalCount) {
@@ -39,7 +39,7 @@ Recom.querySchool = function (start, pageSize, schoolId, callback) {
     });
 }
 
-Recom.queryPage = function (start, pageSize, consultId,consultDate,consultTitle, consultType, callback) {
+Recom.queryPage = function (start, pageSize, consultId,consultDate,consultTitle, consultType,schoolId, callback) {
     var sqlCondition = " 1=1 ";
     var sqlParams = [];
     if (consultId && consultId > 0) {
@@ -51,12 +51,16 @@ Recom.queryPage = function (start, pageSize, consultId,consultDate,consultTitle,
         sqlParams.push(consultDate);
     }
     if(consultTitle){
-        sqlCondition += "  and consultTitle like ? "
+        sqlCondition += "  and consultTitle like ? ";
         sqlParams.push("%"+consultTitle+"%");
     }
     if(consultType){
-        sqlCondition += "  and consultType = ? "
+        sqlCondition += "  and consultType = ? ";
         sqlParams.push(consultType);
+    }
+
+    if (schoolId) {
+        sqlCondition += " and schoolId in ( " + schoolId + ")";
     }
 
     Recom.queryAllNum(sqlCondition, sqlParams, function (err, totalCount) {

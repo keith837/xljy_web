@@ -23,7 +23,7 @@
 <div id="content">
     <div id="breadcrumb">
         <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 推荐管理</a>
-        <a href="#" class="current">推荐信息</a>
+        <a href="#" class="current">校园风采</a>
     </div>
     <div class="container-fluid">
         <div class="row-fluid">
@@ -61,9 +61,6 @@
                                                 <input type="text" id="consultTitle" name="consultTitle" class="span9 search-query" placeholder="请输入推荐标题" >
                                                 <button type="button" id="searchBtn" class="btn">搜索</button>
                                             </div>
-                                        </td>
-                                        <td>
-                                            <a href="recommend_add.html" class="btn">新增推荐</a>
                                         </td>
                                     </tr>
                                 </table>
@@ -131,12 +128,8 @@
 <script>
 
     $(document).ready(function () {
-        var groupId = $.cookie('groupId');
-        if (groupId != 50) {
-            window.location.href = "recommend_school_list.html";
-        }
         var options = [];
-        options.push({id: 1, text: "资讯推荐"});
+        //options.push({id: 1, text: "资讯推荐"});
         options.push({id: 2, text: "校园风采"});
         //options.push({id: 3, text: "精彩活动"});
         $("#consultType").select2({data: options});
@@ -145,7 +138,7 @@
         var initTableParams = initDataTable();
         var extendParams = {
             "bServerSide": true,
-            "sAjaxSource": "/api/recom/showall",
+            "sAjaxSource": "/api/recom/showall?consultType=2",
             "sServerMethod": "GET",
             "aoColumns": [
                 {"mDataProp": "consultId"},
@@ -216,7 +209,7 @@
 //              table.fnSettings().sServerMethod='GET';
                 table.fnDraw();
             }else{
-                table.fnSettings().sAjaxSource='/api/recom/showall';
+                table.fnSettings().sAjaxSource='/api/recom/showall?consultType=2';
                 table.fnDraw();
             }
 
@@ -224,7 +217,7 @@
         $('.data-table tbody').on( 'click', 'button#delrow', function () {
             //var row = table.row( $(this).parents('tr') ).data();
             var row = $('.data-table').DataTable().row($(this).parents('tr')).data();
-            deleteRow("您将推荐【"+row.consultTitle+"】",'/api/recom/'+row.consultId,'DELETE',null,table);
+            deleteRow("您将删除校园风采【"+row.consultTitle+"】",'/api/recom/'+row.consultId,'DELETE',null,table);
 
         });
     });

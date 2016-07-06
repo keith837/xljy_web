@@ -16,7 +16,12 @@ module.exports = new basicController(__filename).init({
         var consultDate = request.query.consultDate;
         var consultTitle = request.query.consultTitle;
         var consultType = request.query.consultType;
-        this.model['recom'].queryPage(start, pageSize,null,consultDate,consultTitle,consultType, function (err, totalCount, res) {
+        var schoolId = null;
+        var groupId = request.user.groupId;
+        if (consultType == 2 && (groupId == 30 || groupId == 40)) {
+            schoolId = request.user.schoolIds;
+        }
+        this.model['recom'].queryPage(start, pageSize,null,consultDate,consultTitle,consultType,schoolId,function (err, totalCount, res) {
             if (err) {
                 return next(err);
             }
@@ -29,9 +34,18 @@ module.exports = new basicController(__filename).init({
         var start = parseInt(request.query.iDisplayStart || this.webConfig.iDisplayStart);
         var pageSize = parseInt(request.query.iDisplayLength || this.webConfig.iDisplayLength);
         var schoolId = request.params.id;
+        var web = request.query.isWeb;
+        if (web && web == "true") {
+            schoolId = request.user.schoolIds;
+        }
         this.model['recom'].querySchool(start, pageSize, schoolId, function (err, totalCount, res) {
             if (err) {
                 return next(err);
+            }
+            for (var x in res) {
+                if (res[x].consultLink == "recom.html") {
+                    res[x].consultLink = webConfig.WEB_URL + "recom.html?consultId=" + res[x].consultId;
+                }
             }
             response.json(self.createPageData("00", totalCount, res));
         });
@@ -44,7 +58,7 @@ module.exports = new basicController(__filename).init({
         var consultDate = request.query.consultDate;
         var consultType = request.query.consultType;
         var consultId = parseInt(request.query.consultId || "0");
-        this.model['recom'].queryPage(0, pageSize * 4, consultId, consultDate, null, consultType, function (err, totalCount, data) {
+        this.model['recom'].queryPage(0, pageSize * 4, consultId, consultDate, null, consultType, null,function (err, totalCount, data) {
             if (err) {
                 return next(err);
             }
