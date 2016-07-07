@@ -16,9 +16,18 @@ importUtils.regUserYunAccount = function (batchId) {
     sql += "and a.billId=b.userName and a.schoolName=d.schoolName ";
     sql += "and a.className=e.className and d.schoolId=e.schoolId ";
     sql += "and d.schoolId=c.schoolId and a.studentName=c.studentName ";
+    sql += "and c.schoolId=e.schoolId and c.classId=e.classId ";
+
+    sql += "union select b.userId,c.studentId,a.batchId,b.nickName,c.studentName ";
+    sql += "from XL_BATCH_STUDENT_TMP a,XL_USER b,XL_STUDENT c,XL_SCHOOL d,XL_CLASS e ";
+    sql += "where a.state=0 and a.batchId=? and a.billId2 is not null ";
+    sql += "and c.state=1 and d.state=1 and e.state=1 and b.state=1 ";
+    sql += "and a.billId2=b.userName and a.schoolName=d.schoolName ";
+    sql += "and a.className=e.className and d.schoolId=e.schoolId ";
+    sql += "and d.schoolId=c.schoolId and a.studentName=c.studentName ";
     sql += "and c.schoolId=e.schoolId and c.classId=e.classId";
 
-    db.query(sql, batchId, function (err, data) {
+    db.query(sql, [batchId,batchId], function (err, data) {
         if (err) {
             logger.error("查询数据库出错:" + err);
             return;
