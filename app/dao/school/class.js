@@ -301,6 +301,20 @@ Class.listStudentAndDeviceByClass = function(classId, callback){
     mysqlUtil.query(selectSql, [classId], callback);
 }
 
+Class.listUnSyncStudentByClass = function(classId, callback){
+    var selectSql = "SELECT studentId FROM XL_STUDENT a WHERE a.classId =? AND a.state=1 AND NOT EXISTS (SELECT 1 FROM XL_SPORTS b WHERE b.studentId = a.studentId and b.sportsDate>DATE_SUB(now(),INTERVAL 2 day))";
+    mysqlUtil.query(selectSql, [classId], function(err, res){
+        if (err) {
+            return callback(err);
+        }
+        var studentIdObj = new Object();
+        for (var i = 0; i < res.length; i++) {
+            studentIdObj[res[i].studentId] = 1;
+        }
+        callback(err, studentIdObj);
+    });
+}
+
 Class.save = function(args, teacherId, callback){
     mysqlUtil.getConnection(function(err, conn){
         if(err){

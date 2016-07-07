@@ -460,22 +460,38 @@ module.exports = new basicController(__filename).init({
                             }
                         }
                     }
-                    var obj = new Object();
-                    obj.classId = classId;
-                    obj.timeDay = dateMoment.format("YYYYMMDD");
-                    self.model['sports'].sumByCond(obj, function(err, sports){
-                        if(err){
+                    self.model['class'].listUnSyncStudentByClass(classId, function(err, sync){
+                        if (err) {
                             return next(err);
                         }
-                        res.json({
-                            code : "00",
-                            studentNum : students.length,
-                            leaveNum: leaveNum,
-                            attendanceNum : attendanceNum,
-                            sumCalValue : sports ? sports.sumCalValue : 0,
-                            data : students
+                        if (sync) {
+                            for (var i = 0; i < students.length; i++) {
+                                var needSync = sync[students[i].studentId];
+                                if (needSync) {
+                                    students[i].needSync = true;
+                                } else {
+                                    students[i].needSync = false;
+                                }
+                            }
+                        }
+
+                        var obj = new Object();
+                        obj.classId = classId;
+                        obj.timeDay = dateMoment.format("YYYYMMDD");
+                        self.model['sports'].sumByCond(obj, function(err, sports){
+                            if(err){
+                                return next(err);
+                            }
+                            res.json({
+                                code : "00",
+                                studentNum : students.length,
+                                leaveNum: leaveNum,
+                                attendanceNum : attendanceNum,
+                                sumCalValue : sports ? sports.sumCalValue : 0,
+                                data : students
+                            });
                         });
-                    })
+                    });
                 });
             });
 
