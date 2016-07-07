@@ -78,7 +78,7 @@ Lost.savePic = function(picArgs, callback){
 }
 
 Lost.nextOne = function(index, callback){
-    var selectLostSql = "select * from XL_STUDENT_LOST where state=1 limit ?,1";
+    var selectLostSql = "select * from XL_STUDENT_LOST where state=1 order by lostId desc limit ?,1";
     mysqlUtil.queryOne(selectLostSql, [index], callback);
 }
 
