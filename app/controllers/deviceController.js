@@ -19,13 +19,22 @@ module.exports = new basicController(__filename).init({
             return next(self.Error("用户没有相应权限"))
         }
 
-        var deviceSign = request.query.deviceSign;
-        if (deviceSign) {
-            queryCondition.push({"key": "deviceSign", "opr": "like", "val": deviceSign});
+        var deviceName = request.query.deviceName;
+        if (deviceName) {
+            queryCondition.push({"key": "deviceName", "opr": "like", "val": deviceName});
         }
         var studentName = request.query.studentName;
         if (studentName) {
             queryCondition.push({"key": "studentName", "opr": "like", "val": studentName});
+        }
+
+        var schoolId = request.query.schoolId;
+        if (schoolId) {
+            queryCondition.push({"key": "schoolId", "opr": "=", "val": parseInt(schoolId)});
+        }
+        var classId = request.query.classId;
+        if (classId) {
+            queryCondition.push({"key": "classId", "opr": "=", "val": parseInt(classId)});
         }
         this.model['device'].queryPage(start, pageSize, queryCondition, function (err, totalCount, res) {
             if (err) {
