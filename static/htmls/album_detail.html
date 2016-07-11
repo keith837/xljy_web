@@ -93,7 +93,17 @@
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label">图片信息</label>
-                                        <div class="widget-content nopadding controls" id="picsDiv">
+                                        <div class="widget-content nopadding controls">
+                                            <table class="table table-bordered data-table" id="picsDiv">
+                                                <thead>
+                                                <tr>
+                                                    <th width="100%">图片详情</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -207,11 +217,25 @@
                         {"mDataProp": "pHandleId"}
                     ]
                 };
+                var table = $('#commentsTable').dataTable(extend(commentsParams,initTableParams));
+                /*
                 $.each(json.data.picPaths,function(i,item){
                     $("#picsDiv").html("<img src='"+item.picUrl+"' height='100' width='100'/>");
                     //注意分页和layer弹窗
                 })
-                var table = $('#commentsTable').dataTable(extend(commentsParams,initTableParams));
+                */
+
+                var picParams = {
+                    "data": json.data.picPaths,
+                    "aoColumns": [
+                        {
+                            "mDataProp": function (obj) {
+                                return "<img src=" + obj + " />";
+                            }
+                        }
+                    ]
+                };
+                var table = $('#picsDiv').dataTable(extend(picParams,initTableParams));
             }
         }, 'json');
 
