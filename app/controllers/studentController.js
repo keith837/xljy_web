@@ -1382,6 +1382,25 @@ module.exports = new basicController(__filename).init({
                         }
                         self.logger.info("推送宝贝[" + studentId + "]走失消息成功,objectId=" + objectId);
                     });
+
+                    var userName = req.user.custName;
+                    var nickName = req.user.nickName;
+                    var noticeParam = [6, "宝贝丢失紧急通知", content, 0, 0, userId, null, null, userName, nickName, 0];
+                    self.model['notice'].publishNotice(noticeParam, [], function (err, noticeId) {
+                        if (err) {
+                            return next(err);
+                        }
+
+                        var emergencyAction = new Object();
+                        emergencyAction.codeKey = "6";
+                        emergencyAction.codeValue = "om.xiangliang.notification.EMERGENCY_NOTIFY";
+                        self.pushNotification(content, emergencyAction, function (err, objectId) {
+                            if (err) {
+                                return self.logger.error("推送紧急通知[" + noticeId + "]消息失败", err);
+                            }
+                            self.logger.info("推送紧急通知[" + noticeId + "]成功,objectId=" + objectId);
+                        });
+                    });
                 });
             });
         });

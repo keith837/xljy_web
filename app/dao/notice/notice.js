@@ -15,6 +15,14 @@ Notice.countByCondition = function (queryCondition, callback) {
     if (queryCondition || queryCondition.length > 0) {
         for (var i in queryCondition) {
             var opr = queryCondition[i].opr;
+            var queryKey = queryCondition[i].key;
+            if (queryKey == "schoolId") {
+                opr = "in";
+                var schoolIds = [];
+                schoolIds.push(0);
+                schoolIds.push(queryCondition[i].val);
+                queryCondition[i].val = schoolIds;
+            }
             if (opr == "like") {
                 sqlCondition += "and " + queryCondition[i].key + " " + opr + " ? ";
                 params.push("%" + queryCondition[i].val + "%");
@@ -59,6 +67,14 @@ Notice.queryByNoticeType = function (start, pageSize, photoLength, queryConditio
     if (queryCondition || queryCondition.length > 0) {
         for (var i in queryCondition) {
             var opr = queryCondition[i].opr;
+            var queryKey = queryCondition[i].key;
+            if (queryKey == "schoolId") {
+                opr = "in";
+                var schoolIds = [];
+                schoolIds.push(0);
+                schoolIds.push(queryCondition[i].val);
+                queryCondition[i].val = schoolIds;
+            }
             if (opr == "like") {
                 sqlCondition += "and " + queryCondition[i].key + " " + opr + " ? ";
                 params.push("%" + queryCondition[i].val + "%");
@@ -95,7 +111,7 @@ Notice.queryByNoticeType = function (start, pageSize, photoLength, queryConditio
             if (err) {
                 return callback(err);
             }
-            if(!res || res.length <= 0){
+            if (!res || res.length <= 0) {
                 return callback(null, totalNum, []);
             }
             findPicByArray(totalNum, photoLength, res, 0, callback);

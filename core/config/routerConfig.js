@@ -362,7 +362,7 @@ var routerConfig = {
         },
 
         student : {
-            "usedModel": ["student/student", "student/sports", "school/class", "school/school", "student/studentLeave", "attendance/attendance", "user/user", 'device/device', 'student/lost'],
+            "usedModel": ["student/student", "student/sports", "school/class", "school/school", "student/studentLeave", "attendance/attendance", "user/user", 'device/device', 'student/lost','notice/notice'],
             "select": {
                 "url": "/api/student/select/:studentId",
                 "method": "post",
