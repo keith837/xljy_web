@@ -571,6 +571,16 @@ var routerConfig = {
                 "url": "/api/class/parents/:classId",
                 "method": "get",
                 "description": "班级家长成员"
+            },
+            "graduate" : {
+                "url": "/api/class/graduate/:classId",
+                "method": "put",
+                "description": "设置班级为毕业状态"
+            },
+            "upgrade" : {
+                "url": "/api/class/upgrade/:classId",
+                "method": "put",
+                "description": "设置班级为毕业状态"
             }
         },
 

@@ -301,6 +301,16 @@ Class.listStudentAndDeviceByClass = function(classId, callback){
     mysqlUtil.query(selectSql, [classId], callback);
 }
 
+Class.graduateClass = function(classId, userId, callback){
+    var selectSql = "update XL_CLASS A set graduationFlag=1,doneDate=now(),oUserId=? where A.classId = ?";
+    mysqlUtil.query(selectSql, [userId, classId], callback);
+}
+
+Class.upgradeClass = function (classId, userId, className, gradeId, callback) {
+    var selectSql = "update XL_CLASS A set className=?,gradeId=?,doneDate=now(),oUserId=? where A.classId= ?";
+    mysqlUtil.query(selectSql, [className, gradeId, userId, classId], callback);
+}
+
 Class.listUnSyncStudentByClass = function(classId, callback){
     var selectSql = "SELECT studentId FROM XL_STUDENT a WHERE a.classId =? AND a.state=1 AND NOT EXISTS (SELECT 1 FROM XL_SPORTS b WHERE b.studentId = a.studentId and b.sportsDate>DATE_SUB(now(),INTERVAL 2 day))";
     mysqlUtil.query(selectSql, [classId], function(err, res){

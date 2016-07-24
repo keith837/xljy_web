@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>响亮教育管理平台</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="css/fullcalendar.css" />
+    <link rel="stylesheet" href="css/colorpicker.css" />
+    <link rel="stylesheet" href="css/datepicker.css" />
+    <link rel="stylesheet" href="css/uniform.css" />
+    <link rel="stylesheet" href="css/select2.css" />
+    <link rel="stylesheet" href="css/unicorn.main.css" />
+    <link rel="stylesheet" href="css/unicorn.grey.css" class="skin-color" />
+    <link rel="stylesheet" href="css/sweetalert.css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+</head>
+<body>
+
+
+<div id="content">
+    <div id="breadcrumb">
+        <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 园所管理</a>
+    </div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-box">
+                    <div class="widget-title">
+								<span class="icon">
+									<i class="icon-th"></i>
+								</span>
+                        <h5>班级升级</h5>
+                    </div>
+                    <div class="widget-content nopadding">
+
+                        <div class="container-fluid">
+                            <div class="row-fluid">
+                                <form class="form-horizontal" name="classForm" id="classForm"  method="post" enctype="multipart/form-data">
+                                    <div class="control-group">
+                                        <label class="control-label" for="schoolName">学校</label>
+                                        <div class="controls">
+                                            <input type="text" disabled="disabled" id="schoolName" class="span3">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="currentClassName">原班级名称</label>
+                                        <div class="controls">
+                                            <input type="text" id="currentClassName" disabled="disabled" name="currentClassName" placeholder="班级名称" class="span3">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="className">班级名称<span style="color: red;">*</span></label>
+                                        <div class="controls">
+                                            <input type="text" id="className" name="className" placeholder="班级名称" class="span3">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="currentGradeName">原年级</label>
+                                        <div class="controls">
+                                            <input type="hidden" id="currentGradeId" />
+                                            <input type="text" disabled="disabled" id="currentGradeName" name="currentGradeName" class="span3">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="gradeId">年级<span style="color: red;">*</span></label>
+                                        <div class="controls">
+                                            <input type="text" id="gradeId" name="gradeId" placeholder="请选择年级" class="span3">
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <button type="submit" class="btn">提交</button>
+                                            <button type="button" id="backBtn" class="btn" onclick="javascript:history.back();">返回</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div id="footer" class="span12">
+            Copyright 浙江响亮教育科技股份有限公司 © 2015 <a href="https://wrapbootstrap.com/user/diablo9983">响亮教育</a>
+        </div>
+    </div>
+</div>
+
+
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery.cookie.js" charset="utf-8"></script>
+<script src="js/common.js"></script>
+<script src="js/jquery.ui.custom.js"></script>
+<script src="js/jquery.validate.js"></script>
+<script src="js/jquery.url.js"></script>
+<script src="js/jquery.form.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-colorpicker.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/jquery.uniform.js"></script>
+<script src="js/select2.min.js"></script>
+<script src="js/jquery.dataTables.js"></script>
+<script src="js/unicorn.js"></script>
+<script src="js/unicorn.form_common.js" charset="utf-8"></script>
+<script src="js/sweetalert.min.js" charset="utf-8"></script>
+<script>
+
+    $(document).ready(function(){
+        var classId = $.url.param('classId');
+        if (classId) {
+            $('#breadcrumb .tip-bottom').after("<a href='#' class='current'>升级班级</a>");
+
+            $.get("/api/class/showDetail/" + classId, null, function (json) {
+                if (json.code == "00") {
+                    $("#currentClassName").val(json.data.className);
+                    $("#schoolName").val(json.data.schoolName);
+                    $("#currentGradeId").val(json.data.gradeId);
+                    $("#currentGradeName").val(json.data.gradeName);
+
+                    loadSchoolGrade("gradeId", json.data.schoolId);
+                }
+            }, 'json');
+        } else {
+
+        }
+        $("#classForm").validate({
+            ignore: ".ignore",
+            rules:{
+                className:{
+                    required:true
+                },
+                gradeId:{
+                    required:true
+                }
+            },
+            errorClass: "help-inline",
+            errorElement: "span",
+            highlight:function(element, errorClass, validClass) {
+                $(element).parents('.control-group').addClass('error');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).parents('.control-group').removeClass('error');
+                $(element).parents('.control-group').addClass('success');
+            },
+            submitHandler: function(form) {
+                var url = "/api/class/upgrade/"+classId;
+                var type = "put";
+                var curGradeId = $("#currentGradeId").val();
+                var newGradeId = $("#gradeId").val();
+                if (curGradeId == newGradeId) {
+                    swal({title: "操作失败!", text: "请选择新的年级!", type: "error", timer: autoCloseTime});
+                    return;
+                }
+                saveOrUpdate(url, type, "#classForm", "class_graduation.html");
+            }
+        });
+
+    })
+
+
+</script>
+</body>
+</html>

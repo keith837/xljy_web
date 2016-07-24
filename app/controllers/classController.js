@@ -524,6 +524,62 @@ module.exports = new basicController(__filename).init({
                 data : parents ? parents : new Array()
             });
         })
+    },
+
+    graduate: function (req, res, next) {
+        var self = this;
+        var classId = parseInt(req.params.classId);
+        var userId = req.user.userId;
+        self.model['class'].findOne(classId, function (err, classes) {
+            if (err) {
+                return next(err);
+            }
+            if (!classes || classes == null) {
+                return next(new Error("无法查询到班级信息"));
+            }
+            if (classes.graduationFlag == 1) {
+                return next(new Error("班级已毕业，无法重复设置"));
+            }
+            self.model['class'].graduateClass(classId, userId, function (err, updateRow) {
+                if (err) {
+                    return next(err);
+                }
+                res.json({
+                    code: "00",
+                    msg: "操作成功."
+                });
+            });
+        });
+
+    },
+
+    upgrade: function (req, res, next) {
+        var self = this;
+        var classId = parseInt(req.params.classId);
+        var userId = req.user.userId;
+        var className = req.body.className;
+        var gradeId = req.body.gradeId;
+        self.model['class'].findOne(classId, function (err, classes) {
+            if (err) {
+                return next(err);
+            }
+            if (!classes || classes == null) {
+                return next(new Error("无法查询到班级信息"));
+            }
+            if (classes.graduationFlag == 1) {
+                return next(new Error("班级已毕业，无法设置"));
+            }
+            self.model['class'].upgradeClass(classId, userId, className, gradeId, function (err, updateRow) {
+                if (err) {
+                    return next(err);
+                }
+                res.json({
+                    code: "00",
+                    msg: "操作成功."
+                });
+            });
+        });
+
     }
 
 });
