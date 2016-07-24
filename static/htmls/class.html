@@ -86,11 +86,12 @@
                         <table class="table table-bordered data-table">
                             <thead>
                             <tr>
-                                <th width="7%">班级编号</th>
-                                <th width="15%">学校</th>
+                                <th width="5%">编号</th>
+                                <th width="12%">学校</th>
                                 <th>平面图</th>
                                 <th width="10%">班级名称</th>
                                 <th width="7%">所属年级</th>
+                                <th width="12%">教师</th>
                                 <th width="12%">班级介绍</th>
                                 <th width="14%">创建时间</th>
                                 <th width="16%">操作</th>
@@ -136,7 +137,7 @@
         var extendParams = {
             "bServerSide": true,
             // "sAjaxDataProp":"data.aaData",
-            "sAjaxSource": "/api/class/list",
+            "sAjaxSource": "/api/class/weblist",
             "sServerMethod": "GET",
             "aoColumns": [
                 {"mDataProp": "classId"},
@@ -151,12 +152,20 @@
                 }},
                 {"mDataProp": "className"},
                 {"mDataProp": "gradeName"},
+                {"mDataProp": function(obj){
+                    var display = "<ul style='margin:0px;list-style:none;'>";
+                    $.each(obj.teachers, function (i, item) {
+                        display += ("<li>" + item.custName + "&nbsp;" + item.jobType + "</li>");
+                    })
+                    display += "</ul>";
+                    return display;
+                }},
                 {"mDataProp": "classDesc"},
                 {"mDataProp": "createDate"}
             ],
             "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
                 {
-                    "targets": [7],
+                    "targets": [8],
                     "data": null,
                     "bSortable": false,
                     "defaultContent": "<button class=\"btn btn-primary\" id='editrow'><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"
