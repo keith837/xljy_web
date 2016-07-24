@@ -1319,86 +1319,96 @@ module.exports = new basicController(__filename).init({
             if(!student){
                 return next(new Error("学生信息不存在"));
             }
-            var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "STUDENT_LOST");
-            var form = new formidable.IncomingForm();   //创建上传表单
-            form.encoding = 'utf-8';		//设置编辑
-            form.uploadDir = uploadDir;	 //设置上传目录
-            form.keepExtensions = true;	 //保留后缀
-            form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
-            var userId = req.user.userId;
-            form.parse(req, function (err, fields, files) {
-                if(err){
+
+            self.model['lost'].listByStudentId(studentId, function(err, lostes) {
+                if (err) {
                     return next(err);
                 }
-                var features = fields.features;
-                if(!features){
-                    return next(new Error("学生特征不能为空"));
+                if (lostes && lostes.length > 0) {
+                    return next(new Error("此宝贝丢失信息已发布"));
                 }
-                var lostDate = fields.lostDate;
-                if(!lostDate){
-                    return next(new Error("学生走失日期不能为空"));
-                }
-                var lostAddr = fields.lostAddr;
-                if(!lostAddr){
-                    return next(new Error("学生失踪地点不能为空"));
-                }
-                var contactBillId = fields.contactBillId;
-                if(!contactBillId){
-                    return next(new Error("联系电话不能为空"));
-                }
-                var studentAge = fields.studentAge;
-                if(!studentAge){
-                    studentAge = student.studentAge;
-                }
-                var gender = fields.gender;
-                if(!gender){
-                    gender = student.gender;
-                }
-                var remark = fields.remark;
-                var lostPicArgs = new Array();
-                var sysDate = new Date();
-                for (var photos in files) {
-                    var width = images(files[photos].path).width();
-                    var height = images(files[photos].path).height();
-                    lostPicArgs.push([path.normalize(files[photos].path).replace(/\\/g, '/'), width, height, null, 1, sysDate, sysDate, userId]);
-                }
-                var lostArgs = [student.schoolId, student.classId, studentId, student.studentName, studentAge, gender, features, lostDate, lostAddr, contactBillId, userId, remark];
-                self.model['lost'].save(lostArgs, lostPicArgs, function(err, lost){
+
+                var uploadDir = self.cacheManager.getCacheValue("FILE_DIR", "STUDENT_LOST");
+                var form = new formidable.IncomingForm();   //创建上传表单
+                form.encoding = 'utf-8';		//设置编辑
+                form.uploadDir = uploadDir;	 //设置上传目录
+                form.keepExtensions = true;	 //保留后缀
+                form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
+                var userId = req.user.userId;
+                form.parse(req, function (err, fields, files) {
                     if(err){
                         return next(err);
                     }
-                    res.json({
-                        code : "00",
-                        msg : "发布宝贝丢失记录成功",
-                        data : lostPicArgs,
-                        lostId : lost
-                    });
-
-                    var content = student.schoolName + student.className + student.studentName + "意外走失，请大家开启志愿者版，共同寻找宝贝";
-                    var noticeAction = self.cacheManager.getOneCache("STU_LOST_NOTICE");
-                    self.pushNotification(content, noticeAction, function (err, objectId) {
-                        if (err) {
-                            return self.logger.error("推送宝贝[" + studentId + "]走失消息失败", err);
-                        }
-                        self.logger.info("推送宝贝[" + studentId + "]走失消息成功,objectId=" + objectId);
-                    });
-
-                    var userName = req.user.custName;
-                    var nickName = req.user.nickName;
-                    var noticeParam = [6, "宝贝丢失紧急通知", content, 0, 0, userId, null, null, userName, nickName, 0];
-                    self.model['notice'].publishNotice(noticeParam, [], function (err, noticeId) {
-                        if (err) {
+                    var features = fields.features;
+                    if(!features){
+                        return next(new Error("学生特征不能为空"));
+                    }
+                    var lostDate = fields.lostDate;
+                    if(!lostDate){
+                        return next(new Error("学生走失日期不能为空"));
+                    }
+                    var lostAddr = fields.lostAddr;
+                    if(!lostAddr){
+                        return next(new Error("学生失踪地点不能为空"));
+                    }
+                    var contactBillId = fields.contactBillId;
+                    if(!contactBillId){
+                        return next(new Error("联系电话不能为空"));
+                    }
+                    var studentAge = fields.studentAge;
+                    if(!studentAge){
+                        studentAge = student.studentAge;
+                    }
+                    var gender = fields.gender;
+                    if(!gender){
+                        gender = student.gender;
+                    }
+                    var remark = fields.remark;
+                    var lostPicArgs = new Array();
+                    var sysDate = new Date();
+                    for (var photos in files) {
+                        var width = images(files[photos].path).width();
+                        var height = images(files[photos].path).height();
+                        lostPicArgs.push([path.normalize(files[photos].path).replace(/\\/g, '/'), width, height, null, 1, sysDate, sysDate, userId]);
+                    }
+                    var lostArgs = [student.schoolId, student.classId, studentId, student.studentName, studentAge, gender, features, lostDate, lostAddr, contactBillId, userId, remark];
+                    self.model['lost'].save(lostArgs, lostPicArgs, function(err, lost){
+                        if(err){
                             return next(err);
                         }
+                        res.json({
+                            code : "00",
+                            msg : "发布宝贝丢失记录成功",
+                            data : lostPicArgs,
+                            lostId : lost
+                        });
 
-                        var emergencyAction = new Object();
-                        emergencyAction.codeKey = "6";
-                        emergencyAction.codeValue = "om.xiangliang.notification.EMERGENCY_NOTIFY";
-                        self.pushNotification(content, emergencyAction, function (err, objectId) {
+                        var content = student.schoolName + student.className + student.studentName + "意外走失，请大家开启志愿者版，共同寻找宝贝";
+                        var noticeAction = self.cacheManager.getOneCache("STU_LOST_NOTICE");
+                        self.pushNotification(content, noticeAction, function (err, objectId) {
                             if (err) {
-                                return self.logger.error("推送紧急通知[" + noticeId + "]消息失败", err);
+                                return self.logger.error("推送宝贝[" + studentId + "]走失消息失败", err);
                             }
-                            self.logger.info("推送紧急通知[" + noticeId + "]成功,objectId=" + objectId);
+                            self.logger.info("推送宝贝[" + studentId + "]走失消息成功,objectId=" + objectId);
+                        });
+
+                        var userName = req.user.custName;
+                        var nickName = req.user.nickName;
+                        var noticeParam = [6, "宝贝丢失紧急通知", content, 0, 0, userId, null, null, userName, nickName, 0];
+                        self.model['notice'].publishNotice(noticeParam, [], function (err, noticeId) {
+                            if (err) {
+                                return next(err);
+                            }
+
+                            var emergencyAction = new Object();
+                            emergencyAction.codeKey = "6";
+                            emergencyAction.codeValue = "om.xiangliang.notification.EMERGENCY_NOTIFY";
+                            self.pushNotification(content, emergencyAction, function (err, objectId) {
+                                if (err) {
+                                    return self.logger.error("推送紧急通知[" + noticeId + "]消息失败", err);
+                                }
+                                self.logger.info("推送紧急通知[" + noticeId + "]成功,objectId=" + objectId);
+                            });
                         });
                     });
                 });

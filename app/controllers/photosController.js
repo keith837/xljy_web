@@ -247,6 +247,14 @@ module.exports = new basicController(__filename).init({
             }
         }
 
+        var queryAlbumType = req.query.albumType;
+        if (queryAlbumType) {
+            queryAlbumType = parseInt(queryAlbumType);
+            if (!isNaN(queryAlbumType)) {
+                queryCondition.push({"key": "albumType", "opr": "=", "val": queryAlbumType});
+            }
+        }
+
         var queryClassId = req.query.classId;
         if (queryClassId) {
             queryClassId = parseInt(queryClassId);
