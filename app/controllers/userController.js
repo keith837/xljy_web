@@ -1443,6 +1443,71 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    deleteAllYun : function(req, res, next){
+        var self = this;
+        self.model['user'].queryUser(function(err, users){
+            if(err){
+                return next(err);
+            }
+            var userInfoArray = new Array();
+            var lsCount = 0;
+            var xzCount = 0;
+            var jzCount = 0;
+            if(users && users.length > 0){
+                for(var i = 0; i < users.length; i ++){
+                    var yunUser = "yunuser_" + users[i].userId;
+                    if(users[i].groupId == 20){
+                        lsCount ++;
+                    }else{
+                        xzCount ++;
+                    }
+                    userInfoArray.push(yunUser);
+                }
+            }
+            self.model['student'].queryAll(function(err, students){
+                if(err){
+                    return next(err);
+                }
+                if(students && students.length > 0){
+                    for(var i = 0; i < students.length; i ++){
+                        jzCount ++;
+                        var yunUser = "yunuser_" + students[i].userId + "_" + students[i].studentId;
+                        userInfoArray.push(yunUser);
+                    }
+                }
+                if(userInfoArray.length <= 0){
+                    return res.json({
+                        code : "00",
+                        msg : "查询需删除帐号信息为空"
+                    });
+                }
+
+                var index = Math.ceil(userInfoArray.length / 100);
+                var keys = [];
+                for (var k = 0; k < index; k++) {
+                    var userinfos = userInfoArray.slice(k * 100, (k + 1) * 100);
+                    keys.push(userinfos);
+                }
+
+                async.concat(keys, function (key, done) {
+                    imCore.delUsers(key.join(), function (err, yunRes) {
+                        done(err, yunRes);
+                    });
+                }, function (err, values) {
+                    if (err) {
+                        return next(err);
+                    }
+                    return res.json({
+                        code: "00",
+                        msg: "删除成功",
+                        syncData: userInfoArray,
+                        syncResult: values
+                    });
+                });
+            });
+        });
+    },
+
     syncYun : function(req, res, next){
         var self = this;
         var yunUser = req.params.yunUser;

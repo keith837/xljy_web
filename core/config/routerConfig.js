@@ -153,6 +153,11 @@ var routerConfig = {
                 "url": "/api/user/getYun/:yunUser",
                 "method": "get",
                 "description": "获取云账号信息"
+            },
+            deleteAllYun :{
+                "url": "/api/user/syncYuns",
+                "method": "delete",
+                "description": "全量删除云信息"
             }
         },
 
