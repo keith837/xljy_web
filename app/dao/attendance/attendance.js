@@ -47,6 +47,24 @@ Attendance.countBySchoolId = function(attendanceType, schoolId, attendanceDate, 
     mysqlUtil.queryOne(sql, [attendanceType, schoolId, attendanceDate], callback);
 }
 
+Attendance.statisticBySchoolId = function (attendanceType, schoolId, attendanceDate, callback) {
+    var sql = "select a.classId,case when a.attends>s.students then s.students else a.attends end as attends,s.students from "
+        + "(select classId,count(*) as attends from XL_ATTENDANCE where attendanceType=? and state=1 and schoolId=? and attendanceDate=? group by classId)a,"
+        + "(select b.classId,count(b.studentId) as students from XL_CLASS a,XL_STUDENT b where a.schoolId=? and a.state=1 and b.classId=a.classId and b.state=1 group by b.classId)s "
+        + "where a.classId =s.classId";
+    mysqlUtil.query(sql, [attendanceType, schoolId, attendanceDate, schoolId], callback);
+}
+
+Attendance.avgStatisticBySchoolId = function (attendanceType, schoolId, startDate, endDate, callback) {
+    var sql = "select IFNULL(FORMAT(sum(attends)/sum(students),2)*100,0) as avg_count from ("
+        + "select a.classId,case when a.attends>s.students then s.students else a.attends end as attends,s.students from "
+        + "(select classId,count(*) as attends from XL_ATTENDANCE where attendanceType=? and state=1 and schoolId=? and "
+        + "attendanceDate>=? and attendanceDate<=? group by classId)a,"
+        + "(select b.classId,count(b.studentId) as students from XL_CLASS a,XL_STUDENT b where a.schoolId=? and a.state=1 and b.classId=a.classId and b.state=1 group by b.classId)s "
+        + "where a.classId =s.classId) t";
+    mysqlUtil.queryOne(sql, [attendanceType, schoolId, startDate, endDate, schoolId], callback);
+}
+
 Attendance.update = function(obj, attendanceId, callback){
     var tempArgs = new Array();
     var sql = "update XL_ATTENDANCE set doneDate=now()";

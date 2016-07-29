@@ -25,6 +25,18 @@ Sports.countByMinute = function(whereSql, args, callback){
     var sql = "select timeMinute, sum(calValue) as calValue from XL_SPORTS where" + whereSql + " group by timeMinute order by timeMinute";
     mysqlUtil.query(sql, args, callback);
 }
+Sports.statisticBySchoolId = function (schoolId, current, callback) {
+    var sql = "SELECT classId,sum(calValue) calValue FROM XL_SPORTS where schoolId=? and timeDay=? group by classId";
+    mysqlUtil.query(sql, [schoolId, current], callback);
+}
+
+Sports.avgStatisticBySchoolId = function (schoolId, start, end, callback) {
+    var sql = "select IFNULL(FORMAT(avg(calValue),0),0) calValue from ("
+        + "select avg(calValue) calValue from ("
+        + "SELECT classId,timeDay,sum(calValue) calValue FROM XL_SPORTS "
+        + "where schoolId=? and timeDay>=? and timeDay<=? group by classId,timeDay)t group by classId) m";
+    mysqlUtil.queryOne(sql, [schoolId, start, end], callback);
+}
 
 Sports.listByCond = function(whereSql, args, callback){
     var sql = "select * from XL_SPORTS where" + whereSql + " order by time";

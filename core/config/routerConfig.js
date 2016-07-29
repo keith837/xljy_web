@@ -1015,6 +1015,14 @@ var routerConfig = {
                 "method": "put",
                 "description": "编辑帖子"
             }
+        },
+        statistic: {
+            "usedModel": ["student/sports", "school/class", "attendance/attendance"],
+            "showStatistic": {
+                "url": "/api/statistic/:schoolId",
+                "method": "get",
+                "description": "班级考勤和平均运动量统计"
+            }
         }
     }
 }
