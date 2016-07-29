@@ -109,7 +109,7 @@ module.exports = new basicController(__filename).init({
                 var minAttendsClass = classInfo[0].classId, minSportsClass = classInfo[0].classId;
                 var sumAttends = 0, sumStudents = 0, sumSports = 0;
                 var firstAttend = true, firstSports = true;
-
+                var sportsLength = 0;
                 for (var i in classInfo) {
                     var attend = attends[classInfo[i].classId];
                     if (attend) {
@@ -130,7 +130,9 @@ module.exports = new basicController(__filename).init({
                     }
 
                     var classSport = sports[classInfo[i].classId];
+
                     if (classSport) {
+                        sportsLength++;
                         sumSports += classSport;
                         if (firstSports) {
                             minSports = classSport;
@@ -156,7 +158,7 @@ module.exports = new basicController(__filename).init({
                             termCount: avg_attends
                         },
                         sports: {
-                            today: isEmpty(sports) ? 0 : (sumSports / sports.length).toFixed(0),
+                            today: isEmpty(sports) ? 0 : (sumSports / sportsLength).toFixed(0),
                             todayMin: {
                                 className: classObjects[minSportsClass],
                                 count: minSports
