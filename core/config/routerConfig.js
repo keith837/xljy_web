@@ -1017,7 +1017,7 @@ var routerConfig = {
             }
         },
         statistic: {
-            "usedModel": ["student/sports", "school/class", "attendance/attendance"],
+            "usedModel": ["student/sports", "school/school", "school/class", "attendance/attendance"],
             "showStatistic": {
                 "url": "/api/statistic/:schoolId",
                 "method": "get",

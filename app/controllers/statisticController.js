@@ -26,7 +26,7 @@ module.exports = new basicController(__filename).init({
 
         var tasks = {
             classInfo: function (cb) {
-                self.model['class'].listBySchoolId(schoolId, function (err, classes) {
+                self.model['school'].listClassBySchoolId(schoolId, function (err, classes) {
                     if (err) {
                         return cb(err);
                     }
@@ -35,7 +35,7 @@ module.exports = new basicController(__filename).init({
                     } else {
                         var classObject = new Object();
                         for (var i in classes) {
-                            classObject[classes[i].classId] = classes[i].className;
+                            classObject[classes[i].classId] = [classes[i].className, classes[i].studentNum];
                         }
                         cb(err, [classes, classObject]);
                     }
@@ -112,10 +112,10 @@ module.exports = new basicController(__filename).init({
                 var sportsLength = 0;
                 for (var i in classInfo) {
                     var attend = attends[classInfo[i].classId];
+                    sumStudents += classObjects[classInfo[i].classId][1];
                     if (attend) {
                         if (attend[1] > 0) {
                             sumAttends += attend[0];
-                            sumStudents += attend[1];
                             if (firstAttend) {
                                 minAttendsRate = attend[0] / attend[1];
                                 minAttendsClass = classInfo[i].classId;
@@ -127,6 +127,10 @@ module.exports = new basicController(__filename).init({
                                 }
                             }
                         }
+                    } else {
+                        minAttendsRate = 0;
+                        minAttendsClass = classInfo[i].classId;
+                        firstAttend = false;
                     }
 
                     var classSport = sports[classInfo[i].classId];
@@ -152,7 +156,7 @@ module.exports = new basicController(__filename).init({
                         attendance: {
                             today: sumAttends + "/" + sumStudents,
                             todayMin: {
-                                className: classObjects[minAttendsClass],
+                                className: classObjects[minAttendsClass][0],
                                 count: attends[minAttendsClass] ? attends[minAttendsClass][0] + "/" + attends[minAttendsClass][1] : 0 + "/" + 0
                             },
                             termCount: avg_attends
@@ -160,7 +164,7 @@ module.exports = new basicController(__filename).init({
                         sports: {
                             today: isEmpty(sports) ? 0 : (sumSports / sportsLength).toFixed(0),
                             todayMin: {
-                                className: classObjects[minSportsClass],
+                                className: classObjects[minSportsClass][0],
                                 count: minSports
                             },
                             termCount: avg_sports
