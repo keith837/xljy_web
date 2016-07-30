@@ -21,11 +21,37 @@ module.exports = new basicController(__filename).init({
         if (consultType == 2 && (groupId == 30 || groupId == 40)) {
             schoolId = request.user.schoolIds;
         }
-        this.model['recom'].queryPage(start, pageSize,null,consultDate,consultTitle,consultType,schoolId,function (err, totalCount, res) {
+        this.model['recom'].queryPage(start, pageSize, null, consultDate, consultTitle, consultType, schoolId, function (err, totalCount, res) {
             if (err) {
                 return next(err);
             }
-            response.json(self.createPageData("00", totalCount, res));
+            var querySchool = [];
+            for (var i in res) {
+                if (res[i].schoolId && res[i].schoolId != null) {
+                    querySchool.push(res[i].schoolId);
+                }
+            }
+            if (querySchool.length > 0) {
+                self.model['school'].findBySchoolIds(querySchool, function (err, schools) {
+                    if (err) {
+                        return next(err);
+                    }
+                    var schoolObject = new Object();
+                    if (schools && schools.length > 0) {
+                        for (var k in schools) {
+                            schoolObject[schools[k].schoolId] = schools[k].schoolName;
+                        }
+                        for (var i in res) {
+                            if (schoolObject[res[i].schoolId]) {
+                                res[i].schoolName = schoolObject[res[i].schoolId];
+                            }
+                        }
+                    }
+                    response.json(self.createPageData("00", totalCount, res));
+                });
+            } else {
+                response.json(self.createPageData("00", totalCount, res));
+            }
         });
     },
 

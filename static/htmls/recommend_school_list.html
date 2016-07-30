@@ -91,6 +91,7 @@
                                 <th>推荐类型</th>
                                 <th>图片</th>
                                 <th>链接</th>
+                                <th>学校</th>
                                 <th>发布时间</th>
                                 <th >操作</th>
                             </tr>
@@ -173,11 +174,18 @@
                     }
 
                 }},
+                {"mDataProp": function(obj){
+                    if( obj.schoolName){
+                        return obj.schoolName;
+                    }else{
+                        return "";
+                    }
+                }},
                 {"mDataProp": "createDate"}
             ],
             "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
                 {
-                    "targets": [6],
+                    "targets": [7],
                     "data": null,
                     "bSortable": false,
                     "defaultContent": "<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"

@@ -266,7 +266,7 @@ var routerConfig = {
             }
         },
         recom: {
-            "usedModel": ['recom/recom'],
+            "usedModel": ['recom/recom', "school/school"],
             "list": {
                 "url": "/api/recom",
                 "method": "get",

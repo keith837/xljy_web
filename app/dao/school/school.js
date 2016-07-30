@@ -33,6 +33,17 @@ School.findBySchoolId = function(schoolId, callback){
     mysqlUtil.queryOne("select * from XL_SCHOOL where state=1 and schoolId = ?", [schoolId], callback);
 }
 
+School.findBySchoolIds = function (schoolIds, callback) {
+    var appenderId = "";
+    var params = [];
+    for (var k in schoolIds) {
+        appenderId += "?,";
+        params.push(schoolIds[k]);
+    }
+    appenderId = appenderId.substr(0, appenderId.length - 1);
+    mysqlUtil.query("select * from XL_SCHOOL where state=1 and schoolId in (" + appenderId + ")", params, callback);
+}
+
 School.findByUserAndSchoolId = function(userId, schoolId, callback){
     mysqlUtil.queryOne("select * from XL_SCHOOL where state=1 and sUserId = ? and schoolId = ?", [userId, schoolId], callback);
 }
