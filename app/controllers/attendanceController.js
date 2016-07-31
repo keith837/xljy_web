@@ -15,6 +15,7 @@ module.exports = new basicController(__filename).init({
         }
         var checkFlag = req.body.checkFlag;
         var checkTime = req.body.checkTime;
+        var stationAddr = req.body.stationAddr;
         if(!checkFlag){
             return next("进出园标志不能为空");
         }else{
@@ -26,7 +27,7 @@ module.exports = new basicController(__filename).init({
         var attendanceDate = moment(checkTime, "YYYYMMDDHHmmss");
         var attendanceTime = attendanceDate.toDate();
         self.logger.info("请求入参：macAddr=" + macAddr + ",checkFlag=" + checkFlag + ",checkTime=" + checkTime);
-        self.model["attendance"].saveCheckTime([macAddr,checkFlag,checkTime], function(err, data){
+        self.model["attendance"].saveCheckTime([macAddr,checkFlag,checkTime,stationAddr], function(err, data){
             if(err){
                 self.logger.error("保存出入园请求信息失败：", err);
             }

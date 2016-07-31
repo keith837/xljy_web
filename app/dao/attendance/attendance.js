@@ -9,7 +9,7 @@ Attendance.save = function(args, callback){
 }
 
 Attendance.saveCheckTime = function(args, callback){
-    var sql = "insert into XL_CHECK_TIME(deviceSign,checkFlag,checkTime,createDate) values (?,?,?,now())";
+    var sql = "insert into XL_CHECK_TIME(deviceSign,checkFlag,checkTime,createDate,stationAddr) values (?,?,?,now(),?)";
     mysqlUtil.query(sql, args, callback);
 }
 

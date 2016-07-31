@@ -234,6 +234,11 @@ var routerConfig = {
                 "method": "put",
                 "description": "修改园所"
             },
+            "brandChange": {
+                "url": "/api/school/brand/:schoolId",
+                "method": "put",
+                "description": "修改园所品牌"
+            },
             "add": {
                 "url": "/api/school/add",
                 "method": "post",

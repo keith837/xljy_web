@@ -290,6 +290,31 @@ module.exports = new basicController(__filename).init({
         });
     },
 
+    brandChange: function (req, res, next) {
+        var self = this;
+        var schoolId = parseInt(req.params.schoolId);
+        if (!schoolId && schoolId <= 0) {
+            return next(new Error("园所编号不能为空"));
+        }
+        var oUserId = req.user.userId;
+        var obj = new Object();
+        var brandId = req.body.brandId;
+        obj.brandId = brandId;
+        obj.oUserId = oUserId;
+        obj.doneDate = new Date();
+        self.model['school'].update(obj, schoolId, function (err, data) {
+            if (err) {
+                return next(err);
+            } else if (data.affectedRows != 1) {
+                return next(new Error("园所修改失败"));
+            }
+            res.json({
+                code: "00",
+                msg: "园所修改成功"
+            });
+        });
+    },
+
     teachers : function(req, res, next){
         var self = this;
         var schoolId = parseInt(req.params.schoolId);
