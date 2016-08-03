@@ -114,7 +114,7 @@ Device.update = function (device, callback) {
             if (data.length > 1) {
                 return callback(new Error("学生已经绑定多个手环设备."));
             }
-            if (data[0].deviceId != device.deviceId) {
+            if (data.length == 1 && data[0].deviceId != device.deviceId) {
                 return callback(new Error("学生已经绑定手环设备,无法更新."));
             }
 
@@ -125,7 +125,7 @@ Device.update = function (device, callback) {
                 if (dev.length > 1) {
                     return callback(new Error("手环设备被多个学生共用."));
                 }
-                if (dev[0].deviceId != device.deviceId) {
+                if (dev.length == 1 && dev[0].deviceId != device.deviceId) {
                     return callback(new Error("手环设备已被其他学生使用,无法更新."));
                 }
                 var sql = "update XL_DEVICE set deviceSign=?,deviceName=?,studentId=?,doneDate=now(),oUserId=? where deviceId=?";
