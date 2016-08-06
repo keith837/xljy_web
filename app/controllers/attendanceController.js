@@ -108,29 +108,48 @@ module.exports = new basicController(__filename).init({
                             var attndSubTime = attendanceDate.format("HH:mm:ss");
                             if(attndSubTime > grade.sComeDate && attndSubTime < grade.sLeaveDate){
                                 isSendFlag = true;
-                                self.model["class"].listTeacherByClassId(studengInfo.classId, function(err, tUsers){
-                                    if(err){
-                                        self.logger.error("查询班级老师失败：", err);
-                                    }else{
-                                        if(!tUsers || tUsers.length <= 0){
-                                            self.logger.info("为查到需下发短信的班级老师洗信息");
-                                        }else{
-                                            for(var i = 0; i < tUsers.length; i ++){
-                                                self.logger.info("开始给老师【" + tUsers[i].custName + "-" + tUsers[i].userName + "】下发短信:");
-                                                SmsSendUtil.sendNoticeSms(tUsers[i].userName, "你班的" + studengInfo.studentName + "学生，在非放学时间离开学校，请尽快核实", function(data){
-                                                    self.logger.info("给老师下发短信完成：" + JSON.stringify(data));
-                                                });
+                                var redisKey = "attendance_" + studengInfo.studentId;
+                                self.redis.get(redisKey, function (err, lastTimestamp) {
+                                    if (err) {
+                                        return next(err);
+                                    }
+                                    var currentTimestamp = moment().format("YYYYMMDDHHmmss");
+                                    if (!lastTimestamp) {
+                                        lastTimestamp = 19700101000000;
+                                    }
+                                    lastTimestamp = moment(lastTimestamp, "YYYYMMDDHHmmss").add(3, 'minutes').format("YYYYMMDDHHmmss");
+
+                                    self.logger.info("[" + redisKey + "]上次异常离园时间（加3分钟）:" + lastTimestamp);
+                                    if (currentTimestamp <= lastTimestamp) {
+                                        self.logger.info("3分钟内不重复发短信提醒");
+                                    } else {
+                                        self.model["class"].listTeacherByClassId(studengInfo.classId, function(err, tUsers){
+                                            if(err){
+                                                self.logger.error("查询班级老师失败：", err);
+                                            }else{
+                                                if(!tUsers || tUsers.length <= 0){
+                                                    self.logger.info("未查到需下发短信的班级老师的信息");
+                                                }else{
+                                                    for(var i = 0; i < tUsers.length; i ++){
+                                                        self.logger.info("开始给老师【" + tUsers[i].custName + "-" + tUsers[i].userName + "】下发短信:");
+                                                        SmsSendUtil.sendNoticeSms(tUsers[i].userName, "你班的" + studengInfo.studentName + "学生，正在校门口区域，请尽快核实", function(data){
+                                                            self.logger.info("给老师下发短信完成：" + JSON.stringify(data));
+                                                        });
+                                                    }
+                                                    self.redis.set(redisKey, currentTimestamp);
+                                                }
                                             }
-                                        }
-                                    }
-                                });
-                                /*if(allUsers != null && allUsers.length > 0){
-                                    for(var i = 0; i < allUsers.length; i ++){
-                                        SmsSendUtil.sendNoticeSms(allUsers[i].userName, "你家宝宝于" + dateStr + "," + (checkFlag == 1 ? "进入" : "离开") + "学校", function(data){
-                                            self.logger.info("给家长下发短信完成" + JSON.stringify(data));
                                         });
+                                        /*if(allUsers != null && allUsers.length > 0){
+                                         for(var i = 0; i < allUsers.length; i ++){
+                                         SmsSendUtil.sendNoticeSms(allUsers[i].userName, "你家宝宝于" + dateStr + "," + (checkFlag == 1 ? "进入" : "离开") + "学校", function(data){
+                                         self.logger.info("给家长下发短信完成" + JSON.stringify(data));
+                                         });
+                                         }
+                                         }*/
                                     }
-                                }*/
+
+                                });
                             }
                         }
                     }
