@@ -151,7 +151,12 @@ Device.queryDetail = function (id, callback) {
     mysqlUtil.query(sql, [id], callback);
 }
 
-Device.findByMacAddr = function(macAddr, callback){
-    var sql = "select B.* from XL_DEVICE A, XL_STUDENT B WHERE A.state=1 and B.state=1 and A.studentId = B.studentId and A.deviceSign=?";
+Device.findByMacAddr = function (macAddr, callback) {
+    var sql = "select B.*,A.deviceState,A.deviceId from XL_DEVICE A, XL_STUDENT B WHERE A.state=1 and B.state=1 and A.studentId = B.studentId and A.deviceSign=?";
     mysqlUtil.queryOne(sql, [macAddr], callback);
+}
+
+Device.updateState = function (id, state, callback) {
+    var sql = "update XL_DEVICE set deviceState=?,doneDate=now() where deviceId=?";
+    mysqlUtil.queryOne(sql, [state, id], callback);
 }

@@ -34,6 +34,11 @@ var routerConfig = {
                 "url" : "/api/student/checkTime/:macAddr",
                 "method": "post",
                 "description": "学生出入园"
+            },
+            "newAttendance" : {
+                "url" : "/api/student/attendance/:macAddr",
+                "method": "post",
+                "description": "学生出入园(new)"
             }
         },
 
