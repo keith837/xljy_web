@@ -75,13 +75,15 @@
                         <table class="table table-bordered data-table">
                             <thead>
                             <tr>
-                                <th width="15%">学校</th>
-                                <th width="15%">班级</th>
+                                <th width="10%">学校</th>
+                                <th width="10%">班级</th>
                                 <th width="10%">姓名</th>
-                                <th width="15%">家长账号(手机号)</th>
-                                <th width="15%">家长账号2(手机号)</th>
+                                <th width="12%">家长账号(手机号)</th>
+                                <th width="12%">家长账号2(手机号)</th>
+                                <th width="10%">性别</th>
+                                <th width="10%">学生年龄</th>
                                 <th width="10%">状态</th>
-                                <th width="20%">描述</th>
+                                <th width="16%">描述</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -132,6 +134,8 @@
                 {"mDataProp": "studentName"},
                 {"mDataProp": "billId"},
                 {"mDataProp": "billId2"},
+                {"mDataProp": "gender"},
+                {"mDataProp": "studentAge"},
                 {
                     "mDataProp": function (obj) {
                         if (obj.state == 0) {
