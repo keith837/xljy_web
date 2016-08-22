@@ -40,11 +40,16 @@ module.exports = new basicController(__filename).init({
         var noticeTypeId = null;
         if (request.user.source == 2 && request.user.channel == 4) {
             // web login
-            noticeTypeId = -1;
             if (groupId == 50) {
                 // 超级园长
             } else {
                 queryCondition.push(schoolId);
+            }
+            noticeTypeId = parseInt(request.query.noticeTypeId);
+            if (noticeTypeId || !isNaN(noticeTypeId)) {
+                queryCondition.push({"key": "noticeTypeId", "opr": "=", "val": noticeTypeId});
+            } else {
+                noticeTypeId = -1;
             }
         } else {
             noticeTypeId = parseInt(request.query.noticeTypeId);

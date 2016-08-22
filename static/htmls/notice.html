@@ -45,7 +45,7 @@
                                             <td align="center" width="8%">
                                                 选择学校
                                             </td>
-                                            <td align="left" width="30%">
+                                            <td align="left" width="10%">
                                                 <div class="span12" style="margin-top:5px; margin-bottom:5px">
                                                     <input type="text" id="schoolId" name="schoolId" placeholder="请选择学校" class="span12">
                                                 </div>
@@ -56,6 +56,14 @@
                                             <td align="left" width="10%">
                                                 <div class="span12" style="margin-top:5px; margin-bottom:5px">
                                                     <input type="text" id="classId" name="classId" placeholder="请选择班级" class="span12">
+                                                </div>
+                                            </td>
+                                            <td align="center" width="8%">
+                                                通知类型
+                                            </td>
+                                            <td align="left" width="10%">
+                                                <div class="span12" style="margin-top:5px; margin-bottom:5px">
+                                                    <input type="text" id="noticeTypeId" name="noticeTypeId" placeholder="请选择通知类型" class="span12">
                                                 </div>
                                             </td>
                                             <td align="center" width="8%">
@@ -71,7 +79,7 @@
                                             <td align="center" width="8%">
                                                 创建时间
                                             </td>
-                                            <td align="left">
+                                            <td colspan="3" align="left" width="40%">
                                                 <div class="span12" style="margin-top:5px; margin-bottom:5px">
                                                     <input class="form_datetime span5" id="beginTime" type="text" placeholder="开始时间">
                                                     &nbsp;
@@ -167,6 +175,17 @@
 
         $("#schoolId").select2({data: [{id: -1, text: "请选择学校"}]});
         $("#classId").select2({data: [{id: -1, text: "请选择班级"}]});
+
+        var options = [];
+        options.push({id: 1, text: "班级通知"});
+        options.push({id: 2, text: "教师通知"});
+        options.push({id: 3, text: "家长通知"});
+        options.push({id: 4, text: "今日食谱"});
+        options.push({id: 5, text: "工作计划"});
+        options.push({id: 6, text: "紧急通知"});
+        options.push({id: 7, text: "今日作业"});
+        $("#noticeTypeId").select2({data: options});
+
         loadSchool();
         initDateTimePicker();
         var initTableParams = initDataTable();
@@ -230,6 +249,7 @@
             var beginTime = $("#beginTime").val();
             var endTime = $("#endTime").val();
             var custName = $("#custName").val();
+            var noticeTypeId = $("#noticeTypeId").val();
 
             var queryCondition = "";
             if (schoolId != null && schoolId != "-1") {
@@ -237,6 +257,9 @@
             }
             if (classId != null && classId != "-1") {
                 queryCondition += "classId=" + classId + "&";
+            }
+            if (noticeTypeId != null && noticeTypeId != "-1") {
+                queryCondition += "noticeTypeId=" + noticeTypeId + "&";
             }
             if (noticeTitle != "") {
                 queryCondition += "noticeTitle=" + noticeTitle + "&";
