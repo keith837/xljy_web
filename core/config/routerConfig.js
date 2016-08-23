@@ -508,6 +508,11 @@ var routerConfig = {
                 "method": "get",
                 "description": "获取宝贝丢失记录"
             },
+            "webListLost" : {
+                "url": "/api/student/webLost",
+                "method": "get",
+                "description": "获取宝贝丢失记录"
+            },
             "lostPosition" : {
                 "url": "/api/student/lostPosition/:studentId",
                 "method": "get",

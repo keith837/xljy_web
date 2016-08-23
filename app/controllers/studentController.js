@@ -1268,6 +1268,28 @@ module.exports = new basicController(__filename).init({
             });
         });
     },
+
+    webListLost : function(req, res, next){
+        var self = this;
+        var pageNo = parseInt(req.query.iDisplayStart || this.webConfig.iDisplayStart);
+        var pageSize = parseInt(req.query.iDisplayLength || this.webConfig.iDisplayLength);
+        var schoolId = req.query.schoolId;
+        var classId = req.query.classId;
+        var studentName = req.query.studentName;
+
+        var groupId = req.user.groupId;
+        var schoolIds = [];
+        if (groupId === 30 || groupId === 40) {
+            schoolIds = req.user.schoolIds;
+        }
+
+        self.model['lost'].findAllLostes(schoolIds,schoolId, classId, studentName, pageNo, pageSize, function (err, totalCount, lostes) {
+            if (err) {
+                return next(err);
+            }
+            res.json(self.createPageData("00", totalCount, lostes));
+        });
+    },
     
     unlost : function(req, res, next){
         var self = this;

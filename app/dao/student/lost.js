@@ -136,6 +136,59 @@ Lost.list = function(schoolId,classId,studentId,studentName,pageNo,pageSize,call
     mysqlUtil.query(selectSql, tempArgs, callback);
 }
 
+Lost.findAllLostes = function (schoolIds, schoolId, classId, studentName, pageNo, pageSize, callback) {
+    var selectSql = "from XL_STUDENT_LOST a,XL_SCHOOL b,XL_CLASS c ";
+    selectSql += "where a.schoolId=b.schoolId and a.classId=c.classId";
+    selectSql += " and b.state=1 and c.state=1"
+    var tempArgs = new Array();
+    if (schoolIds && schoolIds.length > 0) {
+        var appenderId = "";
+        for (var k in schoolIds) {
+            appenderId += "?,";
+            tempArgs.push(schoolIds[k]);
+        }
+        appenderId = appenderId.substr(0, appenderId.length - 1);
+        selectSql += " and a.schoolId in (" + appenderId + ") ";
+    }
+    if (schoolId) {
+        selectSql += " and a.schoolId=? "
+        tempArgs.push(schoolId);
+    }
+    if (classId) {
+        selectSql += " and a.classId=? "
+        tempArgs.push(classId);
+    }
+    if (studentName) {
+        selectSql += " and a.studentName like ? "
+        tempArgs.push("%" + studentName + "%");
+    }
+
+    var countSql = "select count(*) as total " + selectSql;
+    mysqlUtil.queryOne(countSql, tempArgs, function (err, res) {
+        if (err) {
+            return callback(err);
+        }
+        var totalNum = res.total;
+        if (totalNum === 0) {
+            return callback(err, 0, []);
+        }
+
+        selectSql += " order by lostId desc";
+        if (pageNo && pageSize) {
+            selectSql += " limit ?, ?";
+            tempArgs.push(parseInt(pageNo));
+            tempArgs.push(parseInt(pageSize));
+        }
+        var querySql = "select a.*,b.schoolName,c.className " + selectSql;
+        mysqlUtil.query(querySql, tempArgs, function (err, res) {
+            if (err) {
+                callback(err);
+            }
+            return callback(err, totalNum, res);
+        });
+    });
+}
+
 Lost.deletePics = function(callback, lostId, picId){
     var deletePicSql = "delete from XL_STUDENT_LOST where 1 = 1";
     var tempArgs = new Array();
