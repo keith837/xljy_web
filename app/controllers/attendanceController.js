@@ -204,7 +204,6 @@ module.exports = new basicController(__filename).init({
                                 if (currentTimestamp <= lastTimestamp) {
                                     self.logger.info("3分钟内不重复发短信提醒和推送消息");
                                     isSendFlag = true;
-                                    return;
                                 } else {
                                     self.redis.set(redisKey, currentTimestamp);
                                     var attndSubTime = attendanceDate.format("HH:mm:ss");
