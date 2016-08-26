@@ -203,6 +203,7 @@ module.exports = new basicController(__filename).init({
                                 self.logger.info("[" + redisKey + "]上次离园时间（加3分钟）:" + lastTimestamp);
                                 if (currentTimestamp <= lastTimestamp) {
                                     self.logger.info("3分钟内不重复发短信提醒和推送消息");
+                                    isSendFlag = true;
                                     return;
                                 } else {
                                     self.redis.set(redisKey, currentTimestamp);
