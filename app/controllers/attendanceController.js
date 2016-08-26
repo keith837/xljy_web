@@ -233,13 +233,12 @@ module.exports = new basicController(__filename).init({
                                          }
                                          }*/
 
+                                    } else {
+                                        self.notice(allUsers, studengInfo, checkFlag, dateStr);
                                     }
                                 }
                             });
                         }
-                    }
-                    if (!isSendFlag) {
-                        self.notice(allUsers, studengInfo, checkFlag, dateStr);
                     }
                 });
             } else {
