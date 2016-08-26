@@ -66,6 +66,9 @@ module.exports = new basicController(__filename).init({
                 if (stationType != 1) {
                     return next("当前手环状态为2,基站类型为" + stationType + ",异常数据,不处理");
                 } else {
+                    //出园
+                    self.beforeCheck(req, res, next, macAddr, 2, checkTime, stationAddr);
+                    /*
                     self.model['device'].updateState(studentInfo.deviceId, 1, function (err, upd) {
                         if (err) {
                             return next(err);
@@ -73,6 +76,7 @@ module.exports = new basicController(__filename).init({
                         //出园
                         self.beforeCheck(req, res, next, macAddr, 2, checkTime, stationAddr);
                     });
+                    */
                 }
             }
         });
