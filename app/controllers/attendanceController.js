@@ -69,14 +69,14 @@ module.exports = new basicController(__filename).init({
                     //出园
                     self.beforeCheck(req, res, next, macAddr, 2, checkTime, stationAddr);
                     /*
-                    self.model['device'].updateState(studentInfo.deviceId, 1, function (err, upd) {
-                        if (err) {
-                            return next(err);
-                        }
-                        //出园
-                        self.beforeCheck(req, res, next, macAddr, 2, checkTime, stationAddr);
-                    });
-                    */
+                     self.model['device'].updateState(studentInfo.deviceId, 1, function (err, upd) {
+                     if (err) {
+                     return next(err);
+                     }
+                     //出园
+                     self.beforeCheck(req, res, next, macAddr, 2, checkTime, stationAddr);
+                     });
+                     */
                 }
             }
         });
@@ -190,24 +190,25 @@ module.exports = new basicController(__filename).init({
                         if (!grade) {
                             self.logger.info("未查到班级编号【" + studengInfo.classId + "】关联的年级信息");
                         } else {
-                            var attndSubTime = attendanceDate.format("HH:mm:ss");
-                            if (attndSubTime > grade.sComeDate && attndSubTime < grade.sLeaveDate) {
-                                isSendFlag = true;
-                                var redisKey = "attendance_" + studengInfo.studentId;
-                                self.redis.get(redisKey, function (err, lastTimestamp) {
-                                    if (err) {
-                                        return next(err);
-                                    }
-                                    var currentTimestamp = moment().format("YYYYMMDDHHmmss");
-                                    if (!lastTimestamp) {
-                                        lastTimestamp = 19700101000000;
-                                    }
-                                    lastTimestamp = moment(lastTimestamp, "YYYYMMDDHHmmss").add(3, 'minutes').format("YYYYMMDDHHmmss");
-
-                                    self.logger.info("[" + redisKey + "]上次异常离园时间（加3分钟）:" + lastTimestamp);
-                                    if (currentTimestamp <= lastTimestamp) {
-                                        self.logger.info("3分钟内不重复发短信提醒");
-                                    } else {
+                            var redisKey = "attendance_" + studengInfo.studentId;
+                            self.redis.get(redisKey, function (err, lastTimestamp) {
+                                if (err) {
+                                    return next(err);
+                                }
+                                var currentTimestamp = moment().format("YYYYMMDDHHmmss");
+                                if (!lastTimestamp) {
+                                    lastTimestamp = 19700101000000;
+                                }
+                                lastTimestamp = moment(lastTimestamp, "YYYYMMDDHHmmss").add(3, 'minutes').format("YYYYMMDDHHmmss");
+                                self.logger.info("[" + redisKey + "]上次离园时间（加3分钟）:" + lastTimestamp);
+                                if (currentTimestamp <= lastTimestamp) {
+                                    self.logger.info("3分钟内不重复发短信提醒和推送消息");
+                                    return;
+                                } else {
+                                    self.redis.set(redisKey, currentTimestamp);
+                                    var attndSubTime = attendanceDate.format("HH:mm:ss");
+                                    if (attndSubTime > grade.sComeDate && attndSubTime < grade.sLeaveDate) {
+                                        isSendFlag = true;
                                         self.model["class"].listTeacherByClassId(studengInfo.classId, function (err, tUsers) {
                                             if (err) {
                                                 self.logger.error("查询班级老师失败：", err);
@@ -221,7 +222,6 @@ module.exports = new basicController(__filename).init({
                                                             self.logger.info("给老师下发短信完成：" + JSON.stringify(data));
                                                         });
                                                     }
-                                                    self.redis.set(redisKey, currentTimestamp);
                                                 }
                                             }
                                         });
@@ -232,10 +232,10 @@ module.exports = new basicController(__filename).init({
                                          });
                                          }
                                          }*/
-                                    }
 
-                                });
-                            }
+                                    }
+                                }
+                            });
                         }
                     }
                     if (!isSendFlag) {
