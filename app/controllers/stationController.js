@@ -1,6 +1,33 @@
 var basicController = require("../../core/utils/controller/basicController");
 
 module.exports = new basicController(__filename).init({
+    heartbeat: function (request, response, next) {
+        var self = this;
+        var stationMac = request.params.id;
+        if (!stationMac) {
+            return next("基站mac地址不能为空");
+        }
+        stationMac = stationMac.toUpperCase();
+        var temperature = request.body.temperature;
+        var battery = request.body.battery;
+        var districtNum = request.body.districtNum;
+
+        this.model['station'].queryDetailByMac(stationMac, function (err, res) {
+            if (err) {
+                return next(err);
+            }
+            if (!res || res.length === 0) {
+                return next("无法查询到基站详情[" + stationMac + "].");
+            }
+            self.model['station'].updateActive(stationMac, temperature, battery, districtNum, function (err, res) {
+                if (err) {
+                    return next(err);
+                }
+                response.json({code: "00", data: "更新基站状态成功."});
+            });
+        });
+    },
+
     list: function (request, response, next) {
         var self = this;
         var start = parseInt(request.query.iDisplayStart || this.webConfig.iDisplayStart);
@@ -113,7 +140,7 @@ module.exports = new basicController(__filename).init({
 function parseStation(request) {
     var station = {};
     station.stationId = parseInt(request.body.stationId);
-    station.stationMac = request.body.stationMac;
+    station.stationMac = request.body.stationMac ? request.body.stationMac.toUpperCase() : "";
     station.schoolId = parseInt(request.body.schoolId);
     station.location = request.body.location;
     station.type = request.body.type;

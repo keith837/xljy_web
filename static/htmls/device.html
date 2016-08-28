@@ -94,9 +94,12 @@
                                 <th width="15%">所属学校</th>
                                 <th>基站位置</th>
                                 <th width="8%">基站分类</th>
+                                <th width="8%">温度</th>
+                                <th width="8%">电池电量</th>
                                 <th width="8%">基站状态</th>
+                                <th width="8%">园区编号</th>
                                 <th width="15%">反馈时间</th>
-                                <th width="18%">操作</th>
+                                <th width="10%">操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -146,22 +149,15 @@
                 {"mDataProp": "schoolName"},
                 {"mDataProp": "address"},
                 {"mDataProp": "stationType"},
-                {"mDataProp": "state",
-                    "render": function (data) {
-                        if (data == 1) {
-                            return "正常";
-                        } else if (data == 0) {
-                            return "已删除";
-                        } else {
-                            return "未知状态";
-                        }
-                    }
-                },
-                {"mDataProp": "doneDate"}
+                {"mDataProp": "temperature"},
+                {"mDataProp": "battery"},
+                {"mDataProp": "activeState"},
+                {"mDataProp": "districtNum"},
+                {"mDataProp": "activeDate"}
             ],
             "aoColumnDefs":[//设置列的属性，此处设置第四列编辑按钮
                 {
-                    "targets": [6],
+                    "targets": [9],
                     "data": null,
                     "bSortable": false,
                     "defaultContent": "<button class=\"btn btn-primary\" id='editrow'><i class=\"icon-pencil icon-white\"></i> 编辑</button>&nbsp;&nbsp;<button class=\"btn btn-danger\" id='delrow'><i class=\"icon-remove icon-white\"></i> 删除</button>"

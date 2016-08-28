@@ -49,7 +49,8 @@ Station.queryPage = function (start, pageSize, queryCondition, callback) {
         sqlParams.push(start);
         sqlParams.push(pageSize);
 
-        var sql = "select ifnull(n.schoolName,'未知') as schoolName,m.* FROM XL_STATION m left join XL_SCHOOL n ON m.schoolId=n.schoolId where m.state=1 and " + sqlCondition;
+        var sql = "select ifnull(n.schoolName,'未知') as schoolName,m.*,case when m.activeDate is null then '离线' when date_add(m.activeDate, interval 7 minute) > now() then '在线' else '离线' end as activeState ";
+        sql += "FROM XL_STATION m left join XL_SCHOOL n ON m.schoolId=n.schoolId where m.state=1 and " + sqlCondition;
         mysqlUtil.query(sql, sqlParams, function (err, res) {
             callback(err, totalCount, res);
         });
@@ -83,6 +84,16 @@ Station.add = function (station, callback) {
 
 Station.del = function (id, callback) {
     mysqlUtil.query("update XL_STATION set state=0 where stationId=? ", [id], callback);
+}
+
+Station.queryDetailByMac = function (mac, callback) {
+    var sql = "select m.* FROM XL_STATION m where m.stationMac = ?";
+    mysqlUtil.query(sql, [mac], callback);
+}
+
+Station.updateActive = function (mac, temperature, battery, districtNum, callback) {
+    var sql = "update XL_STATION set temperature=?,battery=?,districtNum=?,activeDate=now() where stationMac=?";
+    mysqlUtil.query(sql, [temperature, battery, districtNum, mac], callback);
 }
 
 Station.queryDetail = function (id, callback) {
