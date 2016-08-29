@@ -14,7 +14,7 @@ module.exports = new basicController(__filename).init({
         if (!districtNum) {
             return next("园区编号不能为空");
         }
-
+        districtNum = districtNum.toUpperCase;
         this.model['station'].queryDetailByMac(stationMac, districtNum, function (err, res) {
             if (err) {
                 return next(err);
@@ -143,7 +143,7 @@ module.exports = new basicController(__filename).init({
 function parseStation(request) {
     var station = {};
     station.stationId = parseInt(request.body.stationId);
-    station.districtNum = request.body.districtNum;
+    station.districtNum = request.body.districtNum ? request.body.districtNum.toUpperCase() : "";
     station.stationMac = request.body.stationMac ? request.body.stationMac.toUpperCase() : "";
     station.schoolId = parseInt(request.body.schoolId);
     station.location = request.body.location;
