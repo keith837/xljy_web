@@ -65,7 +65,7 @@ Station.add = function (station, callback) {
             return callback(new Error("无法查询到学校信息[" + station.schoolId + "]."));
         }
 
-        var sql = "insert into XL_STATION(stationMac,schoolId,address,stationType,state,createDate,doneDate,oUserId) values(?,?,?,?,?,now(),now(),?)";
+        var sql = "insert into XL_STATION(stationMac,schoolId,address,stationType,state,createDate,doneDate,oUserId,districtNum) values(?,?,?,?,?,now(),now(),?,?)";
         var params = [];
         params.push(station.stationMac);
         params.push(station.schoolId);
@@ -73,6 +73,7 @@ Station.add = function (station, callback) {
         params.push(station.type);
         params.push(station.state);
         params.push(station.oUserId);
+        params.push(station.districtNum);
         mysqlUtil.query(sql, params, function (err, res) {
             if (err) {
                 return callback(err);
@@ -86,14 +87,14 @@ Station.del = function (id, callback) {
     mysqlUtil.query("update XL_STATION set state=0 where stationId=? ", [id], callback);
 }
 
-Station.queryDetailByMac = function (mac, callback) {
-    var sql = "select m.* FROM XL_STATION m where m.stationMac = ?";
-    mysqlUtil.query(sql, [mac], callback);
+Station.queryDetailByMac = function (mac, districtNum, callback) {
+    var sql = "select m.* FROM XL_STATION m where m.stationMac = ? and m.districtNum =?";
+    mysqlUtil.query(sql, [mac, districtNum], callback);
 }
 
 Station.updateActive = function (mac, temperature, battery, districtNum, callback) {
-    var sql = "update XL_STATION set temperature=?,battery=?,districtNum=?,activeDate=now() where stationMac=?";
-    mysqlUtil.query(sql, [temperature, battery, districtNum, mac], callback);
+    var sql = "update XL_STATION set temperature=?,battery=?,activeDate=now() where stationMac=? and districtNum=?";
+    mysqlUtil.query(sql, [temperature, battery, mac, districtNum], callback);
 }
 
 Station.queryDetail = function (id, callback) {
@@ -109,7 +110,7 @@ Station.update = function (station, callback) {
             return callback(new Error("无法查询到学校信息[" + station.schoolId + "]."));
         }
 
-        var sql = "update XL_STATION set stationMac=?,schoolId=?,address=?,stationType=?,state=?,doneDate=now(),oUserId=? where stationId=?";
+        var sql = "update XL_STATION set stationMac=?,schoolId=?,address=?,stationType=?,state=?,doneDate=now(),oUserId=?,districtNum=? where stationId=?";
         var params = [];
         params.push(station.stationMac);
         params.push(station.schoolId);
@@ -117,6 +118,7 @@ Station.update = function (station, callback) {
         params.push(station.type);
         params.push(station.state);
         params.push(station.oUserId);
+        params.push(station.districtNum);
         params.push(station.stationId);
         mysqlUtil.query(sql, params, callback);
     });

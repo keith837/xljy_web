@@ -11,8 +11,11 @@ module.exports = new basicController(__filename).init({
         var temperature = request.body.temperature;
         var battery = request.body.battery;
         var districtNum = request.body.districtNum;
+        if (!districtNum) {
+            return next("园区编号不能为空");
+        }
 
-        this.model['station'].queryDetailByMac(stationMac, function (err, res) {
+        this.model['station'].queryDetailByMac(stationMac, districtNum, function (err, res) {
             if (err) {
                 return next(err);
             }
@@ -140,6 +143,7 @@ module.exports = new basicController(__filename).init({
 function parseStation(request) {
     var station = {};
     station.stationId = parseInt(request.body.stationId);
+    station.districtNum = request.body.districtNum;
     station.stationMac = request.body.stationMac ? request.body.stationMac.toUpperCase() : "";
     station.schoolId = parseInt(request.body.schoolId);
     station.location = request.body.location;

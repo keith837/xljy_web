@@ -13,7 +13,7 @@ var serverConfig = {
             "usedModel": ['station/station'],
             "heartbeat": {
                 "url": "/api/stations/heartbeat/:id",
-                "method": "put",
+                "method": "post",
                 "description": "基站心跳推送"
             }
         }
