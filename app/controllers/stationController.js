@@ -14,7 +14,7 @@ module.exports = new basicController(__filename).init({
         if (!districtNum) {
             return next("园区编号不能为空");
         }
-        districtNum = districtNum.toUpperCase;
+        districtNum = districtNum.toUpperCase();
         this.model['station'].queryDetailByMac(stationMac, districtNum, function (err, res) {
             if (err) {
                 return next(err);
