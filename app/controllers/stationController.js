@@ -3,6 +3,8 @@ var basicController = require("../../core/utils/controller/basicController");
 module.exports = new basicController(__filename).init({
     heartbeat: function (request, response, next) {
         var self = this;
+        var log = this.logger;
+
         var stationMac = request.params.id;
         if (!stationMac) {
             return next("基站mac地址不能为空");
@@ -15,6 +17,7 @@ module.exports = new basicController(__filename).init({
             return next("园区编号不能为空");
         }
         districtNum = districtNum.toUpperCase();
+        log.info("请求参数:mac=" + stationMac + ",districtNum=" + districtNum);
         this.model['station'].queryDetailByMac(stationMac, districtNum, function (err, res) {
             if (err) {
                 return next(err);
