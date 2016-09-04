@@ -23,7 +23,7 @@ Student.findStudentInfo = function(studentId, callback){
 }
 
 Student.findParentByStudentId = function(studentId, callback){
-    var sql = "select B.* from XL_USER_STUDENT_REL A, XL_USER B where A.userId=B.userId and A.state=1 and B.state!=0 and A.studentId=?";
+    var sql = "select B.*,A.smsFlag from XL_USER_STUDENT_REL A, XL_USER B where A.userId=B.userId and A.state=1 and B.state!=0 and A.studentId=?";
     mysqlUtil.query(sql, [studentId], callback);
 }
 
@@ -121,6 +121,10 @@ Student.save = function(args, userId, oUserId, callback){
             });
         });
     });
+}
+
+Student.updateSmsFlag = function (flag, relId, callback) {
+    mysqlUtil.query("update XL_USER_STUDENT_REL set smsFlag=?,doneDate=now() where relId=?", [flag, relId], callback);
 }
 
 Student.saveUserStudentRels = function(conn, insertRelSql, studentId, userIds, index, oUserId, student, callback){

@@ -256,11 +256,27 @@ module.exports = new basicController(__filename).init({
         var self = this;
         if (allUsers != null && allUsers.length > 0) {
             var deviceUsers = [];
+            var smsUsers = [];
             for (var i = 0; i < allUsers.length; i++) {
                 if (allUsers[i].installationId) {
                     deviceUsers.push(pushCore.genUser(allUsers[i].deviceType, allUsers[i].installationId));
                 }
+                if (allUsers[i].smsFlag == 1) {
+                    smsUsers.push({"userName": allUsers[i].userName, "custName": allUsers[i].custName});
+                }
             }
+            if (smsUsers != null && smsUsers.length > 0) {
+                var content = "你家宝宝于" + dateStr + "," + (checkFlag == 1 ? "进入" : "离开") + "学校";
+                for (var i in smsUsers) {
+                    self.logger.info("开始给家长【" + smsUsers[i].custName + "-" + smsUsers[i].userName + "】下发短信:");
+                    SmsSendUtil.sendNoticeSms(smsUsers[i].userName, content, function (data) {
+                        self.logger.info("给家长下发短信完成：" + JSON.stringify(data));
+                    });
+                }
+            } else {
+                self.logger.info("没有需要短信通知的家长");
+            }
+
             if (deviceUsers != null && deviceUsers.length > 0) {
                 var noticeAction = self.cacheManager.getOneCache("STU_ATTENDANCE_NOTICE");
                 var content = "你家宝宝于" + dateStr + "," + (checkFlag == 1 ? "进入" : "离开") + "学校";

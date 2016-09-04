@@ -1,5 +1,24 @@
 var routerConfig = {
     mapping: {
+        smsNotice : {
+            "usedModel": ["student/student", "school/class", "school/school", "user/user"],
+            "list": {
+                "url": "/api/smsNotice/list",
+                "method": "get",
+                "description": "查询所有家长短信设置"
+            },
+            "cancel": {
+                "url": "/api/smsNotice/:id",
+                "method": "delete",
+                "description": "取消家长短信设置"
+            },
+            "set": {
+                "url": "/api/smsNotice/:id",
+                "method": "put",
+                "description": "设置家长短信提醒"
+            }
+        },
+
 
         test: {
             "usedModel": ["user/user", "user/smsLog", "user/userLogin", "school/school", "student/student", "school/class"],
