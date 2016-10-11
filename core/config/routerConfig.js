@@ -88,6 +88,11 @@ var routerConfig = {
                 "method": "post",
                 "description": "用户注册激活"
             },
+            "webRegister": {
+                "url": "/api/user/webRegister/:userName",
+                "method": "put",
+                "description": "用户注册激活web端"
+            },
             "getSecurityCode": {
                 "url": "/api/user/securityCode/:billId",
                 "method": "get",
@@ -182,6 +187,11 @@ var routerConfig = {
                 "url": "/api/user/syncYuns",
                 "method": "delete",
                 "description": "全量删除云信息"
+            },
+            deleteSingleYun :{
+                "url": "/api/user/delYuns/:userId",
+                "method": "delete",
+                "description": "单个删除云信息"
             }
         },
 

@@ -813,7 +813,7 @@ module.exports = new basicController(__filename).init({
                     if(!students || students.length <= 0){
                         return next(new Error("该家长未关联宝贝，不能注册"));
                     }
-                    self.activeByStudent(user, userName, students, securityCode, password, res, next);
+                    self.activeByStudent(1, user, userName, students, securityCode, password, res, next);
                 });
             }else if(groupId == 20){
                 self.model['class'].listAllByTeacherId(user.userId, function(err, classes){
@@ -826,27 +826,78 @@ module.exports = new basicController(__filename).init({
                     if(classes.length > 1){
                         return next(new Error("该老师带班数量不唯一"));
                     }
-                    self.active(user, userName, yunName, securityCode, password, res, next);
+                    self.active(1, user, userName, yunName, securityCode, password, res, next);
                 });
             }else{
-                self.active(user, userName, yunName, securityCode, password, res, next);
+                self.active(1, user, userName, yunName, securityCode, password, res, next);
             }
         });
     },
 
-    activeByStudent : function(user, userName, students, securityCode, password, res, next){
+    webRegister : function(req, res, next) {
+        var self = this;
+        var userName = req.params.userName;
+        if (!userName) {
+            return next(new Error("手机号码不能为空"));
+        }
+        var password = "E10ADC3949BA59ABBE56E057F20F883E";
+        var securityCode = -1;
+        self.model['user'].findByUserName(userName, function(err, user){
+            if(err){
+                return next(err);
+            }
+            if(!user){
+                return next(new Error("该手机号码非白名单用户"));
+            }
+            if(user.state == 1){
+                return next(new Error("该手机号码已注册"));
+            }
+            var groupId = user.groupId;
+            var yunName = user.custName + user.nickName;
+            if(groupId == 10){
+                self.model['student'].listByUserId(user.userId, function(err, students){
+                    if(err){
+                        return next(err);
+                    }
+                    if(!students || students.length <= 0){
+                        return next(new Error("该家长未关联宝贝，不能注册"));
+                    }
+                    self.activeByStudent(-1, user, userName, students, securityCode, password, res, next);
+                });
+            }else if(groupId == 20){
+                self.model['class'].listAllByTeacherId(user.userId, function(err, classes){
+                    if(err){
+                        return next(err);
+                    }
+                    if(!classes || classes.length <= 0){
+                        return next(new Error("该老师未带班"));
+                    }
+                    if(classes.length > 1){
+                        return next(new Error("该老师带班数量不唯一"));
+                    }
+                    self.active(-1, user, userName, yunName, securityCode, password, res, next);
+                });
+            }else{
+                self.active(-1, user, userName, yunName, securityCode, password, res, next);
+            }
+        });
+    },
+
+    activeByStudent : function(chkSecurityCode, user, userName, students, securityCode, password, res, next){
         var self = this;
         self.model['smsLog'].findOne(userName, securityCode, function (err, smsLog) {
             if (err) {
                 return next(err);
             }
-            if (!smsLog) {
-                return next(new Error("短信验证码错误"));
-            }
-            var date = new Date();
-            date.setMinutes(date.getMinutes() - 5);
-            if (smsLog.sendDate < moment(date).format("YYYY-MM-DD HH:mm:ss")) {
-                return next(new Error("短信验证码已过期"));
+            if (chkSecurityCode == 1) {
+                if (!smsLog) {
+                    return next(new Error("短信验证码错误"));
+                }
+                var date = new Date();
+                date.setMinutes(date.getMinutes() - 5);
+                if (smsLog.sendDate < moment(date).format("YYYY-MM-DD HH:mm:ss")) {
+                    return next(new Error("短信验证码已过期"));
+                }
             }
             var userInfoArray = new Array();
             for(var i = 0; i < students.length; i ++){
@@ -877,19 +928,21 @@ module.exports = new basicController(__filename).init({
         });
     },
 
-    active : function(user, userName, yunName, securityCode, password, res, next){
+    active : function(chkSecurityCode, user, userName, yunName, securityCode, password, res, next){
         var self = this;
         self.model['smsLog'].findOne(userName, securityCode, function (err, smsLog) {
             if (err) {
                 return next(err);
             }
-            if (!smsLog) {
-                return next(new Error("短信验证码错误"));
-            }
-            var date = new Date();
-            date.setMinutes(date.getMinutes() - 5);
-            if (smsLog.sendDate < moment(date).format("YYYY-MM-DD HH:mm:ss")) {
-                return next(new Error("短信验证码已过期"));
+            if (chkSecurityCode == 1) {
+                if (!smsLog) {
+                    return next(new Error("短信验证码错误"));
+                }
+                var date = new Date();
+                date.setMinutes(date.getMinutes() - 5);
+                if (smsLog.sendDate < moment(date).format("YYYY-MM-DD HH:mm:ss")) {
+                    return next(new Error("短信验证码已过期"));
+                }
             }
             var yunUser = "yunuser_" + user.userId;
             var yunPassword = imCore.getPasswordHash(yunUser);
@@ -1472,6 +1525,65 @@ module.exports = new basicController(__filename).init({
                     for(var i = 0; i < students.length; i ++){
                         jzCount ++;
                         var yunUser = "yunuser_" + students[i].userId + "_" + students[i].studentId;
+                        userInfoArray.push(yunUser);
+                    }
+                }
+                if(userInfoArray.length <= 0){
+                    return res.json({
+                        code : "00",
+                        msg : "查询需删除帐号信息为空"
+                    });
+                }
+
+                var index = Math.ceil(userInfoArray.length / 100);
+                var keys = [];
+                for (var k = 0; k < index; k++) {
+                    var userinfos = userInfoArray.slice(k * 100, (k + 1) * 100);
+                    keys.push(userinfos);
+                }
+
+                async.concat(keys, function (key, done) {
+                    imCore.delUsers(key.join(), function (err, yunRes) {
+                        done(err, yunRes);
+                    });
+                }, function (err, values) {
+                    if (err) {
+                        return next(err);
+                    }
+                    return res.json({
+                        code: "00",
+                        msg: "删除成功",
+                        syncData: userInfoArray,
+                        syncResult: values
+                    });
+                });
+            });
+        });
+    },
+
+    deleteSingleYun : function(req, res, next){
+        var self = this;
+        var userId = req.params.userId;
+        self.model['user'].findByKey(userId, function(err, user){
+            if(err){
+                return next(err);
+            }
+            var userInfoArray = new Array();
+            var lsCount = 0;
+            var xzCount = 0;
+            var jzCount = 0;
+            if (user) {
+                var yunUser = "yunuser_" + userId;
+                userInfoArray.push(yunUser);
+            }
+            self.model['student'].listByUserId(userId, function(err, students){
+                if(err){
+                    return next(err);
+                }
+                if(students && students.length > 0){
+                    for(var i = 0; i < students.length; i ++){
+                        jzCount ++;
+                        var yunUser = "yunuser_" + userId + "_" + students[i].studentId;
                         userInfoArray.push(yunUser);
                     }
                 }
