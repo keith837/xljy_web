@@ -41,6 +41,14 @@
 
                                     <table width="100%" >
                                         <tr>
+                                            <td align="center" width="16%">
+                                                学校名称
+                                            </td>
+                                            <td align="left" width="24%">
+                                                <div style="margin-top:5px; margin-bottom:5px">
+                                                    <input type="text" placeholder="请选择学校" id="schoolId" style="width:170px;" class="span3">
+                                                </div>
+                                            </td>
                                             <td align="center">
                                                 <div class="input-append span12" style="margin-top:5px; margin-bottom:5px">
                                                     <input type="text" class="span4 search-query" placeholder="请输入年级名称" id="gradeName" name="gradeName">
@@ -116,6 +124,7 @@
      * tables
      **/
     $(document).ready(function () {
+        loadSchool();
         var initTableParams = {
             "oLanguage": {
                 "sLengthMenu": "每页显示 _MENU_ 条记录",
@@ -181,16 +190,19 @@
 
         $('#searchBtn').on( 'click', function () {
             var gradeName = $("#gradeName").val();
-            if (gradeName == null || gradeName == "") {
-                table.fnSettings().sAjaxSource='/api/grade/list';
-                table.fnDraw();
-            }else{
-                //table.fnClearTable(); //清空一下table，不能设置
-                table.fnSettings().sAjaxSource='/api/grade/list?gradeName='+gradeName;
-//              table.fnSettings().sServerMethod='GET';
-                table.fnDraw();
+            var schoolId = $("#schoolId").val();
+            var queryCondition = "";
+            if (gradeName != "") {
+                queryCondition += "gradeName=" + gradeName + "&";
+            }
+            if (schoolId != "" && schoolId != "-1") {
+                queryCondition += "schoolId=" + schoolId;
             }
 
+            //table.fnClearTable(); //清空一下table，不能设置
+            table.fnSettings().sAjaxSource='/api/grade/list?' + queryCondition;
+//              table.fnSettings().sServerMethod='GET';
+            table.fnDraw();
 
         });
 

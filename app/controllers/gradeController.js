@@ -18,6 +18,10 @@ module.exports = new basicController(__filename).init({
         if (gradeName) {
             obj.gradeName = gradeName;
         }
+        var qSchoolId = req.query.schoolId;
+        if (qSchoolId) {
+            obj.schoolId = qSchoolId;
+        }
         self.model['grade'].listByPage(schoolId, obj, start, pageSize, function (err, total, brands) {
             if (err) {
                 return next(err);
