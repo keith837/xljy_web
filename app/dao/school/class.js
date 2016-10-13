@@ -42,7 +42,7 @@ Class.findPrincipalByClassId = function(classId, callback){
 }
 
 Class.listTeacherByClassIds = function(classIds, callback){
-    var sql = "select A.classId,A.isMaster,A.jobType,B.nickName,B.userName,B.custName,B.userId from XL_CLASS_TEACHER_REL A,XL_USER B where A.tUserId=B.userId and A.state=1 and A.classId in (-1";
+    var sql = "select A.classId,A.isMaster,A.jobType,B.nickName,B.userName,B.custName,B.userId from XL_CLASS_TEACHER_REL A,XL_USER B where A.tUserId=B.userId and A.state!=0 and A.classId in (-1";
     var tempArgs = new Array();
     for(var i = 0; i < classIds.length; i ++){
         sql += ",?";
@@ -98,7 +98,7 @@ Class.findByClassId = function(classId, callback){
 }
 
 Class.delTeacher = function(relId, callback){
-    var updateSql = "update XL_CLASS_TEACHER_REL set state=0 where relId = ?";
+    var updateSql = "update XL_CLASS_TEACHER_REL set state=0 where relId = ? and state=1";
     mysqlUtil.query(updateSql, relId, callback);
 }
 
@@ -117,7 +117,7 @@ Class.delete = function(classId, callback){
                     conn.release();
                     return callback(err);
                 }
-                conn.query("update XL_CLASS_TEACHER_REL set state = 0 where isMaster=1 and classId=?", [classId], function(err, data){
+                conn.query("update XL_CLASS_TEACHER_REL set state = 0 where isMaster=1 and classId=? and state=1", [classId], function(err, data){
                     if(err){
                         conn.rollback();
                         conn.release();
@@ -229,7 +229,7 @@ Class.update = function (obj, tUserId, classId, teacherId, done) {
             });
         }, function (classData, callback) {
             if (tUserId) {
-                var updateRelSql = "update XL_CLASS_TEACHER_REL set tUserId=?,doneDate=now(),oUserId=? where isMaster=1 and classId=?";
+                var updateRelSql = "update XL_CLASS_TEACHER_REL set tUserId=?,doneDate=now(),oUserId=? where isMaster=1 and classId=? and state=1";
                 conn.query(updateRelSql, [tUserId, obj.oUserId, classId], function (err, data) {
                     if (err) {
                         return callback(err);
@@ -240,7 +240,7 @@ Class.update = function (obj, tUserId, classId, teacherId, done) {
                 callback(err, classData);
             }
         }, function (classData, callback) {
-            var deleteSql = "update XL_CLASS_TEACHER_REL set state = 0,doneDate=now() where isMaster=0 and classId=?"
+            var deleteSql = "update XL_CLASS_TEACHER_REL set state = 0,doneDate=now() where isMaster=0 and classId=? and state=1"
             conn.query(deleteSql, classId, function (err, res) {
                 callback(err, classData);
             });
@@ -301,9 +301,54 @@ Class.listStudentAndDeviceByClass = function(classId, callback){
     mysqlUtil.query(selectSql, [classId], callback);
 }
 
-Class.graduateClass = function(classId, userId, callback){
-    var selectSql = "update XL_CLASS A set graduationFlag=1,doneDate=now(),oUserId=? where A.classId = ?";
-    mysqlUtil.query(selectSql, [userId, classId], callback);
+Class.graduateClass = function(classId, userId, done){
+    mysqlUtil.getConnection(function (err, conn) {
+        if (err) {
+            return done.apply(null, [err, null]);
+        }
+
+        var tasks = [function (callback) {
+            conn.beginTransaction(function (err) {
+                callback(err);
+            });
+        }, function (callback) {
+            var updateSql ="update XL_CLASS_TEACHER_REL set state=2,doneDate=now(),oUserId=? where classId=? and state=1";
+            conn.query(updateSql, [userId, classId], function (err, updateRow) {
+                if (err) {
+                    return callback(err);
+                }
+                callback(err, updateRow);
+            });
+        }, function (updateRow, callback) {
+            var updateSql = "update XL_CLASS A set className=CONCAT(className,'_',DATE_FORMAT(NOW(),'%Y%m')),graduationFlag=1,"
+                        +"doneDate=now(),oUserId=? where A.classId = ?";
+            conn.query(updateSql, [userId, classId], function (err, classData) {
+                if (err) {
+                    return callback(err);
+                }
+                callback(err, classData);
+            });
+
+        }, function (classData, callback) {
+            conn.commit(function (err) {
+                if (err) {
+                    return callback(err);
+                }
+                callback(null, classData);
+            });
+        }];
+
+        async.waterfall(tasks, function (err, results) {
+            if (err) {
+                conn.rollback();
+                conn.release();
+                return done(err);
+            }
+            conn.release();
+            done.apply(null, [null, results]);
+        });
+    });
+
 }
 
 Class.upgradeClass = function (classId, userId, className, gradeId, callback) {
