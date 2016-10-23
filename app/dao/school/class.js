@@ -351,9 +351,52 @@ Class.graduateClass = function(classId, userId, done){
 
 }
 
-Class.upgradeClass = function (classId, userId, className, gradeId, callback) {
-    var selectSql = "update XL_CLASS A set className=?,gradeId=?,doneDate=now(),oUserId=? where A.classId= ?";
-    mysqlUtil.query(selectSql, [className, gradeId, userId, classId], callback);
+Class.upgradeClass = function (classId, userId, className, gradeId, done) {
+    mysqlUtil.getConnection(function (err, conn) {
+        if (err) {
+            return done.apply(null, [err, null]);
+        }
+
+        var tasks = [function (callback) {
+            conn.beginTransaction(function (err) {
+                callback(err);
+            });
+        }, function (callback) {
+            var updateSql ="update XL_CLASS set className=?,gradeId=?,doneDate=now(),oUserId=? where classId= ? and state=1";
+            conn.query(updateSql, [className, gradeId, userId, classId], function (err, updateRow) {
+                if (err) {
+                    return callback(err);
+                }
+                callback(err, updateRow);
+            });
+        }, function (updateRow, callback) {
+            var updateSql = "update XL_STUDENT set studentAge=studentAge+1,doneDate=now(),oUserId=? where classId=? and state=1 and studentAge is not null;";
+            conn.query(updateSql, [userId, classId], function (err, updateStudent) {
+                if (err) {
+                    return callback(err);
+                }
+                callback(err, updateStudent);
+            });
+
+        }, function (updateStudent, callback) {
+            conn.commit(function (err) {
+                if (err) {
+                    return callback(err);
+                }
+                callback(null, updateStudent);
+            });
+        }];
+
+        async.waterfall(tasks, function (err, results) {
+            if (err) {
+                conn.rollback();
+                conn.release();
+                return done(err);
+            }
+            conn.release();
+            done.apply(null, [null, results]);
+        });
+    });
 }
 
 Class.listUnSyncStudentByClass = function(classId, callback){
