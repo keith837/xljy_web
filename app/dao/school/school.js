@@ -33,6 +33,10 @@ School.findBySchoolId = function(schoolId, callback){
     mysqlUtil.queryOne("select * from XL_SCHOOL where state=1 and schoolId = ?", [schoolId], callback);
 }
 
+School.findBySchoolName = function(schoolName, callback){
+    mysqlUtil.queryOne("select * from XL_SCHOOL where state=1 and schoolName = ?", [schoolName], callback);
+}
+
 School.findBySchoolIds = function (schoolIds, callback) {
     var appenderId = "";
     var params = [];
@@ -110,8 +114,13 @@ School.queryNum = function(schoolObj, brandObj, schoolIds, callback){
     var args = new Array();
     if(schoolObj){
         for(var key in schoolObj){
-            whereSql += " and A." + key + "=?";
-            args.push(schoolObj[key]);
+            if ("schoolName" == key) {
+                whereSql += " and A." + key + " like ? ";
+                args.push("%" + schoolObj[key] + "%");
+            } else {
+                whereSql += " and A." + key + "=?";
+                args.push(schoolObj[key]);
+            }
         }
     }
     if(brandObj){
@@ -145,8 +154,13 @@ School.queryPage = function(schoolObj, brandObj, schoolIds, start, pageSize, cal
     var args = new Array();
     if(schoolObj){
         for(var key in schoolObj){
-            whereSql += " and A." + key + "=?";
-            args.push(schoolObj[key]);
+            if ("schoolName" == key) {
+                whereSql += " and A." + key + " like ? ";
+                args.push("%" + schoolObj[key] + "%");
+            } else {
+                whereSql += " and A." + key + "=?";
+                args.push(schoolObj[key]);
+            }
         }
     }
     if(brandObj){

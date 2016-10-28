@@ -187,14 +187,14 @@ module.exports = new basicController(__filename).init({
                 return next(err);
             }
             var brandId = fields.brandId ? parseInt(fields.brandId) : 0;
-            var schoolName = fields.schoolName;
+            var schoolName = fields.schoolName ? fields.schoolName.trim() : null;
             var sUserId = fields.sUserId;
             var address = fields.address;
             var billId = fields.billId;
             var schoolDesc = fields.schoolDesc;
             var h5Url = fields.h5Url;
             var h5Title = fields.h5Title;
-            if(!schoolName){
+            if (!schoolName || schoolName == "") {
                 return next(new Error("园所名称不能为空"));
             }
             if(!sUserId){
@@ -209,15 +209,26 @@ module.exports = new basicController(__filename).init({
             }else{
                 return next(new Error("学校平面图不能为空"));
             }
-            self.model['school'].save([brandId, schoolName, sUserId, address, billId, schoolDesc, schoolUrl, h5Url, h5Title, oUserId], sUserId, function(err, data){
-                if(err){
+
+            self.model['school'].findBySchoolName(schoolName, function(err, data){
+                if (err) {
                     return next(err);
                 }
-                res.json({
-                    code : "00",
-                    msg : "园所添加成功"
-                })
+                if (data) {
+                    return next(new Error("园所名称已存在"));
+                }
+
+                self.model['school'].save([brandId, schoolName, sUserId, address, billId, schoolDesc, schoolUrl, h5Url, h5Title, oUserId], sUserId, function(err, data){
+                    if(err){
+                        return next(err);
+                    }
+                    res.json({
+                        code : "00",
+                        msg : "园所添加成功"
+                    })
+                });
             });
+
         });
     },
 
